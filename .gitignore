@@ -56,3 +56,8 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Ignore VIM temporary and swap files
+*~
+*.swp
+*.swo
