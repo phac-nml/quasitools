@@ -21,6 +21,6 @@ from quasitools.cli import pass_context
 @click.command('hello', short_help='Hello World.')
 @click.argument('name', required=False, default='world')
 @pass_context
-def cli(ctxi, name):
+def cli(ctx, name):
     greet = 'Hello'
     click.echo('{0}, {1}.'.format(greet, name))
