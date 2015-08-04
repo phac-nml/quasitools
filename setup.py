@@ -33,11 +33,10 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=dependencies,
-    entry_points={
-        'console_scripts': [
-            'quasitools = quasitools.cli:cli',
-        ],
-    },
+    entry_points='''
+        [console_scripts]
+        quasitools=quasitools.cli:cli
+    ''',
     classifiers=[
         'License :: OSI Approved :: Apache Software License',
         'Development Status :: 1 - Planning',
