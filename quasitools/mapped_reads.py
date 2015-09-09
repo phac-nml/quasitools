@@ -41,8 +41,14 @@ class MappedReads(object):
             if overlap >= overlap_cutoff:
                 padded_alignment = sam_alignment_to_padded_alignment(alignment, reference)
 
+                matches = 0
+                if alignment.has_tag('NM'):
+                    matches = alignment.query_length - alignment.get_tag('NM')
+                else:
+                    matches = padded_alignment[1].count('|')
+
                 #TODO not an accurate identity, as I am not distinguishing between an alignment match vs a sequence match
-                identity = decimal.Decimal(padded_alignment[1].count('|')) / len(padded_alignment[1]) * 100
+                identity = decimal.Decimal(matches) / len(padded_alignment[1]) * 100
 
                 if identity >= identity_cutoff:
                     direct = '+'
@@ -53,7 +59,7 @@ class MappedReads(object):
 
                     mapped_read = MappedRead(alignment.query_name, alignment.query_alignment_start, alignment.query_alignment_end-1,
                             differences, alignment.reference_start, alignment.reference_end-1, overlap, identity, direct)
-                    obj.mapped_reads["{0}_{1}".format(alignment.query_name, '1' if direct is '+' else '2')] = mapped_read
+                    obj.mapped_reads["{0}_{1}".format(alignment.query_name, '1' if direct == '+' else '2')] = mapped_read
 
         return obj
 
@@ -66,7 +72,7 @@ class MappedReads(object):
                 if i not in mapped_read.differences:
                     pileup[i][self.reference.sub_seq(i,i).upper()] = pileup[i].get(self.reference.sub_seq(i,i).upper(), 0) + 1
                 elif len(mapped_read.differences[i]) == 1:
-                    if mapped_read.differences[i] is '-':
+                    if mapped_read.differences[i] == '-':
                         pileup[i]['-'] = pileup[i].get('-', 0) + 1
                     else:
                         pileup[i][mapped_read.differences[i].upper()] = pileup[i].get(mapped_read.differences[i].upper(), 0) + 1
@@ -138,7 +144,7 @@ class MappedReads(object):
                 else:
                     pilep_wo_indels = [(k,sum([v for k,v in list(g)])) for k,g in itertools.groupby(sorted([(k,v) if len(k) == 0 else (k[:1],v) for k,v in pileup[pos].items()]), operator.itemgetter(0))]
                     for token, token_count in sorted(pileup[pos].items()):
-                        if token is not '-':
+                        if token != '-':
                             if decimal.Decimal(token_count) / coverage[pos] * 100 >= percentage:
                                 con_bp += token
 
