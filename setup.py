@@ -17,7 +17,7 @@ specific language governing permissions and limitations under the License.
 
 from setuptools import find_packages, setup
 
-dependencies = ['click', 'pysam']
+dependencies = ['click', 'numpy', 'pysam', 'scipy']
 
 setup(
     name='quasitools',
