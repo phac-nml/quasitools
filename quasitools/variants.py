@@ -24,49 +24,54 @@ from quasitools.mapped_reads import MappedReads
 from quasitools.variant import Variant
 
 class Variants(object):
-    def __init__(self, reference, error_rate=0.0021):
-        self.variants = defaultdict(dict)
-        self.reference = reference
+    def __init__(self, error_rate, references):
+        self.variants = defaultdict(lambda: defaultdict(dict) )
         self.error_rate = error_rate
+        self.references =  references
         self.filters = {}
 
     @classmethod
-    def from_bam(cls, reference, overlap_cutoff, identity_cutoff, bam):
+    def from_bam(cls, references, error_rate, overlap_cutoff, identity_cutoff, bam):
         """Build the Variants object from a bam."""
 
-        #create MappedReads object
-        mapped_reads = MappedReads.from_bam(reference, overlap_cutoff, identity_cutoff, bam)
+        mapped_reads_arr = []
 
-        obj = cls.from_mapped_reads(reference, mapped_reads)
+        for rid, r in references.references.items():
+            #create MappedReads object
+            mapped_reads_arr.append(MappedReads.from_bam(r, overlap_cutoff, identity_cutoff, bam))
+
+        obj = cls.from_mapped_reads(error_rate, references, *mapped_reads_arr)
 
         return obj
 
     @classmethod
-    def from_mapped_reads(cls, reference, mapped_reads):
+    def from_mapped_reads(cls, error_rate, references, *args):
         """Build the Variants object from a MappedReads object"""
-        obj = cls(reference)
+        obj = cls(error_rate, references)
 
-        pileup = mapped_reads.pileup()
+        for mapped_reads in args:
+            pileup = mapped_reads.pileup()
+            rid = mapped_reads.reference.name
 
-        #do not include indels in coverage calculations
-        coverage = [sum([v if not k.startswith('+') and not k.startswith('-') else 0 for k,v in pileup[pos].items()])for pos in range(0,len(pileup))]
+            #do not include indels in coverage calculations
+            coverage = [sum([v if not k.startswith('+') and not k.startswith('-') else 0 for k,v in pileup[pos].items()])for pos in range(0,len(pileup))]
 
-        for pos in range(0,len(pileup)):
-            for event, event_count in pileup[pos].items():
-                alt_allele = event.lower()
-                if len(event) > 1:
-                    alt_allele = event[:1].lower()
+            for pos in range(0,len(pileup)):
+                for event, event_count in pileup[pos].items():
+                    alt_allele = event.lower()
+                    if len(event) > 1:
+                        alt_allele = event[:1].lower()
 
-                if alt_allele != '-' and alt_allele != reference.sub_seq(pos,pos).lower():
-                    if pos+1 in obj.variants and alt_allele in obj.variants[pos+1]:
-                        obj.variants[pos+1][alt_allele].info['AC'] += event_count
-                        obj.variants[pos+1][alt_allele].info['AF'] = obj.variants[pos+1][alt_allele].info['AC'] / coverage[pos]
-                    else:
-                        variant = Variant(chrom=reference.name, pos=pos+1, ref=reference.sub_seq(pos,pos).lower(), alt=alt_allele, info={'DP':coverage[pos],'AC':event_count,'AF':event_count / coverage[pos]})
-                        obj.variants[pos+1][alt_allele] = variant
+                    if alt_allele != '-' and alt_allele != mapped_reads.reference.sub_seq(pos,pos).lower():
+                        if rid in obj.variants and pos+1 in obj.variants[rid] and alt_allele in obj.variants[rid][pos+1]:
+                            obj.variants[rid][pos+1][alt_allele].info['AC'] += event_count
+                            obj.variants[rid][pos+1][alt_allele].info['AF'] = obj.variants[rid][pos+1][alt_allele].info['AC'] / coverage[pos]
+                        else:
+                            variant = Variant(chrom=mapped_reads.reference.name, pos=pos+1, ref=mapped_reads.reference.sub_seq(pos,pos).lower(), alt=alt_allele, info={'DP':coverage[pos],'AC':event_count,'AF':event_count / coverage[pos]})
+                            obj.variants[rid][pos+1][alt_allele] = variant
 
-            for alt_allele, variant in obj.variants[pos].items():
-                variant.qual = obj.__calculate_variant_qual(variant.info['AC']-1, variant.info['DP'])
+                for alt_allele, variant in obj.variants[rid][pos+1].items():
+                    variant.qual = obj.__calculate_variant_qual(variant.info['AC']-1, variant.info['DP'])
 
         return obj
 
@@ -86,10 +91,11 @@ class Variants(object):
 
         report += "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO"
 
-        for pos in self.variants:
-            for alt_allele, variant in sorted(self.variants[pos].items()):
-                if variant.qual > 0:
-                    report += "\n" + str(variant)
+        for rid in self.variants:
+            for pos in self.variants[rid]:
+                for alt_allele, variant in sorted(self.variants[rid][pos].items()):
+                    if variant.qual > 0:
+                        report += "\n" + str(variant)
 
         return report
 
@@ -112,19 +118,20 @@ class Variants(object):
         #only allow simple expressions for the time being i.e. DP>30
         (attribute, operator, value) = re.split('([><=!]+)', expression)
 
-        for pos in self.variants:
-            for alt_allele, variant in self.variants[pos].items():
-                attribute_value = None
-                if hasattr(variant, attribute.lower()):
-                    attribute_value = eval("variant.%s" % attribute.lower())
-                else:
-                    attribute_value = variant.info[attribute.upper()]
-
-                if eval("%s %s %s" % (attribute_value,operator,value)) != result:
-                    if variant.filter == '.':
-                        variant.filter = 'PASS'
-                else:
-                    if variant.filter == '.' or variant.filter == 'PASS':
-                        variant.filter = id
+        for rid in self.variants:
+            for pos in self.variants[rid]:
+                for alt_allele, variant in self.variants[rid][pos].items():
+                    attribute_value = None
+                    if hasattr(variant, attribute.lower()):
+                        attribute_value = eval("variant.%s" % attribute.lower())
                     else:
-                        variant.filter += ";%s" % id
+                        attribute_value = variant.info[attribute.upper()]
+
+                    if eval("%s %s %s" % (attribute_value,operator,value)) != result:
+                        if variant.filter == '.':
+                            variant.filter = 'PASS'
+                    else:
+                        if variant.filter == '.' or variant.filter == 'PASS':
+                            variant.filter = id
+                        else:
+                            variant.filter += ";%s" % id
