@@ -82,6 +82,11 @@ class Variants(object):
         report = "##fileformat=VCFv4.2\n";
         report += "##fileDate=%s\n" % (d.strftime("%Y%m%d"));
         report += "##source=quasitools\n";
+
+        #print contig info per reference
+        for rid, reference in self.references.references.items():
+            report += "##contig=<ID=%s,length=%i>\n" % (reference.name, len(reference.seq))
+
         report += "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">\n"
         report += "##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Allele Count\">\n"
         report += "##INFO=<ID=AF,Number=A,Type=Float,Description=\"Allele Frequency\">\n"
