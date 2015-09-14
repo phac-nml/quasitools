@@ -15,7 +15,7 @@ class References(object):
         >>> print(rs.references.keys())
         dict_keys(['ref1'])
         >>> print(rs.references['ref1'].seq)
-        gattaca
+        AGCATGTTAGATAAGATAGCTGTGCTAGTAGGCAGTCAGCGCCAT
         """
         obj = cls(fasta)
 
