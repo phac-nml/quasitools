@@ -71,7 +71,7 @@ class Variants(object):
                             obj.variants[rid][pos+1][alt_allele] = variant
 
                 for alt_allele, variant in obj.variants[rid][pos+1].items():
-                    variant.qual = obj.__calculate_variant_qual(variant.info['AC']-1, variant.info['DP'])
+                    variant.qual = obj.__calculate_variant_qual(variant.info['AC'], variant.info['DP'])
 
         return obj
 
@@ -108,7 +108,7 @@ class Variants(object):
         """Calculate variant qual using poisson distribution."""
         avg_errors = coverage * self.error_rate
 
-        prob = poisson.cdf(variant_count, avg_errors)
+        prob = poisson.cdf(variant_count-1, avg_errors)
 
         qual = 100
         if prob < 1:
