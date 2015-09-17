@@ -19,11 +19,11 @@ import re
 import Bio.SeqIO.FastaIO
 from quasitools.reference import Reference
 
-def parse_reference_fasta(fasta):
-    """Build the References object from a fasta file.
+def parse_references_from_fasta(fasta):
+    """Parse Reference objects from a fasta file.
 
-    >>> rs = parse_reference_fasta('tests/data/ref1.fasta')
-    >>> print(len(rs))
+    >>> rs = parse_references_from_fasta('tests/data/ref1.fasta')
+    >>> print(length(rs))
     1
     >>> print(rs[0].seq)
     AGCATGTTAGATAAGATAGCTGTGCTAGTAGGCAGTCAGCGCCAT

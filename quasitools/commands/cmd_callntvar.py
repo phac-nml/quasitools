@@ -18,7 +18,7 @@ specific language governing permissions and limitations under the License.
 import click
 from quasitools.cli import pass_context
 from quasitools.variants import Variants
-from quasitools.parsers.reference_parser import parse_reference_fasta
+from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 @click.command('call_callntvar', short_help='Call nucleotide variants from a BAM file.')
 @click.argument('bam', required=True, type=click.Path(exists=True))
@@ -26,7 +26,7 @@ from quasitools.parsers.reference_parser import parse_reference_fasta
 @click.option('-e', '--error_rate', default=0.01, help='estimated sequencing error rate.')
 @pass_context
 def cli(ctx, bam, reference, error_rate):
-    rs = parse_reference_fasta(reference)
+    rs = parse_references_from_fasta(reference)
     variants = Variants.from_bam(rs, error_rate, 65, 75, bam)
 
     variants.filter('q30', 'QUAL<30', True)

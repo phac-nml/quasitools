@@ -19,12 +19,12 @@ import pytest
 import copy
 from quasitools.variants import Variants
 from quasitools.variant import Variant
-from quasitools.parsers.reference_parser import parse_reference_fasta
+from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 class TestVariants:
     @classmethod
     def setup_class(self):
-        self.references = parse_reference_fasta('tests/data/ref1.fasta')
+        self.references = parse_references_from_fasta('tests/data/ref1.fasta')
         self.variants_obj = Variants(0.01, self.references)
 
         self.variants_obj.variants['ref1']['3']['t'] = Variant(chrom='ref1', pos=3, ref='c', alt='t', qual=30, info={'DP':400,'AC':12,'AF':0.03})
