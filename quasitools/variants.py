@@ -22,6 +22,7 @@ from scipy.stats import poisson
 from numpy import log10
 from quasitools.mapped_read import MappedReadCollection
 from quasitools.variant import Variant
+from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 
 class Variants(object):
     def __init__(self, error_rate, references):
@@ -38,7 +39,7 @@ class Variants(object):
 
         for r in references:
             #create MappedReadCollection object
-            mapped_reads_arr.append(MappedReadCollection.from_bam(r, overlap_cutoff, identity_cutoff, bam))
+            mapped_reads_arr.append(parse_mapped_reads_from_bam(r, overlap_cutoff, identity_cutoff, bam))
 
         obj = cls.from_mapped_reads(error_rate, references, *mapped_reads_arr)
 

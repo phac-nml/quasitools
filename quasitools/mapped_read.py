@@ -18,9 +18,6 @@ specific language governing permissions and limitations under the License.
 import decimal
 import itertools
 import operator
-import pysam
-
-from quasitools.utilities import *
 
 class MappedRead(object):
     def __init__(self, seq_id, query_start, query_end, differences, ref_start, ref_end, overlap, identity, strand):
@@ -84,41 +81,6 @@ class MappedReadCollection(object):
         self.mapped_reads = {}
         self.reference = reference
 
-    @classmethod
-    def from_bam(cls, reference, overlap_cutoff, identity_cutoff, bam):
-        """Build the MappedReadCollection object from a bam."""
-        obj = cls(reference)
-
-        sam = pysam.AlignmentFile(bam, "rb")
-
-        for alignment in sam.fetch(reference=reference.name):
-            overlap = decimal.Decimal(alignment.query_alignment_length) / alignment.query_length * 100
-
-            if overlap >= overlap_cutoff:
-                padded_alignment = sam_alignment_to_padded_alignment(alignment, reference)
-
-                matches = 0
-                if alignment.has_tag('NM'):
-                    matches = alignment.query_length - alignment.get_tag('NM')
-                else:
-                    matches = padded_alignment[1].count('|')
-
-                #TODO not an accurate identity, as I am not distinguishing between an alignment match vs a sequence match
-                identity = decimal.Decimal(matches) / len(padded_alignment[1]) * 100
-
-                if identity >= identity_cutoff:
-                    direct = '+'
-                    if alignment.flag & 16:
-                        direct = '-'
-                    #TODO only calculate differences when identity < 100
-                    differences = pairwise_alignment_to_differences(padded_alignment[0], padded_alignment[2], alignment.reference_start)
-
-                    mapped_read = MappedRead(alignment.query_name, alignment.query_alignment_start, alignment.query_alignment_end-1,
-                            differences, alignment.reference_start, alignment.reference_end-1, overlap, identity, direct)
-                    obj.mapped_reads["{0}_{1}".format(alignment.query_name, '1' if direct == '+' else '2')] = mapped_read
-
-        return obj
-
     def pileup(self):
         """Build and return a pileup from the object."""
         pileup = [{} for i in range(0,len(self.reference.seq))]
@@ -138,7 +100,6 @@ class MappedReadCollection(object):
                     pileup[i][difference.upper()] = pileup[i].get(difference.upper(), 0) + 1
 
         return pileup
-
 
     def to_consensus(self, percentage):
         """Generates and returns a consensus sequence
