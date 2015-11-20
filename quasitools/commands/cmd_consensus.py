@@ -17,7 +17,6 @@ specific language governing permissions and limitations under the License.
 
 import click
 from quasitools.cli import pass_context
-from quasitools.mapped_reads import MappedReadCollection
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 
