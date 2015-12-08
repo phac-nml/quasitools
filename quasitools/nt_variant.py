@@ -19,8 +19,8 @@ import re
 from datetime import date
 from scipy.stats import poisson
 from numpy import log10
-from quasitools.mapped_read import MappedReadCollection
 from quasitools.variant import Variant, VariantCollection
+
 
 class NTVariant(Variant):
     def __info_to_str(self):
@@ -35,62 +35,87 @@ class NTVariant(Variant):
                                                    self.qual, self.filter,
                                                    self.__info_to_str())
 
+
 class NTVariantCollection(VariantCollection):
     @classmethod
     def from_mapped_read_collections(cls, error_rate, references, *args):
-        """Build the NTVariantCollection from any number of MappedReadCollection objects"""
+        """Build the NTVariantCollection from any number of
+        MappedReadCollection objects"""
         obj = cls(references)
 
-        for mapped_read_collection in args:
-            pileup = mapped_read_collection.pileup()
-            rid = mapped_read_collection.reference.name
+        for mrc in args:
+            pileup = mrc.pileup()
+            rid = mrc.reference.name
 
-            #do not include indels in coverage calculations
-            coverage = [sum([v if not k.startswith('+') and not k.startswith('-') else 0 for k,v in pileup[pos].items()]) for pos in range(0,len(pileup))]
+            coverage = mrc.collection(pileup)
 
-            for pos in range(0,len(pileup)):
+            for pos in range(0, len(pileup)):
                 for event, event_count in pileup[pos].items():
                     alt_allele = event.lower()
                     if len(event) > 1:
                         alt_allele = event[:1].lower()
 
-                    if alt_allele != '-' and alt_allele != mapped_read_collection.reference.sub_seq(pos,pos).lower():
-                        if rid in obj.variants and pos+1 in obj.variants[rid] and alt_allele in obj.variants[rid][pos+1]:
-                            obj.variants[rid][pos+1][alt_allele].info['AC'] += event_count
-                            obj.variants[rid][pos+1][alt_allele].info['AF'] = obj.variants[rid][pos+1][alt_allele].info['AC'] / coverage[pos]
+                    if alt_allele != '-' and alt_allele != \
+                            mrc.reference.sub_seq(pos, pos).lower():
+                        variant_obj = obj.variants[rid][pos+1][alt_allele]
+                        if rid in obj.variants and pos+1 in obj.variants[rid] \
+                                and alt_allele in obj.variants[rid][pos+1]:
+                            new_allele_count = \
+                                event_count + variant_obj.info['AC']
+                            variant_obj.info['AC'] = new_allele_count
+                            variant_obj.info['AF'] = \
+                                new_allele_count / coverage[pos]
                         else:
-                            variant = NTVariant(chrom=mapped_read_collection.reference.name, pos=pos+1, ref=mapped_read_collection.reference.sub_seq(pos,pos).lower(), alt=alt_allele, info={'DP':coverage[pos],'AC':event_count,'AF':event_count / coverage[pos]})
-                            obj.variants[rid][pos+1][alt_allele] = variant
+                            event_frequency = event_count / coverage[pos]
+                            variant_obj = NTVariant(chrom=mrc.reference.name,
+                                                    pos=pos+1,
+                                                    ref=mrc.reference.sub_seq(
+                                                        pos, pos).lower(),
+                                                    alt=alt_allele,
+                                                    info={
+                                                        'DP': coverage[pos],
+                                                        'AC': event_count,
+                                                        'AF': event_frequency
+                                                    })
 
                 for alt_allele, variant in obj.variants[rid][pos+1].items():
-                    variant.qual = obj.__calculate_variant_qual(error_rate, variant.info['AC'], variant.info['DP'])
+                    variant.qual = obj.__calculate_variant_qual(
+                        error_rate, variant.info['AC'], variant.info['DP'])
 
         return obj
 
     def to_vcf_file(self):
-        """Build a string representation of our Variants object (i.e. a vcf file)."""
+        """Build a string representation of our Variants object
+        (i.e. a vcf file)."""
         d = date.today()
 
-        report = "##fileformat=VCFv4.2\n";
-        report += "##fileDate=%s\n" % (d.strftime("%Y%m%d"));
-        report += "##source=quasitools\n";
+        report = "##fileformat=VCFv4.2\n"
+        report += "##fileDate=%s\n" % (d.strftime("%Y%m%d"))
+        report += "##source=quasitools\n"
 
-        #print contig info per reference
+        # print contig info per reference
         for reference in self.references:
-            report += "##contig=<ID=%s,length=%i>\n" % (reference.name, len(reference.seq))
+            report += "##contig=<ID=%s,length=%i>\n" % (reference.name,
+                                                        len(reference.seq))
 
-        report += "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">\n"
-        report += "##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Allele Count\">\n"
-        report += "##INFO=<ID=AF,Number=A,Type=Float,Description=\"Allele Frequency\">\n"
+        info_line = "##INFO=<ID=%s,Number=%s,Type=%s,Description=\"%s\">\n"
+
+        report += info_line % ("DP", "1", "Integer", "Total Depth")
+        report += info_line % ("AC", "A", "Integer", "Allele Count")
+        report += info_line % ("AF", "A", "Float", "Allele Frequency")
+
+        filter_line = "##FILTER=<ID=%s,Description=\"Set if %s; %s\">\n"
 
         for id, filter in self.filters.items():
-            report += "##FILTER=<ID=%s,Description=\"Set if %s; %s\">\n" % (id,filter['result'],filter['expression'])
+            report += filter_line % (id, filter['result'],
+                                     filter['expression'])
 
         report += "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO"
 
         for rid in self.variants:
             for pos in self.variants[rid]:
-                for alt_allele, variant in sorted(self.variants[rid][pos].items()):
+                for alt_allele, variant in sorted(
+                        self.variants[rid][pos].items()):
                     if variant.qual > 0:
                         report += "\n" + variant.to_vcf_entry()
 
@@ -110,9 +135,9 @@ class NTVariantCollection(VariantCollection):
 
     def filter(self, id, expression, result):
         """Apply filter to variants given an id, expression and result."""
-        self.filters[id] = {'expression':expression,'result':result}
+        self.filters[id] = {'expression': expression, 'result': result}
 
-        #only allow simple expressions for the time being i.e. DP>30
+        # only allow simple expressions for the time being i.e. DP>30
         (attribute, operator, value) = re.split('([><=!]+)', expression)
 
         for rid in self.variants:
@@ -120,11 +145,13 @@ class NTVariantCollection(VariantCollection):
                 for alt_allele, variant in self.variants[rid][pos].items():
                     attribute_value = None
                     if hasattr(variant, attribute.lower()):
-                        attribute_value = eval("variant.%s" % attribute.lower())
+                        attribute_value = eval(
+                            "variant.%s" % attribute.lower())
                     else:
                         attribute_value = variant.info[attribute.upper()]
 
-                    if eval("%s %s %s" % (attribute_value,operator,value)) != result:
+                    if eval("%s %s %s" % (attribute_value, operator, value)) \
+                            != result:
                         if variant.filter == '.':
                             variant.filter = 'PASS'
                     else:
