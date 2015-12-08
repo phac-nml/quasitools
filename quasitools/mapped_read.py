@@ -161,7 +161,7 @@ class MappedReadCollection(object):
                 else:
                     pilep_wo_indels = [(k,sum([v for k,v in list(g)])) for k,g in itertools.groupby(sorted([(k,v) if len(k) == 0 else (k[:1],v) for k,v in pileup[pos].items()]), operator.itemgetter(0))]
                     for token, token_count in sorted(pileup[pos].items()):
-                        if token != '-':
+                        if token != '-' and token.upper() != 'N':
                             if decimal.Decimal(token_count) / coverage[pos] * 100 >= percentage:
                                 con_bp += token
 
