@@ -30,8 +30,9 @@ def parse_mapped_reads_from_bam(reference, overlap_cutoff, identity_cutoff,
     sam = pysam.AlignmentFile(bam, "rb")
 
     for alignment in sam.fetch(reference=reference.name):
-        overlap = decimal.Decimal(alignment.query_alignment_length) \
-            / alignment.query_length * 100
+        overlap = (
+            decimal.Decimal(alignment.query_alignment_length)
+            / alignment.query_length * 100)
 
         if overlap >= overlap_cutoff:
             padded_alignment = sam_alignment_to_padded_alignment(alignment,
@@ -45,8 +46,8 @@ def parse_mapped_reads_from_bam(reference, overlap_cutoff, identity_cutoff,
 
             # TODO not an accurate identity, as I am not distinguishing between
             #     an alignment match vs a sequence match
-            identity = decimal.Decimal(matches) / len(padded_alignment[1])\
-                * 100
+            identity = (
+                decimal.Decimal(matches) / len(padded_alignment[1]) * 100)
 
             if identity >= identity_cutoff:
                 direct = '+'
