@@ -20,10 +20,13 @@ from quasitools.cli import pass_context
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 
-@click.command('consensus', short_help='Generate a consensus sequence from a BAM file.')
+
+@click.command('consensus',
+               short_help='Generate a consensus sequence from a BAM file.')
 @click.argument('bam', required=True, type=click.Path(exists=True))
 @click.argument('reference', required=True, type=click.Path(exists=True))
-@click.option('-p', '--percentage', default=100, help='percentage to include base in mixture.')
+@click.option('-p', '--percentage', default=100,
+              help='percentage to include base in mixture.')
 @pass_context
 def cli(ctx, bam, reference, percentage):
     rs = parse_references_from_fasta(reference)
@@ -33,4 +36,5 @@ def cli(ctx, bam, reference, percentage):
 
         conseq = mrc.to_consensus(percentage)
 
-        click.echo('>{0}_{1}_{2}\n{3}'.format('blah', percentage, r.name, conseq))
+        click.echo('>{0}_{1}_{2}\n{3}'.format('blah', percentage, r.name,
+                                              conseq))
