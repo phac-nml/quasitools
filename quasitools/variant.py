@@ -17,16 +17,19 @@ specific language governing permissions and limitations under the License.
 
 from collections import defaultdict
 
+
 class Variant(object):
-    def __init__(self, chrom, pos, id='.', ref='', alt='', qual='.', filter='.', info='.'):
-        self.chrom  = chrom
-        self.pos    = pos
-        self.id     = id
-        self.ref    = ref
-        self.alt    = alt
-        self.qual   = qual
+    def __init__(self, chrom, pos, id='.', ref='', alt='', qual='.',
+                 filter='.', info='.'):
+        self.chrom = chrom
+        self.pos = pos
+        self.id = id
+        self.ref = ref
+        self.alt = alt
+        self.qual = qual
         self.filter = filter
-        self.info   = info
+        self.info = info
+
 
 class VariantCollection(object):
     def __init__(self, references):
