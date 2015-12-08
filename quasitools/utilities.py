@@ -16,7 +16,8 @@ specific language governing permissions and limitations under the License.
 """
 
 def sam_alignment_to_padded_alignment(alignment, reference):
-    ref_dna = reference.sub_seq(alignment.reference_start, alignment.reference_end-1)
+    ref_dna = reference.sub_seq(alignment.reference_start,
+                                alignment.reference_end-1)
     query_dna = alignment.query_alignment_sequence
 
     pad_ref, pad_match, pad_query = '', '', ''
@@ -45,10 +46,11 @@ def sam_alignment_to_padded_alignment(alignment, reference):
 
     return (pad_ref, pad_match, pad_query)
 
+
 def pairwise_alignment_to_differences(pad_ref, pad_query, ref_start):
     differences = dict()
 
-    index = -1;
+    index = -1
     for i, c in enumerate(pad_ref):
         if c is '-':
             if ref_start + index not in differences.keys():
