@@ -19,6 +19,7 @@ import re
 import Bio.SeqIO.FastaIO
 from quasitools.reference import Reference
 
+
 def parse_references_from_fasta(fasta):
     """Parse Reference objects from a fasta file.
 
