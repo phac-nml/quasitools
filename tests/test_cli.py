@@ -28,15 +28,3 @@ def test_cli(runner):
     assert result.exit_code == 0
     assert not result.exception
     assert result.output.split('\n', 1)[0].strip() == 'Usage: cli [OPTIONS] COMMAND [ARGS]...'
-
-def test_cli_hello(runner):
-    result = runner.invoke(cli.cli, ['hello'])
-    assert result.exit_code == 0
-    assert not result.exception
-    assert result.output.strip() == 'Hello, world.'
-
-def test_cli_hello_with_arg(runner):
-    result = runner.invoke(cli.cli, ['hello', 'Eric'])
-    assert result.exit_code == 0
-    assert not result.exception
-    assert result.output.strip() == 'Hello, Eric.'
