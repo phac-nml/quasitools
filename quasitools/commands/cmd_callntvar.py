@@ -21,20 +21,25 @@ from quasitools.nt_variant import NTVariantCollection
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
-@click.command('call_callntvar', short_help='Call nucleotide variants from a BAM file.')
+
+@click.command('call_callntvar',
+               short_help='Call nucleotide variants from a BAM file.')
 @click.argument('bam', required=True, type=click.Path(exists=True))
 @click.argument('reference', required=True, type=click.Path(exists=True))
-@click.option('-e', '--error_rate', default=0.01, help='estimated sequencing error rate.')
+@click.option('-e', '--error_rate', default=0.01,
+              help='estimated sequencing error rate.')
 @pass_context
 def cli(ctx, bam, reference, error_rate):
     rs = parse_references_from_fasta(reference)
 
     mapped_read_collection_arr = []
     for r in rs:
-        #create MappedReadCollection object
-        mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, 65, 75, bam))
+        # create MappedReadCollection object
+        mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, 65,
+                                                                      75, bam))
 
-    variants = NTVariantCollection.from_mapped_read_collections(error_rate, rs, *mapped_read_collection_arr)
+    variants = NTVariantCollection.from_mapped_read_collections(
+        error_rate, rs, *mapped_read_collection_arr)
 
     variants.filter('q30', 'QUAL<30', True)
     variants.filter('ac5', 'AC<5', True)
