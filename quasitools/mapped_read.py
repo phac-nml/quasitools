@@ -20,7 +20,7 @@ import decimal
 
 class MappedRead(object):
     def __init__(self, seq_id, query_start, query_end, differences, ref_start,
-                 ref_end, overlap, identity, strand):
+                 ref_end, strand):
 
         self.seq_id = seq_id
         self.query_start = query_start
@@ -28,8 +28,6 @@ class MappedRead(object):
         self.differences = differences
         self.ref_start = ref_start
         self.ref_end = ref_end
-        self.overlap = overlap
-        self.identity = identity
         self.strand = strand
 
     def query_length(self):

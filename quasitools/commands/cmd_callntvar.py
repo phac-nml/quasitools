@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2015
+Copyright Government of Canada 2015-2017
 
 Written by: Eric Enns, National Microbiology Laboratory, Public Health Agency of Canada
 
@@ -35,8 +35,7 @@ def cli(ctx, bam, reference, error_rate):
     mapped_read_collection_arr = []
     for r in rs:
         # create MappedReadCollection object
-        mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, 65,
-                                                                      75, bam))
+        mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, bam))
 
     variants = NTVariantCollection.from_mapped_read_collections(
         error_rate, rs, *mapped_read_collection_arr)
