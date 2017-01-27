@@ -49,6 +49,8 @@ def parse_mapped_reads_from_bam(reference, bam):
                                  alignment.reference_start,
                                  alignment.reference_end-1,
                                  direct)
+        # generate read_id, such that pair end data does not have the same key
+        # in the hash, by adding a 1 for forward read and 2 for reverse read
         read_id = "{0}_{1}".format(alignment.query_name,
                                    '1' if direct == FORWARD else '2')
         mrc.mapped_reads[read_id] = mapped_read
