@@ -2,7 +2,13 @@ image: "python:2.7"
 before_script:
   - pip install tox
 
-tests:
-  script: ".ci/run_tests.sh"
+tests:2.7:
+  script:
+    - tox -r -e py27
+tests:3.4:
+  image: "python:3.4"
+  script:
+    - tox -r -e py34
 flake8:
-  script: ".ci/run_flake8.sh"
+  script:
+    - tox -e flake8
