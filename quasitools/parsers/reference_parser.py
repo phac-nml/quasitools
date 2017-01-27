@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2015
+Copyright Government of Canada 2015-2017
 
 Written by: Eric Enns, National Microbiology Laboratory, Public Health Agency of Canada
 
@@ -38,6 +38,7 @@ def parse_references_from_fasta(fasta):
         references += (Reference(name, seq),)
 
     return references
+
 
 if __name__ == '__main__':
     import doctest

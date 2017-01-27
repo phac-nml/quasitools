@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2015
+Copyright Government of Canada 2015-2017
 
 Written by: Eric Enns, National Microbiology Laboratory, Public Health Agency of Canada
 
@@ -70,6 +70,7 @@ def parse_mapped_reads_from_bam(reference, overlap_cutoff, identity_cutoff,
                 mrc.mapped_reads[read_id] = mapped_read
 
     return mrc
+
 
 if __name__ == '__main__':
     import doctest

@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2015
+Copyright Government of Canada 2015-2017
 
 Written by: Eric Enns, National Microbiology Laboratory, Public Health Agency of Canada
 
@@ -103,8 +103,9 @@ class MappedReadCollection(object):
                         pileup[i]['-'] = pileup[i].get('-', 0) + 1
                     else:
                         pileup[i][mapped_read.differences[i].upper()] = \
-                            pileup[i].get(mapped_read.differences[i].upper(), 0)\
-                            + 1
+                            pileup[i].get(
+                                mapped_read.differences[i].upper(), 0
+                            ) + 1
                 else:
                     difference = mapped_read.differences[i]
                     difference = difference.replace(
