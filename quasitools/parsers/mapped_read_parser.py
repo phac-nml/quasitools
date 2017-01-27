@@ -24,6 +24,7 @@ REVERSE_COMPLEMENTED = 16
 FORWARD = '+'
 REVERSE = '-'
 
+
 def parse_mapped_reads_from_bam(reference, bam):
     """Parse MappedRead mrcects from a bam file and produce a MappedReadCollection.
     """
