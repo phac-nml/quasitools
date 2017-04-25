@@ -25,7 +25,7 @@ from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.genes_file_parser import parse_genes_file
 
 
-@click.command('find_mutations',
+@click.command('aavariants',
                short_help='Identifies amino acid mutations.')
 @click.argument('bam', required=True, type=click.Path(exists=True))
 @click.argument('reference', required=True, type=click.Path(exists=True))
