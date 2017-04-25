@@ -16,6 +16,7 @@ specific language governing permissions and limitations under the License.
 """
 
 import decimal
+from collections import defaultdict
 
 
 class MappedRead(object):
@@ -210,6 +211,42 @@ class MappedReadCollection(object):
             consensus_seq = consensus[start:end+1]
 
         return consensus_seq
+
+    def mask_unconfident_differences(self, variant_file):
+        """Mask unconfident differences by changing their case to lower"""
+
+        variants = defaultdict(lambda: defaultdict(dict))
+
+        # Read in and parse the variants file
+        # The file uses 1 as the first position but 0 is the first position in
+        # mapped reads.
+        with open(variant_file, "r") as input:
+            for line in input:
+                if line[0] != "#":
+                    chrom, pos, id, ref, alt, qual, filter, info = \
+                        line.rstrip().split("\t")
+
+                    variants[int(pos) - 1][alt]["filter"] = filter
+
+        for name, mapped_read in self.mapped_reads.items():
+            for pos in mapped_read.differences:
+                # mapped_read.differences[pos] will be a string of length 1.
+                # or more.
+                # If we have a substitution/deletion, it will be of length 1.
+                # If we have an insertion, it will be of length >= 2 with the
+                # first position being a substitution/deletion or a match (
+                # indicated with a '.')
+                substitution = mapped_read.differences[pos][:1]
+                insertion = mapped_read.differences[pos][1:]
+
+                if substitution != "." and substitution != "-":
+                    if (substitution.lower() not in variants[pos] or
+                            variants[pos][substitution.lower()]["filter"]
+                            != "PASS"):
+
+                        substitution = substitution.lower()
+
+                mapped_read.differences[pos] = substitution + insertion
 
 
 if __name__ == '__main__':

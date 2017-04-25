@@ -47,7 +47,7 @@ class NTVariantCollection(VariantCollection):
             pileup = mrc.pileup()
             rid = mrc.reference.name
 
-            coverage = mrc.collection(pileup)
+            coverage = mrc.coverage(pileup)
 
             for pos in range(0, len(pileup)):
                 for event, event_count in pileup[pos].items():
@@ -57,16 +57,22 @@ class NTVariantCollection(VariantCollection):
 
                     if alt_allele != '-' and alt_allele != \
                             mrc.reference.sub_seq(pos, pos).lower():
-                        variant_obj = obj.variants[rid][pos+1][alt_allele]
+
                         if rid in obj.variants and pos+1 in obj.variants[rid] \
                                 and alt_allele in obj.variants[rid][pos+1]:
+
+                            variant_obj = obj.variants[rid][pos+1][alt_allele]
+
                             new_allele_count = \
                                 event_count + variant_obj.info['AC']
                             variant_obj.info['AC'] = new_allele_count
                             variant_obj.info['AF'] = \
-                                new_allele_count / coverage[pos]
+                                float(new_allele_count) / coverage[pos]
+
                         else:
-                            event_frequency = event_count / coverage[pos]
+                            event_frequency = \
+                                float(event_count) / coverage[pos]
+
                             variant_obj = NTVariant(chrom=mrc.reference.name,
                                                     pos=pos+1,
                                                     ref=mrc.reference.sub_seq(
@@ -77,6 +83,8 @@ class NTVariantCollection(VariantCollection):
                                                         'AC': event_count,
                                                         'AF': event_frequency
                                                     })
+
+                            obj.variants[rid][pos+1][alt_allele] = variant_obj
 
                 for alt_allele, variant in obj.variants[rid][pos+1].items():
                     variant.qual = obj.__calculate_variant_qual(

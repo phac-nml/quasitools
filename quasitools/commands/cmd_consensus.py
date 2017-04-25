@@ -32,7 +32,7 @@ def cli(ctx, bam, reference, percentage):
     rs = parse_references_from_fasta(reference)
 
     for r in rs:
-        mrc = parse_mapped_reads_from_bam(r, 65, 75, bam)
+        mrc = parse_mapped_reads_from_bam(r, bam)
 
         conseq = mrc.to_consensus(percentage)
 
