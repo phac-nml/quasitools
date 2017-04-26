@@ -27,7 +27,7 @@ def parse_genes_file(genes_file, ref_chrom):
 
     with open(genes_file, "r") as f:
         for line in f:
-            chrom, start, end, name = line.split()
+            chrom, start, end, name = line.rstrip().split("\t")
 
             if chrom != ref_chrom:
                 raise ValueError("Chrom in genes bed file doesn't match "
