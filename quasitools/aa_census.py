@@ -151,7 +151,8 @@ class AACensus(object):
 
     def coverage(self, frame):
         """Calculates the coverage and returns it as a string"""
-        length = len(self.mapped_read_collections[0].reference.seq) / 3
+        # "//" specifies integer division for python 3
+        length = len(self.mapped_read_collections[0].reference.seq) // 3
 
         coverage_csv = ""
 
