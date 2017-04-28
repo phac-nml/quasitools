@@ -1,0 +1,106 @@
+"""
+Copyright Government of Canada 2017
+
+Written by: Cole Peters, National Microbiology Laboratory, Public Health Agency of Canada
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this work except in compliance with the License. You may obtain a copy of the
+License at:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+"""
+
+import pytest
+import os
+import re
+from quasitools.aa_census import AACensus, CONFIDENT
+from quasitools.nt_variant import NTVariantCollection
+from quasitools.mutation_finder import MutationFinder
+from quasitools.mutations import MutationDB
+from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
+from quasitools.parsers.genes_file_parser import parse_genes_file
+from quasitools.parsers.reference_parser import parse_references_from_fasta
+
+TEST_PATH = os.path.dirname(os.path.abspath(__file__))
+VARIANTS_FILE = TEST_PATH + "/data/nt_variants.vcf"
+VALID_AA_VARIANTS_HMCF = TEST_PATH + "/data/output/mutation_report.hmcf"
+VALID_DR_MUTATIONS_CSV = TEST_PATH + "/data/output/dr_report.csv"
+
+class TestMutationFinder:
+    @classmethod
+    def setup_class(self):
+        reference = TEST_PATH + "/data/hxb2_pol.fas"
+        bam = TEST_PATH + "/data/align.bam"
+        genes_file = TEST_PATH + "/data/hxb2_pol.bed"
+        mutation_db = TEST_PATH + "/data/mutation_db.tsv"
+        min_freq = 0.01
+
+        rs = parse_references_from_fasta(reference)
+
+        mapped_read_collection_arr = []
+        for r in rs:
+            # Create a MappedReadCollection object
+            mapped_read_collection_arr.append(
+                parse_mapped_reads_from_bam(r, bam))
+
+        # Mask the unconfident differences
+        for mrc in mapped_read_collection_arr:
+            mrc.mask_unconfident_differences(VARIANTS_FILE)
+
+        # Parse the genes from the gene file
+        genes = parse_genes_file(genes_file, rs[0].name)
+
+        # Determine which frames our genes are in
+        frames = set()
+
+        for gene in genes:
+            frames.add(genes[gene]["frame"])
+
+        # Create an AACensus object
+        aa_census = AACensus(reference, mapped_read_collection_arr, genes,
+                             frames)
+
+        # Find the AA mutations
+        self.mutation_finder = MutationFinder(aa_census, min_freq,
+                                              next(iter(frames)))
+
+        # Build the mutation database
+        self.mutation_db = MutationDB(mutation_db, genes)
+
+    def test_dr_mutations(self):
+        reporting_threshold = 1
+
+        with open(VALID_DR_MUTATIONS_CSV, "r") as input:
+            dr_mutations = input.read()
+
+            assert self.mutation_finder.report_dr_mutations(
+                self.mutation_db, reporting_threshold)
+
+    def test_aa_variants(self):
+
+        with open(VALID_AA_VARIANTS_HMCF, "r") as input:
+            valid_variants = input.read()
+
+        valid_variants_lines = sorted(valid_variants.split("\n"))
+
+        aa_variants = self.mutation_finder.to_hmcf_file(self.mutation_db,
+                                                        CONFIDENT)
+
+        aa_variants_lines = sorted(aa_variants.split("\n"))
+
+        assert len(valid_variants_lines) == len(aa_variants_lines)
+
+        for pos in range(0, len(valid_variants_lines)):
+            if valid_variants_lines[pos][0:1] != "#":
+                valid_variants_tokens = \
+                    re.split("[,=;\t]", valid_variants_lines[pos].rstrip())
+
+                aa_variants_tokens = re.split("[,=;\t]", aa_variants_lines[pos])
+
+                for token in aa_variants_tokens:
+                    assert token in valid_variants_tokens

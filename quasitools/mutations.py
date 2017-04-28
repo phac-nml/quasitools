@@ -56,7 +56,7 @@ class MutationDB(object):
                         surveillance, comment = line.rstrip().split("\t")
 
                     ref_pos = \
-                        int(gene_pos) - 1 + (self.genes[gene]["start"] / 3)
+                        int(gene_pos) - 1 + (self.genes[gene]["start"] // 3)
 
                     if surveillance == "Yes" or surveillance == "No":
                         db_entry = MutationDBEntry(gene, wildtype, gene_pos,

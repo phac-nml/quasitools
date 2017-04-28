@@ -60,9 +60,9 @@ class MutationFinder(object):
                         gene = None
 
                         for name in self.aa_census.genes:
-                            if (i >= self.aa_census.genes[name]["start"] / 3
+                            if (i >= self.aa_census.genes[name]["start"] // 3
                                 and i <= (self.aa_census.genes[name]["end"]
-                                          - 2) / 3):
+                                          - 2) // 3):
 
                                 gene = self.aa_census.genes[name]
                                 gene_name = name
@@ -79,7 +79,7 @@ class MutationFinder(object):
                                 filter = "PASS"
 
                             mutation = Mutation(gene_name, ref_aa[i],
-                                                (i - (gene["start"] / 3) + 1),
+                                                (i - (gene["start"] // 3) + 1),
                                                 frequency, filter)
 
                             self.mutations[i][confidence][aa] = mutation

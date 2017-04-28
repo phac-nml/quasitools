@@ -62,7 +62,7 @@ class AACensus(object):
                             # If the difference is lower case, that means it
                             # was filtered out and as such it is unconfident.
                             if difference != difference.upper():
-                                confidence[((pos - start) / 3)] = UNCONFIDENT
+                                confidence[((pos - start) // 3)] = UNCONFIDENT
 
                             read_wo_ins = read_wo_ins[:(pos - start)] + \
                                 difference.upper() + \
@@ -75,7 +75,7 @@ class AACensus(object):
                     read_aas = Seq(read_wo_ins.replace("-", "N")).translate()
 
                     # Calculate the first position
-                    start_aa = ((start) / 3)
+                    start_aa = ((start) // 3)
 
                     # Add our codons and aas to the aa census
                     for i in range(0, len(read_aas)):
