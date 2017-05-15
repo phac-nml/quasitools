@@ -24,6 +24,7 @@ from quasitools.mutations import Mutation
 
 
 class MutationFinder(object):
+
     def __init__(self, aa_census, min_freq, frame, filters={}):
         self.aa_census = aa_census
         self.min_freq = min_freq
@@ -71,7 +72,7 @@ class MutationFinder(object):
                             filter = "."
                             frequency = self.aa_census.amino_frequency_at(
                                 self.frame, i, aa, confidence
-                                ) / float(coverage)
+                            ) / float(coverage)
 
                             if frequency < self.min_freq:
                                 filter = filter_id
@@ -84,7 +85,7 @@ class MutationFinder(object):
 
                             self.mutations[i][confidence][aa] = mutation
 
-    def to_hmcf_file(self, mutation_db, confidence):
+    def to_hmcf_file(self, confidence, mutation_db=None):
         """Builds a report of all amino acid mutations found from the AACensus
         object with the given confidence. Returns a string containing the
         report.
@@ -96,7 +97,7 @@ class MutationFinder(object):
 
         d = date.today()
 
-        report = "##fileformat=HMCDv1\n"
+        report = "##fileformat=HMCFv1\n"
         report += "##fileDate=%s\n" % (d.strftime("%Y%m%d"))
         report += "##source=quasitools\n"
         report += "##reference=%s\n" % (self.aa_census.ref_file)
@@ -119,12 +120,15 @@ class MutationFinder(object):
                   "MUTANT\tFILTER\tMUTANT_FREQ\tCOVERAGE\tINFO\n"
 
         for ref_codon_pos in self.mutations:
-            dr_mutations = mutation_db.mutations_at(ref_codon_pos)
+            if mutation_db is not None:
+                dr_mutations = mutation_db.mutations_at(ref_codon_pos)
+            else:
+                dr_mutations = None
 
             for aa in self.mutations[ref_codon_pos][confidence]:
                 dr_mutation = None
 
-                if aa in dr_mutations:
+                if dr_mutations is not None and aa in dr_mutations:
                     dr_mutation = dr_mutations[aa]
 
                 # Ignore incomplete codons (ones with a gap)
@@ -198,7 +202,7 @@ class MutationFinder(object):
                             mutation_freq = (
                                 self.mutations[dr_mutation_pos][CONFIDENT]
                                 [dr_mutation].frequency
-                                ) * 100
+                            ) * 100
 
                             if mutation_freq > reporting_threshold:
                                 report += (

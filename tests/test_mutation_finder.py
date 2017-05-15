@@ -1,7 +1,7 @@
 """
 Copyright Government of Canada 2017
 
-Written by: Cole Peters, National Microbiology Laboratory, Public Health Agency of Canada
+Written by: Cole Peters, Eric Chubaty, National Microbiology Laboratory, Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this work except in compliance with the License. You may obtain a copy of the
@@ -18,6 +18,7 @@ specific language governing permissions and limitations under the License.
 import pytest
 import os
 import re
+import string
 from quasitools.aa_census import AACensus, CONFIDENT
 from quasitools.nt_variant import NTVariantCollection
 from quasitools.mutation_finder import MutationFinder
@@ -31,7 +32,9 @@ VARIANTS_FILE = TEST_PATH + "/data/nt_variants.vcf"
 VALID_AA_VARIANTS_HMCF = TEST_PATH + "/data/output/mutation_report.hmcf"
 VALID_DR_MUTATIONS_CSV = TEST_PATH + "/data/output/dr_report.csv"
 
+
 class TestMutationFinder:
+
     @classmethod
     def setup_class(self):
         reference = TEST_PATH + "/data/hxb2_pol.fas"
@@ -88,8 +91,8 @@ class TestMutationFinder:
 
         valid_variants_lines = sorted(valid_variants.split("\n"))
 
-        aa_variants = self.mutation_finder.to_hmcf_file(self.mutation_db,
-                                                        CONFIDENT)
+        aa_variants = self.mutation_finder.to_hmcf_file(
+            CONFIDENT, self.mutation_db)
 
         aa_variants_lines = sorted(aa_variants.split("\n"))
 
@@ -100,7 +103,46 @@ class TestMutationFinder:
                 valid_variants_tokens = \
                     re.split("[,=;\t]", valid_variants_lines[pos].rstrip())
 
-                aa_variants_tokens = re.split("[,=;\t]", aa_variants_lines[pos])
+                aa_variants_tokens = re.split(
+                    "[,=;\t]", aa_variants_lines[pos])
+
+                for token in aa_variants_tokens:
+                    assert token in valid_variants_tokens
+
+    def test_aa_variants_nodb(self):
+        # Same as previous test but for no mutation db
+        with open(VALID_AA_VARIANTS_HMCF, "r") as input:
+            valid_variants = input.read()
+
+        valid_variants_lines = valid_variants.split("\n")
+
+        # Replace category and surveillance with "."s
+        # Okay because comparisons only done on non "#" lines
+        for i, x in enumerate(valid_variants_lines):
+            tokens = x.split()
+            if len(tokens) > 2:
+                x = x.replace(tokens[1], ".", 1)
+                x = x.replace(tokens[2], ".", 1)
+                valid_variants_lines[i] = x
+
+        # Sort so comparison order will be fine afterwards
+        valid_variants_lines.sort()
+
+        aa_variants = self.mutation_finder.to_hmcf_file(CONFIDENT)
+
+        aa_variants_lines = sorted(aa_variants.split("\n"))
+
+        assert len(valid_variants_lines) == len(aa_variants_lines)
+
+        for pos in range(0, len(valid_variants_lines)):
+            if valid_variants_lines[pos][0:1] != "#":
+                valid_variants_tokens = \
+                    re.split("[,=;\t]", valid_variants_lines[pos].rstrip())
+
+                valid_variants_tokens
+
+                aa_variants_tokens = re.split(
+                    "[,=;\t]", aa_variants_lines[pos])
 
                 for token in aa_variants_tokens:
                     assert token in valid_variants_tokens
