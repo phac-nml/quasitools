@@ -31,7 +31,7 @@ from quasitools.parsers.genes_file_parser import parse_genes_file
 @click.argument('reference', required=True, type=click.Path(exists=True))
 @click.argument('variants', required=True, type=click.Path(exists=True))
 @click.argument('genes_file', required=True, type=click.Path(exists=True))
-@click.argument('mutation_db', required=True, type=click.Path(exists=True))
+@click.argument('mutation_db', required=False, type=click.Path(exists=True))
 @click.option('-f', '--min_freq', default=0.01,
               help='the minimum required frequency.')
 @pass_context
@@ -63,7 +63,8 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db):
     mutation_finder = MutationFinder(aa_census, min_freq, next(iter(frames)))
 
     # Build the mutation database
-    mutation_db = MutationDB(mutation_db, genes)
+    if mutation_db is not None:
+        mutation_db = MutationDB(mutation_db, genes)
 
     # Generate the mutation report
     click.echo(mutation_finder.to_hmcf_file(CONFIDENT, mutation_db))

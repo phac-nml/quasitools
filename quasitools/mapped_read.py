@@ -1,7 +1,7 @@
 """
 Copyright Government of Canada 2015-2017
 
-Written by: Eric Enns, National Microbiology Laboratory, Public Health Agency of Canada
+Written by: Eric Enns, Eric Chubaty, National Microbiology Laboratory, Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this work except in compliance with the License. You may obtain a copy of the
@@ -20,6 +20,7 @@ from collections import defaultdict
 
 
 class MappedRead(object):
+
     def __init__(self, seq_id, query_start, query_end, differences, ref_start,
                  ref_end, strand):
 
@@ -76,13 +77,14 @@ class MappedRead(object):
         """
         codon_end = self.ref_end
 
-        while (codon_end-2) % 3 != frame:
+        while (codon_end - 2) % 3 != frame:
             codon_end -= 1
 
         return codon_end
 
 
 class MappedReadCollection(object):
+
     def __init__(self, reference):
         self.mapped_reads = {}
         self.reference = reference
@@ -92,7 +94,7 @@ class MappedReadCollection(object):
         pileup = [{} for i in range(0, len(self.reference.seq))]
 
         for name, mapped_read in self.mapped_reads.items():
-            for i in range(mapped_read.ref_start, mapped_read.ref_end+1):
+            for i in range(mapped_read.ref_start, mapped_read.ref_end + 1):
                 if i not in mapped_read.differences:
                     pileup[i][self.reference.sub_seq(i, i).upper()] = \
                         pileup[i].get(self.reference.sub_seq(i, i).upper(), 0)\
@@ -104,7 +106,7 @@ class MappedReadCollection(object):
                         pileup[i][mapped_read.differences[i].upper()] = \
                             pileup[i].get(
                                 mapped_read.differences[i].upper(), 0
-                            ) + 1
+                        ) + 1
                 else:
                     difference = mapped_read.differences[i]
                     difference = difference.replace(
@@ -208,7 +210,7 @@ class MappedReadCollection(object):
                 start += 1
             while end % 3 != 2:
                 end -= 1
-            consensus_seq = consensus[start:end+1]
+            consensus_seq = consensus[start:end + 1]
 
         return consensus_seq
 
