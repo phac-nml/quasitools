@@ -28,11 +28,13 @@ from numpy import array as np_arr
 class AAVariant(Variant):
 
     def __init__(self, gene=".", freq=0, coverage=0, **kwargs):
+        """Add additional fields to Variant for AAVariant"""
         super(AAVariant, self).__init__(**kwargs)
 
         self.info = dict()
         self.gene = gene
         self.freq = freq
+        self.coverage = coverage
 
     def __info_to_str(self):
         """Convert info dict to info string for hmcf entry."""
@@ -55,6 +57,7 @@ class AAVariant(Variant):
 class AAVariantCollection(VariantCollection):
 
     def __init__(self, references, frame):
+        """Add additional field to VariantCollection for AAVariantCollection"""
         super(AAVariantCollection, self).__init__(references)
         self.frame = frame
 
@@ -63,12 +66,15 @@ class AAVariantCollection(VariantCollection):
         """Build the AAVariantCollection from any number of
         AACensus objects"""
 
+        # TODO : Ensure census is flattened array of censii and iterate over
+
         var_collect = cls(aa_census, frame)
 
         ref_seq = aa_census.mapped_read_collections[0].reference.seq
         ref_seq = ref_seq[:(len(ref_seq) - (len(ref_seq) % 3))]
         ref_aa = Seq(ref_seq).translate()
 
+        # Build up the Collection of AAVariants
         for i in range(0, len(ref_aa)):
             coverage = aa_census.coverage_at(frame, i)
             for confidence in (CONFIDENT, UNCONFIDENT):
@@ -78,8 +84,8 @@ class AAVariantCollection(VariantCollection):
 
                         for name in aa_census.genes:
                             if (i >= aa_census.genes[name]["start"] // 3
-                                and i <= (aa_census.genes[name]["end"]
-                                          - 2) // 3):
+                                    and i <=
+                                    (aa_census.genes[name]["end"] - 2) // 3):
 
                                 gene = aa_census.genes[name]
                                 gene_name = name
@@ -89,24 +95,27 @@ class AAVariantCollection(VariantCollection):
                                 frame, i, aa, confidence
                             ) / float(coverage)
 
-                            mutation = AAVariant(chrom=aa_census.genes[gene_name]["chrom"], gene=gene_name, id="mutation", ref=ref_aa[i], alt=aa,
-                                                 pos=(
-                                                     i - (gene["start"] // 3) + 1),
-                                                 freq=frequency)
+                            mutation = AAVariant(chrom=aa_census.genes[gene_name]["chrom"],
+                                                 gene=gene_name, id="mutation",
+                                                 ref=ref_aa[i], alt=aa,
+                                                 freq=frequency, coverage=coverage,
+                                                 pos=(i - (gene['start'] // 3) + 1))
 
                             var_collect.variants[i][confidence][aa] = mutation
 
         return var_collect
 
     def to_hmcf_file(self, confidence, mutation_db=None):
-        """Build a string representation of our AAVariants object
+        """Build a string representation of our AAVariant objects
         (i.e. a hmcf file)."""
 
+        # Init
         d = date.today()
 
         ref_seq = self.references.mapped_read_collections[0].reference.seq
         ref_codon_array = re.findall(".{3}", ref_seq)
 
+        # Header
         report = "##fileformat=HMCFv2\n"
         report += "##fileDate=%s\n" % (d.strftime("%Y%m%d"))
         report += "##source=quasitools\n"
@@ -119,6 +128,10 @@ class AAVariantCollection(VariantCollection):
         report += info_line % ("MCF", ".", "String", "Mutant Codon Frequency, "
                                "for each Mutant Codon, in the same order as "
                                "listed.")
+        report += info_line % ("CAT", ".", "String",
+                               "Drug Resistance Category")
+        report += info_line % ("SRVL", ".", "String",
+                               "Drug Resistance Surveillance")
 
         filter_line = "##FILTER=<ID=%s,Description=\"Set if %s; %s\">\n"
 
@@ -129,7 +142,9 @@ class AAVariantCollection(VariantCollection):
         report += "#CHROM\tGENE\tTYPE\tWILDTYPE\tPOS\t" \
             "MUTANT\tFILTER\tMUTANT_FREQ\tCOVERAGE\tINFO\n"
 
+        # BODY
         for ref_codon_pos in self.variants:
+            # Work with or without mutation db
             if mutation_db is not None:
                 dr_mutations = mutation_db.mutations_at(ref_codon_pos)
             else:
@@ -172,12 +187,12 @@ class AAVariantCollection(VariantCollection):
                                            mutation.coverage)
 
                     # Create info field for this mutation
-                    mutation.info["WC"] = ref_codon_array[
-                        ref_codon_pos].lower()
-                    mutation.info["MC"] = mc[:-1]
-                    mutation.info["MCF"] = mcf[:-1]
-                    mutation.info["CAT"] = category
-                    mutation.info["SRVL"] = surveillance
+                    mutation.info['WC'] = \
+                        ref_codon_array[ref_codon_pos].lower()
+                    mutation.info['MC'] = mc[:-1]
+                    mutation.info['MCF'] = mcf[:-1]
+                    mutation.info['CAT'] = category
+                    mutation.info['SRVL'] = surveillance
 
                     # Add this mutation to the report!
                     report += mutation.to_hmcf_entry()
@@ -185,7 +200,32 @@ class AAVariantCollection(VariantCollection):
         # Return string of report without nl char at the end
         return report[:-1]
 
-    # TODO
     def filter(self, id, expression, result):
         """Apply filter to variants given an id, expression and result."""
-        pass
+        self.filters[id] = {'expression': expression, 'result': result}
+
+        # only allow simple expressions for the time being i.e. DP>30
+        (attribute, operator, value) = re.split('([><=!]+)', expression)
+
+        for i in self.variants:
+            for confidence in self.variants[i]:
+                for aa in self.variants[i][confidence]:
+                    attribute_value = None
+
+                    variant = self.variants[i][confidence][aa]
+
+                    if hasattr(variant, attribute.lower()):
+                        attribute_value = eval(
+                            "variant.%s" % attribute.lower())
+                    else:
+                        attribute_value = variant.info[attribute.upper()]
+
+                    if eval("%s %s %s" % (attribute_value, operator, value)) \
+                            != result:
+                        if variant.filter == '.':
+                            variant.filter = 'PASS'
+                    else:
+                        if variant.filter == '.' or variant.filter == 'PASS':
+                            variant.filter = id
+                        else:
+                            variant.filter += ";%s" % id

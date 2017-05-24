@@ -68,8 +68,11 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db):
         mutation_db = MutationDB(mutation_db, genes)
 
     # TESTING NEW AAVARIANTS
-    click.echo(AAVariantCollection.from_aacensus(
-        aa_census, next(iter(frames))).to_hmcf_file(CONFIDENT, mutation_db))
+    aa_vars = AAVariantCollection.from_aacensus(
+        aa_census, next(iter(frames)))
+
+    aa_vars.filter('mf0.01', 'freq<0.01', True)
+    click.echo(aa_vars.to_hmcf_file(CONFIDENT, mutation_db))
 
     # Generate the mutation report
     click.echo(mutation_finder.to_hmcf_file(CONFIDENT, mutation_db))
