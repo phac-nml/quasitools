@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2015
+Copyright Government of Canada 2015-2017
 
 Written by: Eric Enns, National Microbiology Laboratory, Public Health Agency of Canada
 
@@ -19,6 +19,7 @@ from collections import defaultdict
 
 
 class Variant(object):
+
     def __init__(self, chrom, pos, id='.', ref='', alt='', qual='.',
                  filter='.', info='.'):
         self.chrom = chrom
@@ -32,6 +33,7 @@ class Variant(object):
 
 
 class VariantCollection(object):
+
     def __init__(self, references):
         self.variants = defaultdict(lambda: defaultdict(dict))
         self.references = references

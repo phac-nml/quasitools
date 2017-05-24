@@ -1,7 +1,7 @@
 """
 Copyright Government of Canada 2017
 
-Written by: Cole Peters, National Microbiology Laboratory, Public Health Agency of Canada
+Written by: Cole Peters, Eric Chubaty, National Microbiology Laboratory, Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this work except in compliance with the License. You may obtain a copy of the
@@ -33,6 +33,7 @@ def parse_genes_file(genes_file, ref_chrom):
                 raise ValueError("Chrom in genes bed file doesn't match "
                                  "reference")
 
+            genes[name]["chrom"] = chrom
             genes[name]["start"] = int(start)
             genes[name]["end"] = int(end)
             genes[name]["frame"] = int(start) % 3
