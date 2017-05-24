@@ -60,19 +60,14 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db):
     # Create an AACensus object
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
-    # Find the AA mutations
-    mutation_finder = MutationFinder(aa_census, min_freq, next(iter(frames)))
-
     # Build the mutation database
     if mutation_db is not None:
         mutation_db = MutationDB(mutation_db, genes)
 
-    # TESTING NEW AAVARIANTS
+    # Creat AAVar collection and print the hmcf file
     aa_vars = AAVariantCollection.from_aacensus(
-        aa_census, next(iter(frames)))
+        [aa_census, aa_census], next(iter(frames)))
 
+    # Filter for mutant frequency
     aa_vars.filter('mf0.01', 'freq<0.01', True)
     click.echo(aa_vars.to_hmcf_file(CONFIDENT, mutation_db))
-
-    # Generate the mutation report
-    click.echo(mutation_finder.to_hmcf_file(CONFIDENT, mutation_db))
