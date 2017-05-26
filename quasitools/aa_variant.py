@@ -20,7 +20,6 @@ from datetime import date
 from collections import defaultdict
 from Bio.Seq import Seq
 from quasitools.aa_census import CONFIDENT, UNCONFIDENT
-from quasitools.mutations import Mutation
 from quasitools.variant import Variant, VariantCollection
 from numpy import array as np_array
 
@@ -85,14 +84,17 @@ class AAVariantCollection(VariantCollection):
                 coverage = census.coverage_at(frame, ref_codon_pos)
 
                 for confidence in (CONFIDENT, UNCONFIDENT):
-                    for aa in census.aminos_at(frame, ref_codon_pos, confidence):
+                    for aa in census.aminos_at(
+                        frame, ref_codon_pos, confidence
+                    ):
 
                         if aa != ref_aa[ref_codon_pos]:
                             gene = None
 
                             # Start retrieving values for this AAVariant
                             for name in census.genes:
-                                if (ref_codon_pos >= census.genes[name]["start"] // 3
+                                if (ref_codon_pos >=
+                                        census.genes[name]["start"] // 3
                                         and ref_codon_pos <=
                                         (census.genes[name]["end"] - 2) // 3):
 
@@ -108,14 +110,19 @@ class AAVariantCollection(VariantCollection):
 
                                 # Create AAVariant & slap it in the collection
                                 mutation = AAVariant(chrom=chrom,
-                                                     gene=gene_name, id="mutation",
+                                                     gene=gene_name,
+                                                     id="mutation",
                                                      ref=ref_aa[ref_codon_pos],
-                                                     alt=aa, freq=frequency, coverage=coverage,
+                                                     alt=aa,
+                                                     freq=frequency,
+                                                     coverage=coverage,
                                                      census_ind=census_ind,
-                                                     pos=(ref_codon_pos - (gene['start'] // 3) + 1))
+                                                     pos=(ref_codon_pos - (
+                                                        gene['start'] // 3
+                                                     ) + 1))
 
-                                var_collect.variants[chrom][ref_codon_pos][confidence][aa] = \
-                                    mutation
+                                var_collect.variants[chrom][ref_codon_pos][
+                                    confidence][aa] = mutation
 
         return var_collect
 
@@ -191,24 +198,27 @@ class AAVariantCollection(VariantCollection):
                             ref_codon_pos][confidence][aa]
 
                         # Update coverage
-                        mutation.coverage = \
-                            self.references[mutation.census_ind].coverage_at(
+                        mutation.coverage = self.references[
+                            mutation.census_ind].coverage_at(
                                 self.frame, ref_codon_pos
-                            )
+                        )
 
                         # Find MC and MCF
                         mc = ""
                         mcf = ""
 
-                        for codon in self.references[mutation.census_ind].amino_to_codons_at(
-                                self.frame, ref_codon_pos, aa, confidence):
+                        for codon in self.references[
+                            mutation.census_ind].amino_to_codons_at(
+                                self.frame, ref_codon_pos, aa, confidence
+                        ):
 
                             mc += "%s," % codon
 
-                            frequency = \
-                                self.references[mutation.census_ind].codon_frequency_for_amino_at(
-                                    self.frame, ref_codon_pos, aa, confidence,
-                                    codon)
+                            frequency = self.references[mutation.census_ind]\
+                                .codon_frequency_for_amino_at(
+                                    self.frame, ref_codon_pos,
+                                    aa, confidence, codon
+                            )
 
                             mcf += "%0.4f," % (float(frequency) /
                                                mutation.coverage)
@@ -233,7 +243,8 @@ class AAVariantCollection(VariantCollection):
         the report is then returned.
         """
 
-        report = ("Chromosome,Gene,Category,Surveillance,Wildtype,Position,Mutation,"
+        report = ("Chromosome,Gene,Category,"
+                  "Surveillance,Wildtype,Position,Mutation,"
                   "Mutation Frequency,Coverage\n")
 
         # Loop through the mutation database and report on present mutations
@@ -257,7 +268,8 @@ class AAVariantCollection(VariantCollection):
                     if dr_mutation_pos in self.variants[chrom]:
                         if CONFIDENT in self.variants[chrom][dr_mutation_pos]:
                             if (dr_mutation in
-                                    self.variants[chrom][dr_mutation_pos][CONFIDENT] and
+                                    self.variants[chrom][
+                                        dr_mutation_pos][CONFIDENT] and
                                     self.variants[chrom][
                                         dr_mutation_pos][CONFIDENT]
                                     [dr_mutation].filter == "PASS"):
@@ -307,12 +319,14 @@ class AAVariantCollection(VariantCollection):
                         else:
                             attribute_value = variant.info[attribute.upper()]
 
-                        if eval("%s %s %s" % (attribute_value, operator, value)) \
-                                != result:
+                        if eval("%s %s %s" % (
+                            attribute_value, operator, value
+                        )) != result:
                             if variant.filter == '.':
                                 variant.filter = 'PASS'
                         else:
-                            if variant.filter == '.' or variant.filter == 'PASS':
+                            if variant.filter == '.' or \
+                                    variant.filter == 'PASS':
                                 variant.filter = id
                             else:
                                 variant.filter += ";%s" % id
