@@ -60,14 +60,14 @@ class AAVariantCollection(VariantCollection):
     def __init__(self, references, frame):
         """Add additional field to VariantCollection for AAVariantCollection"""
         super(AAVariantCollection, self).__init__(references)
+        self.variants = defaultdict(
+            lambda: defaultdict(lambda: defaultdict(dict)))
         self.frame = frame
 
     @classmethod
     def from_aacensus(cls, aa_census, frame, *args):
         """Build the AAVariantCollection from any number of
         AACensus objects"""
-
-        # TODO : Ensure census is flattened array of censii and iterate over
 
         # Handle aa_census being an array or single element nicely
         aa_census = np_array([aa_census]).flatten()
@@ -81,19 +81,19 @@ class AAVariantCollection(VariantCollection):
             ref_aa = Seq(ref_seq).translate()
 
             # Build up what will be the key to the dictionary
-            for i in range(0, len(ref_aa)):
-                coverage = census.coverage_at(frame, i)
+            for ref_codon_pos in range(0, len(ref_aa)):
+                coverage = census.coverage_at(frame, ref_codon_pos)
 
                 for confidence in (CONFIDENT, UNCONFIDENT):
-                    for aa in census.aminos_at(frame, i, confidence):
+                    for aa in census.aminos_at(frame, ref_codon_pos, confidence):
 
-                        if aa != ref_aa[i]:
+                        if aa != ref_aa[ref_codon_pos]:
                             gene = None
 
                             # Start retrieving values for this AAVariant
                             for name in census.genes:
-                                if (i >= census.genes[name]["start"] // 3
-                                        and i <=
+                                if (ref_codon_pos >= census.genes[name]["start"] // 3
+                                        and ref_codon_pos <=
                                         (census.genes[name]["end"] - 2) // 3):
 
                                     gene = census.genes[name]
@@ -101,18 +101,20 @@ class AAVariantCollection(VariantCollection):
 
                             if gene is not None:
                                 frequency = census.amino_frequency_at(
-                                    frame, i, aa, confidence
+                                    frame, ref_codon_pos, aa, confidence
                                 ) / float(coverage)
 
-                                # Create AAVariant & slap it in the collection
-                                mutation = AAVariant(chrom=census.genes[gene_name]["chrom"],
-                                                     gene=gene_name, id="mutation",
-                                                     ref=ref_aa[i], alt=aa,
-                                                     freq=frequency, coverage=coverage,
-                                                     census_ind=census_ind,
-                                                     pos=(i - (gene['start'] // 3) + 1))
+                                chrom = census.genes[gene_name]["chrom"]
 
-                                var_collect.variants[i][confidence][aa] = \
+                                # Create AAVariant & slap it in the collection
+                                mutation = AAVariant(chrom=chrom,
+                                                     gene=gene_name, id="mutation",
+                                                     ref=ref_aa[ref_codon_pos],
+                                                     alt=aa, freq=frequency, coverage=coverage,
+                                                     census_ind=census_ind,
+                                                     pos=(ref_codon_pos - (gene['start'] // 3) + 1))
+
+                                var_collect.variants[chrom][ref_codon_pos][confidence][aa] = \
                                     mutation
 
         return var_collect
@@ -137,6 +139,7 @@ class AAVariantCollection(VariantCollection):
         report += "##fileDate=%s\n" % (d.strftime("%Y%m%d"))
         report += "##source=quasitools\n"
 
+        # Could have many reference files (aa_census)
         for refs in self.references:
             report += "##reference=%s\n" % (refs.ref_file)
 
@@ -162,60 +165,64 @@ class AAVariantCollection(VariantCollection):
             "MUTANT\tFILTER\tMUTANT_FREQ\tCOVERAGE\tINFO\n"
 
         # BODY
-        for ref_codon_pos in self.variants:
-            # Work with or without mutation db
-            if mutation_db is not None:
-                dr_mutations = mutation_db.mutations_at(ref_codon_pos)
-            else:
-                dr_mutations = None
+        for chrom in self.variants:
+            for ref_codon_pos in self.variants[chrom]:
 
-            for aa in self.variants[ref_codon_pos][confidence]:
-                # Init drug resistance variables
-                dr_mutation = None
-                category = "."
-                surveillance = "."
+                # Work with or without mutation db
+                if mutation_db is not None:
+                    dr_mutations = mutation_db.mutations_at(ref_codon_pos)
+                else:
+                    dr_mutations = None
 
-                if dr_mutations is not None and aa in dr_mutations:
-                    dr_mutation = dr_mutations[aa]
-                    category = dr_mutation.category
-                    surveillance = dr_mutation.surveillance
+                for aa in self.variants[chrom][ref_codon_pos][confidence]:
+                    # Init drug resistance variables
+                    dr_mutation = None
+                    category = "."
+                    surveillance = "."
 
-                # Ignore incomplete codons (ones with a gap)
-                if aa.lower() != "x":
-                    mutation = self.variants[ref_codon_pos][confidence][aa]
+                    if dr_mutations is not None and aa in dr_mutations:
+                        dr_mutation = dr_mutations[aa]
+                        category = dr_mutation.category
+                        surveillance = dr_mutation.surveillance
 
-                    # Update coverage
-                    mutation.coverage = \
-                        self.references[mutation.census_ind].coverage_at(
-                            self.frame, ref_codon_pos)
+                    # Ignore incomplete codons (ones with a gap)
+                    if aa.lower() != "x":
+                        mutation = self.variants[chrom][
+                            ref_codon_pos][confidence][aa]
 
-                    # Find MC and MCF
-                    mc = ""
-                    mcf = ""
+                        # Update coverage
+                        mutation.coverage = \
+                            self.references[mutation.census_ind].coverage_at(
+                                self.frame, ref_codon_pos
+                            )
 
-                    for codon in self.references[mutation.census_ind].amino_to_codons_at(
-                            self.frame, ref_codon_pos, aa, confidence):
+                        # Find MC and MCF
+                        mc = ""
+                        mcf = ""
 
-                        mc += "%s," % codon
+                        for codon in self.references[mutation.census_ind].amino_to_codons_at(
+                                self.frame, ref_codon_pos, aa, confidence):
 
-                        frequency = \
-                            self.references[mutation.census_ind].codon_frequency_for_amino_at(
-                                self.frame, ref_codon_pos, aa, confidence,
-                                codon)
+                            mc += "%s," % codon
 
-                        mcf += "%0.4f," % (float(frequency) /
-                                           mutation.coverage)
+                            frequency = \
+                                self.references[mutation.census_ind].codon_frequency_for_amino_at(
+                                    self.frame, ref_codon_pos, aa, confidence,
+                                    codon)
 
-                    # Create info field for this mutation
-                    mutation.info['WC'] = ref_codon_array[
-                        mutation.census_ind][ref_codon_pos].lower()
-                    mutation.info['MC'] = mc[:-1]
-                    mutation.info['MCF'] = mcf[:-1]
-                    mutation.info['CAT'] = category
-                    mutation.info['SRVL'] = surveillance
+                            mcf += "%0.4f," % (float(frequency) /
+                                               mutation.coverage)
 
-                    # Add this mutation to the report!
-                    report += mutation.to_hmcf_entry()
+                        # Create info field for this mutation
+                        mutation.info['WC'] = ref_codon_array[
+                            mutation.census_ind][ref_codon_pos].lower()
+                        mutation.info['MC'] = mc[:-1]
+                        mutation.info['MCF'] = mcf[:-1]
+                        mutation.info['CAT'] = category
+                        mutation.info['SRVL'] = surveillance
+
+                        # Add this mutation to the report!
+                        report += mutation.to_hmcf_entry()
 
         # Return string of report without nl char at the end
         return report[:-1]
@@ -227,25 +234,28 @@ class AAVariantCollection(VariantCollection):
         # only allow simple expressions for the time being i.e. DP>30
         (attribute, operator, value) = re.split('([><=!]+)', expression)
 
-        for i in self.variants:
-            for confidence in self.variants[i]:
-                for aa in self.variants[i][confidence]:
-                    attribute_value = None
+        for chrom in self.variants:
+            for ref_codon_pos in self.variants[chrom]:
 
-                    variant = self.variants[i][confidence][aa]
+                for confidence in self.variants[chrom][ref_codon_pos]:
+                    for aa in self.variants[chrom][ref_codon_pos][confidence]:
+                        attribute_value = None
 
-                    if hasattr(variant, attribute.lower()):
-                        attribute_value = eval(
-                            "variant.%s" % attribute.lower())
-                    else:
-                        attribute_value = variant.info[attribute.upper()]
+                        variant = self.variants[chrom][
+                            ref_codon_pos][confidence][aa]
 
-                    if eval("%s %s %s" % (attribute_value, operator, value)) \
-                            != result:
-                        if variant.filter == '.':
-                            variant.filter = 'PASS'
-                    else:
-                        if variant.filter == '.' or variant.filter == 'PASS':
-                            variant.filter = id
+                        if hasattr(variant, attribute.lower()):
+                            attribute_value = eval(
+                                "variant.%s" % attribute.lower())
                         else:
-                            variant.filter += ";%s" % id
+                            attribute_value = variant.info[attribute.upper()]
+
+                        if eval("%s %s %s" % (attribute_value, operator, value)) \
+                                != result:
+                            if variant.filter == '.':
+                                variant.filter = 'PASS'
+                        else:
+                            if variant.filter == '.' or variant.filter == 'PASS':
+                                variant.filter = id
+                            else:
+                                variant.filter += ";%s" % id

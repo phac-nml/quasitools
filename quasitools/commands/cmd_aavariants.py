@@ -55,7 +55,7 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db):
     frames = set()
 
     for gene in genes:
-        frames.add(genes[gene]["frame"])
+        frames.add(genes[gene]['frame'])
 
     # Create an AACensus object
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
@@ -64,9 +64,9 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db):
     if mutation_db is not None:
         mutation_db = MutationDB(mutation_db, genes)
 
-    # Creat AAVar collection and print the hmcf file
+    # Create AAVar collection and print the hmcf file
     aa_vars = AAVariantCollection.from_aacensus(
-        [aa_census, aa_census], next(iter(frames)))
+        aa_census, next(iter(frames)))
 
     # Filter for mutant frequency
     aa_vars.filter('mf0.01', 'freq<0.01', True)
