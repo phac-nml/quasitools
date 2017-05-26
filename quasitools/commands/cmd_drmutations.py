@@ -1,7 +1,7 @@
 """
 Copyright Government of Canada 2017
 
-Written by: Cole Peters, National Microbiology Laboratory, Public Health Agency of Canada
+Written by: Cole Peters, Eric Chubaty, National Microbiology Laboratory, Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this work except in compliance with the License. You may obtain a copy of the
@@ -18,7 +18,7 @@ specific language governing permissions and limitations under the License.
 import click
 from quasitools.cli import pass_context
 from quasitools.aa_census import AACensus
-from quasitools.mutation_finder import MutationFinder
+from quasitools.aa_variant import AAVariant, AAVariantCollection
 from quasitools.mutations import MutationDB
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
@@ -58,17 +58,20 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
     frames = set()
 
     for gene in genes:
-        frames.add(genes[gene]["frame"])
+        frames.add(genes[gene]['frame'])
 
     # Create an AACensus object
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
-    # Find the AA mutations
-    mutation_finder = MutationFinder(aa_census, min_freq, next(iter(frames)))
+    # Create AAVar collection and print the hmcf file
+    aa_vars = AAVariantCollection.from_aacensus(aa_census, next(iter(frames)))
+
+    # Filter for mutant frequency
+    aa_vars.filter('mf' + str(min_freq), 'freq<' + str(min_freq), True)
 
     # Build the mutation database
     mutation_db = MutationDB(mutation_db, genes)
 
     # Generate the mutation report
-    click.echo(mutation_finder.report_dr_mutations(mutation_db,
-                                                   reporting_threshold))
+    click.echo(aa_vars.report_dr_mutations(mutation_db,
+                                           reporting_threshold))

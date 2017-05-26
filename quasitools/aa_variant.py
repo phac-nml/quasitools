@@ -227,6 +227,63 @@ class AAVariantCollection(VariantCollection):
         # Return string of report without nl char at the end
         return report[:-1]
 
+    def report_dr_mutations(self, mutation_db, reporting_threshold):
+        """Builds a report of all drug resistant amino acid mutations present
+        in the AACensus object using a MutationDB object. A string containing
+        the report is then returned.
+        """
+
+        report = ("Chromosome,Gene,Category,Surveillance,Wildtype,Position,Mutation,"
+                  "Mutation Frequency,Coverage\n")
+
+        # Loop through the mutation database and report on present mutations
+        for census in self.references:
+
+            for dr_mutation_pos in mutation_db.positions():
+                dr_mutations = mutation_db.mutations_at(dr_mutation_pos)
+                coverage = census.coverage_at(self.frame, dr_mutation_pos)
+
+                for name in census.genes:
+                    if (dr_mutation_pos >= census.genes[name]["start"] // 3
+                            and dr_mutation_pos <=
+                            (census.genes[name]["end"] - 2) // 3):
+
+                        gene_name = name
+
+                chrom = census.genes[gene_name]["chrom"]
+
+                for dr_mutation in dr_mutations:
+
+                    if dr_mutation_pos in self.variants[chrom]:
+                        if CONFIDENT in self.variants[chrom][dr_mutation_pos]:
+                            if (dr_mutation in
+                                    self.variants[chrom][dr_mutation_pos][CONFIDENT] and
+                                    self.variants[chrom][
+                                        dr_mutation_pos][CONFIDENT]
+                                    [dr_mutation].filter == "PASS"):
+
+                                mutation_freq = (
+                                    self.variants[chrom][
+                                        dr_mutation_pos][CONFIDENT]
+                                    [dr_mutation].freq
+                                ) * 100
+
+                                if mutation_freq > reporting_threshold:
+                                    report += (
+                                        "%s,%s,%s,%s,%s,%s,%s,%0.2f,%s\n"
+                                        % (chrom,
+                                           dr_mutations[dr_mutation].gene,
+                                           dr_mutations[dr_mutation].category,
+                                           dr_mutations[
+                                               dr_mutation].surveillance,
+                                           dr_mutations[dr_mutation].wildtype,
+                                           dr_mutations[dr_mutation].gene_pos,
+                                           dr_mutation,
+                                           mutation_freq,
+                                           coverage))
+
+        return report
+
     def filter(self, id, expression, result):
         """Apply filter to variants given an id, expression and result."""
         self.filters[id] = {'expression': expression, 'result': result}
