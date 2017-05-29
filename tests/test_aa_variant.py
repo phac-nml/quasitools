@@ -132,7 +132,7 @@ class TestAAVariant:
         with open(VALID_AA_VARIANTS_HMCF, "r") as input:
             valid_variants = input.read()
 
-        valid_variants_lines = filter(None, valid_variants.split("\n"))
+        valid_variants_lines = list(filter(None, valid_variants.split("\n")))
 
         # Replace category and surveillance with "."s
         # Okay because comparisons only done on non "#" lines
