@@ -282,7 +282,7 @@ class AAVariantCollection(VariantCollection):
 
                                 if mutation_freq > reporting_threshold:
                                     report += (
-                                        "%s,%s,%s,%s,%s,%s,%s,%0.2f,%s"
+                                        "%s,%s,%s,%s,%s,%s,%s,%0.2f,%s\n"
                                         % (chrom,
                                            dr_mutations[dr_mutation].gene,
                                            dr_mutations[dr_mutation].category,
@@ -294,7 +294,7 @@ class AAVariantCollection(VariantCollection):
                                            mutation_freq,
                                            coverage))
 
-        return report
+        return report[:-1]
 
     def filter(self, id, expression, result):
         """Apply filter to variants given an id, expression and result."""
