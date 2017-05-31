@@ -96,7 +96,8 @@ class AAVariantCollection(VariantCollection):
                 ref_codon_array = re.findall(".{3}", ref_seq)
 
                 # Build up what will be the key to the dictionary
-                for ref_codon_pos in range(gene['start'] // 3, gene['end'] // 3 - 2):
+                for ref_codon_pos in range(gene['start'] // 3,
+                                           gene['end'] // 3 - 2):
                     coverage = census.coverage_at(frame, ref_codon_pos)
 
                     for confidence in (CONFIDENT, UNCONFIDENT):
@@ -150,7 +151,8 @@ class AAVariantCollection(VariantCollection):
                                                      ) + 1),
                                                      info={
                                                          'WC': ref_codon_array[
-                                                             ref_codon_pos].lower(),
+                                                             ref_codon_pos
+                                                         ].lower(),
                                                          'MC': mc[:-1],
                                                          'MCF': mcf[:-1],
                                                          'CAT': ".",
