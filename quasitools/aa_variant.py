@@ -26,7 +26,9 @@ from numpy import array as np_array
 
 class AAVariant(Variant):
 
-    def __init__(self, gene=".", freq=0, coverage=0, census_ind=0, info=dict(), **kwargs):
+    def __init__(self, gene=".", freq=0,
+                 coverage=0, census_ind=0,
+                 info=dict(), **kwargs):
         """Add additional fields to Variant for AAVariant"""
         super(AAVariant, self).__init__(**kwargs)
 
@@ -75,7 +77,6 @@ class AAVariantCollection(VariantCollection):
         # Build up the Collection of AAVariants from many census
         for census_ind, census in enumerate(aa_census):
             for frame in census.frames:
-                census_genes = census.genes
                 ref_seq = census.mapped_read_collections[0].reference.seq
                 ref_seq = ref_seq[:(len(ref_seq) - (len(ref_seq) % 3))]
                 ref_aa = Seq(ref_seq).translate()
@@ -98,9 +99,10 @@ class AAVariantCollection(VariantCollection):
                                 # Start retrieving values for this AAVariant
                                 for name in census.genes:
                                     if (ref_codon_pos >=
-                                            census.genes[name]["start"] // 3
+                                            census.genes[name]['start'] // 3
                                             and ref_codon_pos <=
-                                            (census.genes[name]["end"] - 2) // 3):
+                                            (census.genes[name][
+                                                'end'] - 2) // 3):
 
                                         gene = census.genes[name]
                                         gene_name = name
@@ -124,10 +126,11 @@ class AAVariantCollection(VariantCollection):
 
                                         mc += "%s," % codon
 
-                                        freq_mcf = census.codon_frequency_for_amino_at(
-                                            frame, ref_codon_pos,
-                                            aa, confidence, codon
-                                        )
+                                        freq_mcf = census\
+                                            .codon_frequency_for_amino_at(
+                                                frame, ref_codon_pos,
+                                                aa, confidence, codon
+                                            )
 
                                         mcf += "%0.4f," % (float(freq_mcf) /
                                                            coverage)
@@ -147,7 +150,8 @@ class AAVariantCollection(VariantCollection):
                                                             gene['start'] // 3
                                                          ) + 1),
                                                          info={
-                                                             'WC': ref_codon_array[ref_codon_pos].lower(),
+                                                             'WC': ref_codon_array[
+                                                                 ref_codon_pos].lower(),
                                                              'MC': mc[:-1],
                                                              'MCF': mcf[:-1],
                                                              'CAT': ".",
@@ -246,7 +250,6 @@ class AAVariantCollection(VariantCollection):
 
             for dr_mutation_pos in mutation_db.positions():
                 dr_mutations = mutation_db.mutations_at(dr_mutation_pos)
-                #coverage = census.coverage_at(self.frame, dr_mutation_pos)
 
                 for name in census.genes:
                     if (dr_mutation_pos >= census.genes[name]['start'] // 3
