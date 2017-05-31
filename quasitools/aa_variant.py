@@ -76,16 +76,27 @@ class AAVariantCollection(VariantCollection):
 
         # Build up the Collection of AAVariants from many census
         for census_ind, census in enumerate(aa_census):
-            for frame in census.frames:
+
+            # For each gene in this census
+            for gene_key in census.genes.keys():
+                gene = census.genes[gene_key]
+                frame = gene['frame']
+
+                # Find reference sequence for this frame
                 ref_seq = census.mapped_read_collections[0].reference.seq
-                ref_seq = ref_seq[:(len(ref_seq) - (len(ref_seq) % 3))]
+                ref_seq = ref_seq[
+                    frame:((len(ref_seq) - frame) -
+                           (len(ref_seq) - frame) % 3 + frame)
+                ]
+
+                # Turn sequence to amino acids
                 ref_aa = Seq(ref_seq).translate()
 
                 # Used for WC in info field for each variant
                 ref_codon_array = re.findall(".{3}", ref_seq)
 
                 # Build up what will be the key to the dictionary
-                for ref_codon_pos in range(0, len(ref_aa)):
+                for ref_codon_pos in range(gene['start'] // 3, gene['end'] // 3 - 2):
                     coverage = census.coverage_at(frame, ref_codon_pos)
 
                     for confidence in (CONFIDENT, UNCONFIDENT):
@@ -93,73 +104,61 @@ class AAVariantCollection(VariantCollection):
                             frame, ref_codon_pos, confidence
                         ):
 
+                            # Only add it if it is a mutation (it differs)
                             if aa != ref_aa[ref_codon_pos]:
-                                gene = None
 
-                                # Start retrieving values for this AAVariant
-                                for name in census.genes:
-                                    if (ref_codon_pos >=
-                                            census.genes[name]['start'] // 3
-                                            and ref_codon_pos <=
-                                            (census.genes[name][
-                                                'end'] - 2) // 3):
+                                # Grab values for this mutation
 
-                                        gene = census.genes[name]
-                                        gene_name = name
+                                frequency = census.amino_frequency_at(
+                                    frame, ref_codon_pos, aa, confidence
+                                ) / float(coverage)
 
-                                if (gene is not None
-                                        and gene['frame'] == frame):
+                                chrom = gene['chrom']
 
-                                    frequency = census.amino_frequency_at(
+                                # Find MC and MCF
+                                mc = ""
+                                mcf = ""
+
+                                for codon in census.amino_to_codons_at(
                                         frame, ref_codon_pos, aa, confidence
-                                    ) / float(coverage)
+                                ):
 
-                                    chrom = census.genes[gene_name]['chrom']
+                                    mc += "%s," % codon
 
-                                    # Find MC and MCF
-                                    mc = ""
-                                    mcf = ""
+                                    freq_mcf = census\
+                                        .codon_frequency_for_amino_at(
+                                            frame, ref_codon_pos,
+                                            aa, confidence, codon
+                                        )
 
-                                    for codon in census.amino_to_codons_at(
-                                            frame, ref_codon_pos, aa, confidence
-                                    ):
+                                    mcf += "%0.4f," % (float(freq_mcf) /
+                                                       coverage)
 
-                                        mc += "%s," % codon
+                                # Create AAVariant & slap it in the
+                                # collection
+                                mutation = AAVariant(chrom=chrom,
+                                                     gene=gene_key,
+                                                     id="mutation",
+                                                     ref=ref_aa[
+                                                         ref_codon_pos],
+                                                     alt=aa,
+                                                     freq=frequency,
+                                                     coverage=coverage,
+                                                     census_ind=census_ind,
+                                                     pos=(ref_codon_pos - (
+                                                        gene['start'] // 3
+                                                     ) + 1),
+                                                     info={
+                                                         'WC': ref_codon_array[
+                                                             ref_codon_pos].lower(),
+                                                         'MC': mc[:-1],
+                                                         'MCF': mcf[:-1],
+                                                         'CAT': ".",
+                                                         'SRVL': "."
+                                                     })
 
-                                        freq_mcf = census\
-                                            .codon_frequency_for_amino_at(
-                                                frame, ref_codon_pos,
-                                                aa, confidence, codon
-                                            )
-
-                                        mcf += "%0.4f," % (float(freq_mcf) /
-                                                           coverage)
-
-                                    # Create AAVariant & slap it in the
-                                    # collection
-                                    mutation = AAVariant(chrom=chrom,
-                                                         gene=gene_name,
-                                                         id="mutation",
-                                                         ref=ref_aa[
-                                                             ref_codon_pos],
-                                                         alt=aa,
-                                                         freq=frequency,
-                                                         coverage=coverage,
-                                                         census_ind=census_ind,
-                                                         pos=(ref_codon_pos - (
-                                                            gene['start'] // 3
-                                                         ) + 1),
-                                                         info={
-                                                             'WC': ref_codon_array[
-                                                                 ref_codon_pos].lower(),
-                                                             'MC': mc[:-1],
-                                                             'MCF': mcf[:-1],
-                                                             'CAT': ".",
-                                                             'SRVL': "."
-                                                         })
-
-                                    var_collect.variants[chrom][ref_codon_pos][
-                                        confidence][aa] = mutation
+                                var_collect.variants[chrom][ref_codon_pos][
+                                    confidence][aa] = mutation
 
         return var_collect
 
