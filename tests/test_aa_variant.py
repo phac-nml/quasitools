@@ -70,7 +70,7 @@ class TestAAVariant:
 
         # Find the AA mutations
         self.aa_collection = AAVariantCollection.from_aacensus(
-            aa_census, next(iter(frames)))
+            aa_census)
 
         # Build the mutation database
         self.mutation_db = MutationDB(mutation_db, genes)
