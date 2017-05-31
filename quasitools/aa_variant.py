@@ -78,7 +78,7 @@ class AAVariantCollection(VariantCollection):
         for census_ind, census in enumerate(aa_census):
 
             # For each gene in this census
-            for gene_key in census.genes.keys():
+            for gene_key in census.genes:
                 gene = census.genes[gene_key]
                 frame = gene['frame']
 
@@ -164,7 +164,7 @@ class AAVariantCollection(VariantCollection):
 
         return var_collect
 
-    def to_hmcf_file(self, confidence, mutation_db=None):
+    def to_hmcf_file(self, confidence):
         """Build a string representation of our AAVariant objects
         (i.e. a hmcf file)."""
 
@@ -204,31 +204,12 @@ class AAVariantCollection(VariantCollection):
         # Body
         for chrom in self.variants:
             for ref_codon_pos in self.variants[chrom]:
-
-                # Work with or without mutation db
-                if mutation_db is not None:
-                    dr_mutations = mutation_db.mutations_at(ref_codon_pos)
-                else:
-                    dr_mutations = None
-
                 for aa in self.variants[chrom][ref_codon_pos][confidence]:
-                    # Init drug resistance variables
-                    dr_mutation = None
-                    category = "."
-                    surveillance = "."
-
-                    if dr_mutations is not None and aa in dr_mutations:
-                        dr_mutation = dr_mutations[aa]
-                        category = dr_mutation.category
-                        surveillance = dr_mutation.surveillance
 
                     # Ignore incomplete codons (ones with a gap)
                     if aa.lower() != "x":
                         mutation = self.variants[chrom][
                             ref_codon_pos][confidence][aa]
-
-                        mutation.info['CAT'] = category
-                        mutation.info['SRVL'] = surveillance
 
                         # Add this mutation to the report!
                         report += mutation.to_hmcf_entry()
@@ -299,6 +280,41 @@ class AAVariantCollection(VariantCollection):
                                            coverage))
 
         return report[:-1]
+
+    def apply_mutation_db(self, mutation_db):
+        """Apply the mutation database to the variant collection
+        to update each variants category and surveillance variable within it
+        """
+
+        # Iterate over the keys in variants
+        for chrom in self.variants:
+            for ref_codon_pos in self.variants[chrom]:
+
+                if mutation_db is not None:
+                    dr_mutations = mutation_db.mutations_at(ref_codon_pos)
+
+                for confidence in (CONFIDENT, UNCONFIDENT):
+                    for aa in self.variants[chrom][
+                            ref_codon_pos][confidence]:
+
+                        # Init drug resistance variables
+                        dr_mutation = None
+                        category = "."
+                        surveillance = "."
+
+                        # Assign cat and srvl if it's in the mutation db
+                        if mutation_db is not None and aa in dr_mutations:
+                            dr_mutation = dr_mutations[aa]
+                            category = dr_mutation.category
+                            surveillance = dr_mutation.surveillance
+
+                        # Get the mutation to update
+                        mutation = self.variants[chrom][
+                            ref_codon_pos][confidence][aa]
+
+                        # Update the mutation
+                        mutation.info['CAT'] = category
+                        mutation.info['SRVL'] = surveillance
 
     def filter(self, id, expression, result):
         """Apply filter to variants given an id, expression and result."""

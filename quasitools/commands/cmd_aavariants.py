@@ -69,4 +69,8 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db):
 
     # Filter for mutant frequency
     aa_vars.filter('mf0.01', 'freq<0.01', True)
-    click.echo(aa_vars.to_hmcf_file(CONFIDENT, mutation_db))
+
+    # Update category and surveillance for mutations
+    aa_vars.apply_mutation_db(mutation_db)
+
+    click.echo(aa_vars.to_hmcf_file(CONFIDENT))

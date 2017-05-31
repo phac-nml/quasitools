@@ -104,8 +104,10 @@ class TestAAVariant:
         # Apply the filter to the collection
         self.aa_collection.filter('mf0.01', 'freq<0.01', True)
 
-        aa_variants = self.aa_collection.to_hmcf_file(
-            CONFIDENT, self.mutation_db)
+        # Do the thing with the mutation_db
+        self.aa_collection.apply_mutation_db(self.mutation_db)
+
+        aa_variants = self.aa_collection.to_hmcf_file(CONFIDENT)
 
         # Make sure it's sorted and has no empty strings
         aa_variants_lines = sorted(aa_variants.split("\n"))
@@ -151,9 +153,11 @@ class TestAAVariant:
         # Apply the filter to the collection
         self.aa_collection.filter('mf0.01', 'freq<0.01', True)
 
+        # Apply no mutation db (clears it too)
+        self.aa_collection.apply_mutation_db(None)
+
         # Grab the hmcf format
-        aa_variants = self.aa_collection.to_hmcf_file(
-            CONFIDENT)
+        aa_variants = self.aa_collection.to_hmcf_file(CONFIDENT)
 
         # Make sure it's sorted and has no empty strings
         aa_variants_lines = sorted(filter(None, aa_variants.split("\n")))
