@@ -283,15 +283,16 @@ class AAVariantCollection(VariantCollection):
 
     def apply_mutation_db(self, mutation_db):
         """Apply the mutation database to the variant collection
-        to update each variants category and surveillance variable within it
+        to update each variants category and surveillance variable within it.
+
+        Assumes mutation_db != None
         """
 
         # Iterate over the keys in variants
         for chrom in self.variants:
             for ref_codon_pos in self.variants[chrom]:
 
-                if mutation_db is not None:
-                    dr_mutations = mutation_db.mutations_at(ref_codon_pos)
+                dr_mutations = mutation_db.mutations_at(ref_codon_pos)
 
                 for confidence in (CONFIDENT, UNCONFIDENT):
                     for aa in self.variants[chrom][
@@ -303,7 +304,7 @@ class AAVariantCollection(VariantCollection):
                         surveillance = "."
 
                         # Assign cat and srvl if it's in the mutation db
-                        if mutation_db is not None and aa in dr_mutations:
+                        if aa in dr_mutations:
                             dr_mutation = dr_mutations[aa]
                             category = dr_mutation.category
                             surveillance = dr_mutation.surveillance

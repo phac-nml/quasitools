@@ -36,7 +36,7 @@ VALID_DR_MUTATIONS_CSV = TEST_PATH + "/data/output/dr_report.csv"
 class TestAAVariant:
 
     @classmethod
-    def setup_class(self):
+    def setup(self):
         reference = TEST_PATH + "/data/hxb2_pol.fas"
         bam = TEST_PATH + "/data/align.bam"
         genes_file = TEST_PATH + "/data/hxb2_pol.bed"
@@ -152,9 +152,6 @@ class TestAAVariant:
 
         # Apply the filter to the collection
         self.aa_collection.filter('mf0.01', 'freq<0.01', True)
-
-        # Apply no mutation db (clears it too)
-        self.aa_collection.apply_mutation_db(None)
 
         # Grab the hmcf format
         aa_variants = self.aa_collection.to_hmcf_file(CONFIDENT)
