@@ -21,7 +21,7 @@ dependencies = ['biopython', 'click', 'numpy', 'pysam', 'scipy']
 
 setup(
     name='quasitools',
-    version='0.0.0',
+    version='0.1.0',
     url='http://gitlab.corefacility.ca/eric/quasitools.git',
     license='Apache License, Version 2.0',
     author='Eric Enns',
@@ -39,7 +39,6 @@ setup(
     ''',
     classifiers=[
         'License :: OSI Approved :: Apache Software License',
-        'Development Status :: 1 - Planning',
         'Environment :: Console',
         'Programming Language :: Python :: 3',
     ]
