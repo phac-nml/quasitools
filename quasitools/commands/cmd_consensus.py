@@ -17,7 +17,7 @@ specific language governing permissions and limitations under the License.
 
 import click
 from quasitools.cli import pass_context
-from quasitools.mapped_reads import MappedReads
+from quasitools.mapped_reads import MappedReadCollection
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 @click.command('consensus', short_help='Generate a consensus sequence from a BAM file.')
@@ -29,7 +29,7 @@ def cli(ctx, bam, reference, percentage):
     rs = parse_references_from_fasta(reference)
 
     for r in rs:
-        mrs = MappedReads.from_bam(r, 65, 75, bam)
+        mrs = MappedReadCollection.from_bam(r, 65, 75, bam)
 
         conseq = mrs.to_consensus(percentage)
 

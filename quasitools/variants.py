@@ -20,7 +20,7 @@ from collections import defaultdict
 from datetime import date
 from scipy.stats import poisson
 from numpy import log10
-from quasitools.mapped_reads import MappedReads
+from quasitools.mapped_read import MappedReadCollection
 from quasitools.variant import Variant
 
 class Variants(object):
@@ -37,8 +37,8 @@ class Variants(object):
         mapped_reads_arr = []
 
         for r in references:
-            #create MappedReads object
-            mapped_reads_arr.append(MappedReads.from_bam(r, overlap_cutoff, identity_cutoff, bam))
+            #create MappedReadCollection object
+            mapped_reads_arr.append(MappedReadCollection.from_bam(r, overlap_cutoff, identity_cutoff, bam))
 
         obj = cls.from_mapped_reads(error_rate, references, *mapped_reads_arr)
 
@@ -46,7 +46,7 @@ class Variants(object):
 
     @classmethod
     def from_mapped_reads(cls, error_rate, references, *args):
-        """Build the Variants object from a MappedReads object"""
+        """Build the Variants object from a MappedReadCollection object"""
         obj = cls(error_rate, references)
 
         for mapped_reads in args:
