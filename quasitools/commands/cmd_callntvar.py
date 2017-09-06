@@ -17,7 +17,8 @@ specific language governing permissions and limitations under the License.
 
 import click
 from quasitools.cli import pass_context
-from quasitools.variants import Variants
+from quasitools.nt_variant import NTVariantCollection
+from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 @click.command('call_callntvar', short_help='Call nucleotide variants from a BAM file.')
@@ -27,10 +28,16 @@ from quasitools.parsers.reference_parser import parse_references_from_fasta
 @pass_context
 def cli(ctx, bam, reference, error_rate):
     rs = parse_references_from_fasta(reference)
-    variants = Variants.from_bam(rs, error_rate, 65, 75, bam)
+
+    mapped_read_collection_arr = []
+    for r in rs:
+        #create MappedReadCollection object
+        mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, 65, 75, bam))
+
+    variants = NTVariantCollection.from_mapped_read_collections(error_rate, rs, *mapped_read_collection_arr)
 
     variants.filter('q30', 'QUAL<30', True)
     variants.filter('ac5', 'AC<5', True)
     variants.filter('dp100', 'DP<100', True)
 
-    click.echo(str(variants))
+    click.echo(variants.to_vcf_file())

@@ -15,6 +15,8 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
+from collections import defaultdict
+
 class Variant(object):
     def __init__(self, chrom, pos, id='.', ref='', alt='', qual='.', filter='.', info='.'):
         self.chrom  = chrom
@@ -26,10 +28,8 @@ class Variant(object):
         self.filter = filter
         self.info   = info
 
-    def __info_to_str(self):
-        """Convert info dict to info string for vcf entry."""
-        return "DP=%i;AC=%i;AF=%0.4f" % (self.info['DP'],self.info['AC'],self.info['AF'])
-
-    def __str__(self):
-        """Build a string representation of our Variant object (i.e. an entry in a vcf file)."""
-        return "%s\t%i\t%s\t%s\t%s\t%s\t%s\t%s" % (self.chrom, self.pos, self.id, self.ref, self.alt, self.qual, self.filter, self.__info_to_str())
+class VariantCollection(object):
+    def __init__(self, references):
+        self.variants = defaultdict(lambda: defaultdict(dict))
+        self.references = references
+        self.filters = {}

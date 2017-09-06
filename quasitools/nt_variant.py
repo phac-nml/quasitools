@@ -16,46 +16,37 @@ specific language governing permissions and limitations under the License.
 """
 
 import re
-from collections import defaultdict
 from datetime import date
 from scipy.stats import poisson
 from numpy import log10
 from quasitools.mapped_read import MappedReadCollection
-from quasitools.variant import Variant
-from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
+from quasitools.variant import Variant, VariantCollection
 
-class Variants(object):
-    def __init__(self, error_rate, references):
-        self.variants = defaultdict(lambda: defaultdict(dict) )
-        self.error_rate = error_rate
-        self.references =  references
-        self.filters = {}
+class NTVariant(Variant):
+    def __info_to_str(self):
+        """Convert info dict to info string for vcf entry."""
+        return "DP=%i;AC=%i;AF=%0.4f" % (self.info['DP'],
+                                         self.info['AC'],
+                                         self.info['AF'])
 
+    def to_vcf_entry(self):
+        return "%s\t%i\t%s\t%s\t%s\t%s\t%s\t%s" % (self.chrom, self.pos,
+                                                   self.id, self.ref, self.alt,
+                                                   self.qual, self.filter,
+                                                   self.__info_to_str())
+
+class NTVariantCollection(VariantCollection):
     @classmethod
-    def from_bam(cls, references, error_rate, overlap_cutoff, identity_cutoff, bam):
-        """Build the Variants object from a bam."""
+    def from_mapped_read_collections(cls, error_rate, references, *args):
+        """Build the NTVariantCollection from any number of MappedReadCollection objects"""
+        obj = cls(references)
 
-        mapped_reads_arr = []
-
-        for r in references:
-            #create MappedReadCollection object
-            mapped_reads_arr.append(parse_mapped_reads_from_bam(r, overlap_cutoff, identity_cutoff, bam))
-
-        obj = cls.from_mapped_reads(error_rate, references, *mapped_reads_arr)
-
-        return obj
-
-    @classmethod
-    def from_mapped_reads(cls, error_rate, references, *args):
-        """Build the Variants object from a MappedReadCollection object"""
-        obj = cls(error_rate, references)
-
-        for mapped_reads in args:
-            pileup = mapped_reads.pileup()
-            rid = mapped_reads.reference.name
+        for mapped_read_collection in args:
+            pileup = mapped_read_collection.pileup()
+            rid = mapped_read_collection.reference.name
 
             #do not include indels in coverage calculations
-            coverage = [sum([v if not k.startswith('+') and not k.startswith('-') else 0 for k,v in pileup[pos].items()])for pos in range(0,len(pileup))]
+            coverage = [sum([v if not k.startswith('+') and not k.startswith('-') else 0 for k,v in pileup[pos].items()]) for pos in range(0,len(pileup))]
 
             for pos in range(0,len(pileup)):
                 for event, event_count in pileup[pos].items():
@@ -63,20 +54,20 @@ class Variants(object):
                     if len(event) > 1:
                         alt_allele = event[:1].lower()
 
-                    if alt_allele != '-' and alt_allele != mapped_reads.reference.sub_seq(pos,pos).lower():
+                    if alt_allele != '-' and alt_allele != mapped_read_collection.reference.sub_seq(pos,pos).lower():
                         if rid in obj.variants and pos+1 in obj.variants[rid] and alt_allele in obj.variants[rid][pos+1]:
                             obj.variants[rid][pos+1][alt_allele].info['AC'] += event_count
                             obj.variants[rid][pos+1][alt_allele].info['AF'] = obj.variants[rid][pos+1][alt_allele].info['AC'] / coverage[pos]
                         else:
-                            variant = Variant(chrom=mapped_reads.reference.name, pos=pos+1, ref=mapped_reads.reference.sub_seq(pos,pos).lower(), alt=alt_allele, info={'DP':coverage[pos],'AC':event_count,'AF':event_count / coverage[pos]})
+                            variant = NTVariant(chrom=mapped_read_collection.reference.name, pos=pos+1, ref=mapped_read_collection.reference.sub_seq(pos,pos).lower(), alt=alt_allele, info={'DP':coverage[pos],'AC':event_count,'AF':event_count / coverage[pos]})
                             obj.variants[rid][pos+1][alt_allele] = variant
 
                 for alt_allele, variant in obj.variants[rid][pos+1].items():
-                    variant.qual = obj.__calculate_variant_qual(variant.info['AC'], variant.info['DP'])
+                    variant.qual = obj.__calculate_variant_qual(error_rate, variant.info['AC'], variant.info['DP'])
 
         return obj
 
-    def __str__(self):
+    def to_vcf_file(self):
         """Build a string representation of our Variants object (i.e. a vcf file)."""
         d = date.today()
 
@@ -101,13 +92,13 @@ class Variants(object):
             for pos in self.variants[rid]:
                 for alt_allele, variant in sorted(self.variants[rid][pos].items()):
                     if variant.qual > 0:
-                        report += "\n" + str(variant)
+                        report += "\n" + variant.to_vcf_entry()
 
         return report
 
-    def __calculate_variant_qual(self, variant_count, coverage):
+    def __calculate_variant_qual(self, error_rate, variant_count, coverage):
         """Calculate variant qual using poisson distribution."""
-        avg_errors = coverage * self.error_rate
+        avg_errors = coverage * error_rate
 
         prob = poisson.cdf(variant_count-1, avg_errors)
 
