@@ -15,17 +15,29 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
-import pytest
-from quasitools.references import References
+import re
+import Bio.SeqIO.FastaIO
+from quasitools.reference import Reference
 
-class TestReferences:
-    def test_from_fasta(self):
-        references = References.from_fasta('tests/data/ref1.fasta')
+def parse_reference_fasta(fasta):
+    """Build the References object from a fasta file.
 
-        assert list(references.references) == ['ref1']
-        assert references.references['ref1'].seq == 'AGCATGTTAGATAAGATAGCTGTGCTAGTAGGCAGTCAGCGCCAT'
+    >>> rs = parse_reference_fasta('tests/data/ref1.fasta')
+    >>> print(len(rs))
+    1
+    >>> print(rs[0].seq)
+    AGCATGTTAGATAAGATAGCTGTGCTAGTAGGCAGTCAGCGCCAT
+    """
+    references = ()
 
-    def test_sub_seq(self):
-        references = References.from_fasta('tests/data/ref1.fasta')
+    handle = open(fasta)
 
-        assert references.sub_seq('ref1',1,5) == 'GCATG'
+    for header, seq in Bio.SeqIO.FastaIO.SimpleFastaParser(handle):
+        name = re.search("(\S+)", header).group(0)
+        references += (Reference(name, seq),)
+
+    return references
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()

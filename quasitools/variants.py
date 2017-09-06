@@ -36,7 +36,7 @@ class Variants(object):
 
         mapped_reads_arr = []
 
-        for rid, r in references.references.items():
+        for r in references:
             #create MappedReads object
             mapped_reads_arr.append(MappedReads.from_bam(r, overlap_cutoff, identity_cutoff, bam))
 
@@ -84,7 +84,7 @@ class Variants(object):
         report += "##source=quasitools\n";
 
         #print contig info per reference
-        for rid, reference in self.references.references.items():
+        for reference in self.references:
             report += "##contig=<ID=%s,length=%i>\n" % (reference.name, len(reference.seq))
 
         report += "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">\n"
