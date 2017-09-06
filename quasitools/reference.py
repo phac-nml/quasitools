@@ -15,47 +15,10 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
-import re
-
 class Reference(object):
-    def __init__(self, name, seq, path=None):
+    def __init__(self, name, seq):
         self.name = name
         self.seq = seq
-        self.path = path
-
-    @classmethod
-    def from_fasta(cls, fasta):
-        """Build the Reference object from a fasta.
-
-        >>> r = Reference.from_fasta('tests/data/ref1.fasta')
-        >>> print(r.name)
-        ref1
-        >>> print(r.seq)
-        gattaca
-        """
-        lines = [line.rstrip('\n') for line in open(fasta)]
-
-        header = lines.pop(0)
-
-        if not header.startswith('>'):
-            raise Exception('Fasta reference is missing header line')
-        elif re.match(""">(\S+)""", header) is None:
-            raise Exception('Fasta header is malformed')
-
-        name = re.findall(""">(\S+)""", header)[0]
-
-        seq_lines = []
-
-        for line in lines:
-            if lines[0].startswith('>'):
-                raise Exception('Fasta reference contains more than one entry')
-            seq_lines.append(line)
-
-        seq = ''.join(seq_lines)
-
-        obj = cls(name, seq, fasta)
-
-        return obj
 
     def sub_seq(self, start, end):
         """Returns a portion of the sequence
@@ -67,7 +30,3 @@ class Reference(object):
         a
         """
         return self.seq[start:end+1]
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
