@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2015
+Copyright Government of Canada 2015-2017
 
 Written by: Eric Enns, National Microbiology Laboratory, Public Health Agency of Canada
 
