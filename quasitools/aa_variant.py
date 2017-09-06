@@ -171,7 +171,7 @@ class AAVariantCollection(VariantCollection):
         report += "#CHROM\tGENE\tTYPE\tWILDTYPE\tPOS\t" \
             "MUTANT\tFILTER\tMUTANT_FREQ\tCOVERAGE\tINFO\n"
 
-        # BODY
+        # Body
         for chrom in self.variants:
             for ref_codon_pos in self.variants[chrom]:
 
@@ -282,7 +282,7 @@ class AAVariantCollection(VariantCollection):
 
                                 if mutation_freq > reporting_threshold:
                                     report += (
-                                        "%s,%s,%s,%s,%s,%s,%s,%0.2f,%s\n"
+                                        "%s,%s,%s,%s,%s,%s,%s,%0.2f,%s"
                                         % (chrom,
                                            dr_mutations[dr_mutation].gene,
                                            dr_mutations[dr_mutation].category,

@@ -1,2 +1,2 @@
-Gene,Category,Surveillance,Wildtype,Position,Mutation,Mutation Frequency,Coverage
-RT,NNRTI,Yes,K,103,N,9.68,124
+Chromosome,Gene,Category,Surveillance,Wildtype,Position,Mutation,Mutation Frequency,Coverage
+hxb2_pol,RT,NNRTI,Yes,K,103,N,7.79,154
