@@ -15,7 +15,6 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
-import decimal
 import pysam
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
@@ -29,7 +28,8 @@ def parse_mapped_reads_from_bam(reference, bam):
     sam = pysam.AlignmentFile(bam, "rb")
 
     for alignment in sam.fetch(reference=reference.name):
-        padded_alignment = sam_alignment_to_padded_alignment(alignment, reference)
+        padded_alignment = sam_alignment_to_padded_alignment(alignment,
+                                                             reference)
 
         direct = '+'
         if alignment.flag & 16:
