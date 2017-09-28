@@ -53,7 +53,7 @@ class TestAAVariant:
 
         # Mask the unconfident differences
         for mrc in mapped_read_collection_arr:
-            mrc.mask_unconfident_differences(VARIANTS_FILE)
+            mrc.mask_unconfident_differences_from_file(VARIANTS_FILE)
 
         # Parse the genes from the gene file
         genes = parse_genes_file(genes_file, rs[0].name)
