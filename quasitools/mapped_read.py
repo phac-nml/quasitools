@@ -230,7 +230,7 @@ class MappedReadCollection(object):
                         line.rstrip().split("\t")
 
                     variants[int(pos) - 1][alt]["filter"] = filter
-        
+
         self.mask_unconfident_differences_from_obj(variants)
 
     def mask_unconfident_differences_from_obj(self, variants):
