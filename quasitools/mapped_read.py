@@ -215,7 +215,7 @@ class MappedReadCollection(object):
 
         return consensus_seq
 
-    def mask_unconfident_differences(self, variant_file):
+    def mask_unconfident_differences_from_file(self, variant_file):
         """Mask unconfident differences by changing their case to lower"""
 
         variants = defaultdict(lambda: defaultdict(dict))
@@ -230,7 +230,10 @@ class MappedReadCollection(object):
                         line.rstrip().split("\t")
 
                     variants[int(pos) - 1][alt]["filter"] = filter
+        
+        self.mask_unconfident_differences_from_obj(variants)
 
+    def mask_unconfident_differences_from_obj(self, variants):
         for name, mapped_read in self.mapped_reads.items():
             for pos in mapped_read.differences:
                 # mapped_read.differences[pos] will be a string of length 1.
