@@ -45,7 +45,7 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db):
 
     # Mask the unconfident differences
     for mrc in mapped_read_collection_arr:
-        mrc.mask_unconfident_differences(variants)
+        mrc.mask_unconfident_differences_from_file(variants)
 
     # Parse the genes from the gene file
     genes = parse_genes_file(genes_file, rs[0].name)
