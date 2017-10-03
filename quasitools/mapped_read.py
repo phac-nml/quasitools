@@ -1,7 +1,8 @@
 """
 Copyright Government of Canada 2015-2017
 
-Written by: Eric Enns, Eric Chubaty, National Microbiology Laboratory, Public Health Agency of Canada
+Written by: Eric Enns, Eric Chubaty, National Microbiology Laboratory,
+            Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this work except in compliance with the License. You may obtain a copy of the
@@ -229,7 +230,7 @@ class MappedReadCollection(object):
                         line.rstrip().split("\t")
 
                     variants[int(pos) - 1][alt]["filter"] = filter
-        
+
         self.mask_unconfident_differences_from_obj(variants)
 
     def mask_unconfident_differences_from_obj(self, variants):

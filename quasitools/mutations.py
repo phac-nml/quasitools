@@ -1,7 +1,8 @@
 """
 Copyright Government of Canada 2017
 
-Written by: Cole Peters, National Microbiology Laboratory, Public Health Agency of Canada
+Written by: Cole Peters, National Microbiology Laboratory,
+            Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this work except in compliance with the License. You may obtain a copy of the
