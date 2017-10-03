@@ -15,6 +15,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
+import pdb
 import decimal
 from collections import defaultdict
 
@@ -213,9 +214,8 @@ class MappedReadCollection(object):
             consensus_seq = consensus[start:end + 1]
 
         return consensus_seq
-
     def mask_unconfident_differences_from_file(self, variant_file):
-        """Mask unconfident differences by changing their case to lower"""
+        """Prepare variants object from a vcf file"""
 
         variants = defaultdict(lambda: defaultdict(dict))
 
@@ -230,9 +230,25 @@ class MappedReadCollection(object):
 
                     variants[int(pos) - 1][alt]["filter"] = filter
         
-        self.mask_unconfident_differences_from_obj(variants)
+        self.mask_unconfident_differences(variants)
 
-    def mask_unconfident_differences_from_obj(self, variants):
+    def mask_unconfident_differences_from_obj(self, variants_obj):
+        """Process variants_obj"""
+
+        variants = defaultdict(lambda: defaultdict(dict))
+
+        for rid in variants_obj.variants:
+            pdb.set_trace()
+            for pos in variants_obj.variants[rid]:
+                for alt_allele, variant in sorted(
+                        variants_obj.variants[rid][pos].items()):
+                    variants[int(pos) -1][alt_allele]["filter"] = variant.filter
+
+        self.mask_unconfident_differences(variants)
+
+    def mask_unconfident_differences(self, variants):
+        """Mask unconfident differences by changing their case to lower"""
+
         for name, mapped_read in self.mapped_reads.items():
             for pos in mapped_read.differences:
                 # mapped_read.differences[pos] will be a string of length 1.

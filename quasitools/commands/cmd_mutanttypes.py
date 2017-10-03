@@ -16,6 +16,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
+import pdb
 import click
 from quasitools.cli import pass_context
 from quasitools.parsers.reference_parser import parse_references_from_fasta
@@ -52,15 +53,15 @@ def cli(ctx, bam, reference, offset, genes_file, output, error_rate):
     variants_obj.filter('ac5', 'AC<5', True)
     variants_obj.filter('dp100', 'DP<100', True)
 
-    click.echo("Creating variants vcf file...")
-    vcf_filename = "{}.vcf".format(output.split('.')[0])
-    vcf_file = open(vcf_filename, "w")
-    vcf_file.write(variants_obj.to_vcf_file())
-    vcf_file.close()
+    # click.echo("Creating variants vcf file...")
+    # vcf_filename = "{}.vcf".format(output.split('.')[0])
+    # vcf_file = open(vcf_filename, "w")
+    # vcf_file.write(variants_obj.to_vcf_file())
+    # vcf_file.close()
 
     # Mask the unconfident differences
     for mrc in mapped_read_collection_arr:
-        mrc.mask_unconfident_differences_from_file(vcf_filename)
+        mrc.mask_unconfident_differences_from_obj(variants_obj)
 
     # Parse the genes from the gene file
     genes = parse_genes_file(genes_file, rs[0].name)
