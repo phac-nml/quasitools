@@ -58,6 +58,84 @@ class CodonVariant(Variant):
             self.ns_count, self.s_count
         )
 
+    @classmethod
+    def for_codon(cls, gene_key, aa, codon, census, frame, nt_pos):
+        codon_permutations = [
+            [[0]], [[0, 1], [1, 0]],
+            [
+                [0, 1, 2], [0, 2, 1],
+                [1, 0, 2], [1, 2, 0],
+                [2, 0, 1], [2, 1, 0]
+            ]
+        ]
+
+        gene = census.genes[gene_key]
+        frame = gene['frame']
+        chrom = gene['chrom']
+
+        coverage = census.coverage_at(frame, nt_pos)
+        ref_seq = census.mapped_read_collections[0].reference.seq
+        ref_codon = ref_seq[(nt_pos*3+frame):
+                            (nt_pos*3+frame) + 3].lower()
+        ref_aa = Seq(ref_codon).translate()[0]
+
+        if aa == ref_aa:
+            mutation_type = "S"
+        else:
+            mutation_type = "NS"
+
+        nt_change_count = sum(
+            1 for c in codon if not c.islower()
+            )
+        base_change_pos = []
+
+        for codon_pos in range(0, 3):
+            nucleotide = codon[
+                codon_pos:codon_pos+1]
+            if nucleotide.upper() == nucleotide:
+                base_change_pos.append(codon_pos)
+
+        ns_count = 0
+        s_count = 0
+
+        for codon_permutation in codon_permutations[nt_change_count-1]:
+            codon_pathway = ref_codon
+            for base_pos in codon_permutation:
+                mutant_pos = base_change_pos[base_pos]
+                mutant_nt = codon[mutant_pos:mutant_pos+1]
+                codon_pathway = codon_pathway[:mutant_pos] + \
+                    mutant_nt + codon_pathway[mutant_pos+1:]
+
+                if Seq(codon_pathway).translate()[0] == ref_aa:
+                    s_count += 1
+                else:
+                    ns_count += 1
+
+        # Create CodonVariant and add to collection
+        return cls(
+            chrom=chrom,
+            gene=gene_key,
+            id="mutation",
+            coverage=coverage,
+            mutant_freq=census.codon_frequency_for_amino_at(
+                frame,
+                nt_pos,
+                aa,
+                CONFIDENT,
+                codon)/coverage*100,
+            pos=(nt_pos - (gene['start'] // 3) + 1),
+            nt_start_gene=gene['start'],
+            nt_end_gene=gene['end'],
+            nt_start=nt_pos*3 + frame,
+            nt_end=nt_pos*3 + frame+2,
+            ref_codon=ref_codon,
+            mutant_codon=codon,
+            ref_aa=ref_aa,
+            mutant_aa=aa,
+            mutant_type=mutation_type,
+            ns_count=ns_count,
+            s_count=s_count)
+
 
 class CodonVariantCollection(VariantCollection):
 
@@ -76,15 +154,6 @@ class CodonVariantCollection(VariantCollection):
 
         var_collect = cls(aa_census)
 
-        codon_permutations = [
-            [[0]], [[0, 1], [1, 0]],
-            [
-                [0, 1, 2], [0, 2, 1],
-                [1, 0, 2], [1, 2, 0],
-                [2, 0, 1], [2, 1, 0]
-            ]
-        ]
-
         # Build up the collection of CodonVariants from many census
         for census_ind, census in enumerate(aa_census):
 
@@ -94,103 +163,29 @@ class CodonVariantCollection(VariantCollection):
                 frame = gene['frame']
                 gene_start = int((gene['start'] - frame) / 3)
                 gene_end = int((gene['end'] - frame - 2) / 3)
-                chrom = gene['chrom']
 
                 for nt_pos in range(gene_start, gene_end):
-                    coverage = census.coverage_at(frame, nt_pos)
                     ref_seq = census.mapped_read_collections[0].reference.seq
                     ref_codon = ref_seq[(nt_pos*3+frame):
                                         (nt_pos*3+frame) + 3].lower()
-                    ref_aa = Seq(ref_codon).translate()[0]
 
                     for aa in census.aminos_at(frame, nt_pos, CONFIDENT):
                         frequency = census.amino_frequency_at(
                             frame, nt_pos, aa, CONFIDENT)
                         if frequency >= 0.01:
-                            for codon in \
-                                census.amino_to_codons_at(
-                                                          frame,
-                                                          nt_pos,
-                                                          aa,
-                                                          CONFIDENT
-                                                         ):
-                                if codon != ref_codon:
-                                    if aa == ref_aa:
-                                        mutation_type = "S"
-                                    else:
-                                        mutation_type = "NS"
-
-                                    nt_change_count = sum(
-                                        1 for c in codon if not c.islower()
-                                        )
-                                    base_change_pos = []
-
-                                    for codon_pos in range(0, 3):
-                                        nucleotide = codon[
-                                            codon_pos:codon_pos+1]
-                                        if nucleotide.upper() == nucleotide:
-                                            base_change_pos.append(codon_pos)
-
-                                    ns_count = 0
-                                    s_count = 0
-
-                                    for codon_permutation in \
-                                        codon_permutations[nt_change_count-1]:
-                                        codon_pathway = ref_codon
-                                        for base_pos in codon_permutation:
-                                            mutant_pos = base_change_pos[
-                                                base_pos]
-                                            mutant_nt = codon[
-                                                mutant_pos:mutant_pos+1]
-                                            codon_pathway = codon_pathway[
-                                                :mutant_pos] + \
-                                                mutant_nt + codon_pathway[
-                                                    mutant_pos+1:]
-
-                                            if Seq(codon_pathway).\
-                                                translate()[0] == ref_aa:
-                                                s_count += 1
-                                            else:
-                                                ns_count += 1
-
-                                    # Create CodonVariant and add to collection
-                                    mutation = CodonVariant(chrom=chrom,
-                                                            gene=gene_key,
-                                                            id="mutation",
-                                                            coverage=coverage,
-                                                            mutant_freq=census.
-                                                                codon_frequency_for_amino_at(
-                                                                frame,
-                                                                nt_pos,
-                                                                aa,
-                                                                CONFIDENT,
-                                                                codon
-                                                                )/coverage*100,
-                                                            pos=(nt_pos - (
-                                                                gene['start'] // 3
-                                                                ) + 1),
-                                                            nt_start_gene=\
-                                                                gene['start'],
-                                                            nt_end_gene=\
-                                                                gene['end'],
-                                                            nt_start=(
-                                                                nt_pos*3
-                                                                + frame),
-                                                            nt_end=(
-                                                                nt_pos*3
-                                                                + frame+2),
-                                                            ref_codon=ref_codon,
-                                                            mutant_codon=codon,
-                                                            ref_aa=ref_aa,
-                                                            mutant_aa=aa,
-                                                            mutant_type=(
-                                                                mutation_type),
-                                                            ns_count=ns_count,
-                                                            s_count=s_count
-                                                            )
-                                    var_collect.variants[gene_key][
-                                        (nt_pos*3 + frame)][
-                                            codon] = mutation
+                            for codon in census.amino_to_codons_at(
+                                                          frame, nt_pos,
+                                                          aa, CONFIDENT):
+                                    if codon != ref_codon:
+                                        mutation = CodonVariant.for_codon(
+                                                gene_key,
+                                                aa, codon,
+                                                census,
+                                                frame,
+                                                nt_pos)
+                                        var_collect.variants[gene_key][
+                                            (nt_pos*3 + frame)][
+                                                codon] = mutation
         return var_collect
 
     def to_csv_file(self, offset):
@@ -198,9 +193,9 @@ class CodonVariantCollection(VariantCollection):
         (i.e. a csv file)."""
 
         report = ("#gene,nt position (gene),nt start position,"
-            "nt end position,ref codon,mutant codon,"
-            "ref AA,mutant AA,coverage,mutant frequency,"
-            "mutant type,NS count,S count\n")
+                  "nt end position,ref codon,mutant codon,"
+                  "ref AA,mutant AA,coverage,mutant frequency,"
+                  "mutant type,NS count,S count\n")
 
         for gene in self.variants:
             for pos in self.variants[gene]:
@@ -212,14 +207,13 @@ class CodonVariantCollection(VariantCollection):
 
     @classmethod
     def report_dnds_values(cls, ref_seq, genes, offset):
-        report = "#gene,pn,ps,pn_sites,ps_sites,dn/ds\n"     
+        report = "#gene,pn,ps,pn_sites,ps_sites,dn/ds\n"
 
         for gene in genes:
-        # pdb.set_trace()
             s_sites = 0
             ns_sites = 0
-            gene_seq = ref_seq[(genes[gene]['start'] - offset): 
-                (genes[gene]['end'] - offset + 1)]
+            gene_seq = ref_seq[(genes[gene]['start'] - offset):
+                               (genes[gene]['end'] - offset + 1)]
 
             pn = 0
             ps = 0
@@ -233,7 +227,6 @@ class CodonVariantCollection(VariantCollection):
             for i in range(0, len(gene_seq)-1, 3):
                 codon = gene_seq[i:i+3]
                 aa = Seq(codon).translate()[0]
-                stop = 0
                 non_syn = 0
 
                 # synonymous sites only occur at 1st and 3rd pos in a codon
@@ -255,7 +248,7 @@ class CodonVariantCollection(VariantCollection):
 
                 pni = 0
                 psi = 0
-                
+
                 if 'NS' in genes[gene][i]:
                     for count in genes[gene][i]['NS']:
                         pni += genes[gene][i]['NS'][int(count)] * (
@@ -278,7 +271,7 @@ class CodonVariantCollection(VariantCollection):
                     dn = -(3/4.0)*log(1-(4*pn/3.0))
                     ds = -(3/4.0)*log(1-(4*ps/3.0))
                     report += "%s,%0.4f,%0.4f,%i,%i,%0.4f\n" % \
-                            (gene, pn, ps, pn_ncod, ps_ncod, dn/ds)
+                        (gene, pn, ps, pn_ncod, ps_ncod, dn/ds)
                 else:
                     report += "%s,%0.4f,%0.4f,%i,%i,N/A\n" % \
                             (gene, pn, ps, pn_ncod, ps_ncod)
