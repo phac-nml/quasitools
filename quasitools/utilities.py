@@ -25,19 +25,19 @@ def sam_alignment_to_padded_alignment(alignment, reference):
     pad_ref, pad_match, pad_query = '', '', ''
 
     for (operation, length) in alignment.cigartuples:
-        if operation is 4: # soft clip
+        if operation is 4:  # soft clip
             """nothing needs to be done for soft clips"""
-        elif operation is 1: # insertion
+        elif operation is 1:  # insertion
             pad_ref += '-' * length
             pad_query += query_dna[0:length]
             query_dna = query_dna[length:]
             pad_match += ' ' * length
-        elif operation is 2 or operation is 3: # 2 - deletion, 3 - ref skip
+        elif operation is 2 or operation is 3:  # 2 - deletion, 3 - ref skip
             pad_ref += ref_dna[0:length]
             ref_dna = ref_dna[length:]
             pad_query += '-' * length
             pad_match += ' ' * length
-        elif operation is 5: # hard clip
+        elif operation is 5:  # hard clip
             """nothing needs to be done for hard clips"""
         else:
             pad_ref += ref_dna[0:length]

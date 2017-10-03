@@ -218,7 +218,8 @@ class CodonVariantCollection(VariantCollection):
         # pdb.set_trace()
             s_sites = 0
             ns_sites = 0
-            gene_seq = ref_seq[(genes[gene]['start'] - offset): (genes[gene]['end'] - offset + 1)]
+            gene_seq = ref_seq[(genes[gene]['start'] - offset): 
+                (genes[gene]['end'] - offset + 1)]
 
             pn = 0
             ps = 0
@@ -235,7 +236,7 @@ class CodonVariantCollection(VariantCollection):
                 stop = 0
                 non_syn = 0
 
-                # synonymous sites only occur at first and third position in a codon
+                # synonymous sites only occur at 1st and 3rd pos in a codon
                 for j in range(0, 3):
                     for nt in ('a', 'c', 'g', 't'):
                         if nt.lower() != codon[j:j+1].lower():
@@ -255,15 +256,17 @@ class CodonVariantCollection(VariantCollection):
                 pni = 0
                 psi = 0
                 
-                if 'NS' in genes[gene][i]:  #hasattr(genes[gene][i], 'NS'):
+                if 'NS' in genes[gene][i]:
                     for count in genes[gene][i]['NS']:
-                        pni += genes[gene][i]['NS'][int(count)] * count/non_syn
+                        pni += genes[gene][i]['NS'][int(count)] * (
+                            count/non_syn)
                     pn += pni
                     pn_ncod += 1
 
-                if 'S' in genes[gene][i]: #hasattr(genes[gene][i], 'S'):
+                if 'S' in genes[gene][i]:
                     for count in genes[gene][i]['S']:
-                        psi += genes[gene][i]['S'][int(count)] * count/(3-non_syn)
+                        psi += genes[gene][i]['S'][int(count)] * (
+                            count/(3-non_syn))
                     ps += psi
                     ps_ncod += 1
 

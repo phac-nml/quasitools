@@ -17,13 +17,11 @@ specific language governing permissions and limitations under the License.
 """
 
 import click
-from collections import defaultdict
-from Bio.Seq import Seq
-from numpy import log
 from quasitools.parsers.reference_parser import parse_references_from_fasta
-from quasitools.parsers.genes_file_parser import parse_genes_file
-from quasitools.parsers.codon_variant_file_parser import parse_genes_from_codon_variants_csv
+from quasitools.parsers.codon_variant_file_parser \
+    import parse_genes_from_codon_variants_csv
 from quasitools.codon_variant import CodonVariantCollection
+
 
 @click.command('dnds', short_help='Calculate the dn/ds '
                'value for each region in a bed file.')
@@ -31,7 +29,6 @@ from quasitools.codon_variant import CodonVariantCollection
 @click.argument('reference', required=True, type=click.Path(exists=True))
 @click.argument('offset', required=True, type=int)
 @click.argument('output', required=True)
-
 @click.pass_context
 def cli(ctx, csv, reference, offset, output):
     click.echo("Running dnds command...")

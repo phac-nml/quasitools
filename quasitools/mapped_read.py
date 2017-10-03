@@ -215,6 +215,7 @@ class MappedReadCollection(object):
             consensus_seq = consensus[start:end + 1]
 
         return consensus_seq
+
     def mask_unconfident_differences_from_file(self, variant_file):
         """Prepare variants object from a vcf file"""
 
@@ -230,7 +231,7 @@ class MappedReadCollection(object):
                         line.rstrip().split("\t")
 
                     variants[int(pos) - 1][alt]["filter"] = filter
-        
+
         self.mask_unconfident_differences(variants)
 
     def mask_unconfident_differences_from_obj(self, variants_obj):
@@ -243,7 +244,7 @@ class MappedReadCollection(object):
             for pos in variants_obj.variants[rid]:
                 for alt_allele, variant in sorted(
                         variants_obj.variants[rid][pos].items()):
-                    variants[int(pos) -1][alt_allele]["filter"] = variant.filter
+                    variants[pos-1][alt_allele]["filter"] = variant.filter
 
         self.mask_unconfident_differences(variants)
 
