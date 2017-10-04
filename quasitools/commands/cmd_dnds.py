@@ -42,4 +42,5 @@ def cli(ctx, csv, reference, offset, output):
     output_file = open(output, "w")
     output_file.write(report)
     output_file.close()
+
     click.echo(report)

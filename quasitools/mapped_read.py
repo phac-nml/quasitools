@@ -16,7 +16,6 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
-import pdb
 import decimal
 from collections import defaultdict
 
@@ -240,7 +239,6 @@ class MappedReadCollection(object):
         variants = defaultdict(lambda: defaultdict(dict))
 
         for rid in variants_obj.variants:
-            pdb.set_trace()
             for pos in variants_obj.variants[rid]:
                 for alt_allele, variant in sorted(
                         variants_obj.variants[rid][pos].items()):

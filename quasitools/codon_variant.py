@@ -26,12 +26,10 @@ from numpy import log
 
 class CodonVariant(Variant):
 
-    def __init__(self, gene=".", nt_start_gene=0, nt_end_gene=0,
-                 nt_start=0, nt_end=0,
-                 ref_codon=".", mutant_codon=".",
-                 ref_aa=".", mutant_aa=".", coverage=0,
-                 mutant_freq="0", mutant_type=".",
-                 ns_count=0, s_count=0, **kwargs):
+    def __init__(self, gene, nt_start_gene, nt_end_gene,
+                 nt_start, nt_end, ref_codon, mutant_codon,
+                 ref_aa, mutant_aa, coverage, mutant_freq,
+                 mutant_type, ns_count, s_count, **kwargs):
         super(CodonVariant, self).__init__(**kwargs)
 
         self.gene = gene
@@ -59,7 +57,7 @@ class CodonVariant(Variant):
         )
 
     @classmethod
-    def for_codon(cls, gene_key, aa, codon, census, frame, nt_pos):
+    def from_aacensus(cls, gene_key, aa, codon, census, frame, nt_pos):
         codon_permutations = [
             [[0]], [[0, 1], [1, 0]],
             [
@@ -84,9 +82,7 @@ class CodonVariant(Variant):
         else:
             mutation_type = "NS"
 
-        nt_change_count = sum(
-            1 for c in codon if not c.islower()
-            )
+        nt_change_count = sum(1 for c in codon if not c.islower())
         base_change_pos = []
 
         for codon_pos in range(0, 3):
@@ -111,7 +107,6 @@ class CodonVariant(Variant):
                 else:
                     ns_count += 1
 
-        # Create CodonVariant and add to collection
         return cls(
             chrom=chrom,
             gene=gene_key,
@@ -177,12 +172,13 @@ class CodonVariantCollection(VariantCollection):
                                                           frame, nt_pos,
                                                           aa, CONFIDENT):
                                     if codon != ref_codon:
-                                        mutation = CodonVariant.for_codon(
+                                        mutation = CodonVariant.from_aacensus(
                                                 gene_key,
                                                 aa, codon,
                                                 census,
                                                 frame,
                                                 nt_pos)
+
                                         var_collect.variants[gene_key][
                                             (nt_pos*3 + frame)][
                                                 codon] = mutation

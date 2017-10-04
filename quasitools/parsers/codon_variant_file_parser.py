@@ -33,25 +33,22 @@ def parse_genes_from_codon_variants_csv(csv):
                     mutant_freq, mutant_type,
                     ns_count, s_count
                 ) = line.rstrip().split(",")
+
                 gene_start, gene_end = gene_start_end.split('-')
 
-                gene_start = int(gene_start)
-                gene_end = int(gene_end)
-                nt_start = int(nt_start)
-                nt_end = int(nt_end)
-                mutant_freq = float(mutant_freq)
-                ns_count = float(ns_count)
-                s_count = float(s_count)
+                ns_count = int(ns_count)
+                s_count = int(s_count)
+                mutant_freq = int(mutant_freq)
 
-                genes[gene]['start'] = gene_start
-                genes[gene]['end'] = gene_end
+                genes[gene]['start'] = int(gene_start)
+                genes[gene]['end'] = int(gene_end)
+
+                pos = int(nt_start)-int(gene_start)
 
                 if ns_count > 0:
-                    genes[gene][nt_start-gene_start][
-                        'NS'][ns_count] += mutant_freq/100.0
+                    genes[gene][pos]['NS'][ns_count] += mutant_freq/100.0
                 if s_count > 0:
-                    genes[gene][nt_start-gene_start][
-                        'S'][s_count] += mutant_freq/100.0
+                    genes[gene][pos]['S'][s_count] += mutant_freq/100.0
 
     f.close()
 
