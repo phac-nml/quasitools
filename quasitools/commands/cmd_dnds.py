@@ -28,19 +28,13 @@ from quasitools.codon_variant import CodonVariantCollection
 @click.argument('csv', required=True, type=click.Path(exists=True))
 @click.argument('reference', required=True, type=click.Path(exists=True))
 @click.argument('offset', required=True, type=int)
-@click.argument('output', required=True)
 @click.pass_context
-def cli(ctx, csv, reference, offset, output):
-    click.echo("Running dnds command...")
-
+def cli(ctx, csv, reference, offset):
     rs = parse_references_from_fasta(reference)
     ref_seq = rs[0].seq
     genes = parse_genes_from_codon_variants_csv(csv)
 
-    report = CodonVariantCollection.report_dnds_values(ref_seq, genes, offset)
-
-    output_file = open(output, "w")
-    output_file.write(report)
-    output_file.close()
-
-    click.echo(report)
+    click.echo(CodonVariantCollection.report_dnds_values(
+        ref_seq,
+        genes,
+        offset))

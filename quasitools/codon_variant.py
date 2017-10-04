@@ -272,4 +272,4 @@ class CodonVariantCollection(VariantCollection):
                     report += "%s,%0.4f,%0.4f,%i,%i,N/A\n" % \
                             (gene, pn, ps, pn_ncod, ps_ncod)
 
-        return report
+        return report[:-1]

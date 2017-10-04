@@ -36,9 +36,9 @@ def parse_genes_from_codon_variants_csv(csv):
 
                 gene_start, gene_end = gene_start_end.split('-')
 
-                ns_count = int(ns_count)
-                s_count = int(s_count)
-                mutant_freq = int(mutant_freq)
+                ns_count = float(ns_count)
+                s_count = float(s_count)
+                mutant_freq = float(mutant_freq)
 
                 genes[gene]['start'] = int(gene_start)
                 genes[gene]['end'] = int(gene_end)

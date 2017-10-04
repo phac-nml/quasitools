@@ -32,13 +32,10 @@ from quasitools.codon_variant import CodonVariantCollection
 @click.argument('reference', required=True, type=click.Path(exists=True))
 @click.argument('offset', required=True, type=float)
 @click.argument('genes_file', required=True, type=click.Path(exists=True))
-@click.argument('output', required=True)
 @click.option('-e', '--error_rate', default=0.01,
               help='estimated sequencing error rate.')
 @pass_context
-def cli(ctx, bam, reference, offset, genes_file, output, error_rate):
-    click.echo("Running mutanttypes command...")
-
+def cli(ctx, bam, reference, offset, genes_file, error_rate):
     rs = parse_references_from_fasta(reference)
     mapped_read_collection_arr = []
 
@@ -65,17 +62,9 @@ def cli(ctx, bam, reference, offset, genes_file, output, error_rate):
     for gene in genes:
         frames.add(genes[gene]['frame'])
 
-    click.echo("Creating AACensus object...")
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
-    click.echo("Creating CodonVariantCollection")
     codon_variants = CodonVariantCollection.from_aacensus(
                         aa_census, next(iter(frames)))
 
-    report = codon_variants.to_csv_file(offset)
-
-    csv_file = open(output, "w")
-    csv_file.write(report)
-    csv_file.close()
-
-    click.echo(report)
+    click.echo(codon_variants.to_csv_file(offset))
