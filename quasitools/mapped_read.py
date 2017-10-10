@@ -17,7 +17,6 @@ specific language governing permissions and limitations under the License.
 """
 
 import decimal
-from collections import defaultdict
 
 
 class MappedRead(object):
@@ -215,39 +214,11 @@ class MappedReadCollection(object):
 
         return consensus_seq
 
-    def mask_unconfident_differences_from_file(self, variant_file):
-        """Prepare variants object from a vcf file"""
-
-        variants = defaultdict(lambda: defaultdict(dict))
-
-        # Read in and parse the variants file
-        # The file uses 1 as the first position but 0 is the first position in
-        # mapped reads.
-        with open(variant_file, "r") as input:
-            for line in input:
-                if line[0] != "#":
-                    chrom, pos, id, ref, alt, qual, filter, info = \
-                        line.rstrip().split("\t")
-
-                    variants[int(pos) - 1][alt]["filter"] = filter
-
-        self.mask_unconfident_differences(variants)
-
-    def mask_unconfident_differences_from_obj(self, variants_obj):
-        """Process variants_obj"""
-
-        variants = defaultdict(lambda: defaultdict(dict))
-
-        for rid in variants_obj.variants:
-            for pos in variants_obj.variants[rid]:
-                for alt_allele, variant in sorted(
-                        variants_obj.variants[rid][pos].items()):
-                    variants[pos-1][alt_allele]["filter"] = variant.filter
-
-        self.mask_unconfident_differences(variants)
-
-    def mask_unconfident_differences(self, variants):
+    def mask_unconfident_differences(self, variants_obj):
         """Mask unconfident differences by changing their case to lower"""
+
+        variants = variants_obj.variants
+        rid = next(iter(variants.keys()))
 
         for name, mapped_read in self.mapped_reads.items():
             for pos in mapped_read.differences:
@@ -261,10 +232,9 @@ class MappedReadCollection(object):
                 insertion = mapped_read.differences[pos][1:]
 
                 if substitution != "." and substitution != "-":
-                    if (substitution.lower() not in variants[pos] or
-                            variants[pos][substitution.lower()]["filter"]
+                    if (substitution.lower() not in variants[rid][pos+1] or
+                            variants[rid][pos+1][substitution.lower()].filter
                             != "PASS"):
-
                         substitution = substitution.lower()
 
                 mapped_read.differences[pos] = substitution + insertion

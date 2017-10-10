@@ -24,6 +24,8 @@ from quasitools.mutations import MutationDB
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.genes_file_parser import parse_genes_file
+from quasitools.parsers.nt_variant_file_parser \
+    import parse_nt_variants_from_vcf
 
 
 @click.command('find_mutations',
@@ -48,9 +50,11 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
         # Create a MappedReadCollection object
         mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, bam))
 
+    variants_obj = parse_nt_variants_from_vcf(variants, rs)
+
     # Mask the unconfident differences
     for mrc in mapped_read_collection_arr:
-        mrc.mask_unconfident_differences_from_file(variants)
+        mrc.mask_unconfident_differences(variants_obj)
 
     # Parse the genes from the gene file
     genes = parse_genes_file(genes_file, rs[0].name)

@@ -43,15 +43,15 @@ def cli(ctx, bam, reference, offset, genes_file, error_rate):
     for r in rs:
         mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, bam))
 
-    variants_obj = NTVariantCollection.from_mapped_read_collections(
+    variants = NTVariantCollection.from_mapped_read_collections(
                     error_rate, rs, *mapped_read_collection_arr)
-    variants_obj.filter('q30', 'QUAL<30', True)
-    variants_obj.filter('ac5', 'AC<5', True)
-    variants_obj.filter('dp100', 'DP<100', True)
+    variants.filter('q30', 'QUAL<30', True)
+    variants.filter('ac5', 'AC<5', True)
+    variants.filter('dp100', 'DP<100', True)
 
     # Mask the unconfident differences
     for mrc in mapped_read_collection_arr:
-        mrc.mask_unconfident_differences_from_obj(variants_obj)
+        mrc.mask_unconfident_differences(variants)
 
     # Parse the genes from the gene file
     genes = parse_genes_file(genes_file, rs[0].name)
