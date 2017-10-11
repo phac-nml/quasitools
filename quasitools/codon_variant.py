@@ -117,7 +117,7 @@ class CodonVariant(Variant):
                 nt_pos,
                 aa,
                 CONFIDENT,
-                codon)/coverage*100,
+                codon)/float(coverage)*100.0,
             pos=(nt_pos - (gene['start'] // 3) + 1),
             nt_start_gene=gene['start'],
             nt_end_gene=gene['end'],
