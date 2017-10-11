@@ -1,7 +1,7 @@
 """
 Copyright Government of Canada 2017
 
-Written by: Camy Tran, National Microbiology Laboratory,
+Written by: Camy Tran, Eric Enns, National Microbiology Laboratory,
             Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -201,9 +201,28 @@ class CodonVariantCollection(VariantCollection):
 
         return report[:-1]
 
-    @classmethod
-    def report_dnds_values(cls, ref_seq, genes, offset):
+    def report_dnds_values(self, ref_seq, offset):
         report = "#gene,pn,ps,pn_sites,ps_sites,dn/ds\n"
+
+        # Iterate through the variants to
+        # create a gene map and report on each gene
+        genes = defaultdict(lambda: defaultdict(lambda:
+                            defaultdict(lambda: defaultdict(int))))
+
+        for gene in self.variants:
+            for pos in self.variants[gene]:
+                for codon in self.variants[gene][pos]:
+                    variant = self.variants[gene][pos][codon]
+
+                    genes[gene]['start'] = variant.nt_start_gene
+                    genes[gene]['end'] = variant.nt_end_gene
+
+                    if variant.ns_count > 0:
+                        genes[gene][pos]['NS'][variant.ns_count] += (
+                            variant.mutant_freq/100.0)
+                    if variant.s_count > 0:
+                        genes[gene][pos]['S'][variant.s_count] += (
+                            variant.mutant_freq/100.0)
 
         for gene in genes:
             s_sites = 0

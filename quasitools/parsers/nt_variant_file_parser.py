@@ -21,6 +21,7 @@ from quasitools.nt_variant import NTVariant, NTVariantCollection
 
 def parse_nt_variants_from_vcf(variant_file, references):
     """Build variants object from a vcf file"""
+
     obj = NTVariantCollection(references)
 
     # Read in and parse the variants file

@@ -19,8 +19,7 @@ specific language governing permissions and limitations under the License.
 import click
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.codon_variant_file_parser \
-    import parse_genes_from_codon_variants_csv
-from quasitools.codon_variant import CodonVariantCollection
+    import parse_codon_variants
 
 
 @click.command('dnds', short_help='Calculate the dn/ds '
@@ -32,9 +31,7 @@ from quasitools.codon_variant import CodonVariantCollection
 def cli(ctx, csv, reference, offset):
     rs = parse_references_from_fasta(reference)
     ref_seq = rs[0].seq
-    genes = parse_genes_from_codon_variants_csv(csv)
 
-    click.echo(CodonVariantCollection.report_dnds_values(
-        ref_seq,
-        genes,
-        offset))
+    codon_variants = parse_codon_variants(csv, rs)
+
+    click.echo(codon_variants.report_dnds_values(ref_seq, offset))
