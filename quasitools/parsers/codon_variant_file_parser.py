@@ -16,8 +16,8 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
-from collections import defaultdict
 from quasitools.codon_variant import CodonVariant, CodonVariantCollection
+
 
 def parse_codon_variants(csv, references):
     """Parse a codon variants csv and build a codon variants object"""
