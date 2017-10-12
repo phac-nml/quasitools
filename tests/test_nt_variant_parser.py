@@ -44,7 +44,7 @@ class TestNtVariantParser:
         variants_obj = NTVariantCollection(rs)
         
         for i in range(0, 20):
-            parsed_variant = NTVariant(chrom="hxb2_pol",
+            variant = NTVariant(chrom="hxb2_pol",
                                        pos=i,
                                        id=".",
                                        ref='a',
@@ -56,7 +56,7 @@ class TestNtVariantParser:
                                              "AF": "0.0025"}
                                        )
 
-            variants_obj.variants["hxb2_pol"][i]['t'] = parsed_variant
+            variants_obj.variants["hxb2_pol"][i]['t'] = variant
 
         #Create a valid vcf file
         valid_vcf_file = TEST_PATH + "/data/valid_vcf_file.vcf"
