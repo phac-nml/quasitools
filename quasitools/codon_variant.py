@@ -103,9 +103,9 @@ class CodonVariant(Variant):
                     mutant_nt + codon_pathway[mutant_pos+1:]
 
                 if Seq(codon_pathway).translate()[0] == ref_aa:
-                    s_count += 1
+                    s_count += 1.0
                 else:
-                    ns_count += 1
+                    ns_count += 1.0
 
         return cls(
             chrom=chrom,
@@ -128,8 +128,8 @@ class CodonVariant(Variant):
             ref_aa=ref_aa,
             mutant_aa=aa,
             mutant_type=mutation_type,
-            ns_count=ns_count,
-            s_count=s_count)
+            ns_count=ns_count/len(codon_permutations[nt_change_count-1]),
+            s_count=s_count/len(codon_permutations[nt_change_count-1]))
 
 
 class CodonVariantCollection(VariantCollection):
