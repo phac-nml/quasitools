@@ -266,14 +266,14 @@ class CodonVariantCollection(VariantCollection):
 
                 if 'NS' in genes[gene][i]:
                     for count in genes[gene][i]['NS']:
-                        pni += genes[gene][i]['NS'][int(count)] * (
+                        pni += genes[gene][i]['NS'][count] * (
                             count/non_syn)
                     pn += pni
                     pn_ncod += 1
 
                 if 'S' in genes[gene][i]:
                     for count in genes[gene][i]['S']:
-                        psi += genes[gene][i]['S'][int(count)] * (
+                        psi += genes[gene][i]['S'][count] * (
                             count/(3-non_syn))
                     ps += psi
                     ps_ncod += 1
