@@ -35,11 +35,11 @@ class TestMutantTypes:
 
     @classmethod
     def setup(self):
-        bam = TEST_PATH + "/data/test_10p.bam"
+        bam = TEST_PATH + "/data/align.bam"
         reference = TEST_PATH + \
-            "/data/SIVmac239M5SpXplasmid_reference_1269-10407.fasta"
+            "/data/hxb2_pol.fas"
         genes_file = TEST_PATH + \
-            "/data/SIVmac239M5SpXplasmid_reference_1269-10407.bed"
+            "/data/hxb2_pol.bed"
         error_rate = 0.0038
 
         rs = parse_references_from_fasta(reference)
