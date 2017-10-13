@@ -36,10 +36,8 @@ class TestMutantTypes:
     @classmethod
     def setup(self):
         bam = TEST_PATH + "/data/align.bam"
-        reference = TEST_PATH + \
-            "/data/hxb2_pol.fas"
-        genes_file = TEST_PATH + \
-            "/data/hxb2_pol.bed"
+        reference = TEST_PATH + "/data/hxb2_pol.fas"
+        genes_file = TEST_PATH + "/data/hxb2_pol.bed"
         error_rate = 0.0038
 
         rs = parse_references_from_fasta(reference)
