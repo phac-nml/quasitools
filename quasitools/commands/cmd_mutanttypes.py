@@ -1,7 +1,7 @@
 """
 Copyright Government of Canada 2017
 
-Written by: Cole Peters, Eric Chubaty, National Microbiology Laboratory,
+Written by: Camy Tran, National Microbiology Laboratory,
             Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -18,43 +18,40 @@ specific language governing permissions and limitations under the License.
 
 import click
 from quasitools.cli import pass_context
-from quasitools.aa_census import AACensus
-from quasitools.aa_variant import AAVariantCollection
-from quasitools.mutations import MutationDB
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.genes_file_parser import parse_genes_file
-from quasitools.parsers.nt_variant_file_parser \
-    import parse_nt_variants_from_vcf
+from quasitools.nt_variant import NTVariantCollection
+from quasitools.aa_census import AACensus
+from quasitools.codon_variant import CodonVariantCollection
 
 
-@click.command('find_mutations',
-               short_help='Identifies amino acid mutations.')
+@click.command('mutanttypes', short_help='Identify the number of '
+               'non-synonymous and synonymous mutations.')
 @click.argument('bam', required=True, type=click.Path(exists=True))
 @click.argument('reference', required=True, type=click.Path(exists=True))
-@click.argument('variants', required=True, type=click.Path(exists=True))
+@click.argument('offset', required=True, type=float)
 @click.argument('genes_file', required=True, type=click.Path(exists=True))
-@click.argument('mutation_db', required=True, type=click.Path(exists=True))
-@click.option('-f', '--min_freq', default=0.01,
-              help='the minimum required frequency.')
-@click.option('-t', '--reporting_threshold', default=1,
-              help='the minimum percentage required for an entry in the drug'
-              'resistant report.')
+@click.option('-e', '--error_rate', default=0.01,
+              help='estimated sequencing error rate.')
 @pass_context
-def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
-        reporting_threshold):
+def cli(ctx, bam, reference, offset, genes_file, error_rate):
     rs = parse_references_from_fasta(reference)
-
     mapped_read_collection_arr = []
+
+    # Create a MappedReadCollection object
     for r in rs:
-        # Create a MappedReadCollection object
         mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, bam))
 
-    variants_obj = parse_nt_variants_from_vcf(variants, rs)
+    variants = NTVariantCollection.from_mapped_read_collections(
+                    error_rate, rs, *mapped_read_collection_arr)
+    variants.filter('q30', 'QUAL<30', True)
+    variants.filter('ac5', 'AC<5', True)
+    variants.filter('dp100', 'DP<100', True)
 
     # Mask the unconfident differences
     for mrc in mapped_read_collection_arr:
-        mrc.mask_unconfident_differences(variants_obj)
+        mrc.mask_unconfident_differences(variants)
 
     # Parse the genes from the gene file
     genes = parse_genes_file(genes_file, rs[0].name)
@@ -65,18 +62,9 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
     for gene in genes:
         frames.add(genes[gene]['frame'])
 
-    # Create an AACensus object
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
-    # Create AAVar collection and print the hmcf file
-    aa_vars = AAVariantCollection.from_aacensus(aa_census, next(iter(frames)))
+    codon_variants = CodonVariantCollection.from_aacensus(
+                        aa_census, next(iter(frames)))
 
-    # Filter for mutant frequency
-    aa_vars.filter('mf' + str(min_freq), 'freq<' + str(min_freq), True)
-
-    # Build the mutation database
-    mutation_db = MutationDB(mutation_db, genes)
-
-    # Generate the mutation report
-    click.echo(aa_vars.report_dr_mutations(mutation_db,
-                                           reporting_threshold))
+    click.echo(codon_variants.to_csv_file(offset))

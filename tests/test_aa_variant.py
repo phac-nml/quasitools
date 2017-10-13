@@ -26,6 +26,8 @@ from quasitools.mutations import MutationDB
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.genes_file_parser import parse_genes_file
 from quasitools.parsers.reference_parser import parse_references_from_fasta
+from quasitools.parsers.nt_variant_file_parser \
+    import parse_nt_variants_from_vcf
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 VARIANTS_FILE = TEST_PATH + "/data/output/nt_variants.vcf"
@@ -51,9 +53,11 @@ class TestAAVariant:
             mapped_read_collection_arr.append(
                 parse_mapped_reads_from_bam(r, bam))
 
+        variants_obj = parse_nt_variants_from_vcf(VARIANTS_FILE, rs)
+
         # Mask the unconfident differences
         for mrc in mapped_read_collection_arr:
-            mrc.mask_unconfident_differences_from_file(VARIANTS_FILE)
+            mrc.mask_unconfident_differences(variants_obj)
 
         # Parse the genes from the gene file
         genes = parse_genes_file(genes_file, rs[0].name)

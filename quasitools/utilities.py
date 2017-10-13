@@ -16,6 +16,12 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
+INSERTION = 1
+DELETION = 2
+REF_SKIP = 3
+SOFT_CLIP = 4
+HARD_CLIP = 5
+
 
 def sam_alignment_to_padded_alignment(alignment, reference):
     ref_dna = reference.sub_seq(alignment.reference_start,
@@ -25,19 +31,19 @@ def sam_alignment_to_padded_alignment(alignment, reference):
     pad_ref, pad_match, pad_query = '', '', ''
 
     for (operation, length) in alignment.cigartuples:
-        if operation is 4:
+        if operation is SOFT_CLIP:
             """nothing needs to be done for soft clips"""
-        elif operation is 1:
+        elif operation is INSERTION:
             pad_ref += '-' * length
             pad_query += query_dna[0:length]
             query_dna = query_dna[length:]
             pad_match += ' ' * length
-        elif operation is 2 or operation is 3:
+        elif operation is DELETION or operation is REF_SKIP:
             pad_ref += ref_dna[0:length]
             ref_dna = ref_dna[length:]
             pad_query += '-' * length
             pad_match += ' ' * length
-        elif operation is 5:
+        elif operation is HARD_CLIP:
             """nothing needs to be done for hard clips"""
         else:
             pad_ref += ref_dna[0:length]
