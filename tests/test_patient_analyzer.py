@@ -18,49 +18,65 @@ specific language governing permissions and limitations under the License.
 
 import pdb
 import os
+import shutil
 import pytest
 from quasitools.patient_analyzer import PatientAnalyzer
 from collections import defaultdict
 
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
+READS = TEST_PATH + "/data/reads_w_K103N.fastq"
+REFERENCE = TEST_PATH + "/data/hxb2_pol.fas"
+GENES_FILE = TEST_PATH + "/data/hxb2_pol.bed"
+MUTATION_DB = TEST_PATH + "/data/mutation_db.tsv"
+OUTPUT_DIR = TEST_PATH + "/test_patient_analyzer_output"
+
 
 class TestPatientAnalyzer:
+    @classmethod
     def setup_class(self):
-        options = {}
-        options["quiet"] = False
+        # Test defaults
+        self.patient_analyzer = PatientAnalyzer(id="test",reads=READS,
+                                 reference=REFERENCE,
+                                 output_dir=OUTPUT_DIR, 
+                                 genes_file=GENES_FILE,
+                                 mutation_db=MUTATION_DB,
+                                 quiet=False, consensus_pct=20)
 
-        self.patient_analyzer = PatientAnalyzer(id="test", reads=TEST_PATH+"/data/reads_w_K103N.fastq",
-                                 reference=TEST_PATH+"/data/hxb2_pol.fas", consensus_pct=50, 
-                                 output_dir=TEST_PATH+"/testpa", genes_file=TEST_PATH+"/data/hxb2_pol.bed",
-                                 mutation_db=TEST_PATH+"/data/mutation_db.tsv", options=options)
-
-        assert(self.patient_analyzer.reference == TEST_PATH+"/data/hxb2_pol.fas")
-    
     def test_filter_reads(self):
+        # test default values
         filters = defaultdict(dict)
-        filters["reads"]["length_cutoff"] = 100
-        filters["reads"]["score_cutoff"] = 30
-        filters["reads"]["ns"] = 1
+        filters["length_cutoff"] = 100
+        filters["score_cutoff"] = 30
+        filters["ns"] = 1
 
-        self.patient_analyzer.filter_reads(filters["reads"])
-    
+        self.patient_analyzer.filter_reads(filters)
+
     def test_downsample_reads(self):
-        self.patient_analyzer.downsample_reads(50)
+        # test default
+        self.patient_analyzer.downsample_reads(10000)
+
+        # test other
         self.patient_analyzer.downsample_reads(1000)
 
-    def test_analyze_reads(self):
-        filters = defaultdict(dict)
-        filters["variant_filtering"] = defaultdict(dict)
-        filters["variant_filtering"]["error_rate"] = 0.0021
-        filters["variant_filtering"]["min_qual"] = 30
-        filters["variant_filtering"]["min_dp"] = 100
-        filters["variant_filtering"]["min_ac"] = 5
+        # test disable
+        self.patient_analyzer.downsample_reads(-1)
 
-        filters["mutations"]["min_freq"] = 0.01
+    def test_analyze_reads(self):
+        # test defaults
+        filters = defaultdict(dict)
+        filters["error_rate"] = 0.0021
+        filters["min_qual"] = 30
+        filters["min_dp"] = 100
+        filters["min_ac"] = 5
+        filters["min_freq"] = 0.01
 
         generate_consensus = True
+        reporting_threshold = 20
 
-        self.patient_analyzer.analyze_reads(filters, generate_consensus)
+        self.patient_analyzer.analyze_reads(filters, reporting_threshold, generate_consensus)
 
-        
+        # Remove the output directory so that multiple tests (python 2.x, 3.x, etc.)
+        # can run without erroring out with "File/directory exists"
+        shutil.rmtree("%s" % OUTPUT_DIR)
+
