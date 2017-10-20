@@ -16,7 +16,6 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
-import pdb
 import os
 from quasitools.parsers.genes_file_parser import parse_genes_file
 from quasitools.parsers.reference_parser import parse_references_from_fasta
@@ -54,10 +53,10 @@ class PatientAnalyzer():
         self.input_size = 0
         self.determine_input_size()
         
-        references = parse_references_from_fasta(self.reference)
-        self.genes = parse_genes_file(genes_file, references[0].name)
+        self.references = parse_references_from_fasta(self.reference)
+        self.genes = parse_genes_file(genes_file, self.references[0].name)
 
-        self.filtered_reads = "%s/filtered.fas" % output_dir
+        self.filtered_reads = "%s/filtered.fastq" % output_dir
         self.downsampled_reads = "%s/downsampled.fas" % output_dir
 
         os.mkdir(output_dir)
@@ -107,8 +106,7 @@ class PatientAnalyzer():
         for seq in seq_rec_obj:
                 total += len(seq.seq)
 
-        ref_io = parse_references_from_fasta(self.reference)
-        length = len(ref_io[0].seq)
+        length = len(self.references[0].seq)
 
         raw_coverage = total / length
         total_reads = (self.input_size - self.filtered["length"] -
@@ -122,7 +120,7 @@ class PatientAnalyzer():
                               self.filtered_reads,
                               subsample_size, self.downsampled_reads)
 
-            rv = os.system(command) # TODO: use rv for error-catch
+            os.system(command)
 
             if not self.quiet:
                 print("\n# Reads downsampled to %0.2f%% to achieve "
@@ -146,8 +144,6 @@ class PatientAnalyzer():
         # Create a collection of mapped reads, which pass our filtering requirements
         if not self.quiet:
             print("\n# Loading read mappings...")
-        
-        rs = parse_references_from_fasta(self.reference)
 
         # cmd_consensus
         if generate_consensus:
@@ -155,13 +151,13 @@ class PatientAnalyzer():
 
         mapped_read_collection_arr = []
         con_seq = []
-        for r in rs:
+        for r in self.references:
             mrc = parse_mapped_reads_from_bam(r, bam)
             mapped_read_collection_arr.append(mrc)
             if generate_consensus:
-                cons_seq_file.write(">%s_cons-%i\n" % (self.id,
-                            self.consensus_pct))
-                cons_seq_file.write("%s\n" % mrc.to_consensus(self.consensus_pct))
+                cons_seq_file.write('>{0}_{1}_{2}\n{3}'.format(
+                                    'blah', reporting_threshold, r.name,
+                                     mrc.to_consensus(self.consensus_pct)))
 
         if generate_consensus:
             cons_seq_file.close()
@@ -171,12 +167,12 @@ class PatientAnalyzer():
             print("\n# Identifying variants...")
         
         variants = NTVariantCollection.from_mapped_read_collections(
-                   filters["variant_filtering"]["error_rate"], rs,
+                   filters["error_rate"], self.references,
                    *mapped_read_collection_arr)
 
-        variants.filter('q30', 'QUAL<30', True)
-        variants.filter('ac5', 'AC<5', True)
-        variants.filter('dp100', 'DP<100', True)
+        variants.filter('q%s' % filters["min_qual"], 'QUAL<%s' % filters["min_qual"], True)
+        variants.filter('ac%s' % filters["min_ac"], 'AC<%s'% filters["min_ac"], True)
+        variants.filter('dp%s' % filters["min_dp"], 'DP<%s' % filters["min_dp"], True)
 
         vcf_file = open("%s/hydra.vcf" % self.output_dir, "w+")
         vcf_file.write(variants.to_vcf_file())
@@ -191,18 +187,15 @@ class PatientAnalyzer():
         
         if not self.quiet:
             print("\n# Building amino acid census...")
-        
-        # Parse the genes from the gene file
-        genes = parse_genes_file(self.genes_file, rs[0].name)
 
         # Determine which frames our genes are in
         frames = set()
 
-        for gene in genes:
-            frames.add(genes[gene]['frame'])
+        for gene in self.genes:
+            frames.add(self.genes[gene]['frame'])
 
         aa_census = AACensus(self.reference, mapped_read_collection_arr,
-                             genes, frames)
+                             self.genes, frames)
 
         coverage_file = open("%s/coverage_file.csv" % self.output_dir, "w+")
         coverage_file.write(aa_census.coverage(next(iter(frames))))
@@ -217,11 +210,12 @@ class PatientAnalyzer():
             aa_census, next(iter(frames)))
 
         # Filter for mutant frequency
-        aa_vars.filter('mf0.01', 'freq<0.01', True)
+        aa_vars.filter('mf%s' % filters['min_freq'],
+                       'freq<%s' % filters['min_freq'], True)
 
         # Build the mutation database and update collection
         if self.mutation_db is not None:
-            mutation_db = MutationDB(self.mutation_db, genes)
+            mutation_db = MutationDB(self.mutation_db, self.genes)
             aa_vars.apply_mutation_db(mutation_db)
 
         mut_report = open("%s/mutation_report.hmcf" % self.output_dir, "w+")
@@ -285,6 +279,7 @@ class PatientAnalyzer():
         bam_fh.close()
         sam_fh.close()
 
+        os.unlink(bam_fn)
         os.unlink(sam_fn)
 
         return sorted_bam_fn
