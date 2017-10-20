@@ -18,11 +18,12 @@ specific language governing permissions and limitations under the License.
 
 from collections import defaultdict
 import click
-import os
 from quasitools.patient_analyzer import PatientAnalyzer
+
 
 REFERENCE = "quasitools/data/hxb2_pol.fas"
 GENES_FILE = "quasitools/data/hxb2_pol.bed"
+
 
 @click.command('hydra', short_help='Provides a pipeline for identifying'
                'drug resistance.')
@@ -58,12 +59,12 @@ def cli(ctx, output_dir, reads, mutation_db, reporting_threshold,
         target_coverage, generate_consensus, consensus_pct,
         combine, filter, quiet, length_cutoff, score_cutoff, ns,
         error_rate, min_qual, min_dp, min_ac, min_freq):
-    click.echo("Running hydra cmd")
-
     patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
-        output_dir=output_dir, reads=reads, reference=REFERENCE,
-        genes_file=GENES_FILE, mutation_db=mutation_db, quiet=quiet,
-        consensus_pct=consensus_pct)
+                                       output_dir=output_dir,
+                                       reads=reads, reference=REFERENCE,
+                                       genes_file=GENES_FILE,
+                                       mutation_db=mutation_db, quiet=quiet,
+                                       consensus_pct=consensus_pct)
 
     read_filters = defaultdict(dict)
     read_filters["length_cutoff"] = length_cutoff

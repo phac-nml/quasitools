@@ -52,7 +52,7 @@ class PatientAnalyzer():
 
         self.input_size = 0
         self.determine_input_size()
-        
+
         self.references = parse_references_from_fasta(self.reference)
         self.genes = parse_genes_file(genes_file, self.references[0].name)
 
@@ -72,14 +72,14 @@ class PatientAnalyzer():
             print("# Filtering reads...")
 
         filtered_reads_file = open(self.filtered_reads, "w+")
-        
+
         seq_rec_obj = Bio.SeqIO.parse(self.reads, "fastq")
 
         for seq in seq_rec_obj:
             avg_score = filters["score_cutoff"] + 1
 
             avg_score = (sum(seq.letter_annotations['phred_quality']) /
-                            len(seq.letter_annotations['phred_quality']))
+                         len(seq.letter_annotations['phred_quality']))
 
             length = len(seq.seq)
 
@@ -101,24 +101,24 @@ class PatientAnalyzer():
             print("\n# Downsampling reads...")
 
         seq_rec_obj = Bio.SeqIO.parse(self.filtered_reads, "fastq")
-        
+
         total = 0
         for seq in seq_rec_obj:
-                total += len(seq.seq)
+            total += len(seq.seq)
 
         length = len(self.references[0].seq)
 
         raw_coverage = total / length
         total_reads = (self.input_size - self.filtered["length"] -
                        self.filtered["score"] - self.filtered["ns"])
-        
+
         if raw_coverage > target_coverage:
             subsample_pct = float(target_coverage) / float(raw_coverage)
             subsample_size = subsample_pct * total_reads
 
             command = "seqtk sample -s 42 %s %i > %s" % (
-                              self.filtered_reads,
-                              subsample_size, self.downsampled_reads)
+                self.filtered_reads, subsample_size,
+                self.downsampled_reads)
 
             os.system(command)
 
@@ -132,16 +132,15 @@ class PatientAnalyzer():
             if not self.quiet:
                 print("\n# Reads were not downsampled to %i coverage,"
                       "as raw coverage is %i..." % (
-                       target_coverage, raw_coverage))
-            
+                          target_coverage, raw_coverage))
+
     def analyze_reads(self, filters, reporting_threshold, generate_consensus):
         # Map reads against reference using bowtietwo
         if not self.quiet:
             print("\n# Mapping reads...")
-        
+
         bam = self.generate_bam()
-        
-        # Create a collection of mapped reads, which pass our filtering requirements
+
         if not self.quiet:
             print("\n# Loading read mappings...")
 
@@ -150,29 +149,31 @@ class PatientAnalyzer():
             cons_seq_file = open("%s/consensus.fasta" % self.output_dir, "w+")
 
         mapped_read_collection_arr = []
-        con_seq = []
         for r in self.references:
             mrc = parse_mapped_reads_from_bam(r, bam)
             mapped_read_collection_arr.append(mrc)
             if generate_consensus:
                 cons_seq_file.write('>{0}_{1}_{2}\n{3}'.format(
-                                    'blah', reporting_threshold, r.name,
-                                     mrc.to_consensus(self.consensus_pct)))
+                    'blah', reporting_threshold, r.name,
+                    mrc.to_consensus(self.consensus_pct)))
 
         if generate_consensus:
             cons_seq_file.close()
-        
+
         # cmd_callntvar
         if not self.quiet:
             print("\n# Identifying variants...")
-        
-        variants = NTVariantCollection.from_mapped_read_collections(
-                   filters["error_rate"], self.references,
-                   *mapped_read_collection_arr)
 
-        variants.filter('q%s' % filters["min_qual"], 'QUAL<%s' % filters["min_qual"], True)
-        variants.filter('ac%s' % filters["min_ac"], 'AC<%s'% filters["min_ac"], True)
-        variants.filter('dp%s' % filters["min_dp"], 'DP<%s' % filters["min_dp"], True)
+        variants = NTVariantCollection.from_mapped_read_collections(
+            filters["error_rate"], self.references,
+            *mapped_read_collection_arr)
+
+        variants.filter('q%s' % filters["min_qual"],
+                        'QUAL<%s' % filters["min_qual"], True)
+        variants.filter('ac%s' % filters["min_ac"],
+                        'AC<%s' % filters["min_ac"], True)
+        variants.filter('dp%s' % filters["min_dp"],
+                        'DP<%s' % filters["min_dp"], True)
 
         vcf_file = open("%s/hydra.vcf" % self.output_dir, "w+")
         vcf_file.write(variants.to_vcf_file())
@@ -181,10 +182,10 @@ class PatientAnalyzer():
         # cmd_aa_census
         if not self.quiet:
             print("\n# Masking filtered variants...")
-        
+
         for mrc in mapped_read_collection_arr:
             mrc.mask_unconfident_differences(variants)
-        
+
         if not self.quiet:
             print("\n# Building amino acid census...")
 
@@ -204,7 +205,7 @@ class PatientAnalyzer():
         # cmd_aavariants
         if not self.quiet:
             print("\n# Finding amino acid mutations...")
-        
+
         # Create AAVar collection and print the hmcf file
         aa_vars = AAVariantCollection.from_aacensus(
             aa_census, next(iter(frames)))
@@ -225,12 +226,14 @@ class PatientAnalyzer():
         # cmd_drmutations
         if not self.quiet:
             print("\n# Writing drug resistant mutation report...")
-        
+
         dr_report = open("%s/dr_report.csv" % self.output_dir, "w+")
         dr_report.write(aa_vars.report_dr_mutations(mutation_db,
-                                           reporting_threshold))
+                                                    reporting_threshold))
         dr_report.close()
-        
+
+        self.output_stats(mapped_read_collection_arr)
+
     def generate_bam(self):
         """ Runs bowtietwo local alignment on self.reads
             to generate a bam file """
@@ -239,7 +242,6 @@ class PatientAnalyzer():
 
         if self.downsample["status"] == 1:
             reads = self.downsampled_reads
-
 
         sorted_bam_fn = "%s/align.bam" % self.output_dir
         bowtietwo_bam_output = sorted_bam_fn[0:sorted_bam_fn.index(".")]
@@ -252,18 +254,16 @@ class PatientAnalyzer():
 
         bowtietwo_index = self.reference[0:self.reference.index(".")]
 
-        bowtietwo_cmd = ("bowtie2 --local --rdg '8,3' --rfg '8,3' --ma 1 --mp '2,2' -S %s -x %s -U %s" %
-            (sam_fn,
-            bowtietwo_index,
-            reads)
-        )
+        bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' --rfg '8,3' "
+                          "--ma 1 --mp '2,2' -S %s -x %s -U %s") %
+                         (sam_fn, bowtietwo_index, reads))
 
         os.system(bowtietwo_cmd)
 
         # Convert sam output to bam output
         sam_to_bam_cmd = "samtools view -bt %s.fai -o %s %s" % (self.reference,
-                        bam_fn, sam_fn)
-        
+                                                                bam_fn, sam_fn)
+
         os.system(sam_to_bam_cmd)
 
         # Sort bam output
@@ -283,3 +283,37 @@ class PatientAnalyzer():
         os.unlink(sam_fn)
 
         return sorted_bam_fn
+
+    def output_stats(self, mapped_read_collection_arr):
+        mr_len = len(mapped_read_collection_arr[0].mapped_reads)
+
+        stats_report = open("%s/stats.txt" % self.output_dir, "w+")
+
+        stats_report.write("Input Size: %i\n" % self.input_size)
+        stats_report.write("Number of reads filtered due to length: %i\n" %
+                           self.filtered["length"])
+        stats_report.write(("Number of reads filtered due to average "
+                            "quality score: %i\n") % self.filtered["score"])
+        stats_report.write(("Number of reads filtered due to presence "
+                            "of Ns: %i\n") % self.filtered["ns"])
+        if self.downsample["status"]:
+            stats_report.write(("Number of reads filtered due to excess "
+                                "coverage: %i\n") % self.downsample["size"])
+            stats_report.write(("Number of reads filtered due to poor "
+                                "mapping: %i\n") %
+                               (self.input_size - self.filtered["length"] -
+                                self.filtered["score"] - self.filtered["ns"] -
+                                self.downsample["size"] - mr_len))
+        else:
+            stats_report.write("Number of reads filtered due to excess "
+                               "coverage: 0\n")
+            stats_report.write(("Number of reads filtered due to poor "
+                                "mapping: %i\n") %
+                               (self.input_size - self.filtered["length"] -
+                                self.filtered["score"] - self.filtered["ns"] -
+                                mr_len))
+        stats_report.write("Percentage of reads filtered: %0.2f" %
+                           (float(self.input_size - mr_len) /
+                            self.input_size * 100))
+
+        stats_report.close()
