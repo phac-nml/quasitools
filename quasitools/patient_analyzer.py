@@ -21,7 +21,7 @@ import os
 from quasitools.parsers.genes_file_parser import parse_genes_file
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
-from quasitools.nt_variant import NTVariant, NTVariantCollection
+from quasitools.nt_variant import NTVariantCollection
 from quasitools.aa_variant import AAVariantCollection
 from quasitools.mutations import MutationDB
 from quasitools.aa_census import AACensus, CONFIDENT
@@ -30,7 +30,7 @@ import Bio.SeqIO
 
 class PatientAnalyzer():
     def __init__(self, id, output_dir, reads, reference,
-                 genes_file, mutation_db, options):
+                 genes_file, mutation_db, quiet, consensus_pct):
         self.id = id
         self.output_dir = output_dir
         self.reads = reads
@@ -38,10 +38,8 @@ class PatientAnalyzer():
         self.mutation_db = mutation_db
         self.genes_file = genes_file
 
-        self.options = {}
-        self.options["quiet"] = options["quiet"]
-        self.options["reporting_threshold"] = options["reporting_threshold"]
-        self.options["consensus_pct"] = options["consensus_pct"]
+        self.quiet = quiet
+        self.consensus_pct = consensus_pct
 
         self.filtered = {}
         self.filtered["status"] = 0
@@ -61,6 +59,7 @@ class PatientAnalyzer():
 
         self.filtered_reads = "%s/filtered.fas" % output_dir
         self.downsampled_reads = "%s/downsampled.fas" % output_dir
+
         os.mkdir(output_dir)
 
     def determine_input_size(self):
@@ -70,7 +69,7 @@ class PatientAnalyzer():
             self.input_size += 1
 
     def filter_reads(self, filters):
-        if not self.options["quiet"]:
+        if not self.quiet:
             print("# Filtering reads...")
 
         filtered_reads_file = open(self.filtered_reads, "w+")
@@ -99,7 +98,7 @@ class PatientAnalyzer():
         filtered_reads_file.close()
 
     def downsample_reads(self, target_coverage):
-        if not self.options["quiet"]:
+        if not self.quiet:
             print("\n# Downsampling reads...")
 
         seq_rec_obj = Bio.SeqIO.parse(self.filtered_reads, "fastq")
@@ -116,7 +115,7 @@ class PatientAnalyzer():
                        self.filtered["score"] - self.filtered["ns"])
         
         if raw_coverage > target_coverage:
-            subsample_pct = float(target_coverage) / raw_coverage
+            subsample_pct = float(target_coverage) / float(raw_coverage)
             subsample_size = subsample_pct * total_reads
 
             command = "seqtk sample -s 42 %s %i > %s" % (
@@ -125,48 +124,50 @@ class PatientAnalyzer():
 
             rv = os.system(command) # TODO: use rv for error-catch
 
-            if not self.options["quiet"]:
+            if not self.quiet:
                 print("\n# Reads downsampled to %0.2f%% to achieve "
                       "%i coverage..." % (subsample_pct*100, target_coverage))
 
             self.downsample["status"] = 1
             self.downsample["size"] = total_reads - subsample_size
         else:
-            if not self.options["quiet"]:
+            if not self.quiet:
                 print("\n# Reads were not downsampled to %i coverage,"
                       "as raw coverage is %i..." % (
                        target_coverage, raw_coverage))
             
-    def analyze_reads(self, filters, generate_consensus):
+    def analyze_reads(self, filters, reporting_threshold, generate_consensus):
         # Map reads against reference using bowtietwo
-        if not self.options["quiet"]:
+        if not self.quiet:
             print("\n# Mapping reads...")
         
-        pdb.set_trace()
         bam = self.generate_bam()
         
         # Create a collection of mapped reads, which pass our filtering requirements
-        if not self.options["quiet"]:
+        if not self.quiet:
             print("\n# Loading read mappings...")
         
         rs = parse_references_from_fasta(self.reference)
 
+        # cmd_consensus
+        if generate_consensus:
+            cons_seq_file = open("%s/consensus.fasta" % self.output_dir, "w+")
+
         mapped_read_collection_arr = []
+        con_seq = []
         for r in rs:
             mrc = parse_mapped_reads_from_bam(r, bam)
-            if generate_consensus:
-                mrc.to_consensus(self.options["consensus_pct"])
             mapped_read_collection_arr.append(mrc)
-        
-        # cmd_consensus
-        cons_seq_file = open("%s/consensus.fasta" % self.output_dir, "w+")
-        cons_seq_file.write(">%s_cons-%i\n" % (self.id, self.options["consensus_pct"]))
-        for mrc in mapped_read_collection_arr:
-            cons_seq_file.write("%s\n" % mrc)
-        cons_seq_file.close()
+            if generate_consensus:
+                cons_seq_file.write(">%s_cons-%i\n" % (self.id,
+                            self.consensus_pct))
+                cons_seq_file.write("%s\n" % mrc.to_consensus(self.consensus_pct))
+
+        if generate_consensus:
+            cons_seq_file.close()
         
         # cmd_callntvar
-        if not self.options["quiet"]:
+        if not self.quiet:
             print("\n# Identifying variants...")
         
         variants = NTVariantCollection.from_mapped_read_collections(
@@ -182,13 +183,13 @@ class PatientAnalyzer():
         vcf_file.close()
 
         # cmd_aa_census
-        if not self.options["quiet"]:
+        if not self.quiet:
             print("\n# Masking filtered variants...")
         
         for mrc in mapped_read_collection_arr:
             mrc.mask_unconfident_differences(variants)
         
-        if not self.options["quiet"]:
+        if not self.quiet:
             print("\n# Building amino acid census...")
         
         # Parse the genes from the gene file
@@ -200,14 +201,15 @@ class PatientAnalyzer():
         for gene in genes:
             frames.add(genes[gene]['frame'])
 
-        aa_census = AACensus(self.reference, mapped_read_collection_arr, genes, frames)
+        aa_census = AACensus(self.reference, mapped_read_collection_arr,
+                             genes, frames)
 
         coverage_file = open("%s/coverage_file.csv" % self.output_dir, "w+")
         coverage_file.write(aa_census.coverage(next(iter(frames))))
         coverage_file.close()
 
         # cmd_aavariants
-        if not self.options["quiet"]:
+        if not self.quiet:
             print("\n# Finding amino acid mutations...")
         
         # Create AAVar collection and print the hmcf file
@@ -227,16 +229,17 @@ class PatientAnalyzer():
         mut_report.close()
 
         # cmd_drmutations
-        if not self.options["quiet"]:
+        if not self.quiet:
             print("\n# Writing drug resistant mutation report...")
         
         dr_report = open("%s/dr_report.csv" % self.output_dir, "w+")
         dr_report.write(aa_vars.report_dr_mutations(mutation_db,
-                                           self.options["reporting_threshold"]))
+                                           reporting_threshold))
         dr_report.close()
         
     def generate_bam(self):
-        """ Runs bowtietwo local alignment on self.reads to generate a bam file """
+        """ Runs bowtietwo local alignment on self.reads
+            to generate a bam file """
 
         reads = self.filtered_reads
 
@@ -261,25 +264,27 @@ class PatientAnalyzer():
             reads)
         )
 
-        os.system(bowtietwo_cmd) # TODO: use rv for error-catch
+        os.system(bowtietwo_cmd)
 
         # Convert sam output to bam output
         sam_to_bam_cmd = "samtools view -bt %s.fai -o %s %s" % (self.reference,
                         bam_fn, sam_fn)
         
-        os.system(sam_to_bam_cmd) # TODO: use rv for error-catch
+        os.system(sam_to_bam_cmd)
 
         # Sort bam output
         sort_bam_cmd = "samtools sort %s %s" % (bam_fn, bowtietwo_bam_output)
 
-        os.system(sort_bam_cmd) # TODO: use rv for error-catch
+        os.system(sort_bam_cmd)
 
         # Index bam output
         index_bam_cmd = "samtools index %s" % sorted_bam_fn
 
-        os.system(index_bam_cmd) # TODO: use rv for error-catch
+        os.system(index_bam_cmd)
 
         bam_fh.close()
         sam_fh.close()
+
+        os.unlink(sam_fn)
 
         return sorted_bam_fn
