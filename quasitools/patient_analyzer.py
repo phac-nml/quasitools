@@ -76,8 +76,6 @@ class PatientAnalyzer():
         seq_rec_obj = Bio.SeqIO.parse(self.reads, "fastq")
 
         for seq in seq_rec_obj:
-            avg_score = filters["score_cutoff"] + 1
-
             avg_score = (sum(seq.letter_annotations['phred_quality']) /
                          len(seq.letter_annotations['phred_quality']))
 
