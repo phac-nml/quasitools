@@ -5,7 +5,7 @@ tests:2.7:
   image: "python:2.7"
   before_script:
     - wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
-    - bash Miniconda2-latest-Linux-x86_64.sh
+    - bash Miniconda2-latest-Linux-x86_64.sh -b -p ~/miniconda2
     - rm Miniconda2-latest-Linux-x86_64.sh
     - echo 'export PATH="~/miniconda2/bin:$PATH"' >> ~/.bashrc 
     - source .bashrc
@@ -15,7 +15,7 @@ tests:3.4:
   image: "python:3.4"
   before_script:
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    - bash Miniconda3-latest-Linux-x86_64.sh
+    - bash Miniconda3-latest-Linux-x86_64.sh -b -p ~/miniconda3
     - rm Miniconda3-latest-Linux-x86_64.sh
     - echo 'export PATH="~/miniconda3/bin:$PATH"' >> ~/.bashrc 
     - source .bashrc
