@@ -1,6 +1,11 @@
 image: "python:2.7"
 before_script:
   - pip install tox
+  - wget https://repo.continuum.io/archive/Anaconda2-4.2.0-Linux-x86_64.sh
+  - bash Anaconda2-4.2.0-Linux-x86_64.sh -b -p ~/anaconda
+  - rm Anaconda2-4.2.0-Linux-x86_64.sh
+  - conda install samtools
+  - conda install bowtie2
 
 tests:2.7:
   script:
