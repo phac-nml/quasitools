@@ -6,6 +6,7 @@ tests:2.7:
     - bash Miniconda2-latest-Linux-x86_64.sh -b -p ~/miniconda2
     - rm Miniconda2-latest-Linux-x86_64.sh
     - export PATH="~/miniconda2/bin:$PATH"
+    - conda config --add channels bioconda
     - conda install samtools
     - conda install bowtie2
   script:
@@ -18,6 +19,7 @@ tests:3.4:
     - bash Miniconda3-latest-Linux-x86_64.sh -b -p ~/miniconda3
     - rm Miniconda3-latest-Linux-x86_64.sh
     - export PATH="~/miniconda3/bin:$PATH"
+    - conda config --add channels bioconda
     - conda install samtools
     - conda install bowtie2
   script:
