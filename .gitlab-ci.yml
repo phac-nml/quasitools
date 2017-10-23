@@ -9,8 +9,8 @@ tests:2.7:
     - conda config --add channels bioconda
     - conda install samtools
     - conda install bowtie2
-    - export PATH="/root/miniconda2/samtools:$PATH"
-    - export PATH="/root/miniconda2/bowtie2:$PATH"
+    - export PATH="~/miniconda2/pkgs/samtools/bin:$PATH"
+    - export PATH="~/miniconda2/pkgs/bowtie2/bin:$PATH"
   script:
     - tox -r -e py27
 tests:3.4:
@@ -24,8 +24,8 @@ tests:3.4:
     - conda config --add channels bioconda
     - conda install samtools
     - conda install bowtie2
-    - export PATH="/root/miniconda2/samtools:$PATH"
-    - export PATH="/root/miniconda2/bowtie2:$PATH"
+    - export PATH="~/miniconda3/pkgs/samtools/bin:$PATH"
+    - export PATH="~/miniconda3/pkgs/bowtie2/bin:$PATH"
   script:
     - tox -r -e py34
 flake8:
