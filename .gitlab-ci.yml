@@ -15,7 +15,6 @@ tests:2.7:
     # Replace dep1 dep2 ... with your dependencies
     - conda create -q -n test-environment python=2.7 samtools bowtie2
     - source activate test-environment
-    - python setup.py install
   script:
     - tox -r -e py27
 tests:3.4:
