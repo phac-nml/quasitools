@@ -251,7 +251,11 @@ class PatientAnalyzer():
         sam_fh = open(sam_fn, "w+")
 
         bowtietwo_index = self.reference[0:self.reference.index(".")]
-        os.system("cd ~/miniconda2/pkgs/")
+        os.system("cd ~/miniconda2/")
+        os.system("ls")
+        os.system("samtools --help")
+        os.system("bowtie2 --help")
+        os.system("pkgs")
         os.system("ls | grep samtools")
         os.system("ls | grep bowtie2")
         bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' "
