@@ -14,8 +14,6 @@ tests:2.7:
     - source activate test-environment
   script:
     - tox -r -e py27
-  after_script:
-    - source deactivate test-environment
 tests:3.4:
   image: "python:3.4"
   before_script:
@@ -31,7 +29,9 @@ tests:3.4:
     - conda create -q -n test-environment-py3 python=3.4 samtools=0.1.19 bowtie2
     - source activate test-environment-py3
   script:
-    - tox -r
+    - echo $PATH
+    - tox -r -e py34
+    - cat /builds/nml/quasitools/.tox/py34/log/py34-0.log
 flake8:
   image: "python:2.7"
   before_script:
