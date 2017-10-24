@@ -114,7 +114,7 @@ class PatientAnalyzer():
             subsample_pct = float(target_coverage) / float(raw_coverage)
             subsample_size = subsample_pct * total_reads
 
-            command = "export PATH=$PATH; seqtk sample -s 42 %s %i > %s" % (
+            command = "seqtk sample -s 42 %s %i > %s" % (
                 self.filtered_reads, subsample_size,
                 self.downsampled_reads)
 
@@ -252,9 +252,6 @@ class PatientAnalyzer():
 
         bowtietwo_index = self.reference[0:self.reference.index(".")]
         
-        os.system("echo $PATH")
-        os.system("conda --help")
-
         bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' "
                           "--rfg '8,3' --ma 1 --mp '2,2' -S %s -x %s -U %s") %
                          (sam_fn, bowtietwo_index, reads))
