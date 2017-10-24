@@ -10,16 +10,11 @@ tests:2.7:
     - conda install samtools
     - conda install bowtie2
   script:
-    - apt-get install build-essential libghc-zlib-dev libncurses5-dev
-    - wget "http://downloads.sourceforge.net/project/samtools/samtools/0.1.19/samtools-0.1.19.tar.bz2"
-    - tar xvfj samtools-0.1.19.tar.bz2
-    - mv samtools-0.1.19 /opt/
-    - cd /opt/samtools-0.1.19
-    - sed -i -e 's/\(^CFLAGS.*=.*\)/\1 -fPIC/g' Makefile
-    - make
-    - chmod 755 /opt/samtools-0.1.19
-    - cd ~
-    - export PATH="/opt/samtools-0.1.19/bin:$PATH"
+    - cd ~/miniconda2/pkgs/bowtie2-2.3.0-py27_1
+    - ls
+    - cd -
+    - export PATH="~/miniconda3/pkgs/samtools-1.6-0/bin:$PATH"
+    - export PATH="~/miniconda2/pkgs/bowtie2-2.3.0-py27_1/bin:$PATH"
     - tox -r -e py27
 tests:3.4:
   image: "python:3.4"
