@@ -14,6 +14,8 @@ tests:2.7:
     - source activate test-environment
   script:
     - tox -r -e py27
+  after_script:
+    - deactivate
 tests:3.4:
   image: "python:3.4"
   before_script:
@@ -29,7 +31,6 @@ tests:3.4:
     - conda create -q -n test-environment-py3 python=3.4 samtools=0.1.19 bowtie2
     - source activate test-environment-py3
   script:
-    - /usr/local/bin/python -m virtualenv --python /root/miniconda3/envs/test-environment-py3/bin/python3.4 py34
     - tox -r -e py34
 flake8:
   image: "python:2.7"
