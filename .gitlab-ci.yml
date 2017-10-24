@@ -13,7 +13,7 @@ tests:2.7:
     # Useful for debugging any issues with conda
     - conda info -a
     # Replace dep1 dep2 ... with your dependencies
-    - conda create -q -n test-environment python=2.7 samtools bowtie2
+    - conda create -q -n test-environment python=2.7 samtools=0.1.19 bowtie2
     - source activate test-environment
   script:
     - tox -r -e py27
