@@ -8,7 +8,9 @@ tests:2.7:
     - export PATH="~/miniconda2/bin:$PATH"
     - conda config --add channels bioconda
     - conda install samtools
+    - conda update samtools
     - conda install bowtie2
+    - conda update bowtie2
   script:
     - ls
     - cd ~/miniconda2/pkgs/samtools-1.6-0/bin
@@ -18,6 +20,7 @@ tests:2.7:
     - export PATH="~/miniconda2/pkgs/samtools-1.6-0/bin:$PATH"
     - export PATH="~/miniconda2/pkgs/samtools-1.6-0/bin/bowtie2sam.pl:$PATH"
     - echo $PATH
+    - which samtools
     - tox -r -e py27
 tests:3.4:
   image: "python:3.4"
