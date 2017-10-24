@@ -252,26 +252,26 @@ class PatientAnalyzer():
 
         bowtietwo_index = self.reference[0:self.reference.index(".")]
 
-        bowtietwo_cmd = (("export PATH=$PATH; bowtie2 --local --rdg '8,3' "
+        bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' "
                           "--rfg '8,3' --ma 1 --mp '2,2' -S %s -x %s -U %s") %
                          (sam_fn, bowtietwo_index, reads))
 
         os.system(bowtietwo_cmd)
 
         # Convert sam output to bam output
-        sam_to_bam_cmd = (("export PATH=$PATH; samtools view -bt %s.fai "
+        sam_to_bam_cmd = (("samtools view -bt %s.fai "
                           "-o %s %s") % (self.reference, bam_fn, sam_fn))
 
         os.system(sam_to_bam_cmd)
 
         # Sort bam output
-        sort_bam_cmd = "export PATH=$PATH; samtools sort %s %s" % (
+        sort_bam_cmd = "samtools sort %s %s" % (
                        bam_fn, bowtietwo_bam_output)
 
         os.system(sort_bam_cmd)
 
         # Index bam output
-        index_bam_cmd = "export PATH=$PATH; samtools index %s" % sorted_bam_fn
+        index_bam_cmd = "samtools index %s" % sorted_bam_fn
 
         os.system(index_bam_cmd)
 
