@@ -10,8 +10,11 @@ tests:2.7:
     - conda install samtools
     - conda install bowtie2
   script:
+    - which conda
+    - ls
+    - cd ~/miniconda2/pkgs/samtools-1.6-0/bin
     - export PATH="~/miniconda2/pkgs/samtools-1.6-0/bin:$PATH"
-    - export PATH="~/miniconda3/pkgs/samtools-1.6-0/bin/bowtie2sam.pl:$PATH"
+    - export PATH="~/miniconda2/pkgs/samtools-1.6-0/bin/bowtie2sam.pl:$PATH"
     - tox -r -e py27
 tests:3.4:
   image: "python:3.4"
