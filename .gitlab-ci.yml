@@ -10,9 +10,6 @@ tests:2.7:
     - conda config --add channels bioconda
     - conda config --set always_yes yes --set changeps1 no
     - conda update -q conda
-    # Useful for debugging any issues with conda
-    - conda info -a
-    # Replace dep1 dep2 ... with your dependencies
     - conda create -q -n test-environment python=2.7 samtools=0.1.19 bowtie2
     - source activate test-environment
   script:
@@ -25,9 +22,12 @@ tests:3.4:
     - bash Miniconda3-latest-Linux-x86_64.sh -b -p ~/miniconda3
     - rm Miniconda3-latest-Linux-x86_64.sh
     - export PATH="~/miniconda3/bin:$PATH"
+    - hash -r
     - conda config --add channels bioconda
-    - conda install samtools
-    - conda install bowtie2
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    - conda create -q -n test-environment python=3.4 samtools=0.1.19 bowtie2
+    - source activate test-environment
   script:
     - tox -r -e py34
 flake8:
