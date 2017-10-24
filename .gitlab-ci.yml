@@ -6,14 +6,17 @@ tests:2.7:
     - bash Miniconda2-latest-Linux-x86_64.sh -b -p ~/miniconda2
     - rm Miniconda2-latest-Linux-x86_64.sh
     - export PATH="~/miniconda2/bin:$PATH"
+    - hash -r
     - conda config --add channels bioconda
-    - conda install samtools
-    - conda install bowtie2
-    - samtools --help
-    - bowtie2 --help
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    # Useful for debugging any issues with conda
+    - conda info -a
+    # Replace dep1 dep2 ... with your dependencies
+    - conda create -q -n test-environment python=2.7 samtools bowtie2
+    - source activate test-environment
+    - python setup.py install
   script:
-    - samtools --help
-    - bowtie2 --help
     - tox -r -e py27
 tests:3.4:
   image: "python:3.4"
