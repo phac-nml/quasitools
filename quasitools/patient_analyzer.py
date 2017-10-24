@@ -251,7 +251,7 @@ class PatientAnalyzer():
         sam_fh = open(sam_fn, "w+")
 
         bowtietwo_index = self.reference[0:self.reference.index(".")]
-    
+
         bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' "
                           "--rfg '8,3' --ma 1 --mp '2,2' -S %s -x %s -U %s") %
                          (sam_fn, bowtietwo_index, reads))
