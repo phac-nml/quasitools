@@ -9,7 +9,11 @@ tests:2.7:
     - conda config --add channels bioconda
     - conda install samtools
     - conda install bowtie2
+    - samtools --help
+    - bowtie2 --help
   script:
+    - samtools --help
+    - bowtie2 --help
     - tox -r -e py27
 tests:3.4:
   image: "python:3.4"
