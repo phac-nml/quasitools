@@ -20,7 +20,7 @@ tests:3.6:
     - conda create -q -n test-environment python=3.6 samtools=0.1.19 bowtie2 virtualenv
     - conda install -c conda-forge tox
     - chmod +x /root/miniconda3/bin/tox
-    - source activate test-environment-py3
+    - source activate test-environment
     - tox -r -e py36
 flake8:
   before_script:
