@@ -16,7 +16,8 @@ tests:2.7:
     - tox -r -e py27
 tests:3.6:
   script:
-    - conda create -q -c conda-forge -n test-environment-py3 python=3.6 samtools=0.1.19 bowtie2 virtualenv tox
+    - pip install tox
+    - conda create -q -n test-environment-py3 python=3.6 samtools=0.1.19 bowtie2 virtualenv
     - source activate test-environment-py3
     - tox -r -e py36
 flake8:
