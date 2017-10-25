@@ -9,7 +9,6 @@ tests:2.7:
     - hash -r
     - conda config --add channels bioconda
     - conda config --set always_yes yes --set changeps1 no
-    - conda update -q conda
     - conda create -q -n test-environment python=2.7 samtools=0.1.19 bowtie2
     - source activate test-environment
   script:
