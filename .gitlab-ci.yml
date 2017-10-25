@@ -25,7 +25,6 @@ tests:3.4:
     - hash -r
     - conda config --add channels bioconda
     - conda config --set always_yes yes --set changeps1 no
-    - pip uninstall virtualenv
     - conda install virtualenv
     - conda create -y -c bioconda -q -n test-environment-py3 python=3.4 samtools=0.1.19 bowtie2
     - source activate test-environment-py3
