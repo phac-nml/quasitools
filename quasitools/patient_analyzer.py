@@ -76,6 +76,7 @@ class PatientAnalyzer():
         seq_rec_obj = Bio.SeqIO.parse(self.reads, "fastq")
 
         for seq in seq_rec_obj:
+
             avg_score = (sum(seq.letter_annotations['phred_quality']) /
                          len(seq.letter_annotations['phred_quality']))
 
@@ -252,21 +253,20 @@ class PatientAnalyzer():
 
         bowtietwo_index = self.reference[0:self.reference.index(".")]
 
-        bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' "
-                          "--rfg '8,3' --ma 1 --mp '2,2' -S %s -x %s -U %s") %
+        bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' --rfg '8,3' "
+                          "--ma 1 --mp '2,2' -S %s -x %s -U %s") %
                          (sam_fn, bowtietwo_index, reads))
 
         os.system(bowtietwo_cmd)
 
         # Convert sam output to bam output
-        sam_to_bam_cmd = (("samtools view -bt %s.fai "
-                          "-o %s %s") % (self.reference, bam_fn, sam_fn))
+        sam_to_bam_cmd = "samtools view -bt %s.fai -o %s %s" % (self.reference,
+                                                                bam_fn, sam_fn)
 
         os.system(sam_to_bam_cmd)
 
         # Sort bam output
-        sort_bam_cmd = "samtools sort %s %s" % (
-                       bam_fn, bowtietwo_bam_output)
+        sort_bam_cmd = "samtools sort %s %s" % (bam_fn, bowtietwo_bam_output)
 
         os.system(sort_bam_cmd)
 
