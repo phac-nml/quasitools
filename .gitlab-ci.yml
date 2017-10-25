@@ -10,14 +10,15 @@ before_script:
 
 tests:2.7:
   script:
-    - conda create -q -c conda-forge -n test-environment python=2.7 samtools=0.1.19 bowtie2 virtualenv tox
+    - pip install tox
+    - conda create -q -n test-environment python=2.7 samtools=0.1.19 bowtie2 virtualenv
     - source activate test-environment
-    - sudo tox -r -e py27
+    - tox -r -e py27
 tests:3.6:
   script:
-    - conda create -q -c conda-forget -n test-environment-py3 python=3.6 samtools=0.1.19 bowtie2 virtualenv tox
+    - conda create -q -c conda-forge -n test-environment-py3 python=3.6 samtools=0.1.19 bowtie2 virtualenv tox
     - source activate test-environment-py3
-    - sudo tox -r -e py36
+    - tox -r -e py36
 flake8:
   before_script:
     - pip install tox
