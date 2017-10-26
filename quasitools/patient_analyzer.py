@@ -59,7 +59,8 @@ class PatientAnalyzer():
         self.filtered_reads = "%s/filtered.fastq" % output_dir
         self.downsampled_reads = "%s/downsampled.fas" % output_dir
 
-        os.mkdir(output_dir)
+        if not os.path.isdir(output_dir):
+            os.mkdir(output_dir)
 
     def determine_input_size(self):
         sequences = Bio.SeqIO.parse(self.reads, "fastq")

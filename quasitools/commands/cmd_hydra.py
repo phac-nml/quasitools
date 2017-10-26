@@ -16,6 +16,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
+import os
 from collections import defaultdict
 import click
 from quasitools.patient_analyzer import PatientAnalyzer
@@ -28,7 +29,8 @@ GENES_FILE = "quasitools/data/hxb2_pol.bed"
 @click.command('hydra', short_help='Identify HIV Drug Resistance in a next '
                'generation sequencing dataset.')
 @click.argument('output_dir', required=True, type=click.Path(exists=False))
-@click.argument('reads', required=True, type=click.Path(exists=True))
+@click.argument('forward', required=True, type=click.Path(exists=True))
+@click.argument('reverse', required=False, type=click.Path(exists=True))
 @click.argument('mutation_db', required=False, type=click.Path(exists=True),
                 default="quasitools/data/mutation_db.tsv")
 @click.option('-rt', '--reporting_threshold', default=1,
@@ -43,8 +45,6 @@ GENES_FILE = "quasitools/data/hxb2_pol.bed"
               type=click.IntRange(1, 100, clamp=True),
               help='minimum percentage a base needs to be incorporated'
               'into the consensus sequence.')
-@click.option('-c', '--combine', is_flag=True)
-@click.option('-f', '--filter', default='_R1_|_R2_')
 @click.option('-q', '--quiet', is_flag=True)
 @click.option('-lc', '--length_cutoff', default=100)
 @click.option('-sc', '--score_cutoff', default=30)
@@ -55,10 +55,20 @@ GENES_FILE = "quasitools/data/hxb2_pol.bed"
 @click.option('-ma', '--min_ac', default=5)
 @click.option('-mf', '--min_freq', default=0.01)
 @click.pass_context
-def cli(ctx, output_dir, reads, mutation_db, reporting_threshold,
+def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         target_coverage, generate_consensus, consensus_pct,
-        combine, filter, quiet, length_cutoff, score_cutoff, ns,
+        quiet, length_cutoff, score_cutoff, ns,
         error_rate, min_qual, min_dp, min_ac, min_freq):
+
+    os.mkdir(output_dir)
+    reads = forward
+
+    # Combine the fwd and reverse into one file
+    if reverse:
+        reads = "%s/combined_reads.fastq" % output_dir
+        cat_cmd = "cat %s %s > %s" % (forward, reverse, reads)
+        os.system(cat_cmd)
+
     patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
                                        output_dir=output_dir,
                                        reads=reads, reference=REFERENCE,

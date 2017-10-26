@@ -26,6 +26,8 @@ import Bio.SeqIO
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 READS = TEST_PATH + "/data/reads_w_K103N.fastq"
+FORWARD = TEST_PATH + "/data/forward.fastq"
+REVERSE = TEST_PATH + "data/reverse.fastq"
 REFERENCE = TEST_PATH + "/data/hxb2_pol.fas"
 GENES_FILE = TEST_PATH + "/data/hxb2_pol.bed"
 MUTATION_DB = TEST_PATH + "/data/mutation_db.tsv"
@@ -42,6 +44,15 @@ class TestPatientAnalyzer:
                                  genes_file=GENES_FILE,
                                  mutation_db=MUTATION_DB,
                                  quiet=False, consensus_pct=20)
+        
+
+    def test_combine_reads(self):
+        # Combine the fwd and reverse into one file
+        reads = "%s/combined_reads.fastq" % OUTPUT_DIR
+        cat_cmd = "cat %s %s > %s" % (FORWARD, REVERSE, reads)
+        os.system(cat_cmd)
+        
+        assert os.path.isfile("%s/combined_reads.fastq" % OUTPUT_DIR)
 
     def test_filter_reads(self):
         filters = defaultdict(dict)
