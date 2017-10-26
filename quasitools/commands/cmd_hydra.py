@@ -29,8 +29,8 @@ GENES_FILE = "quasitools/data/hxb2_pol.bed"
 @click.command('hydra', short_help='Identify HIV Drug Resistance in a next '
                'generation sequencing dataset.')
 @click.argument('output_dir', required=True, type=click.Path(exists=False))
-@click.argument('forward', required=True, type=click.Path(exists=True))
-@click.argument('reverse', required=False, type=click.Path(exists=True))
+@click.argument('forward', required=True, type=click.File("rb"))
+@click.argument('reverse', required=False, type=click.File("rb"))
 @click.argument('mutation_db', required=False, type=click.Path(exists=True),
                 default="quasitools/data/mutation_db.tsv")
 @click.option('-rt', '--reporting_threshold', default=1,
@@ -66,7 +66,7 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     # Combine the fwd and reverse into one file
     if reverse:
         reads = "%s/combined_reads.fastq" % output_dir
-        cat_cmd = "cat %s %s > %s" % (forward, reverse, reads)
+        cat_cmd = "cat %s %s > %s" % (forward.name, reverse.name, reads)
         os.system(cat_cmd)
 
     patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
