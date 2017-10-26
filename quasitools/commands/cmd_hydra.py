@@ -21,9 +21,10 @@ from collections import defaultdict
 import click
 from quasitools.patient_analyzer import PatientAnalyzer
 
-
-REFERENCE = "quasitools/data/hxb2_pol.fas"
-GENES_FILE = "quasitools/data/hxb2_pol.bed"
+BASE_PATH = os.getcwd()
+REFERENCE = BASE_PATH + "/quasitools/data/hxb2_pol.fas"
+GENES_FILE = BASE_PATH + "/quasitools/data/hxb2_pol.bed"
+MUTATION_DB = BASE_PATH + "/quasitools/data/mutation_db.tsv"
 
 
 @click.command('hydra', short_help='Identify HIV Drug Resistance in a next '
@@ -33,7 +34,7 @@ GENES_FILE = "quasitools/data/hxb2_pol.bed"
 @click.option('-o', '--output_dir', required=True,
               type=click.Path(exists=False))
 @click.option('-m', '--mutation_db', type=click.Path(exists=True),
-              default="quasitools/data/mutation_db.tsv")
+              default=MUTATION_DB)
 @click.option('-rt', '--reporting_threshold', default=1,
               type=click.IntRange(1, 100, clamp=True),
               help='minimum mutation frequency percent to report.')
