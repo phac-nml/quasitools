@@ -25,8 +25,8 @@ REFERENCE = "quasitools/data/hxb2_pol.fas"
 GENES_FILE = "quasitools/data/hxb2_pol.bed"
 
 
-@click.command('hydra', short_help='Provides a pipeline for identifying'
-               'drug resistance.')
+@click.command('hydra', short_help='Identify HIV Drug Resistance in a next '
+               'generation sequencing dataset.')
 @click.argument('output_dir', required=True, type=click.Path(exists=False))
 @click.argument('reads', required=True, type=click.Path(exists=True))
 @click.argument('mutation_db', required=False, type=click.Path(exists=True),
