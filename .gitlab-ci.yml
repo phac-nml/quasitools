@@ -1,14 +1,29 @@
-image: "python:2.7"
+image: "python:3.6"
 before_script:
-  - pip install tox
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  - bash Miniconda3-latest-Linux-x86_64.sh -b -p ~/miniconda3
+  - rm Miniconda3-latest-Linux-x86_64.sh
+  - export PATH="~/miniconda3/bin:$PATH"
+  - hash -r
+  - conda config --add channels bioconda
+  - conda config --set always_yes yes --set changeps1 no
 
 tests:2.7:
   script:
+    - conda create -q -n test-environment python=2.7 samtools=0.1.19 bowtie2 virtualenv
+    - conda install -c conda-forge tox
+    - chmod +x /root/miniconda3/bin/tox
+    - source activate test-environment
     - tox -r -e py27
-tests:3.4:
-  image: "python:3.4"
+tests:3.6:
   script:
-    - tox -r -e py34
+    - conda create -q -n test-environment python=3.6 samtools=0.1.19 bowtie2 virtualenv
+    - conda install -c conda-forge tox
+    - chmod +x /root/miniconda3/bin/tox
+    - source activate test-environment
+    - tox -r -e py36
 flake8:
+  before_script:
+    - pip install tox
   script:
     - tox -e flake8
