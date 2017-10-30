@@ -27,9 +27,12 @@ from quasitools.parsers.genes_file_parser import parse_genes_file
 @click.command('aa_census',
                short_help='Builds an amino acid census and returns its '
                'coverage.')
-@click.argument('bam', required=True, type=click.Path(exists=True))
-@click.argument('reference', required=True, type=click.Path(exists=True))
-@click.argument('genes_file', required=True, type=click.Path(exists=True))
+@click.argument('bam', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('reference', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('genes_file', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @pass_context
 def cli(ctx, bam, reference, genes_file):
     rs = parse_references_from_fasta(reference)

@@ -24,8 +24,10 @@ from quasitools.parsers.codon_variant_file_parser \
 
 @click.command('dnds', short_help='Calculate the dn/ds '
                'value for each region in a bed file.')
-@click.argument('csv', required=True, type=click.Path(exists=True))
-@click.argument('reference', required=True, type=click.Path(exists=True))
+@click.argument('csv', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('reference', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('offset', required=True, type=int)
 @click.pass_context
 def cli(ctx, csv, reference, offset):

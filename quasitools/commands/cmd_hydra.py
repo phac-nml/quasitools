@@ -29,11 +29,15 @@ MUTATION_DB = BASE_PATH + "/quasitools/data/mutation_db.tsv"
 
 @click.command('hydra', short_help='Identify HIV Drug Resistance in a next '
                'generation sequencing dataset.')
-@click.argument('forward', required=True, type=click.Path(exists=True))
-@click.argument('reverse', required=False, type=click.Path(exists=True))
+@click.argument('forward', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('reverse', required=False,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-o', '--output_dir', required=True,
-              type=click.Path(exists=False))
-@click.option('-m', '--mutation_db', type=click.Path(exists=True),
+              type=click.Path(exists=False, file_okay=False, dir_okay=True,
+                              writable=True))
+@click.option('-m', '--mutation_db',
+              type=click.Path(exists=True, file_okay=True, dir_okay=False),
               default=MUTATION_DB)
 @click.option('-rt', '--reporting_threshold', default=1,
               type=click.IntRange(1, 100, clamp=True),

@@ -25,8 +25,10 @@ from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 @click.command('call_callntvar',
                short_help='Call nucleotide variants from a BAM file.')
-@click.argument('bam', required=True, type=click.Path(exists=True))
-@click.argument('reference', required=True, type=click.Path(exists=True))
+@click.argument('bam', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('reference', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-e', '--error_rate', default=0.01,
               help='estimated sequencing error rate.')
 @pass_context
