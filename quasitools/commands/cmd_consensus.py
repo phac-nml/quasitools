@@ -24,8 +24,10 @@ from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 
 @click.command('consensus',
                short_help='Generate a consensus sequence from a BAM file.')
-@click.argument('bam', required=True, type=click.Path(exists=True))
-@click.argument('reference', required=True, type=click.Path(exists=True))
+@click.argument('bam', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('reference', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-p', '--percentage', default=100,
               help='percentage to include base in mixture.')
 @pass_context

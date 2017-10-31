@@ -30,11 +30,16 @@ from quasitools.parsers.nt_variant_file_parser \
 
 @click.command('aavariants',
                short_help='Identifies amino acid mutations.')
-@click.argument('bam', required=True, type=click.Path(exists=True))
-@click.argument('reference', required=True, type=click.Path(exists=True))
-@click.argument('variants', required=True, type=click.Path(exists=True))
-@click.argument('genes_file', required=True, type=click.Path(exists=True))
-@click.argument('mutation_db', required=False, type=click.Path(exists=True))
+@click.argument('bam', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('reference', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('variants', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('genes_file', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('mutation_db', required=False,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-f', '--min_freq', default=0.01,
               help='the minimum required frequency.')
 @pass_context

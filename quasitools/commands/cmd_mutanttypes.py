@@ -28,10 +28,13 @@ from quasitools.codon_variant import CodonVariantCollection
 
 @click.command('mutanttypes', short_help='Identify the number of '
                'non-synonymous and synonymous mutations.')
-@click.argument('bam', required=True, type=click.Path(exists=True))
-@click.argument('reference', required=True, type=click.Path(exists=True))
+@click.argument('bam', required=True, type=click.Path(exists=True,
+                file_okay=True, dir_okay=False))
+@click.argument('reference', required=True, type=click.Path(exists=True,
+                file_okay=True, dir_okay=False))
 @click.argument('offset', required=True, type=float)
-@click.argument('genes_file', required=True, type=click.Path(exists=True))
+@click.argument('genes_file', required=True, type=click.Path(exists=True,
+                file_okay=True, dir_okay=False))
 @click.option('-e', '--error_rate', default=0.01,
               help='estimated sequencing error rate.')
 @pass_context
