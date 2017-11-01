@@ -24,7 +24,7 @@ from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.genes_file_parser import parse_genes_file
 
 
-@click.command('aa_census',
+@click.command('aa_coverage',
                short_help='Builds an amino acid census and returns its '
                'coverage.')
 @click.argument('bam', required=True,
