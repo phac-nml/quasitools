@@ -42,8 +42,8 @@ def cli(ctx):
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-e', '--error_rate', default=0.01,
               help='estimated sequencing error rate.')
-@click.option('-o', '--output', type=click.File('wb'))
-def ntvar(bam, reference, error_rate):
+@click.option('-o', '--output', type=click.File('w'))
+def ntvar(bam, reference, error_rate, output):
     rs = parse_references_from_fasta(reference)
 
     mapped_read_collection_arr = []
@@ -63,7 +63,11 @@ def ntvar(bam, reference, error_rate):
     variants.filter('ac5', 'AC<5', True)
     variants.filter('dp100', 'DP<100', True)
 
-    click.echo(variants.to_vcf_file())
+    if output:
+        output.write(variants.to_vcf_file())
+        output.close()
+    else:
+        click.echo(variants.to_vcf_file())
 
 
 @cli.command('aavar', short_help='Identifies amino acid mutations.')
@@ -79,8 +83,9 @@ def ntvar(bam, reference, error_rate):
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-f', '--min_freq', default=0.01,
               help='the minimum required frequency.')
-@click.option('-o', '--output', type=click.File('wb'))
-def aavar(bam, reference, variants, genes_file, min_freq, mutation_db):
+@click.option('-o', '--output', type=click.File('w'))
+def aavar(bam, reference, variants, genes_file, min_freq,
+          mutation_db, output):
     rs = parse_references_from_fasta(reference)
 
     mapped_read_collection_arr = []
@@ -118,7 +123,10 @@ def aavar(bam, reference, variants, genes_file, min_freq, mutation_db):
         mutation_db = MutationDB(mutation_db, genes)
         aa_vars.apply_mutation_db(mutation_db)
 
-    click.echo(aa_vars.to_hmcf_file(CONFIDENT))
+    if output:
+        output.write(aa_vars.to_hmcf_file(CONFIDENT))
+    else:
+        click.echo(aa_vars.to_hmcf_file(CONFIDENT))
 
 
 @cli.command('codonvar', short_help='Identify the number of '
@@ -132,8 +140,8 @@ def aavar(bam, reference, variants, genes_file, min_freq, mutation_db):
                 file_okay=True, dir_okay=False))
 @click.option('-e', '--error_rate', default=0.01,
               help='estimated sequencing error rate.')
-@click.option('-o', '--output', type=click.File('wb'))
-def codonvar(bam, reference, offset, genes_file, error_rate):
+@click.option('-o', '--output', type=click.File('w'))
+def codonvar(bam, reference, offset, genes_file, error_rate, output):
     rs = parse_references_from_fasta(reference)
     mapped_read_collection_arr = []
 
@@ -169,4 +177,8 @@ def codonvar(bam, reference, offset, genes_file, error_rate):
 
     variants.filter('dp100', 'DP<100', True)
 
-    click.echo(variants.to_vcf_file())
+    if output:
+        output.write(variants.to_vcf_file())
+        output.close()
+    else:
+        click.echo(variants.to_vcf_file())
