@@ -33,6 +33,7 @@ from quasitools.parsers.genes_file_parser import parse_genes_file
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('genes_file', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.option('-o', '--output', type=click.File('wb'))
 @pass_context
 def cli(ctx, bam, reference, genes_file):
     rs = parse_references_from_fasta(reference)

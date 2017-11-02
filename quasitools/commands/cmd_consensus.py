@@ -30,6 +30,7 @@ from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-p', '--percentage', default=100,
               help='percentage to include base in mixture.')
+@click.option('-o', '--output', type=click.File('wb'))
 @pass_context
 def cli(ctx, bam, reference, percentage):
     rs = parse_references_from_fasta(reference)

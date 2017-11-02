@@ -45,6 +45,7 @@ from quasitools.parsers.nt_variant_file_parser \
 @click.option('-t', '--reporting_threshold', default=1,
               help='the minimum percentage required for an entry in the drug'
               'resistant report.')
+@click.option('-o', '--output', type=click.File('wb'))
 @pass_context
 def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
         reporting_threshold):

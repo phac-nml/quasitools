@@ -42,6 +42,7 @@ def cli(ctx):
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-e', '--error_rate', default=0.01,
               help='estimated sequencing error rate.')
+@click.option('-o', '--output', type=click.File('wb'))
 def ntvar(bam, reference, error_rate):
     rs = parse_references_from_fasta(reference)
 
@@ -78,6 +79,7 @@ def ntvar(bam, reference, error_rate):
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-f', '--min_freq', default=0.01,
               help='the minimum required frequency.')
+@click.option('-o', '--output', type=click.File('wb'))
 def aavar(bam, reference, variants, genes_file, min_freq, mutation_db):
     rs = parse_references_from_fasta(reference)
 
@@ -130,6 +132,7 @@ def aavar(bam, reference, variants, genes_file, min_freq, mutation_db):
                 file_okay=True, dir_okay=False))
 @click.option('-e', '--error_rate', default=0.01,
               help='estimated sequencing error rate.')
+@click.option('-o', '--output', type=click.File('wb'))
 def codonvar(bam, reference, offset, genes_file, error_rate):
     rs = parse_references_from_fasta(reference)
     mapped_read_collection_arr = []

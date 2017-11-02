@@ -29,6 +29,7 @@ from quasitools.parsers.codon_variant_file_parser \
 @click.argument('reference', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('offset', required=True, type=int)
+@click.option('-o', '--output', type=click.File('wb'))
 @click.pass_context
 def cli(ctx, csv, reference, offset):
     rs = parse_references_from_fasta(reference)
