@@ -78,19 +78,18 @@ class PatientAnalyzer():
 
         for seq in seq_rec_obj:
 
-            avg_score = (sum(seq.letter_annotations['phred_quality']) /
-                         len(seq.letter_annotations['phred_quality']))
+            avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
+                         float(len(seq.letter_annotations['phred_quality'])))
 
             length = len(seq.seq)
 
-            if length <= filters["length_cutoff"]:
+            if length < filters["length_cutoff"]:
                 self.filtered["length"] += 1
-            elif avg_score <= filters["score_cutoff"]:
+            elif avg_score < filters["score_cutoff"]:
                 self.filtered["score"] += 1
             elif filters['ns'] and 'n' in seq.seq.lower():
                 self.filtered['ns'] += 1
-            elif (length > filters["length_cutoff"] and
-                  avg_score > filters["score_cutoff"]):
+            else:
                 Bio.SeqIO.write(seq, filtered_reads_file, "fastq")
 
         self.filtered["status"] = 1
