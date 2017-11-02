@@ -67,14 +67,14 @@ class TestPatientAnalyzer:
 
         for seq in seq_rec_obj:
             avg_score = filters["score_cutoff"] + 1
-            avg_score = (sum(seq.letter_annotations['phred_quality']) /
-                         len(seq.letter_annotations['phred_quality']))
+            avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
+                         float(len(seq.letter_annotations['phred_quality'])))
             
             # check that length and score are both over threshold
             assert self.patient_analyzer.filtered["status"] == 1
             
-            assert len(seq.seq) > filters["length_cutoff"] and \
-                avg_score > filters["score_cutoff"]
+            assert len(seq.seq) >= filters["length_cutoff"] and \
+                avg_score >= filters["score_cutoff"]
 
     def test_downsample_reads(self):
         # test default, no downsampling with this test data
