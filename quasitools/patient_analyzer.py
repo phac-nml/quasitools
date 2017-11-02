@@ -244,7 +244,7 @@ class PatientAnalyzer():
             reads = self.downsampled_reads
 
         sorted_bam_fn = "%s/align.bam" % self.output_dir
-        bowtietwo_bam_output = sorted_bam_fn[0:sorted_bam_fn.index(".")]
+        bowtietwo_bam_output = sorted_bam_fn[0:sorted_bam_fn.rindex(".")]
         bam_fn = "%s/tmp.bam" % self.output_dir
         sam_fn = "%s/tmp.sam" % self.output_dir
 
@@ -252,7 +252,7 @@ class PatientAnalyzer():
         bam_fh = open(bam_fn, "w+")
         sam_fh = open(sam_fn, "w+")
 
-        bowtietwo_index = self.reference[0:self.reference.index(".")]
+        bowtietwo_index = self.reference[0:self.reference.rindex(".")]
 
         bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' --rfg '8,3' "
                           "--ma 1 --mp '2,2' -S %s -x %s -U %s") %
