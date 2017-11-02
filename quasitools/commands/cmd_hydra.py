@@ -54,7 +54,7 @@ MUTATION_DB = BASE_PATH + "/data/mutation_db.tsv"
 @click.option('-q', '--quiet', is_flag=True)
 @click.option('-lc', '--length_cutoff', default=100)
 @click.option('-sc', '--score_cutoff', default=30)
-@click.option('-n', '--ns', default=1)
+@click.option('-n', '--ns', is_flag=True)
 @click.option('-e', '--error_rate', default=0.0021)
 @click.option('-mq', '--min_qual', default=30)
 @click.option('-md', '--min_dp', default=100)
@@ -85,7 +85,10 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     read_filters = defaultdict(dict)
     read_filters["length_cutoff"] = length_cutoff
     read_filters["score_cutoff"] = score_cutoff
-    read_filters["ns"] = ns
+    if ns:
+        read_filters["ns"] = True
+    else:
+        read_filters["ns"] = False
 
     patient_analyzer.filter_reads(read_filters)
 
