@@ -21,7 +21,7 @@ from collections import defaultdict
 import click
 from quasitools.patient_analyzer import PatientAnalyzer
 
-BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__), 
+BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__),
                                          os.pardir, "data"))
 REFERENCE = os.path.join(BASE_PATH, "hxb2_pol.fas")
 GENES_FILE = os.path.join(BASE_PATH, "hxb2_pol.bed")
