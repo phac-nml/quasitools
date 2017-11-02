@@ -1,1 +1,1 @@
-include quasitools/commands/data/*
+include quasitools/data/*

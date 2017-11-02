@@ -21,10 +21,11 @@ from collections import defaultdict
 import click
 from quasitools.patient_analyzer import PatientAnalyzer
 
-BASE_PATH = os.path.dirname(os.path.realpath(__file__))
-REFERENCE = BASE_PATH + "/data/hxb2_pol.fas"
-GENES_FILE = BASE_PATH + "/data/hxb2_pol.bed"
-MUTATION_DB = BASE_PATH + "/data/mutation_db.tsv"
+BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__), 
+                                         os.pardir, "data"))
+REFERENCE = os.path.join(BASE_PATH, "hxb2_pol.fas")
+GENES_FILE = os.path.join(BASE_PATH, "hxb2_pol.bed")
+MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 
 
 @click.command('hydra', short_help='Identify HIV Drug Resistance in a next '
