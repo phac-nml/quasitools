@@ -97,7 +97,7 @@ class PatientAnalyzer():
 
     def downsample_reads(self, target_coverage):
         if not self.quiet:
-            print("\n# Downsampling reads...")
+            print("# Downsampling reads...")
 
         seq_rec_obj = Bio.SeqIO.parse(self.filtered_reads, "fastq")
 
@@ -122,26 +122,26 @@ class PatientAnalyzer():
             os.system(command)
 
             if not self.quiet:
-                print("\n# Reads downsampled to %0.2f%% to achieve "
+                print("# Reads downsampled to %0.2f%% to achieve "
                       "%i coverage..." % (subsample_pct*100, target_coverage))
 
             self.downsample["status"] = 1
             self.downsample["size"] = total_reads - subsample_size
         else:
             if not self.quiet:
-                print("\n# Reads were not downsampled to %i coverage,"
+                print("# Reads were not downsampled to %i coverage,"
                       "as raw coverage is %i..." % (
                           target_coverage, raw_coverage))
 
     def analyze_reads(self, filters, reporting_threshold, generate_consensus):
         # Map reads against reference using bowtietwo
         if not self.quiet:
-            print("\n# Mapping reads...")
+            print("# Mapping reads...")
 
         bam = self.generate_bam()
 
         if not self.quiet:
-            print("\n# Loading read mappings...")
+            print("# Loading read mappings...")
 
         # cmd_consensus
         if generate_consensus:
@@ -161,7 +161,7 @@ class PatientAnalyzer():
 
         # cmd_callntvar
         if not self.quiet:
-            print("\n# Identifying variants...")
+            print("# Identifying variants...")
 
         variants = NTVariantCollection.from_mapped_read_collections(
             filters["error_rate"], self.references,
@@ -180,13 +180,13 @@ class PatientAnalyzer():
 
         # cmd_aa_census
         if not self.quiet:
-            print("\n# Masking filtered variants...")
+            print("# Masking filtered variants...")
 
         for mrc in mapped_read_collection_arr:
             mrc.mask_unconfident_differences(variants)
 
         if not self.quiet:
-            print("\n# Building amino acid census...")
+            print("# Building amino acid census...")
 
         # Determine which frames our genes are in
         frames = set()
@@ -203,7 +203,7 @@ class PatientAnalyzer():
 
         # cmd_aavariants
         if not self.quiet:
-            print("\n# Finding amino acid mutations...")
+            print("# Finding amino acid mutations...")
 
         # Create AAVar collection and print the hmcf file
         aa_vars = AAVariantCollection.from_aacensus(
@@ -224,7 +224,7 @@ class PatientAnalyzer():
 
         # cmd_drmutations
         if not self.quiet:
-            print("\n# Writing drug resistant mutation report...")
+            print("# Writing drug resistant mutation report...")
 
         dr_report = open("%s/dr_report.csv" % self.output_dir, "w+")
         dr_report.write(aa_vars.report_dr_mutations(mutation_db,
