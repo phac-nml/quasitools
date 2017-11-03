@@ -57,7 +57,7 @@ class CodonVariant(Variant):
         )
 
     @classmethod
-    def from_aacensus(cls, gene_key, aa, codon, census, frame, nt_pos):
+    def from_aacensus(cls, gene_key, aa, codon, census, nt_pos):
         codon_permutations = [
             [[0]], [[0, 1], [1, 0]],
             [
@@ -140,7 +140,7 @@ class CodonVariantCollection(VariantCollection):
             lambda: defaultdict(lambda: defaultdict(dict)))
 
     @classmethod
-    def from_aacensus(cls, aa_census, *args):
+    def from_aacensus(cls, aa_census):
         """Build the CodonVariantCollection from any number of
         AACensus objects"""
 
@@ -176,7 +176,6 @@ class CodonVariantCollection(VariantCollection):
                                                 gene_key,
                                                 aa, codon,
                                                 census,
-                                                frame,
                                                 nt_pos)
 
                                         var_collect.variants[gene_key][

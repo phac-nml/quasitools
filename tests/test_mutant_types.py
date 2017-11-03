@@ -73,7 +73,7 @@ class TestMutantTypes:
                              frames)
 
         self.codon_variants = CodonVariantCollection.from_aacensus(
-                            aa_census, next(iter(frames)))
+                            aa_census)
 
     def test_mutant_types(self): 
         offset = 1269

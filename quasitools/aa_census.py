@@ -16,7 +16,6 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
-import pdb
 from Bio.Seq import Seq
 from collections import defaultdict
 
@@ -157,7 +156,6 @@ class AACensus(object):
         length = len(self.mapped_read_collections[0].reference.seq) // 3
 
         coverage_csv = ""
-        pdb.set_trace()
         for frame in frames:
             coverage_csv += "frame: %i\n" % frame
 

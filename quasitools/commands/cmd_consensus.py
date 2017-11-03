@@ -42,9 +42,9 @@ def cli(ctx, bam, reference, percentage, output):
 
         if output:
             output.write('>{0}_{1}_{2}\n{3}'.format('blah', percentage, r.name,
-                                              conseq))
+                                                    conseq))
         else:
             click.echo('>{0}_{1}_{2}\n{3}'.format('blah', percentage, r.name,
-                                              conseq))
+                                                  conseq))
 
     output.close()

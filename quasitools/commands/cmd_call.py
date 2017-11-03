@@ -112,8 +112,7 @@ def aavar(bam, reference, variants, genes_file, min_freq,
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
     # Create AAVar collection and print the hmcf file
-    aa_vars = AAVariantCollection.from_aacensus(
-        aa_census, next(iter(frames)))
+    aa_vars = AAVariantCollection.from_aacensus(aa_census)
 
     # Filter for mutant frequency
     aa_vars.filter('mf0.01', 'freq<0.01', True)
@@ -170,8 +169,7 @@ def codonvar(bam, reference, offset, genes_file, error_rate, output):
 
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
-    codon_variants = CodonVariantCollection.from_aacensus(
-        aa_census, next(iter(frames)))
+    codon_variants = CodonVariantCollection.from_aacensus(aa_census)
 
     click.echo(codon_variants.to_csv_file(offset))
 
