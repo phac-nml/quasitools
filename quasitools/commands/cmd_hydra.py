@@ -43,9 +43,6 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 @click.option('-rt', '--reporting_threshold', default=1,
               type=click.IntRange(1, 100, clamp=True),
               help='minimum mutation frequency percent to report.')
-@click.option('-tc', '--target_coverage', default=-1,
-              help='downsample input to target coverage.'
-              'Defaults to -1 to disable downsampling.')
 @click.option('-gc', '--generate_consensus',
               help='Generate a mixed base consensus sequence.', is_flag=True)
 @click.option('-cp', '--consensus_pct', default=20,
@@ -74,9 +71,8 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               help='the minimum required frequency.')
 @click.pass_context
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
-        target_coverage, generate_consensus, consensus_pct,
-        quiet, length_cutoff, score_cutoff, ns,
-        error_rate, min_qual, min_dp, min_ac, min_freq):
+        generate_consensus, consensus_pct, quiet, length_cutoff,
+        score_cutoff, ns, error_rate, min_qual, min_dp, min_ac, min_freq):
 
     os.mkdir(output_dir)
     reads = forward
@@ -103,9 +99,6 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         read_filters["ns"] = False
 
     patient_analyzer.filter_reads(read_filters)
-
-    if target_coverage != -1:
-        patient_analyzer.downsample_reads(target_coverage)
 
     variant_filters = defaultdict(dict)
     variant_filters["error_rate"] = error_rate
