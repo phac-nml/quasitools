@@ -21,10 +21,11 @@ from collections import defaultdict
 import click
 from quasitools.patient_analyzer import PatientAnalyzer
 
-BASE_PATH = os.getcwd()
-REFERENCE = BASE_PATH + "/quasitools/data/hxb2_pol.fas"
-GENES_FILE = BASE_PATH + "/quasitools/data/hxb2_pol.bed"
-MUTATION_DB = BASE_PATH + "/quasitools/data/mutation_db.tsv"
+BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__),
+                                         os.pardir, "data"))
+REFERENCE = os.path.join(BASE_PATH, "hxb2_pol.fas")
+GENES_FILE = os.path.join(BASE_PATH, "hxb2_pol.bed")
+MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 
 
 @click.command('hydra', short_help='Identify HIV Drug Resistance in a next '
@@ -51,15 +52,26 @@ MUTATION_DB = BASE_PATH + "/quasitools/data/mutation_db.tsv"
               type=click.IntRange(1, 100, clamp=True),
               help='minimum percentage a base needs to be incorporated'
               'into the consensus sequence.')
-@click.option('-q', '--quiet', is_flag=True)
-@click.option('-lc', '--length_cutoff', default=100)
-@click.option('-sc', '--score_cutoff', default=30)
-@click.option('-n', '--ns', default=1)
-@click.option('-e', '--error_rate', default=0.0021)
-@click.option('-mq', '--min_qual', default=30)
-@click.option('-md', '--min_dp', default=100)
-@click.option('-ma', '--min_ac', default=5)
-@click.option('-mf', '--min_freq', default=0.01)
+@click.option('-q', '--quiet', is_flag=True,
+              help='suppress all normal output')
+@click.option('-lc', '--length_cutoff', default=100,
+              help='reads which fall short of the specified length '
+                   'will be filtered out.')
+@click.option('-sc', '--score_cutoff', default=30,
+              help='reads whose average quality score is less than the '
+                   'specified score will be filtered out.')
+@click.option('-n', '--ns', is_flag=True, help='flag to enable the '
+              'filtering of n\'s')
+@click.option('-e', '--error_rate', default=0.0021,
+              help='error rate for the sequencing platform.')
+@click.option('-mq', '--min_qual', default=30, help='minimum quality for '
+              'variant to be considered later on in the pipeline.')
+@click.option('-md', '--min_dp', default=100,
+              help='minimum required read depth for.')
+@click.option('-ma', '--min_ac', default=5,
+              help='the minimum required allele count.')
+@click.option('-mf', '--min_freq', default=0.01,
+              help='the minimum required frequency.')
 @click.pass_context
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         target_coverage, generate_consensus, consensus_pct,
@@ -85,7 +97,10 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     read_filters = defaultdict(dict)
     read_filters["length_cutoff"] = length_cutoff
     read_filters["score_cutoff"] = score_cutoff
-    read_filters["ns"] = ns
+    if ns:
+        read_filters["ns"] = True
+    else:
+        read_filters["ns"] = False
 
     patient_analyzer.filter_reads(read_filters)
 
