@@ -66,7 +66,7 @@ class AAVariantCollection(VariantCollection):
             lambda: defaultdict(lambda: defaultdict(dict)))
 
     @classmethod
-    def from_aacensus(cls, aa_census, *args):
+    def from_aacensus(cls, aa_census):
         """Build the AAVariantCollection from any number of
         AACensus objects"""
 
@@ -103,7 +103,7 @@ class AAVariantCollection(VariantCollection):
 
                     for confidence in (CONFIDENT, UNCONFIDENT):
                         for aa in census.aminos_at(
-                            frame, ref_codon_pos, confidence
+                                frame, ref_codon_pos, confidence
                         ):
 
                             # Only add it if it is a mutation (it differs)

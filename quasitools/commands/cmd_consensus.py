@@ -30,8 +30,9 @@ from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-p', '--percentage', default=100,
               help='percentage to include base in mixture.')
+@click.option('-o', '--output', type=click.File('w'))
 @pass_context
-def cli(ctx, bam, reference, percentage):
+def cli(ctx, bam, reference, percentage, output):
     rs = parse_references_from_fasta(reference)
 
     for r in rs:
@@ -39,5 +40,11 @@ def cli(ctx, bam, reference, percentage):
 
         conseq = mrc.to_consensus(percentage)
 
-        click.echo('>{0}_{1}_{2}\n{3}'.format('blah', percentage, r.name,
-                                              conseq))
+        if output:
+            output.write('>{0}_{1}_{2}\n{3}'.format('blah', percentage, r.name,
+                                                    conseq))
+        else:
+            click.echo('>{0}_{1}_{2}\n{3}'.format('blah', percentage, r.name,
+                                                  conseq))
+
+    output.close()

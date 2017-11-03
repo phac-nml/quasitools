@@ -29,11 +29,15 @@ from quasitools.parsers.codon_variant_file_parser \
 @click.argument('reference', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('offset', required=True, type=int)
+@click.option('-o', '--output', type=click.File('w'))
 @click.pass_context
-def cli(ctx, csv, reference, offset):
+def cli(ctx, csv, reference, offset, output):
     rs = parse_references_from_fasta(reference)
     ref_seq = rs[0].seq
 
     codon_variants = parse_codon_variants(csv, rs)
 
-    click.echo(codon_variants.report_dnds_values(ref_seq, offset))
+    if output:
+        output.write(codon_variants.report_dnds_values(ref_seq, offset))
+    else:
+        click.echo(codon_variants.report_dnds_values(ref_seq, offset))

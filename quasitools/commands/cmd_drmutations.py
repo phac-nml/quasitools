@@ -45,9 +45,10 @@ from quasitools.parsers.nt_variant_file_parser \
 @click.option('-t', '--reporting_threshold', default=1,
               help='the minimum percentage required for an entry in the drug'
               'resistant report.')
+@click.option('-o', '--output', type=click.File('w'))
 @pass_context
 def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
-        reporting_threshold):
+        reporting_threshold, output):
     rs = parse_references_from_fasta(reference)
 
     mapped_read_collection_arr = []
@@ -74,7 +75,7 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
     # Create AAVar collection and print the hmcf file
-    aa_vars = AAVariantCollection.from_aacensus(aa_census, next(iter(frames)))
+    aa_vars = AAVariantCollection.from_aacensus(aa_census)
 
     # Filter for mutant frequency
     aa_vars.filter('mf' + str(min_freq), 'freq<' + str(min_freq), True)
@@ -83,5 +84,9 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
     mutation_db = MutationDB(mutation_db, genes)
 
     # Generate the mutation report
-    click.echo(aa_vars.report_dr_mutations(mutation_db,
-                                           reporting_threshold))
+    if output:
+        output.write(aa_vars.report_dr_mutations(mutation_db,
+                                                 reporting_threshold))
+    else:
+        click.echo(aa_vars.report_dr_mutations(mutation_db,
+                                               reporting_threshold))

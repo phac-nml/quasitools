@@ -131,8 +131,7 @@ class TestCodonVariantCollection:
 
         aa_census = AACensus(self.reference, mapped_read_collection_arr, genes, frames)
 
-        test_variants = CodonVariantCollection.from_aacensus(
-                            aa_census, next(iter(frames)))
+        test_variants = CodonVariantCollection.from_aacensus(aa_census)
         ref_seq = self.references[0].seq
 
         for gene in test_variants.variants:

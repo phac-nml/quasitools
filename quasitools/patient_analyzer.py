@@ -198,7 +198,7 @@ class PatientAnalyzer():
                              self.genes, frames)
 
         coverage_file = open("%s/coverage_file.csv" % self.output_dir, "w+")
-        coverage_file.write(aa_census.coverage(next(iter(frames))))
+        coverage_file.write(aa_census.coverage(frames))
         coverage_file.close()
 
         # cmd_aavariants
@@ -206,8 +206,7 @@ class PatientAnalyzer():
             print("# Finding amino acid mutations...")
 
         # Create AAVar collection and print the hmcf file
-        aa_vars = AAVariantCollection.from_aacensus(
-            aa_census, next(iter(frames)))
+        aa_vars = AAVariantCollection.from_aacensus(aa_census)
 
         # Filter for mutant frequency
         aa_vars.filter('mf%s' % filters['min_freq'],

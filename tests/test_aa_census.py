@@ -57,4 +57,4 @@ class TestMappedRead:
         with open(VALID_COVERAGE_CSV, "r") as input:
             coverage = input.read()
 
-        assert self.aa_census.coverage(next(iter(self.frames))) == coverage
+        assert self.aa_census.coverage(self.frames) == coverage

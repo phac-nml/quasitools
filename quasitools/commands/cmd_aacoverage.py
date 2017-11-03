@@ -33,8 +33,9 @@ from quasitools.parsers.genes_file_parser import parse_genes_file
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('genes_file', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.option('-o', '--output', type=click.File('w'))
 @pass_context
-def cli(ctx, bam, reference, genes_file):
+def cli(ctx, bam, reference, genes_file, output):
     rs = parse_references_from_fasta(reference)
 
     mapped_read_collection_arr = []
@@ -54,4 +55,8 @@ def cli(ctx, bam, reference, genes_file):
     # Create an AACensus object
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
-    click.echo(aa_census.coverage(next(iter(frames))))
+    if output:
+        output.write(aa_census.coverage(frames))
+        output.close()
+    else:
+        click.echo(aa_census.coverage(frames))
