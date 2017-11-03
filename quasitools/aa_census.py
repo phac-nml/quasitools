@@ -16,6 +16,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
+import pdb
 from Bio.Seq import Seq
 from collections import defaultdict
 
@@ -150,15 +151,20 @@ class AACensus(object):
 
         return coverage
 
-    def coverage(self, frame):
+    def coverage(self, frames):
         """Calculates the coverage and returns it as a string"""
         # "//" specifies integer division for python 3
         length = len(self.mapped_read_collections[0].reference.seq) // 3
 
         coverage_csv = ""
+        pdb.set_trace()
+        for frame in frames:
+            coverage_csv += "frame: %i\n" % frame
 
-        for i in range(0, length):
-            local_coverage = self.coverage_at(frame, i)
-            coverage_csv += "%s,%s\n" % (i + 1, local_coverage)
+            for i in range(0, length):
+                local_coverage = self.coverage_at(frame, i)
+                coverage_csv += "%s,%s\n" % (i + 1, local_coverage)
+
+            coverage_csv += "\n"
 
         return coverage_csv

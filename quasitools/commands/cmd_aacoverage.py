@@ -56,7 +56,7 @@ def cli(ctx, bam, reference, genes_file, output):
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
     if output:
-        output.write(aa_census.coverage(next(iter(frames))))
+        output.write(aa_census.coverage(frames))
         output.close()
     else:
-        click.echo(aa_census.coverage(next(iter(frames))))
+        click.echo(aa_census.coverage(frames))
