@@ -89,4 +89,4 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
                                                  reporting_threshold))
     else:
         click.echo(aa_vars.report_dr_mutations(mutation_db,
-                                           reporting_threshold))
+                                               reporting_threshold))
