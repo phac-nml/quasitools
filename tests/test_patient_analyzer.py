@@ -76,19 +76,6 @@ class TestPatientAnalyzer:
             assert len(seq.seq) >= filters["length_cutoff"] and \
                 avg_score >= filters["score_cutoff"]
 
-    def test_downsample_reads(self):
-        # test default, no downsampling with this test data
-        self.patient_analyzer.downsample_reads(10000)
-        
-        assert self.patient_analyzer.downsample["status"] == 0 and \
-            self.patient_analyzer.downsample["size"] == 0
-
-        # test non default target coverage - downsampling should occur
-        self.patient_analyzer.downsample_reads(500)
-        
-        assert self.patient_analyzer.downsample["status"] == 1 and \
-            self.patient_analyzer.downsample["size"] > 0
-
     def test_generate_bam(self):
         assert not os.path.isfile("%s/align.bam" % OUTPUT_DIR)
         

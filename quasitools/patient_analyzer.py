@@ -46,10 +46,6 @@ class PatientAnalyzer():
         self.filtered["score"] = 0
         self.filtered["ns"] = 0
 
-        self.downsample = {}
-        self.downsample["status"] = 0
-        self.downsample["size"] = 0
-
         self.input_size = 0
         self.determine_input_size()
 
@@ -57,7 +53,6 @@ class PatientAnalyzer():
         self.genes = parse_genes_file(genes_file, self.references[0].name)
 
         self.filtered_reads = "%s/filtered.fastq" % output_dir
-        self.downsampled_reads = "%s/downsampled.fas" % output_dir
 
         if not os.path.isdir(output_dir):
             os.mkdir(output_dir)
@@ -94,44 +89,6 @@ class PatientAnalyzer():
 
         self.filtered["status"] = 1
         filtered_reads_file.close()
-
-    def downsample_reads(self, target_coverage):
-        if not self.quiet:
-            print("# Downsampling reads...")
-
-        seq_rec_obj = Bio.SeqIO.parse(self.filtered_reads, "fastq")
-
-        total = 0
-        for seq in seq_rec_obj:
-            total += len(seq.seq)
-
-        length = len(self.references[0].seq)
-
-        raw_coverage = total / length
-        total_reads = (self.input_size - self.filtered["length"] -
-                       self.filtered["score"] - self.filtered["ns"])
-
-        if raw_coverage > target_coverage:
-            subsample_pct = float(target_coverage) / float(raw_coverage)
-            subsample_size = subsample_pct * total_reads
-
-            command = "seqtk sample -s 42 %s %i > %s" % (
-                self.filtered_reads, subsample_size,
-                self.downsampled_reads)
-
-            os.system(command)
-
-            if not self.quiet:
-                print("# Reads downsampled to %0.2f%% to achieve "
-                      "%i coverage..." % (subsample_pct*100, target_coverage))
-
-            self.downsample["status"] = 1
-            self.downsample["size"] = total_reads - subsample_size
-        else:
-            if not self.quiet:
-                print("# Reads were not downsampled to %i coverage,"
-                      "as raw coverage is %i..." % (
-                          target_coverage, raw_coverage))
 
     def analyze_reads(self, filters, reporting_threshold, generate_consensus):
         # Map reads against reference using bowtietwo
@@ -236,11 +193,6 @@ class PatientAnalyzer():
         """ Runs bowtietwo local alignment on self.reads
             to generate a bam file """
 
-        reads = self.filtered_reads
-
-        if self.downsample["status"] == 1:
-            reads = self.downsampled_reads
-
         sorted_bam_fn = "%s/align.bam" % self.output_dir
         bowtietwo_bam_output = sorted_bam_fn[0:sorted_bam_fn.rindex(".")]
         bam_fn = "%s/tmp.bam" % self.output_dir
@@ -254,7 +206,7 @@ class PatientAnalyzer():
 
         bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' --rfg '8,3' "
                           "--ma 1 --mp '2,2' -S %s -x %s -U %s") %
-                         (sam_fn, bowtietwo_index, reads))
+                         (sam_fn, bowtietwo_index, self.filtered_reads))
 
         os.system(bowtietwo_cmd)
 
@@ -294,22 +246,13 @@ class PatientAnalyzer():
                             "quality score: %i\n") % self.filtered["score"])
         stats_report.write(("Number of reads filtered due to presence "
                             "of Ns: %i\n") % self.filtered["ns"])
-        if self.downsample["status"]:
-            stats_report.write(("Number of reads filtered due to excess "
-                                "coverage: %i\n") % self.downsample["size"])
-            stats_report.write(("Number of reads filtered due to poor "
-                                "mapping: %i\n") %
-                               (self.input_size - self.filtered["length"] -
-                                self.filtered["score"] - self.filtered["ns"] -
-                                self.downsample["size"] - mr_len))
-        else:
-            stats_report.write("Number of reads filtered due to excess "
-                               "coverage: 0\n")
-            stats_report.write(("Number of reads filtered due to poor "
-                                "mapping: %i\n") %
-                               (self.input_size - self.filtered["length"] -
-                                self.filtered["score"] - self.filtered["ns"] -
-                                mr_len))
+        stats_report.write("Number of reads filtered due to excess "
+                           "coverage: 0\n")
+        stats_report.write(("Number of reads filtered due to poor "
+                            "mapping: %i\n") %
+                           (self.input_size - self.filtered["length"] -
+                            self.filtered["score"] - self.filtered["ns"] -
+                            mr_len))
         stats_report.write("Percentage of reads filtered: %0.2f" %
                            (float(self.input_size - mr_len) /
                             self.input_size * 100))
