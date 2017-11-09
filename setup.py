@@ -21,11 +21,11 @@ dependencies = ['biopython', 'click', 'numpy', 'pysam', 'scipy']
 
 setup(
     name='quasitools',
-    version='0.1.0',
-    url='http://gitlab.corefacility.ca/eric/quasitools.git',
+    version='0.2.0',
+    url='https://github.com/phac-nml/quasitools.git',
     license='Apache License, Version 2.0',
     author='Eric Enns',
-    author_email='eric.enns@gmail.com',
+    author_email='eric.enns@canada.ca',
     description='Quasitools is a collection of tools for analysing Viral Quasispecies',
     long_description=__doc__,
     packages=find_packages(exclude=['tests']),
