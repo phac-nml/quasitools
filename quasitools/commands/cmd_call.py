@@ -171,12 +171,8 @@ def codonvar(bam, reference, offset, genes_file, error_rate, output):
 
     codon_variants = CodonVariantCollection.from_aacensus(aa_census)
 
-    click.echo(codon_variants.to_csv_file(offset))
-
-    variants.filter('dp100', 'DP<100', True)
-
     if output:
-        output.write(variants.to_vcf_file())
+        output.write(codon_variants.to_csv_file(offset))
         output.close()
     else:
-        click.echo(variants.to_vcf_file())
+        click.echo(codon_variants.to_csv_file(offset))
