@@ -217,7 +217,7 @@ class PatientAnalyzer():
         os.system(sam_to_bam_cmd)
 
         # Sort bam output
-        sort_bam_cmd = "samtools sort %s -T %s -o %s" % (bam_fn, 
+        sort_bam_cmd = "samtools sort %s -T %s -o %s" % (bam_fn,
                                                          bowtietwo_bam_output,
                                                          sorted_bam_fn)
 
