@@ -2,6 +2,14 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.2.2 ##
+
+2017-11-27
+
+### Changed ###
+
+ - Updated samtools dependency to v1.3
+
 ## 0.2.1 ##
 
 2017-11-22
