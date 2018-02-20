@@ -44,6 +44,8 @@ class Distance(object):
             reference_loc - location of the reference file
         RETURN:
             pileup_list - list of pileups
+        POST:
+            Pileup list is constructed.
         """
 
         # Build the reference object.
@@ -105,9 +107,6 @@ class Distance(object):
         Runs the script, calculating the cosine similarity function between viral
         quasispecies in viral_files.
 
-        A pairwise matrix containing the evolutionary distance between all viral
-        quasispecies is returned.
-
         INPUT:
             startpos - starting base position of reference to be compared
             when calculating distances
@@ -119,6 +118,12 @@ class Distance(object):
             dictionaries represents the pileups.
 
             normalize - determine whether to normalize data or not
+        RETURN:
+            A pairwise matrix containing the evolutionary distance between all
+            viral quasispecies is returned.
+
+        POST:
+            [None]
 
         """
 
