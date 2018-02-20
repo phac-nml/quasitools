@@ -50,15 +50,13 @@ class Distance(object):
 
         # Build the reference object.
         references = parse_references_from_fasta(reference_loc)
-
+        pileup_list = []
         # Iterate over each reference in the reference object.
         for reference in references:
             mrcList = []
             for bam in viral_files:
                 mrcList.append(parse_mapped_reads_from_bam(reference, bam))
 
-
-            pileup_list = []
             for mrc in mrcList:
                 pileup_list.append(mrc.pileup(indels=True))
 
