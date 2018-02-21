@@ -49,17 +49,19 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output):
        by the sum of the read counts inside the same tuple. The normalized
        read counts inside each 4-tuple sum to one."""
     click.echo("Using file %s as reference" % (reference))
+    for file in bam:
+        print("Reading input from file(s)  %s" % (file))
     if len(bam)<2:
         click.echo("Error: At least two bam file locations are"
         + " required to perform quasispecies distance comparison")
     else:
         viralDist = Distance()
         pileup_list = viralDist.construct_pileup(bam, reference)
-        csv = viralDist.get_distance_as_csv(startpos, endpos, pileup_list, bam, normalize)
+        matrix = viralDist.get_distance_as_csv(startpos, endpos, pileup_list, bam, normalize)
         if output:
-            output.write(csv)
+            output.write(matrix)
         else:
-            click.echo(csv)
+            click.echo(matrix)
         #end if
         print("Complete!")
     #end if

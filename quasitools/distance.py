@@ -47,8 +47,6 @@ class Distance(object):
         POST:
             Pileup list is constructed.
         """
-        for file in viral_files:
-            print("Reading input from file(s)  %s" % (file))
 
         # Build the reference object.
         references = parse_references_from_fasta(reference_loc)
@@ -122,11 +120,11 @@ class Distance(object):
             normalize - determine whether to normalize data or not
 
         RETURN:
-            Returns a pairwise matrix containing the evolutionary
-            distance between all viral quasispecies is returned. The first
-            row and first column of the distance matrix contain labels for which
-             quasispecies are to be compared in each cell corresponding to the
-            row and column.
+            Returns a csv string representation of a pairwise matrix containing
+             the evolutionary distance between all viral quasispecies is
+            returned. The first row and first column of the distance matrix
+            contain labels for which quasispecies are to be compared in each
+            cell corresponding to the row and column.
 
         POST:
             [None]
@@ -153,7 +151,7 @@ class Distance(object):
         baseList = np.array(baseList)
 
         #create distance matrix for csv file
-        distMatrix = np.around(squareform(pdist(baseList, self.get_cosine_similarity)), decimals=6).tolist()
+        distMatrix = squareform(pdist(baseList, self.get_cosine_similarity)).tolist()
         distMatrix.insert(0, ["Quasispecies"] + list(viral_files))
         for i in range(0,len(viral_files)):
             (distMatrix[i+1]).insert(0, viral_files[i])
