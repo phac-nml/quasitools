@@ -39,8 +39,9 @@ def cli(ctx, bam, reference, normalize, startpos, endpos):
        quasispecies, computed using the cosine similarity function.
        It takes as input multiple bam files containing reads from viral
        quasispecies and a reference file. It outputs a pairwise distance
-       matrix containing the distances between each viral quasispecies as an
-       numpy.ndarray object.
+       matrix containing the distances between each viral quasispecies as a
+       CSV file. This file ("output.csv") is then stored in the current
+       directory.
 
        By default the data is normalized if not specified explicitly.
        This is done dividing base read counts (A, C, T, G) inside every 4-tuple
@@ -52,4 +53,4 @@ def cli(ctx, bam, reference, normalize, startpos, endpos):
 
     viralDist = Distance()
     pileup_list = viralDist.construct_pileup(bam, reference)
-    viralDist.get_distance(startpos, endpos, pileup_list, normalize)
+    viralDist.get_distance(startpos, endpos, pileup_list, bam, normalize)

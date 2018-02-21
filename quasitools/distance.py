@@ -99,7 +99,7 @@ class Distance(object):
         return pileup_list
     #end def
 
-    def get_distance(self,  startpos, endpos, pileup_list, normalize):
+    def get_distance(self,  startpos, endpos, pileup_list, viral_files, normalize):
 
         """
         Runs the script, calculating the cosine similarity function between viral
@@ -115,13 +115,16 @@ class Distance(object):
             pileup_list - list of lists of dictionaries - each lists of
             dictionaries represents the pileups.
 
+            viral_files - files names which represent a pileup
+
             normalize - determine whether to normalize data or not
+
         RETURN:
-            A pairwise matrix containing the evolutionary distance between all
-            viral quasispecies is returned.
+            [None]
 
         POST:
-            [None]
+            Saves to output file a pairwise matrix containing the evolutionary
+            distance between all viral quasispecies is returned.
 
         """
 
@@ -145,10 +148,16 @@ class Distance(object):
         baseList = np.array(baseList)
         np.set_printoptions(linewidth=140, suppress="True", precision=6)
 
-        distMatrix = squareform(pdist(baseList, self.get_cosine_similarity))
-        print(distMatrix)
-        return distMatrix
+        #create distance matrix for csv file
+        distMatrix = np.around(squareform(pdist(baseList, self.get_cosine_similarity)), decimals=6).tolist()
+        distMatrix.insert(0, ["Quasispecies"] + list(viral_files))
+        for i in range(0,len(viral_files)):
+            (distMatrix[i+1]).insert(0, viral_files[i])
 
+        #output csv file
+        print("Distance matrix saved in file 'output.csv' in the current "
+              + "directory.")
+        np.savetxt('output.csv', distMatrix, delimiter=',', fmt='%s')
         print("Complete!")
     #end def
 

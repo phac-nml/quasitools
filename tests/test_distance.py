@@ -25,6 +25,8 @@ class TestDistance:
     def setup_class(self):
         self.viral_files = ("data/quasi1.bam", "data/quasi2.bam")
         self.dist = Distance()
+        self.viral_files = ['test1.bam', 'test2.bam', 'test3.bam', 'test4.bam',
+                            'test5.bam', 'test6.bam', 'test7.bam', 'test8.bam']
         self.pileup = [[{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1},
                    {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test1
                   [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1000000},
@@ -44,8 +46,9 @@ class TestDistance:
     #end def
 
     def test_get_distance(self):
-        distMatrix = self.dist.get_distance(0, 7, self.pileup, 'normalize')
+        distMatrix = self.dist.get_distance(0, 7, self.pileup, viral_files, 'normalize')
         assert(len(distMatrix) == 8)
         assert(len(distMatrix[0]) == 8)
         assert(distMatrix[0][7] == 1)
+
     #end def
