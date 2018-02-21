@@ -57,10 +57,6 @@ class Distance(object):
             for bam in viral_files:
                 mrcList.append(parse_mapped_reads_from_bam(reference, bam))
 
-            for mrc in mrcList:
-                pileup_list.append(mrc.pileup(indels=True))
-
-
             """
             pileup_list = [[{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1},
                    {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test1
@@ -95,7 +91,8 @@ class Distance(object):
                    {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}]] #test15
             #pileups are a list of dictionaries containing read count for each base
             """
-
+        for mrc in mrcList:
+            pileup_list.append(mrc.pileup(indels=True))
         return pileup_list
     #end def
 
