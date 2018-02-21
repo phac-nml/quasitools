@@ -43,7 +43,8 @@ class Distance(object):
 
             reference_loc - location of the reference file
         RETURN:
-            pileup_list - list of pileups
+            pileup_list - list of pileups (list of dictionaries containing
+            read counts for each base)
         POST:
             Pileup list is constructed.
         """
@@ -56,43 +57,17 @@ class Distance(object):
             mrcList = []
             for bam in viral_files:
                 mrcList.append(parse_mapped_reads_from_bam(reference, bam))
+            #end for
 
-            """
-            pileup_list = [[{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test1
-                  [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1000000},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test2
-                  [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1000000, 'C': 1},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test3
-                  [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1, 'C': 1},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test4
-                  [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1, 'C': 1000000},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test5
-                  [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1000000, 'C': 1},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test6
-                  [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1000000, 'C': 1000000},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test7
-                  [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1000000, 'C': 1000000},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}]] #test8
+            #pileups are a
+            for num in range(0, len(mrcList)):
+                if len(pileup_list) < (num + 1):
+                    pileup_list.append(mrcList[num].pileup(indels=True))
+                else:
+                    pileup_list[num] += mrcList[num].pileup(indels=True)
+                #end if
+            #end for
 
-            pileup_list2 = [[{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'T': 6, 'C': 6},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test9
-                  [{'A': 3, 'T': 3, 'C': 3, 'G': 3}, {'T': 6, 'C': 6},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test10
-                  [{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'A': 1, 'T': 1, 'C': 10},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test11
-                  [{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'C': 12},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test12
-                  [{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'G': 6, 'C': 6},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test13
-                  [{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'T': 6, 'G': 6},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test14
-                  [{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'G': 6, 'A': 6},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}]] #test15
-            #pileups are a list of dictionaries containing read count for each base
-            """
-        for mrc in mrcList:
-            pileup_list.append(mrc.pileup(indels=True))
         return pileup_list
     #end def
 
