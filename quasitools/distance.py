@@ -47,6 +47,8 @@ class Distance(object):
         POST:
             Pileup list is constructed.
         """
+        for file in viral_files:
+            print("Reading input from file(s)  %s" % (file))
 
         # Build the reference object.
         references = parse_references_from_fasta(reference_loc)
@@ -99,7 +101,7 @@ class Distance(object):
         return pileup_list
     #end def
 
-    def get_distance(self,  startpos, endpos, pileup_list, viral_files, normalize):
+    def get_distance_as_csv(self,  startpos, endpos, pileup_list, viral_files, normalize):
 
         """
         Runs the script, calculating the cosine similarity function between viral
@@ -120,11 +122,14 @@ class Distance(object):
             normalize - determine whether to normalize data or not
 
         RETURN:
-            [None]
+            Returns a pairwise matrix containing the evolutionary
+            distance between all viral quasispecies is returned. The first
+            row and first column of the distance matrix contain labels for which
+             quasispecies are to be compared in each cell corresponding to the
+            row and column.
 
         POST:
-            Saves to output file a pairwise matrix containing the evolutionary
-            distance between all viral quasispecies is returned.
+            [None]
 
         """
 
@@ -146,7 +151,6 @@ class Distance(object):
             for dict in range(first, last) for base in self.BASES])
         #end for
         baseList = np.array(baseList)
-        np.set_printoptions(linewidth=140, suppress="True", precision=6)
 
         #create distance matrix for csv file
         distMatrix = np.around(squareform(pdist(baseList, self.get_cosine_similarity)), decimals=6).tolist()
@@ -154,11 +158,15 @@ class Distance(object):
         for i in range(0,len(viral_files)):
             (distMatrix[i+1]).insert(0, viral_files[i])
 
-        #output csv file
-        print("Distance matrix saved in file 'output.csv' in the current "
-              + "directory.")
-        np.savetxt('output.csv', distMatrix, delimiter=',', fmt='%s')
-        print("Complete!")
+        #convert from 2d array to csv formatted string
+        csvOut=""
+        for arr in distMatrix:
+            if csvOut != "":
+                csvOut += "\n"
+            #end if
+            csvOut += ','.join(['%s' % element for element in arr])
+        #end for
+        return csvOut
     #end def
 
     def get_cosine_similarity(self, quasi1, quasi2):

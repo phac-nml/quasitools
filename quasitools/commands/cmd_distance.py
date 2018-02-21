@@ -33,24 +33,33 @@ from quasitools.distance import Distance
             " of the reference to use in the distance calculation.", default=-1)
 @click.option('--endpos', '-e', type=int, help="Set the end base position of " +
               "the reference to use in the distance calculation.", default=-1)
+@click.option('-o', '--output', type=click.File('w'), help="Output the " +
+              "quasispecies distance matrix in CSV format in a file.")
 @click.pass_context
-def cli(ctx, bam, reference, normalize, startpos, endpos):
+def cli(ctx, reference, bam, normalize, startpos, endpos, output):
     """This script outputs the evolutionary distance [0 - 1] between
        quasispecies, computed using the cosine similarity function.
        It takes as input multiple bam files containing reads from viral
        quasispecies and a reference file. It outputs a pairwise distance
-       matrix containing the distances between each viral quasispecies as a
-       CSV file. This file ("output.csv") is then stored in the current
-       directory.
+       matrix containing the distances between each viral quasispecies. This
+       can later be saved as a CSV file.
 
        By default the data is normalized if not specified explicitly.
        This is done dividing base read counts (A, C, T, G) inside every 4-tuple
        by the sum of the read counts inside the same tuple. The normalized
        read counts inside each 4-tuple sum to one."""
     click.echo("Using file %s as reference" % (reference))
-    for file in bam:
-        click.echo("Reading input from file(s)  %s" % (file))
-
-    viralDist = Distance()
-    pileup_list = viralDist.construct_pileup(bam, reference)
-    viralDist.get_distance(startpos, endpos, pileup_list, bam, normalize)
+    if len(bam)<2:
+        click.echo("Error: At least two bam file locations are"
+        + " required to perform quasispecies distance comparison")
+    else:
+        viralDist = Distance()
+        pileup_list = viralDist.construct_pileup(bam, reference)
+        csv = viralDist.get_distance_as_csv(startpos, endpos, pileup_list, bam, normalize)
+        if output:
+            output.write(csv)
+        else:
+            click.echo(csv)
+        #end if
+        print("Complete!")
+    #end if
