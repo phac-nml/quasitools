@@ -57,11 +57,11 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output):
     else:
         viralDist = Distance()
         pileup_list = viralDist.construct_pileup(bam, reference)
-        matrix = viralDist.get_distance_as_csv(startpos, endpos, pileup_list, bam, normalize)
+        matrix = viralDist.get_distance_matrix(startpos, endpos, pileup_list, bam, normalize)
         if output:
-            output.write(matrix)
+            output.write(viralDist.convert_distance_to_csv(matrix))
         else:
-            click.echo(matrix)
+            click.echo(viralDist.convert_distance_to_csv(matrix))
         #end if
         print("Complete!")
     #end if

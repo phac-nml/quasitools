@@ -71,7 +71,7 @@ class Distance(object):
         return pileup_list
     #end def
 
-    def get_distance_as_csv(self,  startpos, endpos, pileup_list, viral_files, normalize):
+    def get_distance_matrix(self,  startpos, endpos, pileup_list, viral_files, normalize):
 
         """
         Runs the script, calculating the cosine similarity function between viral
@@ -92,11 +92,10 @@ class Distance(object):
             normalize - determine whether to normalize data or not
 
         RETURN:
-            Returns a csv string representation of a pairwise matrix containing
-             the evolutionary distance between all viral quasispecies is
-            returned. The first row and first column of the distance matrix
-            contain labels for which quasispecies are to be compared in each
-            cell corresponding to the row and column.
+            Returns a pairwise matrix containing the evolutionary distance
+            between all viral quasispecies is returned. The first row and first
+            column of the distance matrix contain labels for which quasispecies
+            are to be compared in each cell corresponding to the row and column.
 
         POST:
             [None]
@@ -127,10 +126,28 @@ class Distance(object):
         distMatrix.insert(0, ["Quasispecies"] + list(viral_files))
         for i in range(0,len(viral_files)):
             (distMatrix[i+1]).insert(0, viral_files[i])
+        return distMatrix
 
+    #end def
+
+    def convert_distance_to_csv(self, matrix):
+
+        """
+        Converts a 2D array (distance matrix) to a csv-formatted string.
+
+        INPUT:
+            matrix - 2D array (distance matrix)
+
+        RETURN:
+            Returns the CSV representation of a pairwise distance matrix.
+
+        POST:
+            [None]
+
+        """
         #convert from 2d array to csv formatted string
         csvOut=""
-        for arr in distMatrix:
+        for arr in matrix:
             if csvOut != "":
                 csvOut += "\n"
             #end if

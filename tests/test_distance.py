@@ -60,8 +60,8 @@ class TestDistance:
                    {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}]] #test15
     #end def
 
-    def test_get_distance_as_csv(self):
-        distMatrix = self.dist.get_distance_as_csv(0, 7, self.pileup, viral_files, 'normalize')
+    def test_get_distance_matrix(self):
+        distMatrix = self.dist.get_distance_matrix(0, 7, self.pileup, viral_files, 'normalize')
         assert(len(distMatrix) == 9)
         assert(len(distMatrix[0]) == 9)
         assert(distMatrix[1][8] == 1) #TODO: verify whether this works
