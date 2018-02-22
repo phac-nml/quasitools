@@ -30,9 +30,15 @@ from quasitools.distance import Distance
               help="Normalize read count data so that the read counts per " +
               "4-tuple (A, C, T, G) sum to one.")
 @click.option('--startpos', '-s', type=int, help="Set the start base position" +
-            " of the reference to use in the distance calculation.", default=-1)
+            " of the reference to use in the distance calculation. Start" +
+            " positions must be greater than zero and less than the length " +
+            "of the base pileup (number of positions to be compared with the" +
+            "reference.)")
 @click.option('--endpos', '-e', type=int, help="Set the end base position of " +
-              "the reference to use in the distance calculation.", default=-1)
+             "the reference to use in the distance calculation. End" +
+             " positions must be greater than zero and less than the length " +
+             "of the base pileup (number of positions to be compared with the" +
+             "reference.)")
 @click.option('-o', '--output', type=click.File('w'), help="Output the " +
               "quasispecies distance matrix in CSV format in a file.")
 @click.pass_context
@@ -48,20 +54,39 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output):
        This is done dividing base read counts (A, C, T, G) inside every 4-tuple
        by the sum of the read counts inside the same tuple. The normalized
        read counts inside each 4-tuple sum to one."""
+    message = ""
     click.echo("Using file %s as reference" % (reference))
     for file in bam:
         print("Reading input from file(s)  %s" % (file))
     if len(bam)<2:
-        click.echo("Error: At least two bam file locations are"
+        message += ("\nError: At least two bam file locations are"
         + " required to perform quasispecies distance comparison")
-    else:
+    if type(startpos) == int and int(startpos) < 0:
+        message += ("\nError: Start position must be 0 or greater.")
+    if type(endpos) == int and int(endpos) < 0:
+        message += ("\nError: End position must be 0 or greater.")
+    if (type(startpos) == int and type(endpos) == int and
+        int(startpos) > int(endpos)):
+        message += ("\nError: Start position must be less than or equal to end"
+        + " position")
+    if message == "": #if no error messages have been created
         viralDist = Distance()
         pileup_list = viralDist.construct_pileup(bam, reference)
-        matrix = viralDist.get_distance_matrix(startpos, endpos, pileup_list, bam, normalize)
-        if output:
-            output.write(viralDist.convert_distance_to_csv(matrix))
-        else:
-            click.echo(viralDist.convert_distance_to_csv(matrix))
-        #end if
-        print("Complete!")
+        click.echo()
+        if (type(startpos) == int and int(startpos) >= len(pileup_list[0])):
+            message += ("\nError: Start position must be less than number of " +
+            "nucleotide base positions in pileup (%s)." % len(pileup_list[0]))
+        if (type(endpos) == int and int(endpos) >= len(pileup_list[0])):
+            message += ("\nError: End position must be less than length of " +
+            "nucleotide base positions in pileup (%s)." % len(pileup_list[0]))
+        if message == "":
+            matrix = viralDist.get_distance_matrix(pileup_list, bam, normalize, startpos, endpos)
+            if output:
+                output.write(viralDist.convert_distance_to_csv(matrix))
+            else:
+                click.echo(viralDist.convert_distance_to_csv(matrix))
+            #end if
+            print("Complete!")
+        #end def
     #end if
+    click.echo(message)

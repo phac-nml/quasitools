@@ -67,11 +67,10 @@ class Distance(object):
                     pileup_list[num] += mrcList[num].pileup(indels=True)
                 #end if
             #end for
-
         return pileup_list
     #end def
 
-    def get_distance_matrix(self,  startpos, endpos, pileup_list, viral_files, normalize):
+    def get_distance_matrix(self, pileup_list, viral_files, normalize, startpos=None, endpos=None):
 
         """
         Runs the script, calculating the cosine similarity function between viral
@@ -79,7 +78,7 @@ class Distance(object):
 
         INPUT:
             startpos - starting base position of reference to be compared
-            when calculating distances
+            when calculating distances.
 
             endpos - last base position of reference to be compared when
             calculating distance.
@@ -101,19 +100,18 @@ class Distance(object):
             [None]
 
         """
-
         #TODO - Update normalization to work with multiple input files
         if normalize:
             self.normalize_sum_to_one(pileup_list)
 
         baseList = []
         first = 0 #first position of dictionaries in each pileup_list[i]
-        if startpos != -1:
+        if startpos != None:
             first = startpos
         #end if
         for num in range(0, len(pileup_list)):
             last = len(pileup_list[num]) #last pos of dicts in each pileup_list[i]
-            if endpos != -1:
+            if endpos != None:
                 last = endpos + 1
             #end if
             baseList.append([pileup_list[num][dict].get(base, 0)

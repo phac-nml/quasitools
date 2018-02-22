@@ -44,26 +44,34 @@ class TestDistance:
                   [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1000000, 'C': 1000000},
                    {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}]] #test8
 
+        self.zeroed = [[{'A': 0, 'T': 0, 'C': 0}, {'T': 0}], #test 1
+                      [{'A': 0, 'T': 0, 'C': 0}, {'A': 0}]] # test 2
+        self.zeroed_files = ['test1.bam', 'test2.bam']
+
         self.pileup2 = [[{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'T': 6, 'C': 6},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test9
+                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test1
                   [{'A': 3, 'T': 3, 'C': 3, 'G': 3}, {'T': 6, 'C': 6},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test10
+                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test2
                   [{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'A': 1, 'T': 1, 'C': 10},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test11
+                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test3
                   [{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'C': 12},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test12
+                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test4
                   [{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'G': 6, 'C': 6},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test13
+                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test5
                   [{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'T': 6, 'G': 6},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test14
+                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test6
                   [{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'G': 6, 'A': 6},
-                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}]] #test15
+                   {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}]] #test7
     #end def
 
     def test_get_distance_matrix(self):
-        distMatrix = self.dist.get_distance_matrix(0, 7, self.pileup, viral_files, 'normalize')
+        distMatrix = self.dist.get_distance_matrix(self.pileup, self.viral_files, 'normalize', 0, 7)
         assert(len(distMatrix) == 9)
         assert(len(distMatrix[0]) == 9)
         assert(distMatrix[1][8] == 1) #TODO: verify whether this works
+
+        distMatrix = self.dist.get_distance_matrix(self.zeroed, self.zeroed_files, 'normalize', 0, 1)
+        assert(len(distMatrix) == 3)
+        assert(len(distMatrix[0]) == 3)
 
     #end def
