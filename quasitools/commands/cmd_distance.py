@@ -84,6 +84,7 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output):
             if output:
                 output.write(viralDist.convert_distance_to_csv(matrix))
             else:
+                #click.echo(matrix)
                 click.echo(viralDist.convert_distance_to_csv(matrix))
             #end if
             print("Complete!")

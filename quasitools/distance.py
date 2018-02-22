@@ -67,6 +67,7 @@ class Distance(object):
                     pileup_list[num] += mrcList[num].pileup(indels=True)
                 #end if
             #end for
+
         return pileup_list
     #end def
 
@@ -100,10 +101,8 @@ class Distance(object):
             [None]
 
         """
-        #TODO - Update normalization to work with multiple input files
         if normalize:
             self.normalize_sum_to_one(pileup_list)
-
         baseList = []
         first = 0 #first position of dictionaries in each pileup_list[i]
         if startpos != None:
