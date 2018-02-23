@@ -28,8 +28,8 @@ class TestDistance:
     def setup_class(self):
         self.dist = Distance()
         #files for get_distance_matrix test function
-        self.test_gdm_files = ['test1.bam', 'test2.bam', 'test3.bam', 'test4.bam',
-                            'test5.bam', 'test6.bam', 'test7.bam', 'test8.bam']
+        self.test_gdm_files = ('test1.bam', 'test2.bam', 'test3.bam', 'test4.bam',
+                            'test5.bam', 'test6.bam', 'test7.bam', 'test8.bam')
         self.pileup = [[{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1},
                    {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test1
                   [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1000000},
@@ -50,7 +50,7 @@ class TestDistance:
         self.ones = [[{'A': 1, 'T': 1, 'C': 1}, {'T': 1}], #test 1
                       [{'A': 1, 'T': 1, 'C': 1}, {'T': 1}]] # test 2
 
-        self.test_ones_files = ['test1.bam', 'test2.bam']
+        self.test_ones_files = ('test1.bam', 'test2.bam')
 
         self.pileup2 = [[{'A': 3, 'T': 3, 'C': 2, 'G': 4}, {'T': 6, 'C': 6},
                    {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test1
@@ -74,11 +74,11 @@ class TestDistance:
     #end def
 
     def test_get_distance_matrix(self):
-        normalized = self.dist.get_distance_matrix(self.pileup, 'normalize', None, None)
+        normalized = self.dist.get_distance_matrix(self.pileup, 'normalize')
         assert(len(normalized) == 8)
         assert(len(normalized[0]) == 8)
         assert(normalized[0][7] == 1) #TODO: verify whether this works
-        assert(self.dist.convert_distance_to_csv(normalized, self.test_gdm_files) == "Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam,test6.bam,test7.bam,test8.bam\n" +
+        assert(self.dist.convert_distance_to_csv(normalized, self.test_gdm_files) == ("Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam,test6.bam,test7.bam,test8.bam\n" +
 "test1.bam,0.00000000,0.96329037,0.96329037,0.96329037,0.99043043,0.99043043,0.99043043,1.00000000\n" +
 "test2.bam,0.96329037,0.00000000,0.89189249,0.89189249,0.97259768,0.91702091,0.97259768,0.96329037\n" +
 "test3.bam,0.96329037,0.89189249,0.00000000,0.89189249,0.91702091,0.97259768,0.97259768,0.96329037\n" +
@@ -86,9 +86,9 @@ class TestDistance:
 "test5.bam,0.99043043,0.97259768,0.91702091,0.97259768,0.00000000,0.97142866,0.97142866,0.99043043\n" +
 "test6.bam,0.99043043,0.91702091,0.97259768,0.97259768,0.97142866,0.00000000,0.97142866,0.99043043\n" +
 "test7.bam,0.99043043,0.97259768,0.97259768,0.91702091,0.97142866,0.97142866,0.00000000,0.99043043\n" +
-"test8.bam,1.00000000,0.96329037,0.96329037,0.96329037,0.99043043,0.99043043,0.99043043,0.00000000"
+"test8.bam,1.00000000,0.96329037,0.96329037,0.96329037,0.99043043,0.99043043,0.99043043,0.00000000")
 )
-        matrixTwo = self.dist.get_distance_matrix(self.ones, 'normalize', None, None)
+        matrixTwo = self.dist.get_distance_matrix(self.ones, 'normalize')
         assert(len(matrixTwo) == 2)
         assert(len(matrixTwo[0]) == 2)
         assert(matrixTwo[0][1] == 1)
