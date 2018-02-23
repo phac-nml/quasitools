@@ -67,11 +67,10 @@ class Distance(object):
                     pileup_list[num] += mrcList[num].pileup(indels=True)
                 #end if
             #end for
-
         return pileup_list
     #end def
 
-    def get_distance_matrix(self, pileup_list, viral_files, normalize, startpos=None, endpos=None):
+    def get_distance_matrix(self, pileup_list, normalize, startpos=None, endpos=None):
 
         """
         Runs the script, calculating the cosine similarity function between viral
@@ -86,8 +85,6 @@ class Distance(object):
 
             pileup_list - list of lists of dictionaries - each lists of
             dictionaries represents the pileups.
-
-            viral_files - files names which represent a pileup
 
             normalize - determine whether to normalize data or not
 
@@ -117,23 +114,22 @@ class Distance(object):
             for dict in range(first, last) for base in self.BASES])
         #end for
         baseList = np.array(baseList)
-
+        np.set_printoptions(suppress=True)
         #create distance matrix for csv file
         distMatrix = squareform(pdist(baseList, self.get_cosine_similarity)).tolist()
-        distMatrix.insert(0, ["Quasispecies"] + list(viral_files))
-        for i in range(0,len(viral_files)):
-            (distMatrix[i+1]).insert(0, viral_files[i])
         return distMatrix
 
     #end def
 
-    def convert_distance_to_csv(self, matrix):
+    def convert_distance_to_csv(self, matrix, viral_files):
 
         """
         Converts a 2D array (distance matrix) to a csv-formatted string.
 
         INPUT:
             matrix - 2D array (distance matrix)
+
+            viral_files - files names which represent a pileup
 
         RETURN:
             Returns the CSV representation of a pairwise distance matrix.
@@ -142,13 +138,15 @@ class Distance(object):
             [None]
 
         """
+        #(distMatrix[i+1]).insert(0, viral_files[i])
         #convert from 2d array to csv formatted string
-        csvOut=""
+        csvOut='Quasispecies,' + ','.join('%s' % file for file in list(viral_files))
+        i = 0;
         for arr in matrix:
-            if csvOut != "":
-                csvOut += "\n"
+            csvOut += "\n"
             #end if
-            csvOut += ','.join(['%s' % element for element in arr])
+            csvOut += ','.join([viral_files[i]]+['%.08f' % element for element in arr])
+            i+=1;
         #end for
         return csvOut
     #end def

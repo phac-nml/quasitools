@@ -74,17 +74,25 @@ class TestDistance:
     #end def
 
     def test_get_distance_matrix(self):
-        normalized = self.dist.get_distance_matrix(self.pileup, self.test_gdm_files, 'normalize', None, None)
-        assert(len(normalized) == 9)
-        assert(len(normalized[0]) == 9)
-        assert(normalized[1][8] == 1) #TODO: verify whether this works
-        assert(normalized == [['Quasispecies', 'test1.bam', 'test2.bam', 'test3.bam', 'test4.bam', 'test5.bam', 'test6.bam', 'test7.bam', 'test8.bam'], ['test1.bam', 0.0, 0.963290365981529, 0.963290365981529, 0.963290365981529, 0.9904304301700023, 0.9904304301700023, 0.9904304301700023, 1.0], ['test2.bam', 0.963290365981529, 0.0, 0.891892493789242, 0.891892493789242, 0.9725976798731226, 0.9170209149268688, 0.9725976798731226, 0.963290365981529], ['test3.bam', 0.963290365981529, 0.891892493789242, 0.0, 0.891892493789242, 0.9170209149268688, 0.9725976798731226, 0.9725976798731226, 0.963290365981529], ['test4.bam', 0.963290365981529, 0.891892493789242, 0.891892493789242, 0.0, 0.9725976798731226, 0.9725976798731226, 0.9170209149268688, 0.963290365981529], ['test5.bam', 0.9904304301700023, 0.9725976798731226, 0.9170209149268688, 0.9725976798731226, 0.0, 0.9714286555101037, 0.9714286555101037, 0.9904304301700023], ['test6.bam', 0.9904304301700023, 0.9170209149268688, 0.9725976798731226, 0.9725976798731226, 0.9714286555101037, 0.0, 0.9714286555101037, 0.9904304301700023], ['test7.bam', 0.9904304301700023, 0.9725976798731226, 0.9725976798731226, 0.9170209149268688, 0.9714286555101037, 0.9714286555101037, 0.0, 0.9904304301700023], ['test8.bam', 1.0, 0.963290365981529, 0.963290365981529, 0.963290365981529, 0.9904304301700023, 0.9904304301700023, 0.9904304301700023, 0.0]])
-
-        matrixTwo = self.dist.get_distance_matrix(self.ones, self.test_ones_files, 'normalize', None, None)
-        assert(len(matrixTwo) == 3)
-        assert(len(matrixTwo[0]) == 3)
-        assert(matrixTwo[1][2] == 1)
-        assert(matrixTwo[2][1] == 1)
+        normalized = self.dist.get_distance_matrix(self.pileup, 'normalize', None, None)
+        assert(len(normalized) == 8)
+        assert(len(normalized[0]) == 8)
+        assert(normalized[0][7] == 1) #TODO: verify whether this works
+        assert(self.dist.convert_distance_to_csv(normalized, self.test_gdm_files) == "Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam,test6.bam,test7.bam,test8.bam\n" +
+"test1.bam,0.00000000,0.96329037,0.96329037,0.96329037,0.99043043,0.99043043,0.99043043,1.00000000\n" +
+"test2.bam,0.96329037,0.00000000,0.89189249,0.89189249,0.97259768,0.91702091,0.97259768,0.96329037\n" +
+"test3.bam,0.96329037,0.89189249,0.00000000,0.89189249,0.91702091,0.97259768,0.97259768,0.96329037\n" +
+"test4.bam,0.96329037,0.89189249,0.89189249,0.00000000,0.97259768,0.97259768,0.91702091,0.96329037\n" +
+"test5.bam,0.99043043,0.97259768,0.91702091,0.97259768,0.00000000,0.97142866,0.97142866,0.99043043\n" +
+"test6.bam,0.99043043,0.91702091,0.97259768,0.97259768,0.97142866,0.00000000,0.97142866,0.99043043\n" +
+"test7.bam,0.99043043,0.97259768,0.97259768,0.91702091,0.97142866,0.97142866,0.00000000,0.99043043\n" +
+"test8.bam,1.00000000,0.96329037,0.96329037,0.96329037,0.99043043,0.99043043,0.99043043,0.00000000"
+)
+        matrixTwo = self.dist.get_distance_matrix(self.ones, 'normalize', None, None)
+        assert(len(matrixTwo) == 2)
+        assert(len(matrixTwo[0]) == 2)
+        assert(matrixTwo[0][1] == 1)
+        assert(matrixTwo[1][0] == 1)
 
     #end def
 

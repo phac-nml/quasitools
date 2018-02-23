@@ -80,12 +80,12 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output):
             message += ("\nError: End position must be less than length of " +
             "nucleotide base positions in pileup (%s)." % len(pileup_list[0]))
         if message == "":
-            matrix = viralDist.get_distance_matrix(pileup_list, bam, normalize, startpos, endpos)
+            matrix = viralDist.get_distance_matrix(pileup_list, normalize, startpos, endpos)
             if output:
-                output.write(viralDist.convert_distance_to_csv(matrix))
+                output.write(viralDist.convert_distance_to_csv(matrix, bam))
             else:
                 #click.echo(matrix)
-                click.echo(viralDist.convert_distance_to_csv(matrix))
+                click.echo(viralDist.convert_distance_to_csv(matrix, bam))
             #end if
             print("Complete!")
         #end def

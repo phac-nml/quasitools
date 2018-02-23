@@ -1,4 +1,3 @@
 {
-  "tests/test_distance.py::TestDistance": true,
   "tests/test_distance.py::TestDistance::()::test_normalize_sum_to_one": true
 }
