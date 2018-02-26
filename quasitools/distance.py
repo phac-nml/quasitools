@@ -23,7 +23,7 @@ from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from scipy.spatial.distance import pdist
 from scipy.spatial.distance import squareform
-from scipy.spatial.distance import cosine as scicos
+from scipy.spatial.distance import cosine
 
 BASES = ['A', 'C', 'T', 'G']
 
@@ -77,16 +77,16 @@ class Distance(object):
         quasispecies in viral_files.
 
         INPUT:
+            pileup_list - list of lists of dictionaries - each lists of
+            dictionaries represents the pileups.
+
+            normalize - determine whether to normalize data or not
+
             startpos - starting base position of reference to be compared
             when calculating distances.
 
             endpos - last base position of reference to be compared when
             calculating distance.
-
-            pileup_list - list of lists of dictionaries - each lists of
-            dictionaries represents the pileups.
-
-            normalize - determine whether to normalize data or not
 
         RETURN:
             Returns a pairwise matrix containing the evolutionary distance
@@ -116,7 +116,7 @@ class Distance(object):
         baseList = np.array(baseList)
         np.set_printoptions(suppress=True)
         #create distance matrix for csv file
-        distMatrix = squareform(1 - pdist(baseList, scicos))
+        distMatrix = squareform(1 - pdist(baseList, cosine))
         distMatrix = distMatrix.tolist()
         return distMatrix
 
@@ -170,7 +170,7 @@ class Distance(object):
             None.
         """
         #Determine total A, C, T, G pileup1 and pileup2
-        return (1 - cos(quasi1, quasi2))
+        return (1 - cosine(quasi1, quasi2))
         #commented out below:
         #computes cosine distance then converts to angular cosine distance
         #return 1 - ( np.arccos( 1 - cosine(quasi1, quasi2) ) / np.pi )
@@ -198,10 +198,10 @@ class Distance(object):
             #get the mean for sample one
             mean = 0
             for i in range(0, len(pileup_list[num])):
-                total = np.sum([pileup_list[num][i].get(base,0) for base in BASES])
+                total = float(np.sum([pileup_list[num][i].get(base,0) for base in BASES]))
                 #normalize the data for all samples (centered cosine similarity)
                 pileup_list[num][i] = {
-                key: (float(value) / float(total)) for (key, value) in pileup_list[num][i].items() }
+                key: (float(value) / total) for (key, value) in pileup_list[num][i].items() }
         '''
         for num in range(0, len(pileup_list)):
             #get the mean for sample one
