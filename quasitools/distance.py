@@ -117,6 +117,8 @@ class Distance(object):
         np.set_printoptions(suppress=True)
         #create distance matrix for csv file
         distMatrix = squareform(1 - pdist(baseList, cosine))
+        di = np.diag_indices(len(distMatrix))
+        distMatrix[di] = 1.0
         distMatrix = distMatrix.tolist()
         return distMatrix
 
