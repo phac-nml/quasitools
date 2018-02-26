@@ -152,30 +152,6 @@ class Distance(object):
         return csvOut
     #end def
 
-    def get_cosine_similarity(self, quasi1, quasi2):
-        """
-        Calculates the angular cosine distance. Calls cosine(u,v,w=None) from
-        scipy.spatial.distance.cosine and returns the angular cosine distance.
-
-        INPUT:
-            [NUMPY ARRAY] [quasi1] (a list of read counts per base for the first viral
-             quasispecies to be compared)
-            [NUMPY ARRAY] [quasi2] (a list of read counts per base for the second viral
-             quasispecies to be compared)
-
-        RETURN:
-            Returns the cosine similarity.
-
-        POST:
-            None.
-        """
-        #Determine total A, C, T, G pileup1 and pileup2
-        return (1 - cosine(quasi1, quasi2))
-        #commented out below:
-        #computes cosine distance then converts to angular cosine distance
-        #return 1 - ( np.arccos( 1 - cosine(quasi1, quasi2) ) / np.pi )
-    #end def
-
     def normalize_sum_to_one(self, pileup_list):
 
         """
