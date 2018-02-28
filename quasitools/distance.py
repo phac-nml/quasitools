@@ -39,12 +39,12 @@ class Distance(object):
         Creates a array of pileups (which are arrays of dictionaries)
 
         INPUT:
-            viral_files - files names which represent a pileup
+            [TUPLE] [viral_files] - files names which represent a pileup
 
-            reference_loc - location of the reference file
+            [STRING] [reference_loc] - location of the reference file
         RETURN:
-            pileup_list - list of pileups (list of dictionaries containing
-            read counts for each base)
+            [ARRAY] [pileup_list] - list of pileups (list of dictionaries
+            containing read counts for each base)
         POST:
             Pileup list is constructed.
         """
@@ -70,36 +70,40 @@ class Distance(object):
         return pileup_list
     #end def
 
-    def get_distance_matrix(self, pileup_list, normalize, startpos=None, endpos=None):
+    def get_distance_matrix(self, pileup_list, normalized, startpos=None, endpos=None):
 
         """
         Runs the script, calculating the cosine similarity function between viral
         quasispecies in viral_files.
 
         INPUT:
-            pileup_list - list of lists of dictionaries - each lists of
+            [ARRAY] [pileup_list] - list of lists of dictionaries - each lists of
             dictionaries represents the pileups.
 
-            normalize - determine whether to normalize data or not
+            [BOOL] [normalized] - determine whether to normalize data or not
 
-            startpos - starting base position of reference to be compared
-            when calculating distances.
+            [INT] [startpos] -starting base position of reference to be compared
+            when calculating cosine similarity.
 
-            endpos - last base position of reference to be compared when
-            calculating distance.
+            [INT] [endpos] - last base position of reference to be compared when
+            calculating cosine similarity.
 
         RETURN:
-            Returns a pairwise matrix containing the evolutionary distance
+            Returns a pairwise matrix containing the cosine similarity function
             between all viral quasispecies is returned. The first row and first
             column of the distance matrix contain labels for which quasispecies
             are to be compared in each cell corresponding to the row and column.
 
         POST:
-            [None]
+            When and if the data is normalized a new pileup_list object is used
+            internally, so that the object whose reference was passed to this
+            function is not affected.
 
         """
-        if normalize:
-            self.normalize_sum_to_one(pileup_list)
+        if normalized==True:
+            pileup_list = self.normalize_sum_to_one(pileup_list)
+        #end def
+
         baseList = []
         first = 0 #first position of dictionaries in each pileup_list[i]
         if startpos != None:
@@ -116,26 +120,26 @@ class Distance(object):
         baseList = np.array(baseList)
         np.set_printoptions(suppress=True)
         #create distance matrix for csv file
-        distMatrix = squareform(1 - pdist(baseList, cosine))
-        di = np.diag_indices(len(distMatrix))
-        distMatrix[di] = 1.0
-        distMatrix = distMatrix.tolist()
-        return distMatrix
+        simi_matrix = squareform(1 - pdist(baseList, cosine))
+        di = np.diag_indices(len(simi_matrix))
+        simi_matrix[di] = 1.0
+        simi_matrix = simi_matrix.tolist()
+        return simi_matrix
 
     #end def
 
     def convert_distance_to_csv(self, matrix, file_list):
 
         """
-        Converts a 2D array (distance matrix) to a csv-formatted string.
+        Converts a 2D array (cosine similarity matrix) to a csv-formatted string.
 
         INPUT:
-            matrix - 2D array (distance matrix)
+            [ARRAY] [matrix] - 2D array (cosine similarity matrix)
 
-            file_list - files names which represent a pileup
+            [TUPLE] [file_list] - files names which represent a pileup
 
         RETURN:
-            Returns the CSV representation of a pairwise distance matrix.
+            [STRING] [csvOut] CSV representation of a pairwise similarity matrix.
 
         POST:
             [None]
@@ -167,19 +171,21 @@ class Distance(object):
         [ARRAY] [pileup_list] (a list of dictionaries containing read counts for
         nucleotides at each position corresponding to the reference)
 
-        RETURN: NONE
+        RETURN: [ARRAY] [pileup_list] (the normalized list of pileups)
 
         POST: pileup_list data is normalized.
         """
-
+        new_list = []
         for num in range(0, len(pileup_list)):
             #get the mean for sample one
             mean = 0
+            new_list.append([])
             for i in range(0, len(pileup_list[num])):
                 total = float(np.sum([pileup_list[num][i].get(base,0) for base in BASES]))
                 #normalize the data for all samples (centered cosine similarity)
-                pileup_list[num][i] = {
-                key: (float(value) / total) for (key, value) in pileup_list[num][i].items() }
+                new_list[num].append({
+                key: (float(value) / total) for (key, value) in pileup_list[num][i].items() })
+        return new_list
         '''
         for num in range(0, len(pileup_list)):
             #get the mean for sample one
