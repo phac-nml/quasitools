@@ -59,16 +59,58 @@ class Distance(object):
                 mrcList.append(parse_mapped_reads_from_bam(reference, bam))
             #end for
 
-            #pileups are a
+            #pileups are a list of dictionaries. The pileup list contains
+            #a list of pileups for each mapped read.
             for num in range(0, len(mrcList)):
                 if len(pileup_list) < (num + 1):
+                    #add a new pileup to the pileup list
                     pileup_list.append(mrcList[num].pileup(indels=True))
                 else:
+                    #add the positions in the pileup for this mapped read
+                    #that have not been added yet to this pileup (e.g. if you
+                    #have multiple references in the reference file)
                     pileup_list[num] += mrcList[num].pileup(indels=True)
                 #end if
             #end for
         return pileup_list
     #end def
+
+    def truncate_output(self, pileup_list):
+        """
+        Deletes sections of the pileup for all pileups in the pileup list
+        where there is no coverage (all four bases - A, C, T, and G) are
+        absent.
+
+        INPUT:
+            [ARRAY] [pileup_list] - list of pileups - each pileup is
+            represented by a list of dictionaries.
+
+        RETURN:
+            [None]
+
+        POST:
+            The pileups are truncated (sections of the pileup where there
+            is no coverage are deleted from all pileups in the pileup list.
+        """
+        deletion_list = []
+        if len(pileup_list) > 0:
+            #iterate through every position in reference
+            if len(pileup_list[0]) > 0:
+                for position in range(0, len(pileup_list[0])):
+                    #if any pileup at the current position is empty, add to deletion_list
+                    if any(pileup[position] == {} for pileup in pileup_list):
+                        deletion_list.insert(0, position)
+                #end for           
+            #end if
+        #end if
+        for position in deletion_list:
+            for pileup in pileup_list:
+                del pileup[position]
+            #end for
+        #end for
+        return pileup_list
+    #end def
+        
 
     def get_distance_matrix(self, pileup_list, normalized, startpos=None, endpos=None):
 
@@ -77,8 +119,8 @@ class Distance(object):
         quasispecies in viral_files.
 
         INPUT:
-            [ARRAY] [pileup_list] - list of lists of dictionaries - each lists of
-            dictionaries represents the pileups.
+            [ARRAY] [pileup_list] - list of pileups - each pileup is
+            represented by a list of dictionaries.
 
             [BOOL] [normalized] - determine whether to normalize data or not
 

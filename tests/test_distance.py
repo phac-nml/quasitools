@@ -194,3 +194,60 @@ class TestDistance:
         assert pileup_fixture[0][0:10] == [{'C': 12}, {'C': 12}, {'T': 12}, {'C': 12}, {'G': 2, 'C': 3, 'T': 1, 'A': 6}, {'G': 12}, {'G': 12}, {'T': 12}, {'C': 12}, {'G': 2, 'C': 3, 'T': 1, 'A': 6}]
         assert pileup_fixture[1][0:10] == [{'C': 12}, {'C': 12}, {'T': 12}, {'C': 12}, {'A': 6, 'C': 5, 'G': 1}, {'G': 12}, {'A': 4, 'G': 8}, {'T': 12}, {'C': 12}, {'A': 7, 'T': 1, 'C': 3, 'G': 1}]
     #end def
+
+    @pytest.fixture
+    def truncate_fixture(self, request):
+        """
+        truncate_fixture - Truncates output and passes result to test function to
+        see if truncated output is as expected.
+
+        INPUT:
+            [NONE]
+
+        RETURN:
+            [Array] [truncated]
+
+        POST:
+            [None]
+        """
+        dist2 = Distance()
+
+        #files for testing pileup matrix
+        pileup3 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 1
+        [{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 2
+        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 3
+        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 4
+        [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 5
+        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 6
+        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {}, {'G': 8}], #test 7
+        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}]] #test 8
+
+        truncated = dist2.truncate_output(pileup3)
+        return truncated
+    #end def
+
+    def test_truncate_output(self, truncate_fixture):
+        """
+        test_truncate_output - Checks that when some positions in the pileup are
+        empty, the output is truncated correctly.
+
+        INPUT:
+            [ARRAY] [pileup_list]
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
+
+        assert(truncate_fixture == [[{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}]])
+
+    #end def
