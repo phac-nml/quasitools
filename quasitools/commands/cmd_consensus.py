@@ -17,6 +17,8 @@ specific language governing permissions and limitations under the License.
 """
 
 import click
+import pysam
+import os
 from quasitools.cli import pass_context
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
@@ -30,10 +32,17 @@ from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-p', '--percentage', default=100,
               help='percentage to include base in mixture.')
+@click.option('-i', '--id',
+              help='FASTA sequence identifier.')
 @click.option('-o', '--output', type=click.File('w'))
 @pass_context
-def cli(ctx, bam, reference, percentage, output):
+def cli(ctx, bam, reference, percentage, id, output):
     rs = parse_references_from_fasta(reference)
+
+    if id:
+        fasta_id = id
+    else:
+        fasta_id = os.path.basename(bam).split('.')[0]
 
     for r in rs:
         mrc = parse_mapped_reads_from_bam(r, bam)
@@ -41,10 +50,9 @@ def cli(ctx, bam, reference, percentage, output):
         conseq = mrc.to_consensus(percentage)
 
         if output:
-            output.write('>{0}_{1}_{2}\n{3}'.format('blah', percentage, r.name,
+            output.write('>{0}_{1}_{2}\n{3}'.format(fasta_id, percentage, r.name,
                                                     conseq))
+            output.close()
         else:
-            click.echo('>{0}_{1}_{2}\n{3}'.format('blah', percentage, r.name,
+            click.echo('>{0}_{1}_{2}\n{3}'.format(fasta_id, percentage, r.name,
                                                   conseq))
-
-    output.close()
