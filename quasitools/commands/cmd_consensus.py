@@ -33,7 +33,7 @@ from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 @click.option('-p', '--percentage', default=100,
               help='percentage to include base in mixture.')
 @click.option('-i', '--id',
-              help='specify default FASTA sequence identifier to be used ' 
+              help='specify default FASTA sequence identifier to be used '
               'for sequences without an RG tag.')
 @click.option('-o', '--output', type=click.File('w'))
 @pass_context
@@ -55,8 +55,8 @@ def cli(ctx, bam, reference, percentage, id, output):
             fasta_id = bam_header['RG']
 
         if output:
-            output.write('>{0}_{1}_{2}\n{3}'.format(fasta_id, percentage, r.name,
-                                                    conseq))
+            output.write('>{0}_{1}_{2}\n{3}'.format(fasta_id, percentage,
+                                                    r.name, conseq))
             output.close()
         else:
             click.echo('>{0}_{1}_{2}\n{3}'.format(fasta_id, percentage, r.name,
