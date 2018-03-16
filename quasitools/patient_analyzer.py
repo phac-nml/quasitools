@@ -90,7 +90,7 @@ class PatientAnalyzer():
         self.filtered["status"] = 1
         filtered_reads_file.close()
 
-    def analyze_reads(self, filters, reporting_threshold, generate_consensus):
+    def analyze_reads(self, fasta_id, filters, reporting_threshold, generate_consensus):
         # Map reads against reference using bowtietwo
         if not self.quiet:
             print("# Mapping reads...")
@@ -110,7 +110,7 @@ class PatientAnalyzer():
             mapped_read_collection_arr.append(mrc)
             if generate_consensus:
                 cons_seq_file.write('>{0}_{1}_{2}\n{3}'.format(
-                    'blah', reporting_threshold, r.name,
+                    fasta_id, reporting_threshold, r.name,
                     mrc.to_consensus(self.consensus_pct)))
 
         if generate_consensus:
