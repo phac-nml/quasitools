@@ -90,7 +90,8 @@ class PatientAnalyzer():
         self.filtered["status"] = 1
         filtered_reads_file.close()
 
-    def analyze_reads(self, fasta_id, filters, reporting_threshold, generate_consensus):
+    def analyze_reads(self, fasta_id, filters, reporting_threshold,
+                      generate_consensus):
         # Map reads against reference using bowtietwo
         if not self.quiet:
             print("# Mapping reads...")
