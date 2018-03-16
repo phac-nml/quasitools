@@ -95,7 +95,11 @@ class TestPatientAnalyzer:
         generate_consensus = True
         reporting_threshold = 20
 
-        self.patient_analyzer.analyze_reads(filters, reporting_threshold, generate_consensus)
+        fasta_id = os.path.basename(self.patient_analyzer.reads).split('.')[0]
+
+        self.patient_analyzer.analyze_reads(fasta_id, filters,
+                                            reporting_threshold,
+                                            generate_consensus)
 
         assert os.path.isfile("%s/consensus.fasta" % OUTPUT_DIR)
         assert os.path.isfile("%s/coverage_file.csv" % OUTPUT_DIR)
