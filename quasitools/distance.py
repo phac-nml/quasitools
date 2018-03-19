@@ -224,9 +224,14 @@ class Distance(object):
             new_list.append([])
             for i in range(0, len(pileup_list[num])):
                 total = float(np.sum([pileup_list[num][i].get(base,0) for base in BASES]))
-                #normalize the data for all samples (centered cosine similarity)
-                new_list[num].append({
-                key: (float(value) / total) for (key, value) in pileup_list[num][i].items() })
+                #normalize the data for all samples
+                if total>0:
+                    new_list[num].append({
+                    key: (float(value) / total) for (key, value) in pileup_list[num][i].items() })
+                else:
+                    new_list[num].append({
+                    key: 0 for (key, value) in pileup_list[num][i].items() })
+                #end if
         return new_list
         '''
         for num in range(0, len(pileup_list)):
