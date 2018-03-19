@@ -153,7 +153,7 @@ class Distance(object):
         #end if
         for num in range(0, len(pileup_list)):
             last = len(pileup_list[num]) #last pos of dicts in each pileup_list[i]
-            if endpos != None && (endpos + 1) <= last:
+            if endpos != None and (endpos + 1) <= last:
                 last = endpos + 1
             #end if
             baseList.append([pileup_list[num][dict].get(base, 0)
