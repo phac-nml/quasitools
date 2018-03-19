@@ -26,7 +26,7 @@ from quasitools.distance import Distance
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('bam', nargs=-1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.option('--normalize/dontnormalize', '-n/-dn', default=True, 
+@click.option('--normalize/--dontnormalize', '-n/-dn', default=True, 
               help="Normalize read count data so that the read counts per " +
               "4-tuple (A, C, T, G) sum to one.")
 @click.option('--startpos', '-s', type=int, help="Set the start base position" +
