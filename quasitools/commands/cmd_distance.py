@@ -26,7 +26,7 @@ from quasitools.distance import Distance
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('bam', nargs=-1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.option('--normalize', '-n/-d', is_flag=True, default=False, 
+@click.option('--normalize/dontnormalize', '-n/-dn', default=True, 
               help="Normalize read count data so that the read counts per " +
               "4-tuple (A, C, T, G) sum to one.")
 @click.option('--startpos', '-s', type=int, help="Set the start base position" +
@@ -41,7 +41,7 @@ from quasitools.distance import Distance
              "reference.)")
 @click.option('-o', '--output', type=click.File('w'), help="Output the " +
               "quasispecies distance matrix in CSV format in a file.")
-@click.option('-t', '--truncate', is_flag=True, default=False,
+@click.option('-t/-dt', '--truncate/--donttruncate', default=True,
               help="Exclude regions in the pileup where there are no coverage.")
 @click.pass_context
 def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
