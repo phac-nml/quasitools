@@ -98,7 +98,7 @@ class Distance(object):
             if len(pileup_list[0]) > 0:
                 for position in range(0, len(pileup_list[0])):
                     #if any pileup at the current position is empty, add to deletion_list
-                    if any((pileup[position] == {} for pileup in pileup_list) or (np.sum([pileup_list[num][i].get(base,0) for base in BASES])==0)):
+                    if any((pileup[position] == {} for pileup in pileup_list) or (np.sum([pileup[position].get(base,0) for base in BASES])==0)):
                         deletion_list.insert(0, position)
                 #end for           
             #end if
