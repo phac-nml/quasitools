@@ -100,9 +100,9 @@ class Distance(object):
                     # if any pileup at the current position is empty,
                     # add to deletion_list
                     curr_vals = pileup[position].values()
-                    if any((pileup[position] == {} for pileup in pileup_list))
+                    if any((pileup[position] == {} for pileup in pileup_list)):
                         deletion_list.insert(0, position)
-                    elif any((sum(curr_vals)==0 for pileup in pileup_list))
+                    elif any((sum(curr_vals)==0 for pileup in pileup_list)):
                         deletion_list.insert(0, position)
                 # end for
             # end if
@@ -151,7 +151,7 @@ class Distance(object):
         # end def
 
         baseList = []
-        first = 0 #  first position of dictionaries in each pileup_list[i]
+        first = 0  # first position of dictionaries in each pileup_list[i]
         if startpos is not None:
             first = startpos
         # end if
@@ -162,7 +162,7 @@ class Distance(object):
                 last = endpos + 1
             # end if
             baseList.append([pileup_list[num][dict].get(base, 0)
-            for dict in range(first, last) for base in BASES])
+                            for dict in range(first, last) for base in BASES])
         # end for
         baseList = np.array(baseList)
         np.set_printoptions(suppress=True)
@@ -198,13 +198,13 @@ class Distance(object):
         # convert from 2d array to csv formatted string
         comma_separated_files = file for file in list(file_list)
         csvOut = ('Quasispecies,' + ','.join('%s' % comma_separated_files))
-        i = 0;
+        i = 0
         for arr in matrix:
             csvOut += "\n"
             # end if
             csvOut += (','.join([file_list[i]] +
-            ['%.08f' % element for element in arr]))
-            i+=1;
+                       ['%.08f' % element for element in arr]))
+            i += 1
         # end for
         return csvOut
     # end def
@@ -232,15 +232,17 @@ class Distance(object):
             mean = 0
             new_list.append([])
             for i in range(0, len(pileup_list[num])):
-                curr_pos = [pileup_list[num][i].get(base,0) for base in BASES]
+                curr_pos = [pileup_list[num][i].get(base, 0) for base in BASES]
                 total = float(np.sum(curr_pos))
                 # normalize the data for all samples
-                if total>0:
-                    new_list[num].append({key: (float(value) / total)
-                    for (key, value) in pileup_list[num][i].items() })
+                if total > 0:
+                    new_list[num].append(
+                        {key: (float(value) / total)
+                            for (key, value) in pileup_list[num][i].items()})
                 else:
-                    new_list[num].append({key: 0
-                    for (key, value) in pileup_list[num][i].items() })
+                    new_list[num].append(
+                        {key: 0
+                            for (key, value) in pileup_list[num][i].items()})
                 # end if
         return new_list
         '''

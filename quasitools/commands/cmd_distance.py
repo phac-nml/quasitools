@@ -16,9 +16,8 @@ specific language governing permissions and limitations under the License.
 """
 
 import click
-from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
-from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.distance import Distance
+
 
 @click.command('distance', short_help='Calculate the evolutionary distance'
                'between viral quasispecies using cosine similarity.')
@@ -26,23 +25,23 @@ from quasitools.distance import Distance
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('bam', nargs=-1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.option('--normalize/--dontnormalize', '-n/-dn', default=True, 
+@click.option('--normalize/--dontnormalize', '-n/-dn', default=True,
               help="Normalize read count data so that the read counts per " +
               "4-tuple (A, C, T, G) sum to one.")
-@click.option('--startpos', '-s', type=int, help="Set the start base position" +
-            " of the reference to use in the distance calculation. Start" +
-            " positions must be greater than zero and less than the length " +
-            "of the base pileup (number of positions to be compared with the" +
-            "reference.)")
-@click.option('--endpos', '-e', type=int, help="Set the end base position of " +
-             "the reference to use in the distance calculation. End" +
-             " positions must be greater than zero and less than the length " +
-             "of the base pileup (number of positions to be compared with the" +
-             "reference.)")
+@click.option('--startpos', '-s', type=int, help="Set the start base " +
+              "position of the reference to use in the distance calculation." +
+              " Start positions must be greater than zero and less than the " +
+              "length of the base pileup (number of positions to be compared" +
+              " with the reference.)")
+@click.option('--endpos', '-e', type=int, help="Set the end base position of" +
+              " the reference to use in the distance calculation. End" +
+              " positions must be greater than zero and less than the length" +
+              " of the base pileup (number of positions to be compared with" +
+              " the reference.)")
 @click.option('-o', '--output', type=click.File('w'), help="Output the " +
               "quasispecies distance matrix in CSV format in a file.")
 @click.option('-t/-dt', '--truncate/--donttruncate', default=True,
-              help="Exclude regions in the pileup where there are no coverage.")
+              help="Exclude regions in the pileup where there is no coverage.")
 @click.pass_context
 def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
     """This script outputs the evolutionary distance [0 - 1] between
@@ -61,38 +60,41 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
     for file in bam:
         click.echo("Reading input from file(s)  %s" % (file))
     if len(bam)<2:
-        message += ("\nError: At least two bam file locations are"
-        + " required to perform quasispecies distance comparison")
+        message += ("\nError: At least two bam file locations are" +
+                    " required to perform quasispecies distance comparison")
     if type(startpos) == int and int(startpos) < 0:
         message += ("\nError: Start position must be 0 or greater.")
     if type(endpos) == int and int(endpos) < 0:
         message += ("\nError: End position must be 0 or greater.")
     if (type(startpos) == int and type(endpos) == int and
         int(startpos) > int(endpos)):
-        message += ("\nError: Start position must be less than or equal to end"
-        + " position")
-    if message == "": #if no error messages have been created
+        message += ("\nError: Start position must be less than or equal to" +
+                    " end position")
+    if message == "":  # if no error messages have been created
         viralDist = Distance()
         pileup_list = viralDist.construct_pileup(bam, reference)
         click.echo("Constructed pileup from reference.")
         if (type(startpos) == int and int(startpos) >= len(pileup_list[0])):
-            message += ("\nError: Start position must be less than number of " +
-            "nucleotide base positions in pileup (%s)." % len(pileup_list[0]))
+            message += ("\nError: Start position must be less than number of" +
+                        " nucleotide base positions in pileup" +
+                        " (%s)." % len(pileup_list[0]))
         if (type(endpos) == int and int(endpos) >= len(pileup_list[0])):
             message += ("\nError: End position must be less than length of " +
-            "nucleotide base positions in pileup (%s)." % len(pileup_list[0]))
+                        "nucleotide base positions in pileup" +
+                        " (%s)." % len(pileup_list[0]))
         if message == "":
             if truncate:
                 pileup_list = viralDist.truncate_output(pileup_list)
-            #end if
-            matrix = viralDist.get_distance_matrix(pileup_list, normalize, startpos, endpos)
+            # end if
+            matrix = viralDist.get_distance_matrix(pileup_list, normalize,
+                                                   startpos, endpos)
             if output:
                 output.write(viralDist.convert_distance_to_csv(matrix, bam))
             else:
-                #click.echo(matrix)
+                # click.echo(matrix)
                 click.echo(viralDist.convert_distance_to_csv(matrix, bam))
-            #end if
+            # end if
             print("Complete!")
-        #end def
-    #end if
+        # end def
+    # end if
     click.echo(message)
