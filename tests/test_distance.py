@@ -91,6 +91,38 @@ class TestDistance:
     (False, pileup1, pileup1_files, pileup1_unnormal_out),
     (False, pileup2, pileup2_files, pileup2_unnormal_out)]
 
+    #files for testing pileup matrix
+    pileup3 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 1
+    [{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 2
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 3
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 4
+    [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 5
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 6
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {}, {'G': 8}], #test 7
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}]] #test 8
+
+    pileup3_truncate_out = [[{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
+                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}]]
+
+    pileup4 = [[{'A': 1, 'T': 0, 'C': 0, 'G': 0},  # test 1 a
+                {'A': 0, 'T': 2, 'C': 0, 'G': 0},  # test 1 b
+                {'A': 0, 'T': 0, 'C': 0, 'G': 0}],  # test 1 c
+               [{'A': 0, 'T': 0, 'C': 0, 'G': 0},  # test 2 a
+                {'A': 0, 'T': 2, 'C': 0, 'G': 0},  # test 2 b
+                {'A': 0, 'T': 0, 'C': 0, 'G': 0}]]  # test 2 c
+
+    pileup4_truncate_out = [[{'A': 0, 'T': 2, 'C': 0, 'G': 0}], #test 1
+                            [{'A': 0, 'T': 2, 'C': 0, 'G': 0}]]
+
+    truncate_list = [(pileup3, pileup3_truncate_out),
+                     (pileup4, pileup4_truncate_out)]
+
     """
     TESTS
     """
@@ -124,9 +156,6 @@ class TestDistance:
 
         #convert matrix  to csv, passing file list (request.param[2])
         csv_similarity = dist.convert_distance_to_csv(matrix, request.param[2])
-
-        dist = None
-        matrix = None
 
         return (matrix, request.param[3])
 
@@ -195,7 +224,7 @@ class TestDistance:
         assert pileup_fixture[1][0:10] == [{'C': 12}, {'C': 12}, {'T': 12}, {'C': 12}, {'A': 6, 'C': 5, 'G': 1}, {'G': 12}, {'A': 4, 'G': 8}, {'T': 12}, {'C': 12}, {'A': 7, 'T': 1, 'C': 3, 'G': 1}]
     #end def
 
-    @pytest.fixture
+    @pytest.fixture(params=truncate_list)
     def truncate_fixture(self, request):
         """
         truncate_fixture - Truncates output and passes result to test function to
@@ -211,19 +240,8 @@ class TestDistance:
             [None]
         """
         dist2 = Distance()
-
-        #files for testing pileup matrix
-        pileup3 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 1
-        [{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 2
-        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 3
-        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 4
-        [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 5
-        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 6
-        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {}, {'G': 8}], #test 7
-        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}]] #test 8
-
-        truncated = dist2.truncate_output(pileup3)
-        return truncated
+        truncated = dist2.truncate_output(request.param[0])
+        return (truncated, request.param[1])
     #end def
 
     def test_truncate_output(self, truncate_fixture):
@@ -241,13 +259,6 @@ class TestDistance:
             [None]
         """
 
-        assert(truncate_fixture == [[{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-               [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}]])
+        assert(truncate_fixture[0] == truncate_fixture[1])
 
     #end def
