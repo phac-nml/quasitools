@@ -196,7 +196,7 @@ class Distance(object):
         """
         # (distMatrix[i+1]).insert(0, file_list[i])
         # convert from 2d array to csv formatted string
-        comma_separated_files = file for file in list(file_list)
+        comma_separated_files = [file for file in list(file_list)]
         csvOut = ('Quasispecies,' + ','.join('%s' % comma_separated_files))
         i = 0
         for arr in matrix:
