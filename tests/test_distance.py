@@ -52,7 +52,7 @@ class TestDistance:
 
     #expected output files for pileup1
 
-    pileup1_normal_out = ("Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam,test6.bam,test7.bam,test8.bam\n" +
+    pileup1_normal_out = "Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam,test6.bam,test7.bam,test8.bam\n" +
     "test1.bam,1.00000000,0.96329037,0.96329037,0.96329037,0.99043043,0.99043043,0.99043043,1.00000000\n" +
     "test2.bam,0.96329037,1.00000000,0.89189249,0.89189249,0.97259768,0.91702091,0.97259768,0.96329037\n" +
     "test3.bam,0.96329037,0.89189249,1.00000000,0.89189249,0.91702091,0.97259768,0.97259768,0.96329037\n" +
@@ -60,9 +60,9 @@ class TestDistance:
     "test5.bam,0.99043043,0.97259768,0.91702091,0.97259768,1.00000000,0.97142866,0.97142866,0.99043043\n" +
     "test6.bam,0.99043043,0.91702091,0.97259768,0.97259768,0.97142866,1.00000000,0.97142866,0.99043043\n" +
     "test7.bam,0.99043043,0.97259768,0.97259768,0.91702091,0.97142866,0.97142866,1.00000000,0.99043043\n" +
-    "test8.bam,1.00000000,0.96329037,0.96329037,0.96329037,0.99043043,0.99043043,0.99043043,1.00000000")
+    "test8.bam,1.00000000,0.96329037,0.96329037,0.96329037,0.99043043,0.99043043,0.99043043,1.00000000"
 
-    pileup1_unnormal_out = ("Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam,test6.bam,test7.bam,test8.bam\n" +
+    pileup1_unnormal_out = "Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam,test6.bam,test7.bam,test8.bam\n" +
     "test1.bam,1.00000000,0.02940769,0.02940769,0.02940769,0.04156468,0.04156468,0.04156468,0.05089630\n" +
     "test2.bam,0.02940769,1.00000000,0.00000200,0.00000200,0.70710749,0.00000212,0.70710749,0.57735142\n" +
     "test3.bam,0.02940769,0.00000200,1.00000000,0.00000200,0.00000212,0.70710749,0.70710749,0.57735142\n" +
@@ -70,7 +70,7 @@ class TestDistance:
     "test5.bam,0.04156468,0.70710749,0.00000212,0.70710749,1.00000000,0.50000100,0.50000100,0.81649699\n" +
     "test6.bam,0.04156468,0.00000212,0.70710749,0.70710749,0.50000100,1.00000000,0.50000100,0.81649699\n" +
     "test7.bam,0.04156468,0.70710749,0.70710749,0.00000212,0.50000100,0.50000100,1.00000000,0.81649699\n" +
-    "test8.bam,0.05089630,0.57735142,0.57735142,0.57735142,0.81649699,0.81649699,0.81649699,1.00000000")
+    "test8.bam,0.05089630,0.57735142,0.57735142,0.57735142,0.81649699,0.81649699,0.81649699,1.00000000"
 
     #files for testing pileup2 matrix of ones
     pileup2 = ([[{'A': 1, 'T': 1, 'C': 1}, {'T': 1}], #test 1
@@ -78,13 +78,13 @@ class TestDistance:
 
     pileup2_files = ('test1.bam', 'test2.bam')
 
-    pileup2_normal_out = ("Quasispecies,test1.bam,test2.bam\n" +
+    pileup2_normal_out = "Quasispecies,test1.bam,test2.bam\n" +
     "test1.bam,1.00000000,1.00000000\n" +
-    "test2.bam,1.00000000,1.00000000")
+    "test2.bam,1.00000000,1.00000000"
 
-    pileup2_unnormal_out = ("Quasispecies,test1.bam,test2.bam\n" +
+    pileup2_unnormal_out = "Quasispecies,test1.bam,test2.bam\n" +
     "test1.bam,1.00000000,1.00000000\n" +
-    "test2.bam,1.00000000,1.00000000")
+    "test2.bam,1.00000000,1.00000000"
 
     tuple_list = [(True, pileup1, pileup1_files, pileup1_normal_out),
     (True, pileup2, pileup2_files, pileup2_normal_out),
@@ -259,6 +259,6 @@ class TestDistance:
             [None]
         """
 
-        assert(truncate_fixture[0] == truncate_fixture[1])
+        assert truncate_fixture[0] == truncate_fixture[1]
 
     #end def
