@@ -59,17 +59,18 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
     click.echo("Using file %s as reference" % (reference))
     for file in bam:
         click.echo("Reading input from file(s)  %s" % (file))
-    if len(bam)<2:
+    if len(bam) < 2:
         message += ("\nError: At least two bam file locations are" +
                     " required to perform quasispecies distance comparison")
     if type(startpos) == int and int(startpos) < 0:
         message += ("\nError: Start position must be 0 or greater.")
     if type(endpos) == int and int(endpos) < 0:
         message += ("\nError: End position must be 0 or greater.")
-    if (type(startpos) == int and type(endpos) == int and
+    if (type(startpos) == int and
+        type(endpos) == int and
         int(startpos) > int(endpos)):
-        message += ("\nError: Start position must be less than or equal to" +
-                    " end position")
+            message += ("\nError: Start position must be less than or equal" +
+                        " to end position")
     if message == "":  # if no error messages have been created
         viralDist = Distance()
         pileup_list = viralDist.construct_pileup(bam, reference)
