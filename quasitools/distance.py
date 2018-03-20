@@ -26,8 +26,8 @@ from scipy.spatial.distance import cosine
 
 BASES = ['A', 'C', 'T', 'G']
 
-class Distance(object):
 
+class Distance(object):
 
     # def __init__(self):
 
@@ -97,9 +97,12 @@ class Distance(object):
             # iterate through every position in reference
             if len(pileup_list[0]) > 0:
                 for position in range(0, len(pileup_list[0])):
-                    # if any pileup at the current position is empty, add to deletion_list
-                    if any((pileup[position] == {} for pileup in pileup_list)
-                    or (sum(pileup[position].values())==0 for pileup in pileup_list)):
+                    # if any pileup at the current position is empty,
+                    # add to deletion_list
+                    curr_vals = pileup[position].values()
+                    if any((pileup[position] == {} for pileup in pileup_list))
+                        deletion_list.insert(0, position)
+                    elif any((sum(curr_vals)==0 for pileup in pileup_list))
                         deletion_list.insert(0, position)
                 # end for
             # end if
@@ -112,8 +115,8 @@ class Distance(object):
         return pileup_list
     # end def
 
-
-    def get_distance_matrix(self, pileup_list, normalized, startpos=None, endpos=None):
+    def get_distance_matrix(self, pileup_list, normalized, startpos=None,
+                            endpos=None):
 
         """
         Runs the script, calculating the cosine similarity function between
@@ -148,7 +151,7 @@ class Distance(object):
         # end def
 
         baseList = []
-        first = 0 # first position of dictionaries in each pileup_list[i]
+        first = 0 #  first position of dictionaries in each pileup_list[i]
         if startpos is not None:
             first = startpos
         # end if
@@ -193,8 +196,8 @@ class Distance(object):
         """
         # (distMatrix[i+1]).insert(0, file_list[i])
         # convert from 2d array to csv formatted string
-        csvOut = ('Quasispecies,' +
-        ','.join('%s' % file for file in list(file_list)))
+        comma_separated_files = file for file in list(file_list)
+        csvOut = ('Quasispecies,' + ','.join('%s' % comma_separated_files))
         i = 0;
         for arr in matrix:
             csvOut += "\n"
@@ -242,12 +245,14 @@ class Distance(object):
         return new_list
         '''
         for num in range(0, len(pileup_list)):
-            #get the mean for sample one
+            # get the mean for sample one
             mean = 0
             for i in range(0, len(pileup_list[num])):
-                mean = np.sum([pileup_list[num][i].get(base,0) for base in BASES])/4
-                #normalize the data for all samples (centered cosine similarity)
-                pileup_list[num][i] = {
-                key: (value - mean) for key, value in pileup_list[num][i].items() }
+                mean = np.sum([pileup_list[num][i].get(base,0)
+                           for base in BASES])/4
+                # normalize the data for all samples
+                # (centered cosine similarity)
+                pileup_list[num][i] = {key: (value - mean)
+                for key, value in pileup_list[num][i].items() }
                 '''
     # end def
