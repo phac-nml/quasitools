@@ -157,7 +157,7 @@ class TestDistance:
         #convert matrix  to csv, passing file list (request.param[2])
         csv_similarity = dist.convert_distance_to_csv(matrix, request.param[2])
 
-        return (matrix, request.param[3])
+        return (csv_similarity, request.param[3])
 
     #end def
 
