@@ -128,7 +128,7 @@ class TestDistance:
         dist = None
         matrix = None
 
-        return (csv_similarity, request.param[3])
+        return (matrix, request.param[3])
 
     #end def
 
