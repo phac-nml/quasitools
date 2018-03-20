@@ -99,11 +99,10 @@ class Distance(object):
                 for position in range(0, len(pileup_list[0])):
                     # if any pileup at the current position is empty,
                     # add to deletion_list
-                    curr_vals = [pileup[position].values()
-                                 for pileup in pileup_list]
                     if any((pileup[position] == {} for pileup in pileup_list)):
                         deletion_list.insert(0, position)
-                    elif any(sum(curr_vals) == 0):
+                    elif any(sum(pileup[position].values()) == 0
+                                 for pileup in pileup_list):
                         deletion_list.insert(0, position)
                 # end for
             # end if
