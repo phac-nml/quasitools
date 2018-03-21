@@ -196,15 +196,12 @@ class Distance(object):
         """
         # (distMatrix[i+1]).insert(0, file_list[i])
         # convert from 2d array to csv formatted string
-        comma_separated_files = [file for file in list(file_list)]
-        csvOut = ('Quasispecies,' + ','.join('%s' % comma_separated_files))
-        i = 0
-        for arr in matrix:
+        files = [file for file in list(file_list)]
+        csvOut = 'Quasispecies,' + ','.join(files)
+        for row in range(0, len(matrix)):
             csvOut += "\n"
-            # end if
-            csvOut += (','.join([file_list[i]] +
-                       ['%.08f' % element for element in arr]))
-            i += 1
+            currElements = ['%.08f' % element for element in matrix[row]]
+            csvOut += ','.join([file_list[row]] + currElements)
         # end for
         return csvOut
     # end def
@@ -245,7 +242,7 @@ class Distance(object):
         return new_list
         '''
         # get the mean for sample one
-        mean = 0        
+        mean = 0
         for num in range(0, len(pileup_list)):
             # get the mean for sample one
             mean = 0
