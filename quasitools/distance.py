@@ -102,7 +102,7 @@ class Distance(object):
                     if any((pileup[position] == {} for pileup in pileup_list)):
                         deletion_list.insert(0, position)
                     elif any(sum(pileup[position].values()) == 0
-                                 for pileup in pileup_list):
+                             for pileup in pileup_list):
                         deletion_list.insert(0, position)
                 # end for
             # end if
