@@ -56,12 +56,14 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
        by the sum of the read counts inside the same tuple. The normalized
        read counts inside each 4-tuple sum to one."""
     message = ""
+    valid_pileup = True
     click.echo("Using file %s as reference" % (reference))
     for file in bam:
         click.echo("Reading input from file(s)  %s" % (file))
     if len(bam) < 2:
         message += ("\nError: At least two bam file locations are" +
                     " required to perform quasispecies distance comparison")
+    # indicate if the start or end position is < 0 or a priori invalid
     if type(startpos) == int and int(startpos) < 0:
         message += ("\nError: Start position must be 0 or greater.")
     if type(endpos) == int and int(endpos) < 0:
@@ -74,28 +76,76 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
     if message == "":  # if no error messages have been created
         viralDist = Distance()
         pileup_list = viralDist.construct_pileup(bam, reference)
+        if startpos is None:
+            startpos = 0
+        if endpos is None:
+            endpos = len(pileup_list[0]) - 1
+        if startpos > endpos:
+            click.echo("ERROR: Empty pileup was produced from BAM files." +
+                       "Halting program")
+            valid_pileup = False
+        click.echo("The start position is %d." % startpos)
+        click.echo("The end position is %d." % endpos)
         click.echo("Constructed pileup from reference.")
-        if (type(startpos) == int and int(startpos) >= len(pileup_list[0])):
+        # print the number of positions in pileup
+        if truncate:
+            click.echo("The pileup covers %d positions before truncation."
+                       % len(pileup_list[0]))
+        else:
+            click.echo("The pileup covers %d positions.")
+        # indicate whether the user-specified start and end position is out of
+        # bounds (comparing to actual number of positions in pileup)
+        if startpos >= len(pileup_list[0]):
             message += ("\nError: Start position must be less than number of" +
                         " nucleotide base positions in pileup" +
                         " (%s)." % len(pileup_list[0]))
-        if (type(endpos) == int and int(endpos) >= len(pileup_list[0])):
+        if endpos >= len(pileup_list[0]):
             message += ("\nError: End position must be less than length of " +
                         "nucleotide base positions in pileup" +
                         " (%s)." % len(pileup_list[0]))
+        # if there is no errors so far, proceed with running program
         if message == "":
             if truncate:
-                pileup_list = viralDist.truncate_output(pileup_list)
+                truncate_tuple = viralDist.truncate_output(pileup_list,
+                                                           startpos,
+                                                           endpos)
+                pileup_list = truncate_tuple[0]
+                new_start = truncate_tuple[1]
+                new_end = truncate_tuple[2]
+                click.echo("The pileup covers %d positions after truncation."
+                           % len(pileup_list[0]))
+                click.echo("The new start position after truncation is %d."
+                           % new_start)
+                click.echo("The new end position after truncation is %d."
+                           % new_end)
+                if new_end < new_start:
+                    click.echo("ERROR: Entire pileup was truncated due to " +
+                               "lack of coverage. Halting program")
+                    valid_pileup = False
+                if new_start < startpos:
+                    click.echo("The start position %d you specified was" +
+                               "truncated due to lack of coverage. Reading" +
+                               "data from closest valid position %d." %
+                               (startpos, new_start))
+                    startpos = new_start
+                if new_end > endpos:
+                    click.echo("The start position %d you specified was" +
+                               "truncated due to lack of coverage. Reading" +
+                               "data from closest valid position %d." %
+                               (startpos, new_start))
+                    endpos = new_end
             # end if
-            matrix = viralDist.get_distance_matrix(pileup_list, normalize,
-                                                   startpos, endpos)
-            if output:
-                output.write(viralDist.convert_distance_to_csv(matrix, bam))
-            else:
-                # click.echo(matrix)
-                click.echo(viralDist.convert_distance_to_csv(matrix, bam))
-            # end if
-            print("Complete!")
+            if valid_pileup:
+                matrix = viralDist.get_distance_matrix(pileup_list, normalize,
+                                                       startpos, endpos)
+                if output:
+                    output.write(viralDist.convert_distance_to_csv(matrix,
+                                                                   bam))
+                else:
+                    # click.echo(matrix)
+                    click.echo(viralDist.convert_distance_to_csv(matrix, bam))
+                # end if
+                print("Complete!")
         # end def
     # end if
     click.echo(message)

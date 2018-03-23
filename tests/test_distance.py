@@ -97,17 +97,20 @@ test2.bam,1.00000000,1.00000000"""
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 4
     [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 5
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 6
-    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {}, {'G': 8}], #test 7
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {}, {'G':  8}], #test 7
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}]] #test 8
 
-    pileup3_truncate_out = [[{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}],
-                            [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}]]
+    pileup3_truncate_out = [[{'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 1
+    [{'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 2
+    [{'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 3
+    [{'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 4
+    [{'T': 2}, {'C': 3}, {}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 5
+    [{'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 6
+    [{'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {}, {'G':  8}], #test 7
+    [{'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}]] #test 8
+
+    pileup3_truncate_start = 1
+    pileup3_truncate_end = 7
 
     pileup4 = [[{'A': 1, 'T': 0, 'C': 0, 'G': 0},  # test 1 a
                 {'A': 0, 'T': 2, 'C': 0, 'G': 0},  # test 1 b
@@ -119,8 +122,130 @@ test2.bam,1.00000000,1.00000000"""
     pileup4_truncate_out = [[{'A': 0, 'T': 2, 'C': 0, 'G': 0}], #test 1
                             [{'A': 0, 'T': 2, 'C': 0, 'G': 0}]]
 
-    truncate_list = [(pileup3, pileup3_truncate_out),
-                     (pileup4, pileup4_truncate_out)]
+    pileup4_truncate_start = 1
+    pileup4_truncate_end = 1
+
+    pileup5 = [[{'A': 1, 'T': 0, 'C': 0, 'G': 0},  # test 1 a
+                {'A': 0, 'T': 2, 'C': 0, 'G': 0},  # test 1 b
+                {'A': 0, 'T': 0, '-': 4, 'G': 0}],  # test 1 c
+               [{'-': 1, 'T': 0, 'C': 0, 'G': 0},  # test 2 a
+                {'A': 0, 'T': 2, 'C': 0, 'G': 0},  # test 2 b
+                {'A': 0, '-': 5, 'C': 0, 'G': 0}]]  # test 2 c
+
+    pileup5_truncate_out = [[{'A': 0, 'T': 2, 'C': 0, 'G': 0}], #test 1
+                            [{'A': 0, 'T': 2, 'C': 0, 'G': 0}]]
+
+    pileup5_truncate_start = 1
+    pileup5_truncate_end = 1
+
+    pileup6 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    [{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
+    [{'A': 1}, {'T': 2}, {}, {'G': 4}, {'A': 5}], #test 3
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 4
+    [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}]] #test 5
+
+    pileup6_truncate_out = [[{'T': 2}],
+                            [{'T': 2}],
+                            [{'T': 2}],
+                            [{'T': 2}],
+                            [{'T': 2}]]
+
+    pileup6_truncate_start = 1
+    pileup6_truncate_end = 1
+
+    pileup7 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    [{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
+    [{'A': 1}, {}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 4
+    [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}]] #test 5
+
+    pileup7_truncate_out = [[{'C': 3}],
+                            [{'C': 3}],
+                            [{'C': 3}],
+                            [{'C': 3}],
+                            [{'C': 3}]]
+
+    pileup7_truncate_start = 2
+    pileup7_truncate_end = 2
+
+    pileup8 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
+    [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}]] #test 5
+
+    pileup8_truncate_out = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
+    [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}]] #test 5
+
+    pileup8_truncate_start = 0
+    pileup8_truncate_end = 4
+
+    pileup9 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    [{'A': 1}, {}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
+
+    pileup9_truncate_out = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    [{'A': 1}, {}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
+
+    pileup9_truncate_start = 0
+    pileup9_truncate_end = 4
+
+    pileup10 = [[{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 2
+    [{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
+    [{}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 4
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
+
+    pileup10_truncate_out = [[{'T': 2}, {'C': 3}, {'G': 4}], #test 1
+    [{'T': 2}, {'C': 3}, {'G': 4}], #test 2
+    [{'T': 2}, {'C': 3}, {'G': 4}], #test 3
+    [{'T': 2}, {'C': 3}, {'G': 4}], #test 4
+    [{'T': 2}, {'C': 3}, {'G': 4}]] #test 5
+
+    pileup10_truncate_start = 1
+    pileup10_truncate_end = 3
+
+    pileup11 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 2
+    [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}], #test 3
+    [{'A': 1}, {'T': 2}, {}, {'G': 4}, {}], #test 4
+    [{'A': 1}, {}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
+
+    pileup11_truncate_out = [[{'A': 1}], #test 1
+    [{'A': 1}], #test 2
+    [{'A': 1}], #test 3
+    [{'A': 1}], #test 4
+    [{'A': 1}]] #test 5
+
+    pileup11_truncate_start = 0
+    pileup11_truncate_end = 0
+
+    truncate_list = [(pileup3, pileup3_truncate_out, pileup3_truncate_start,
+                      pileup3_truncate_end),
+                     (pileup4, pileup4_truncate_out, pileup4_truncate_start,
+                      pileup4_truncate_end),
+                     (pileup5, pileup5_truncate_out, pileup5_truncate_start,
+                      pileup5_truncate_end),
+                     (pileup6, pileup6_truncate_out, pileup6_truncate_start,
+                      pileup6_truncate_end),
+                     (pileup7, pileup7_truncate_out, pileup7_truncate_start,
+                      pileup7_truncate_end),
+                     (pileup8, pileup8_truncate_out, pileup8_truncate_start,
+                      pileup8_truncate_end),
+                     (pileup9, pileup9_truncate_out, pileup9_truncate_start,
+                      pileup9_truncate_end),
+                     (pileup10, pileup10_truncate_out, pileup10_truncate_start,
+                      pileup10_truncate_end),
+                     (pileup11, pileup11_truncate_out, pileup11_truncate_start,
+                      pileup11_truncate_end)]
 
     """
     TESTS
@@ -239,8 +364,17 @@ test2.bam,1.00000000,1.00000000"""
             [None]
         """
         dist2 = Distance()
-        truncated = dist2.truncate_output(request.param[0])
-        return (truncated, request.param[1])
+        old_start = 0  # new_start = old start
+        old_end = len(request.param[0][0]) -1    # new_end = old end
+        truncated = dist2.truncate_output(request.param[0], old_start, old_end)
+        # return (truncated pileup, expected truncated pileup,
+        #         expected new start, new start, expected new end, new end)
+        return (truncated[0],
+                request.param[1],
+                truncated[1],
+                request.param[2],
+                truncated[2],
+                request.param[3])
     #end def
 
     def test_truncate_output(self, truncate_fixture):
@@ -249,7 +383,13 @@ test2.bam,1.00000000,1.00000000"""
         empty, the output is truncated correctly.
 
         INPUT:
-            [ARRAY] [pileup_list]
+            truncate_fixture:
+            --[ARRAY] [pileup_list]
+            --[ARRAY] [expected pileup]
+            --[INT] [start pos]
+            --[INT] [expected start pos]
+            --[INT] [end pos]
+            --[INT] [expected end pos]
 
         RETURN:
             [None]
@@ -257,7 +397,10 @@ test2.bam,1.00000000,1.00000000"""
         POST:
             [None]
         """
-
+        #check if truncated pileup is as expected
         assert truncate_fixture[0] == truncate_fixture[1]
-
+        #check if truncated start position is as expected
+        assert truncate_fixture[2] == truncate_fixture[3]
+        #check if truncated end position is as expected
+        assert truncate_fixture[4] == truncate_fixture[5]
     #end def

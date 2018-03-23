@@ -25,6 +25,7 @@ from scipy.spatial.distance import squareform
 from scipy.spatial.distance import cosine
 
 BASES = ['A', 'C', 'T', 'G']
+PADDING = '-'
 
 
 class Distance(object):
@@ -75,7 +76,7 @@ class Distance(object):
         return pileup_list
     # end def
 
-    def truncate_output(self, pileup_list):
+    def truncate_output(self, pileup_list, curr_start, curr_end):
         """
         Deletes sections of the pileup for all pileups in the pileup list
         where there is no coverage (all four bases - A, C, T, and G) are
@@ -91,28 +92,69 @@ class Distance(object):
         POST:
             The pileups are truncated (sections of the pileup where there
             is no coverage are deleted from all pileups in the pileup list.
+            If curr_start > curr_end the pileup_list is empty after truncation.
         """
-        deletion_list = []
-        if len(pileup_list) > 0:
+        deletion_list_left, deletion_list_right, deletion_list = [], [], []
+        num_pos = len(pileup_list[0])
+        if len(pileup_list) > 0 and len(pileup_list[0]) > 0:
             # iterate through every position in reference
-            if len(pileup_list[0]) > 0:
-                for position in range(0, len(pileup_list[0])):
-                    # if any pileup at the current position is empty,
-                    # add to deletion_list
-                    if any((pileup[position] == {} for pileup in pileup_list)):
-                        deletion_list.insert(0, position)
-                    elif any(sum(pileup[position].values()) == 0
-                             for pileup in pileup_list):
-                        deletion_list.insert(0, position)
-                # end for
-            # end if
+            left_key = -1
+            for left in range(0, num_pos):
+                if not self.all_have_coverage(pileup_list, left):
+                    deletion_list_left.insert(0, left)
+                    left_key = left
+                else:
+                    break
+            for right in reversed(range(left + 1, num_pos)):
+                if not self.all_have_coverage(pileup_list, right):
+                    deletion_list_right.append(right)
+                else:
+                    break
         # end if
+        # example: [7 6 5 3 2 1] = [7 6 5] + [3 2 1]
+        deletion_list = deletion_list_right + deletion_list_left
+        # increment curr_start, reading positions in ascending numerical order
+        for position in reversed(deletion_list):
+            if position == curr_start:
+                curr_start += 1
+        # decrement curr_end, reading positions in descending numerical order
         for position in deletion_list:
+            if position == curr_end:
+                curr_end -= 1
             for pileup in pileup_list:
                 del pileup[position]
             # end for
         # end for
-        return pileup_list
+        return (pileup_list, curr_start, curr_end)
+    # end def
+
+    def all_have_coverage(self, pileup_list, position):
+        """
+        Determines whether all pileups in the pileup list have coverage at
+        the present position.
+
+        INPUT:
+            [ARRAY] [pileup_list] - list of pileups - each pileup is
+            represented by a list of dictionaries.
+
+            [INT] [position] - position in each pileup to check for coverage
+
+        RETURN:
+            Returns BOOL true if all pileups have coverage at the position or
+            false if at least one pileup does not have coverage at the position
+
+        POST:
+            None
+
+        """
+
+        if any((np.sum([pileup[position].get(base, 0) for base in BASES]) == 0
+                or pileup[position] == {}) for pileup in pileup_list):
+            return False
+        else:
+            return True
+        # end if
+
     # end def
 
     def get_distance_matrix(self, pileup_list, normalized, startpos=None,
@@ -229,15 +271,15 @@ class Distance(object):
             for i in range(0, len(pileup_list[num])):
                 curr_pos = [pileup_list[num][i].get(base, 0) for base in BASES]
                 total = float(np.sum(curr_pos))
+                items = pileup_list[num][i].items()
                 # normalize the data for all samples
                 if total > 0:
                     new_list[num].append(
-                        {key: (float(value) / total)
-                            for (key, value) in pileup_list[num][i].items()})
+                        {key: (float(val) / total) for (key, val) in items
+                         if key is not '-'})
                 else:
                     new_list[num].append(
-                        {key: 0
-                            for (key, value) in pileup_list[num][i].items()})
+                        {key: 0 for (key, value) in items})
                 # end if
         return new_list
         '''
