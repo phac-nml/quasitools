@@ -105,7 +105,7 @@ class Distance(object):
                     left_key = left
                 else:
                     break
-            for right in reversed(range(left + 1, num_pos)):
+            for right in reversed(range(left_key + 1, num_pos)):
                 if not self.all_have_coverage(pileup_list, right):
                     deletion_list_right.append(right)
                 else:
