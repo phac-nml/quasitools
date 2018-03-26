@@ -29,6 +29,37 @@ class TestDistance:
     CLASS VARIABLES
     """
 
+    pileup0 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 2
+    [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}], #test 3
+    [{'A': 1}, {'T': 2}, {}, {'G': 4}, {}], #test 4
+    [{'A': 1}, {}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
+
+    pileup0_files = ('test1.bam', 'test2.bam', 'test3.bam', 'test4.bam', 'test5.bam')
+
+    pileup0_truncate_out = [[{'A': 1}], #test 1
+    [{'A': 1}], #test 2
+    [{'A': 1}], #test 3
+    [{'A': 1}], #test 4
+    [{'A': 1}]] #test 5
+
+    pileup0_normal_out = """Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam
+test1.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
+test2.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
+test3.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
+test4.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
+test5.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000"""
+
+    pileup0_unnormal_out = """Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam
+test1.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
+test2.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
+test3.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
+test4.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
+test5.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000"""
+
+    pileup0_startpos = 0
+    pileup0_endpos = 0
+
     #files for testing pileup matrix
     pileup1 = [[{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1},
     {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test1
@@ -85,10 +116,12 @@ test2.bam,1.00000000,1.00000000"""
 test1.bam,1.00000000,1.00000000
 test2.bam,1.00000000,1.00000000"""
 
-    tuple_list = [(True, pileup1, pileup1_files, pileup1_normal_out),
-    (True, pileup2, pileup2_files, pileup2_normal_out),
-    (False, pileup1, pileup1_files, pileup1_unnormal_out),
-    (False, pileup2, pileup2_files, pileup2_unnormal_out)]
+    tuple_list = [(True, pileup0, pileup0_files, pileup0_normal_out, pileup0_startpos, pileup0_endpos),
+    (True, pileup1, pileup1_files, pileup1_normal_out, None, None),
+    (True, pileup2, pileup2_files, pileup2_normal_out, None, None),
+    (False, pileup0, pileup0_files, pileup0_unnormal_out, pileup0_startpos, pileup0_endpos),
+    (False, pileup1, pileup1_files, pileup1_unnormal_out, None, None),
+    (False, pileup2, pileup2_files, pileup2_unnormal_out, None, None)]
 
     #files for testing pileup matrix
     pileup3 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 1
@@ -262,6 +295,8 @@ test2.bam,1.00000000,1.00000000"""
             ---[ARRAY] [pileup list]
             ---[ARRAY] [pileup_files] # file names corresponding to pileups
             ---[ARRAY] [pileup#_(normal_out/unnormal_out)] #csv formatted output
+            ---[INT or NONE] [startpos or default if NONE]
+            ---[INT or NONE] [endpos or default if NONE]
 
         RETURN:
             Tuple containing: (actual csv-formatted string output,
@@ -276,7 +311,11 @@ test2.bam,1.00000000,1.00000000"""
 
         #get similarity matrix based on pileup list (request.param[1])
         #and boolean normalize flag (request.param[0])
-        matrix = dist.get_distance_matrix(request.param[1], request.param[0])
+        if request.param[3] is not None and request.param[4] is not None:
+            matrix = dist.get_distance_matrix(request.param[1], request.param[0], int(request.param[4]), int(request.param[5]))
+        else:
+            matrix = dist.get_distance_matrix(request.param[1], request.param[0])
+        #end if
 
         #convert matrix  to csv, passing file list (request.param[2])
         csv_similarity = dist.convert_distance_to_csv(matrix, request.param[2])
