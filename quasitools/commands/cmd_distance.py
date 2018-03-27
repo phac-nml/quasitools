@@ -33,8 +33,8 @@ from quasitools.distance import Distance
               " Start positions must be greater than zero and less than the " +
               "length of the base pileup (number of positions to be compared" +
               " with the reference.)")
-@click.option('-e', '--end_pos', type=int, help="Set the end base position of" +
-              " the reference to use in the distance calculation. End" +
+@click.option('-e', '--end_pos', type=int, help="Set the end base position" +
+              " of the reference to use in the distance calculation. End" +
               " positions must be greater than zero and less than the length" +
               " of the base pileup (number of positions to be compared with" +
               " the reference.)")
@@ -93,7 +93,7 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
         click.echo("The end position is %d." % endpos)
         click.echo("Constructed pileup from reference.")
         # print the number of positions in pileup
-        if not dont_truncate:
+        if truncate is not 'dont_truncate':
             click.echo("The pileup covers %d positions before truncation."
                        % len(pileup_list[0]))
         else:
@@ -110,20 +110,20 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
                         " (%s)." % len(pileup_list[0]))
         # if there is no errors so far, proceed with running program
         if message == "":
-            if not dont_truncate:
-                if truncate_ends:
+            if truncate is not 'dont_truncate':
+                if truncate is 'truncate_ends':
                     truncate_tuple = viralDist.truncate_output(pileup_list,
-                                                           startpos,
-                                                           endpos)
+                                                               startpos,
+                                                               endpos)
                     click.echo("Truncating positions with no coverage that " +
                                "are contiguous with the start or end " +
                                "position of the pileup only.")
-                elif truncate_all:
+                elif truncate is 'truncate_all':
                     truncate_tuple = viralDist.truncate_all_output(pileup_list,
                                                                    startpos,
                                                                    endpos)
                     click.echo("Truncating all positions with no coverage.")
-                #end if
+                # end if
                 pileup_list = truncate_tuple[0]
                 new_start = truncate_tuple[1]
                 new_end = truncate_tuple[2]

@@ -77,7 +77,7 @@ class Distance(object):
     # end def
 
     def remove_pileup_positions(self, pileup_list, deletion_list, curr_start,
-                                                                  curr_end):
+                                curr_end):
         """
         Deletes positions in the pileup specified in deletion_list, an array
         of integers sorted in descending order.
@@ -138,7 +138,7 @@ class Distance(object):
                 if not self.all_have_coverage(pileup_list, position):
                     deletion_list.insert(0, position)
         return self.remove_pileup_positions(pileup_list, deletion_list,
-                                                          curr_start, curr_end)
+                                            curr_start, curr_end)
     # end def
 
     def truncate_output(self, pileup_list, curr_start, curr_end):
@@ -180,7 +180,7 @@ class Distance(object):
         # example: [7 6 5 3 2 1] = [7 6 5] + [3 2 1]
         deletion_list = deletion_list_right + deletion_list_left
         return self.remove_pileup_positions(pileup_list, deletion_list,
-                                                          curr_start, curr_end)
+                                            curr_start, curr_end)
     # end def
 
     def all_have_coverage(self, pileup_list, position):
@@ -342,10 +342,10 @@ class Distance(object):
 
     """
     def normalize_centered_cosine_similarity(self, pileup_list)
-        # This function calculates the mean of the read counts for each groupings
-        # of four bases (A, C, T, G) and subtracts this mean from the individual
-        # read counts. this prevents large read counts for a base from inflating
-        # the cosine simularity calculation.
+        # This function calculates the mean of read counts for each grouping
+        # of 4 bases (A, C, T, G) and subtracts this mean from the individual
+        # read counts. This prevents large read counts for a base from
+        # having a great effect on the cosine simularity calculation.
 
         # INPUT:
 
