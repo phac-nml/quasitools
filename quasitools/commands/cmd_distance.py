@@ -80,7 +80,7 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
                             " or equal to end position")
     if message == "":  # if no error messages have been created
         viralDist = Distance()
-        pileup_list = viralDist.construct_pileup(bam, reference)
+        pileup_list = viralDist.construct_array_of_pileups(bam, reference)
         if startpos is None:
             startpos = 0
         if endpos is None:
