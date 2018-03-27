@@ -25,23 +25,28 @@ from quasitools.distance import Distance
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('bam', nargs=-1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.option('--normalize/--dontnormalize', '-n/-dn', default=True,
+@click.option('-n/-dn', '--normalize/--dont_normalize', default=True,
               help="Normalize read count data so that the read counts per " +
               "4-tuple (A, C, T, G) sum to one.")
-@click.option('--startpos', '-s', type=int, help="Set the start base " +
+@click.option('-s', '--start_pos', type=int, help="Set the start base " +
               "position of the reference to use in the distance calculation." +
               " Start positions must be greater than zero and less than the " +
               "length of the base pileup (number of positions to be compared" +
               " with the reference.)")
-@click.option('--endpos', '-e', type=int, help="Set the end base position of" +
+@click.option('-e', '--end_pos', type=int, help="Set the end base position of" +
               " the reference to use in the distance calculation. End" +
               " positions must be greater than zero and less than the length" +
               " of the base pileup (number of positions to be compared with" +
               " the reference.)")
 @click.option('-o', '--output', type=click.File('w'), help="Output the " +
               "quasispecies distance matrix in CSV format in a file.")
-@click.option('-t/-dt', '--truncate/--donttruncate', default=True,
-              help="Exclude regions in the pileup where there is no coverage.")
+@click.option('-te', '--truncate_ends', 'truncate', flag_value='truncate_ends',
+              default=True, help="Ignore contiguous start and end pileup" +
+              " regions with no coverage.")
+@click.option('-ta', '--truncate_all', 'truncate', flag_value='truncate_all',
+              help="Ignore all pileup regions with no coverage.")
+@click.option('-dt', '--dont_truncate', 'truncate', flag_value='dont_truncate',
+              help="Do not ignore pileup regions with no coverage.")
 @click.pass_context
 def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
     """This script outputs the evolutionary distance [0 - 1] between
@@ -88,7 +93,7 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
         click.echo("The end position is %d." % endpos)
         click.echo("Constructed pileup from reference.")
         # print the number of positions in pileup
-        if truncate:
+        if not dont_truncate:
             click.echo("The pileup covers %d positions before truncation."
                        % len(pileup_list[0]))
         else:
@@ -105,10 +110,20 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
                         " (%s)." % len(pileup_list[0]))
         # if there is no errors so far, proceed with running program
         if message == "":
-            if truncate:
-                truncate_tuple = viralDist.truncate_output(pileup_list,
+            if not dont_truncate:
+                if truncate_ends:
+                    truncate_tuple = viralDist.truncate_output(pileup_list,
                                                            startpos,
                                                            endpos)
+                    click.echo("Truncating positions with no coverage that " +
+                               "are contiguous with the start or end " +
+                               "position of the pileup only.")
+                elif truncate_all:
+                    truncate_tuple = viralDist.truncate_all_output(pileup_list,
+                                                                   startpos,
+                                                                   endpos)
+                    click.echo("Truncating all positions with no coverage.")
+                #end if
                 pileup_list = truncate_tuple[0]
                 new_start = truncate_tuple[1]
                 new_end = truncate_tuple[2]

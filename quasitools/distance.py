@@ -76,15 +76,82 @@ class Distance(object):
         return pileup_list
     # end def
 
-    def truncate_output(self, pileup_list, curr_start, curr_end):
+    def remove_pileup_positions(self, pileup_list, deletion_list, curr_start,
+                                                                  curr_end):
         """
-        Deletes sections of the pileup for all pileups in the pileup list
+        Deletes positions in the pileup specified in deletion_list, an array
+        of integers sorted in descending order.
+
+        INPUT:
+            [ARRAY] [pileup_list] - list of pileups - each pileup is
+            represented by a list of dictionaries.
+            [ARRAY] [deletion_list] - list of positions to delete in descending
+                                      order
+            [int] [curr_start] - current start position
+            [int] [curr_end] - current end position
+
+        RETURN:
+            [ARRAY] [pileup_list] - list of pileups after specified positions
+            in deletion_list have been deleted.
+
+        POST:
+            [None]
+        """
+        # increment curr_start, reading positions in ascending numerical order
+        for position1 in reversed(deletion_list):
+            if position1 == curr_start:
+                curr_start += 1
+        # decrement curr_end, reading positions in descending numerical order
+        for position2 in deletion_list:
+            if position2 == curr_end:
+                curr_end -= 1
+            for pileup in pileup_list:
+                del pileup[position2]
+            # end for
+        # end for
+        return (pileup_list, curr_start, curr_end)
+
+    def truncate_all_output(self, pileup_list, curr_start, curr_end):
+        """
+        Deletes all regions of the pileup for all pileups in the pileup list
         where there is no coverage (all four bases - A, C, T, and G) are
         absent.
 
         INPUT:
             [ARRAY] [pileup_list] - list of pileups - each pileup is
             represented by a list of dictionaries.
+            [int] [curr_start] - current start position
+            [int] [curr_end] - current end position
+
+        RETURN:
+            [None]
+
+        POST:
+            The pileups are truncated (sections of the pileup where there
+            is no coverage are deleted from all pileups in the pileup list.
+        """
+        deletion_list = []
+        if len(pileup_list) > 0 and len(pileup_list[0]) > 0:
+            # iterate through every position in reference
+            for position in range(0, len(pileup_list[0])):
+                # add pos'n with empty coverage in pileup to deletion_list
+                if not self.all_have_coverage(pileup_list, position):
+                    deletion_list.insert(0, position)
+        return self.remove_pileup_positions(pileup_list, deletion_list,
+                                                          curr_start, curr_end)
+    # end def
+
+    def truncate_output(self, pileup_list, curr_start, curr_end):
+        """
+        Deletes contiguous start and end regions of the pileup for all pileups
+        in the pileup list where there is no coverage (all four bases - A, C,
+        T, and G) are absent.
+
+        INPUT:
+            [ARRAY] [pileup_list] - list of pileups - each pileup is
+            represented by a list of dictionaries.
+            [int] [curr_start] - current start position
+            [int] [curr_end] - current end position
 
         RETURN:
             [None]
@@ -110,22 +177,10 @@ class Distance(object):
                     deletion_list_right.append(right)
                 else:
                     break
-        # end if
         # example: [7 6 5 3 2 1] = [7 6 5] + [3 2 1]
         deletion_list = deletion_list_right + deletion_list_left
-        # increment curr_start, reading positions in ascending numerical order
-        for position in reversed(deletion_list):
-            if position == curr_start:
-                curr_start += 1
-        # decrement curr_end, reading positions in descending numerical order
-        for position in deletion_list:
-            if position == curr_end:
-                curr_end -= 1
-            for pileup in pileup_list:
-                del pileup[position]
-            # end for
-        # end for
-        return (pileup_list, curr_start, curr_end)
+        return self.remove_pileup_positions(pileup_list, deletion_list,
+                                                          curr_start, curr_end)
     # end def
 
     def all_have_coverage(self, pileup_list, position):
@@ -251,9 +306,10 @@ class Distance(object):
     def normalize_sum_to_one(self, pileup_list):
 
         """
-        This function calculates the mean of the read counts for each groupings
-        of four bases (A, C, T, G) and subtracts this mean from the individual
-        read counts. this prevents large read counts for a base from inflating
+        This function converts the read count for each base in each four-tuple
+        of bases (A, C, T, G) into a decimal proportion of the total read
+        counts for that four-tuple. The bounds are between 0 and 1.
+        This prevents large read counts for a base from inflating
         the cosine simularity calculation.
 
         INPUT:
@@ -282,7 +338,24 @@ class Distance(object):
                         {key: 0 for (key, value) in items})
                 # end if
         return new_list
-        '''
+    # end def
+
+    """
+    def normalize_centered_cosine_similarity(self, pileup_list)
+        # This function calculates the mean of the read counts for each groupings
+        # of four bases (A, C, T, G) and subtracts this mean from the individual
+        # read counts. this prevents large read counts for a base from inflating
+        # the cosine simularity calculation.
+
+        # INPUT:
+
+        # [ARRAY] [pileup_list] (a list of dictionaries containing read counts
+        # for nucleotides at each position corresponding to the reference)
+
+        # RETURN: [ARRAY] [pileup_list] (the normalized list of pileups)
+
+        # POST: pileup_list data is normalized.
+
         # get the mean for sample one
         mean = 0
         for num in range(0, len(pileup_list)):
@@ -296,4 +369,4 @@ class Distance(object):
                 pileup_list[num][i] = {key: (value - mean)
                 for key, value in pileup_list[num][i].items() }
                 '''
-    # end def
+    """
