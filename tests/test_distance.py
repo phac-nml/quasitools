@@ -287,12 +287,17 @@ test2.bam,1.00000000,1.00000000"""
         #save expected output (request.param[3])
         expected = request.param[3]
 
-        #get similarity matrix based on pileup list (request.param[1])
-        #and boolean normalize flag (request.param[0])
-        if request.param[3] is not None and request.param[4] is not None:
-            matrix = dist.get_distance_matrix(request.param[1], request.param[0], int(request.param[4]), int(request.param[5]))
+        # if boolean normalize flag (request.param[0]) is true normalize pileup
+        if request.param[0] is True:
+            pileup_list = dist.normalize_sum_to_one(request.param[1])
         else:
-            matrix = dist.get_distance_matrix(request.param[1], request.param[0])
+            pileup_list = request.param[1]
+
+        #get similarity matrix based on pileup list (request.param[1])
+        if request.param[3] is not None and request.param[4] is not None:
+            matrix = dist.get_distance_matrix(pileup_list, int(request.param[4]), int(request.param[5]))
+        else:
+            matrix = dist.get_distance_matrix(pileup_list)
         #end if
 
         #convert matrix  to csv, passing file list (request.param[2])

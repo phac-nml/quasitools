@@ -212,8 +212,7 @@ class Distance(object):
 
     # end def
 
-    def get_distance_matrix(self, pileup_list, normalized, startpos=None,
-                            endpos=None):
+    def get_distance_matrix(self, pileup_list, startpos=None, endpos=None):
 
         """
         Runs the script, calculating the cosine similarity function between
@@ -222,8 +221,6 @@ class Distance(object):
         INPUT:
             [ARRAY] [pileup_list] - list of pileups - each pileup is
             represented by a list of dictionaries.
-
-            [BOOL] [normalized] - determine whether to normalize data or not
 
             [INT] [startpos] -starting base position of reference to be
             compared when calculating cosine similarity.
@@ -243,10 +240,6 @@ class Distance(object):
             function is not affected.
 
         """
-        if normalized:
-            pileup_list = self.normalize_sum_to_one(pileup_list)
-        # end def
-
         baseList = []
         first = 0  # first position of dictionaries in each pileup_list[i]
         if startpos is not None:

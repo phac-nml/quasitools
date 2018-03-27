@@ -151,8 +151,11 @@ def cli(ctx, reference, bam, normalize, startpos, endpos, output, truncate):
                     endpos = new_end
             # end if
             if valid_pileup:
-                matrix = viralDist.get_distance_matrix(pileup_list, normalize,
-                                                       startpos, endpos)
+                if normalized:
+                    pileup_list = self.normalize_sum_to_one(pileup_list)
+                # end def
+                matrix = viralDist.get_distance_matrix(pileup_list, startpos, 
+                                                       endpos)
                 if output:
                     output.write(viralDist.convert_distance_to_csv(matrix,
                                                                    bam))
