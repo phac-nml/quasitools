@@ -323,7 +323,7 @@ test2.bam,1.00000000,1.00000000"""
     @pytest.fixture
     def pileup_fixture(self):
         """
-        pileup_fixture - Passes file locations to construct_pileup function to
+        pileup_fixture - Passes file locations to construct_array_of_pileups function to
         calculate the bam pileup.
 
         INPUT:
@@ -339,13 +339,13 @@ test2.bam,1.00000000,1.00000000"""
         test_cp_files = ((TEST_PATH+"/data/quasi1.bam"), (TEST_PATH+"/data/quasi2.bam"))
         test_cp_ref = TEST_PATH+"/data/hxb2_pol.fas"
         dist = Distance()
-        bamPileup = dist.construct_pileup(test_cp_files, test_cp_ref)
+        bamPileup = dist.construct_array_of_pileups(test_cp_files, test_cp_ref)
         return bamPileup
     #end def
 
-    def test_construct_pileup(self, pileup_fixture):
+    def test_construct_array_of_pileup(self, pileup_fixture):
         """
-        test_construct_pileup - Checks that the pileup length and the first few
+        test_construct_array_of_pileups - Checks that the pileup length and the first few
         indices of the pileup are correct.
 
         INPUT:
