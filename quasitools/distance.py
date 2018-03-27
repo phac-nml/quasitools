@@ -34,7 +34,7 @@ class Distance(object):
 
     # end def
 
-    def construct_pileup(self, viral_files, reference_loc):
+    def construct_array_of_pileups(self, viral_files, reference_loc):
 
         """
         Creates a array of pileups (which are arrays of dictionaries)
