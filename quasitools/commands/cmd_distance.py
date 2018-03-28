@@ -56,7 +56,7 @@ from quasitools.distance import DistanceMatrix
 @click.pass_context
 def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         output, truncate):
-    """Quasispecies distance produces a measure of evolutionary distance [0 - 1] 
+    """Quasispecies distance produces a measure of evolutionary distance [0 - 1]
        between quasispecies, computed using the angular cosine distance function
        defined below.
 
@@ -151,7 +151,7 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
                 click.echo("The new end position after truncation is %d."
                            % new_end)
                 if new_end < new_start:
-                    message += ("ERROR: Entire pileup was truncated due to " +
+                    message += ("Error: Entire pileup was truncated due to " +
                                 "lack of coverage. Halting program")
                     valid_pileup = False
                 if new_start < startpos:
