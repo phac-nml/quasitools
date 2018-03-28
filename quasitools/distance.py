@@ -131,7 +131,7 @@ class Pileup_Utilities(object):
                          if key is not '-'})
                 else:
                     new_list[num].append(
-                        {key: 0 for (key, value) in items})
+                        {key: 0 for (key, value) in items if key is not '-'})
                 # end if
         return new_list
     # end def
