@@ -28,9 +28,33 @@ BASES = ['A', 'C', 'T', 'G']
 PADDING = '-'
 
 
-class Distance(object):
+class Pileup_Utilities(object):
 
-    # def __init__(self):
+    def all_have_coverage(self, pileup_list, position):
+        """
+        Determines whether all pileups in the pileup list have coverage at
+        the present position.
+
+        INPUT:
+            [ARRAY] [pileup_list] - list of pileups - each pileup is
+                                    represented by a list of dictionaries.
+            [INT] [position] - position in each pileup to check for coverage
+
+        RETURN:
+            Returns BOOL true if all pileups have coverage at the position or
+            false if at least one pileup does not have coverage at the position
+
+        POST:
+            None
+
+        """
+
+        if any((np.sum([pileup[position].get(base, 0) for base in BASES]) == 0
+                or pileup[position] == {}) for pileup in pileup_list):
+            return False
+        else:
+            return True
+        # end if
 
     # end def
 
@@ -38,7 +62,6 @@ class Distance(object):
 
         """
         Creates a array of pileups (which are arrays of dictionaries)
-
         INPUT:
             [TUPLE] [viral_files] - files names which represent a pileup
 
@@ -76,6 +99,43 @@ class Distance(object):
         return pileup_list
     # end def
 
+    def get_normalized_pileup(self, pileup_list):
+
+        """
+        This function converts the read count for each base in each four-tuple
+        of bases (A, C, T, G) into a decimal proportion of the total read
+        counts for that four-tuple. The bounds are between 0 and 1.
+        This prevents large read counts for a base from inflating
+        the cosine simularity calculation.
+
+        INPUT:
+            [ARRAY] [pileup_list] - list of pileups - each pileup is
+                                    represented by a list of dictionaries.
+
+        RETURN: [ARRAY] [pileup_list] (the normalized list of pileups)
+
+        POST: pileup_list data is normalized.
+        """
+        new_list = []
+        for num in range(0, len(pileup_list)):
+            new_list.append([])
+            for i in range(0, len(pileup_list[num])):
+                curr_pos = [pileup_list[num][i].get(base, 0)
+                            for base in BASES]
+                total = float(np.sum(curr_pos))
+                items = pileup_list[num][i].items()
+                # normalize the data for all samples
+                if total > 0:
+                    new_list[num].append(
+                        {key: (float(val) / total) for (key, val) in items
+                         if key is not '-'})
+                else:
+                    new_list[num].append(
+                        {key: 0 for (key, value) in items})
+                # end if
+        return new_list
+    # end def
+
     def remove_pileup_positions(self, pileup_list, deletion_list, curr_start,
                                 curr_end):
         """
@@ -84,7 +144,7 @@ class Distance(object):
 
         INPUT:
             [ARRAY] [pileup_list] - list of pileups - each pileup is
-            represented by a list of dictionaries.
+                                    represented by a list of dictionaries.
             [ARRAY] [deletion_list] - list of positions to delete in descending
                                       order
             [int] [curr_start] - current start position
@@ -97,6 +157,7 @@ class Distance(object):
         POST:
             [None]
         """
+        new_pileup_list = pileup_list
         # increment curr_start, reading positions in ascending numerical order
         for position1 in reversed(deletion_list):
             if position1 == curr_start:
@@ -105,11 +166,11 @@ class Distance(object):
         for position2 in deletion_list:
             if position2 == curr_end:
                 curr_end -= 1
-            for pileup in pileup_list:
+            for pileup in new_pileup_list:
                 del pileup[position2]
             # end for
         # end for
-        return (pileup_list, curr_start, curr_end)
+        return (new_pileup_list, curr_start, curr_end)
 
     def truncate_all_output(self, pileup_list, curr_start, curr_end):
         """
@@ -119,12 +180,12 @@ class Distance(object):
 
         INPUT:
             [ARRAY] [pileup_list] - list of pileups - each pileup is
-            represented by a list of dictionaries.
+                                    represented by a list of dictionaries.
             [int] [curr_start] - current start position
             [int] [curr_end] - current end position
 
         RETURN:
-            [None]
+            [tuple] containing truncated pileup, start and end position
 
         POST:
             The pileups are truncated (sections of the pileup where there
@@ -149,12 +210,12 @@ class Distance(object):
 
         INPUT:
             [ARRAY] [pileup_list] - list of pileups - each pileup is
-            represented by a list of dictionaries.
+                                    represented by a list of dictionaries.
             [int] [curr_start] - current start position
             [int] [curr_end] - current end position
 
         RETURN:
-            [None]
+            [tuple] containing truncated pileup, start and end position
 
         POST:
             The pileups are truncated (sections of the pileup where there
@@ -183,45 +244,26 @@ class Distance(object):
                                             curr_start, curr_end)
     # end def
 
-    def all_have_coverage(self, pileup_list, position):
-        """
-        Determines whether all pileups in the pileup list have coverage at
-        the present position.
 
-        INPUT:
+class DistanceMatrix(object):
+
+    def __init__(self, pileup_list):
+        """
             [ARRAY] [pileup_list] - list of pileups - each pileup is
             represented by a list of dictionaries.
-
-            [INT] [position] - position in each pileup to check for coverage
-
-        RETURN:
-            Returns BOOL true if all pileups have coverage at the position or
-            false if at least one pileup does not have coverage at the position
-
-        POST:
-            None
-
         """
-
-        if any((np.sum([pileup[position].get(base, 0) for base in BASES]) == 0
-                or pileup[position] == {}) for pileup in pileup_list):
-            return False
-        else:
-            return True
-        # end if
-
+        self.pileup_list = pileup_list
     # end def
 
-    def get_distance_matrix(self, pileup_list, startpos=None, endpos=None):
+    def get_angular_cosine_distance_matrix(self, startpos=None, endpos=None):
 
         """
-        Runs the script, calculating the cosine similarity function between
-        viral quasispecies in viral_files.
+        Runs the script, calculating the angular cosine distance function
+        between viral quasispecies provided in the pileup.
+
+        Angular Cosine Distance = 2 * ACOS(similarity) / PI
 
         INPUT:
-            [ARRAY] [pileup_list] - list of pileups - each pileup is
-            represented by a list of dictionaries.
-
             [INT] [startpos] -starting base position of reference to be
             compared when calculating cosine similarity.
 
@@ -229,43 +271,21 @@ class Distance(object):
             when calculating cosine similarity.
 
         RETURN:
-            Returns a pairwise matrix containing the cosine similarity function
+            Returns a pairwise matrix containing the angular cosine distance
             between all viral quasispecies is returned. The first row and first
             column of the distance matrix contain labels for which quasispecies
             are to be compared in each cell corresponding to the row and column
 
         POST:
-            When and if the data is normalized a new pileup_list object is used
-            internally, so that the object whose reference was passed to this
-            function is not affected.
+            The internal pileup object is not changed by this function.
 
         """
-        baseList = []
-        first = 0  # first position of dictionaries in each pileup_list[i]
-        if startpos is not None:
-            first = startpos
-        # end if
-        for num in range(0, len(pileup_list)):
-            # last pos of dicts in each pileup_list[i]
-            last = len(pileup_list[num])
-            if endpos is not None and (endpos + 1) <= last:
-                last = endpos + 1
-            # end if
-            baseList.append([pileup_list[num][dict].get(base, 0)
-                            for dict in range(first, last) for base in BASES])
-        # end for
-        baseList = np.array(baseList)
-        np.set_printoptions(suppress=True)
-        # create distance matrix for csv file
-        simi_matrix = squareform(1 - pdist(baseList, cosine))
-        di = np.diag_indices(len(simi_matrix))
-        simi_matrix[di] = 1.0
-        simi_matrix = simi_matrix.tolist()
-        return simi_matrix
-
+        matrix = self.get_cosine_similarity_matrix(startpos, endpos)
+        new_matrix = 2 * np.arccos(matrix) / np.pi
+        return new_matrix.tolist()
     # end def
 
-    def convert_distance_to_csv(self, matrix, file_list):
+    def get_matrix_as_csv(self, matrix, file_list):
 
         """
         Converts a 2D array (cosine similarity matrix) to a csv-formatted
@@ -296,70 +316,50 @@ class Distance(object):
         return csvOut
     # end def
 
-    def normalize_sum_to_one(self, pileup_list):
+    def get_cosine_similarity_matrix(self, startpos=None, endpos=None):
 
         """
-        This function converts the read count for each base in each four-tuple
-        of bases (A, C, T, G) into a decimal proportion of the total read
-        counts for that four-tuple. The bounds are between 0 and 1.
-        This prevents large read counts for a base from inflating
-        the cosine simularity calculation.
+        Runs the script, calculating the cosine similarity function between
+        viral quasispecies provided in the pileup.
+
+        Cosine similarity = (u * v) / ( ||u|| * ||v|| )
 
         INPUT:
+            [INT] [startpos] -starting base position of reference to be
+            compared when calculating cosine similarity.
 
-        [ARRAY] [pileup_list] (a list of dictionaries containing read counts
-        for nucleotides at each position corresponding to the reference)
+            [INT] [endpos] - last base position of reference to be compared
+            when calculating cosine similarity.
 
-        RETURN: [ARRAY] [pileup_list] (the normalized list of pileups)
+        RETURN:
+            Returns a pairwise matrix containing the cosine similarity function
+            between all viral quasispecies is returned. The 1st row and column
+            of the similarity matrix contain labels for which quasispecies
+            are to be compared in each cell corresponding to the row and column
 
-        POST: pileup_list data is normalized.
+        POST:
+            The internal pileup object is not changed by this function.
+
         """
-        new_list = []
-        for num in range(0, len(pileup_list)):
-            new_list.append([])
-            for i in range(0, len(pileup_list[num])):
-                curr_pos = [pileup_list[num][i].get(base, 0) for base in BASES]
-                total = float(np.sum(curr_pos))
-                items = pileup_list[num][i].items()
-                # normalize the data for all samples
-                if total > 0:
-                    new_list[num].append(
-                        {key: (float(val) / total) for (key, val) in items
-                         if key is not '-'})
-                else:
-                    new_list[num].append(
-                        {key: 0 for (key, value) in items})
-                # end if
-        return new_list
-    # end def
-
-    """
-    def normalize_centered_cosine_similarity(self, pileup_list)
-        # This function calculates the mean of read counts for each grouping
-        # of 4 bases (A, C, T, G) and subtracts this mean from the individual
-        # read counts. This prevents large read counts for a base from
-        # having a great effect on the cosine simularity calculation.
-
-        # INPUT:
-
-        # [ARRAY] [pileup_list] (a list of dictionaries containing read counts
-        # for nucleotides at each position corresponding to the reference)
-
-        # RETURN: [ARRAY] [pileup_list] (the normalized list of pileups)
-
-        # POST: pileup_list data is normalized.
-
-        # get the mean for sample one
-        mean = 0
-        for num in range(0, len(pileup_list)):
-            # get the mean for sample one
-            mean = 0
-            for i in range(0, len(pileup_list[num])):
-                mean = np.sum([pileup_list[num][i].get(base,0)
-                           for base in BASES])/4
-                # normalize the data for all samples
-                # (centered cosine similarity)
-                pileup_list[num][i] = {key: (value - mean)
-                for key, value in pileup_list[num][i].items() }
-                '''
-    """
+        baseList = []
+        first = 0  # first position of dictionaries in each pileup_list[i]
+        if startpos is not None:
+            first = startpos
+        # end if
+        for num in range(0, len(self.pileup_list)):
+            # last pos of dicts in each pileup_list[i]
+            last = len(self.pileup_list[num])
+            if endpos is not None and (endpos + 1) <= last:
+                last = endpos + 1
+            # end if
+            baseList.append([self.pileup_list[num][dict].get(base, 0)
+                            for dict in range(first, last) for base in BASES])
+        # end for
+        baseList = np.array(baseList)
+        np.set_printoptions(suppress=True)
+        # create distance matrix for csv file
+        simi_matrix = squareform(1 - pdist(baseList, cosine))
+        di = np.diag_indices(len(simi_matrix))
+        simi_matrix[di] = 1.0
+        simi_matrix = simi_matrix.tolist()
+        return simi_matrix

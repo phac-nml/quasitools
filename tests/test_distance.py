@@ -19,7 +19,8 @@ import pytest
 import os
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.reference_parser import parse_references_from_fasta
-from quasitools.distance import Distance
+from quasitools.distance import Pileup_Utilities
+from quasitools.distance import DistanceMatrix
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -102,6 +103,26 @@ test6.bam,0.04156468,0.00000212,0.70710749,0.70710749,0.50000100,1.00000000,0.50
 test7.bam,0.04156468,0.70710749,0.70710749,0.00000212,0.50000100,0.50000100,1.00000000,0.81649699
 test8.bam,0.05089630,0.57735142,0.57735142,0.57735142,0.81649699,0.81649699,0.81649699,1.00000000"""
 
+    pileup1_normal_angular_distance_out = """Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam,test6.bam,test7.bam,test8.bam
+test1.bam,0.00000000,0.17303053,0.17303053,0.17303053,0.08814309,0.08814309,0.08814309,0.00000000
+test2.bam,0.17303053,0.00000000,0.29875524,0.29875524,0.14937762,0.26117362,0.14937762,0.17303053
+test3.bam,0.17303053,0.29875524,0.00000000,0.29875524,0.26117362,0.14937762,0.14937762,0.17303053
+test4.bam,0.17303053,0.29875524,0.29875524,0.00000000,0.14937762,0.14937762,0.26117362,0.17303053
+test5.bam,0.08814309,0.14937762,0.26117362,0.14937762,0.00000000,0.15254569,0.15254569,0.08814309
+test6.bam,0.08814309,0.26117362,0.14937762,0.14937762,0.15254569,0.00000000,0.15254569,0.08814309
+test7.bam,0.08814309,0.14937762,0.14937762,0.26117362,0.15254569,0.15254569,0.00000000,0.08814309
+test8.bam,0.00000000,0.17303053,0.17303053,0.17303053,0.08814309,0.08814309,0.08814309,0.00000000"""
+
+    pileup1_unnormal_angular_distance_out = """Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam,test6.bam,test7.bam,test8.bam
+test1.bam,0.00000000,0.98127578,0.98127578,0.98127578,0.97353148,0.97353148,0.97353148,0.96758440
+test2.bam,0.98127578,0.00000000,0.99999873,0.99999873,0.49999936,0.99999865,0.49999936,0.60817255
+test3.bam,0.98127578,0.99999873,0.00000000,0.99999873,0.99999865,0.49999936,0.49999936,0.60817255
+test4.bam,0.98127578,0.99999873,0.99999873,0.00000000,0.49999936,0.49999936,0.99999865,0.60817255
+test5.bam,0.97353148,0.49999936,0.99999865,0.49999936,0.00000000,0.66666593,0.66666593,0.39182610
+test6.bam,0.97353148,0.99999865,0.49999936,0.49999936,0.66666593,0.00000000,0.66666593,0.39182610
+test7.bam,0.97353148,0.49999936,0.49999936,0.99999865,0.66666593,0.66666593,0.00000000,0.39182610
+test8.bam,0.96758440,0.60817255,0.60817255,0.60817255,0.39182610,0.39182610,0.39182610,0.00000000"""
+
     #files for testing pileup2 matrix of ones
     pileup2 = ([[{'A': 1, 'T': 1, 'C': 1}, {'T': 1}], #test 1
                 [{'A': 1, 'T': 1, 'C': 1}, {'T': 1}]]) # test 2
@@ -116,12 +137,15 @@ test2.bam,1.00000000,1.00000000"""
 test1.bam,1.00000000,1.00000000
 test2.bam,1.00000000,1.00000000"""
 
-    tuple_list = [(True, pileup0, pileup0_files, pileup0_normal_out, pileup0_startpos, pileup0_endpos),
+    similarity_tuple_list = [(True, pileup0, pileup0_files, pileup0_normal_out, pileup0_startpos, pileup0_endpos),
     (True, pileup1, pileup1_files, pileup1_normal_out, None, None),
     (True, pileup2, pileup2_files, pileup2_normal_out, None, None),
     (False, pileup0, pileup0_files, pileup0_unnormal_out, pileup0_startpos, pileup0_endpos),
     (False, pileup1, pileup1_files, pileup1_unnormal_out, None, None),
     (False, pileup2, pileup2_files, pileup2_unnormal_out, None, None)]
+
+    angular_distance_tuple_list = [(True, pileup1, pileup1_files, pileup1_normal_angular_distance_out, None, None),
+    (False, pileup1, pileup1_files, pileup1_unnormal_angular_distance_out, None, None)]
 
     #files for testing pileup matrix
     pileup3 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}], #test 1
@@ -262,10 +286,10 @@ test2.bam,1.00000000,1.00000000"""
     TESTS
     """
 
-    @pytest.fixture(scope="function", params=tuple_list)
-    def matrix_fixture(self, request):
+    @pytest.fixture(scope="function", params=similarity_tuple_list)
+    def similarity_matrix_fixture(self, request):
         """
-        matrix_fixture - test fixture for the test_get_distance_matrix function
+        similarity_matrix_fixture - test fixture for the test_get_similarity_matrix function
 
         INPUT:
             [LIST OF TUPLES]
@@ -283,31 +307,100 @@ test2.bam,1.00000000,1.00000000"""
         POST:
             [None]
         """
-        dist = Distance()
-        #save expected output (request.param[3])
-        expected = request.param[3]
-
-        # if boolean normalize flag (request.param[0]) is true normalize pileup
+        # if boolean normalize flag (request.param[0]) is true normalize
+        pileup_util = Pileup_Utilities()
         if request.param[0] is True:
-            pileup_list = dist.normalize_sum_to_one(request.param[1])
+            pileup_list = pileup_util.get_normalized_pileup(request.param[1])
         else:
             pileup_list = request.param[1]
 
-        #get similarity matrix based on pileup list (request.param[1])
-        if request.param[3] is not None and request.param[4] is not None:
-            matrix = dist.get_distance_matrix(pileup_list, int(request.param[4]), int(request.param[5]))
+        # create matrix with pileup
+        dist = DistanceMatrix(pileup_list)
+
+        # get similarity matrix based on pileup list (request.param[1])
+        # if startpos is int and endpos is int (aka they are not None)
+        if type(request.param[4]) is int and type(request.param[5]) is int:
+            matrix = dist.get_cosine_similarity_matrix(request.param[4], request.param[5])
         else:
-            matrix = dist.get_distance_matrix(pileup_list)
+            matrix = dist.get_cosine_similarity_matrix()
         #end if
 
-        #convert matrix  to csv, passing file list (request.param[2])
-        csv_similarity = dist.convert_distance_to_csv(matrix, request.param[2])
+        # convert matrix  to csv, passing file list (request.param[2])
+        csv_similarity = dist.get_matrix_as_csv(matrix, request.param[2])
+
+        dist = None
 
         return (csv_similarity, request.param[3])
 
     #end def
 
-    def test_get_distance_matrix(self, matrix_fixture):
+    def test_get_similarity_matrix(self, similarity_matrix_fixture):
+        """
+        test_get_similarity_matrix - Checked that the actual output matches the
+        expected output.
+
+        INPUT:
+            [FIXTURE] [matrix_fixture]
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
+
+        assert similarity_matrix_fixture[0] == similarity_matrix_fixture[1]
+    #end def
+
+    @pytest.fixture(scope="function", params=angular_distance_tuple_list)
+    def distance_matrix_fixture(self, request):
+        """
+        distance_matrix_fixture - test fixture for the test_get_distance_matrix function
+
+        INPUT:
+            [LIST OF TUPLES]
+            ---[BOOL] [normalize] # normalized or not
+            ---[ARRAY] [pileup list]
+            ---[ARRAY] [pileup_files] # file names corresponding to pileups
+            ---[ARRAY] [pileup#_(normal_out/unnormal_out)] #csv formatted output
+            ---[INT or NONE] [startpos or default if NONE]
+            ---[INT or NONE] [endpos or default if NONE]
+
+        RETURN:
+            Tuple containing: (actual csv-formatted string output,
+            expected csv-formatted string output)
+
+        POST:
+            [None]
+        """
+        # if boolean normalize flag (request.param[0]) is true normalize
+        pileup_util = Pileup_Utilities()
+        if request.param[0] is True:
+            pileup_list = pileup_util.get_normalized_pileup(request.param[1])
+        else:
+            pileup_list = request.param[1]
+
+        # create matrix with pileup
+        dist = DistanceMatrix(pileup_list)
+
+        # get similarity matrix based on pileup list (request.param[1])
+        # if startpos is int and endpos is int (aka they are not None)
+        if type(request.param[4]) is int and type(request.param[5]) is int:
+            matrix = dist.get_angular_cosine_distance_matrix(request.param[4], request.param[5])
+        else:
+            matrix = dist.get_angular_cosine_distance_matrix()
+        #end if
+
+        # convert matrix  to csv, passing file list (request.param[2])
+        csv_similarity = dist.get_matrix_as_csv(matrix, request.param[2])
+
+        dist = None
+
+        return (csv_similarity, request.param[3])
+
+    #end def
+
+    def test_get_distance_matrix(self, distance_matrix_fixture):
         """
         test_get_distance_matrix - Checked that the actual output matches the
         expected output.
@@ -322,7 +415,7 @@ test2.bam,1.00000000,1.00000000"""
             [None]
         """
 
-        assert matrix_fixture[0] == matrix_fixture[1]
+        assert distance_matrix_fixture[0] == distance_matrix_fixture[1]
     #end def
 
     @pytest.fixture
@@ -343,7 +436,7 @@ test2.bam,1.00000000,1.00000000"""
         #files for construct pileup test function
         test_cp_files = ((TEST_PATH+"/data/quasi1.bam"), (TEST_PATH+"/data/quasi2.bam"))
         test_cp_ref = TEST_PATH+"/data/hxb2_pol.fas"
-        dist = Distance()
+        dist = Pileup_Utilities()
         bamPileup = dist.construct_array_of_pileups(test_cp_files, test_cp_ref)
         return bamPileup
     #end def
@@ -394,8 +487,8 @@ test2.bam,1.00000000,1.00000000"""
         POST:
             [None]
         """
-        dist = Distance()
-        truncated = dist.truncate_output(request.param[0], 0, len(request.param[0][0]) - 1)
+        util = Pileup_Utilities()
+        truncated = util.truncate_output(request.param[0], 0, len(request.param[0][0]) - 1)
 
         return (truncated, request.param[1], request.param[2], request.param[3])
 
@@ -446,8 +539,8 @@ test2.bam,1.00000000,1.00000000"""
         POST:
             [None]
         """
-        dist2 = Distance()
-        truncated = dist2.truncate_all_output(request.param[0], 0, len(request.param[0][0]) - 1)
+        util = Pileup_Utilities()
+        truncated = util.truncate_all_output(request.param[0], 0, len(request.param[0][0]) - 1)
 
         return (truncated, request.param[1], request.param[2], request.param[3])
 
