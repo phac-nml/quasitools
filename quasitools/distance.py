@@ -265,10 +265,10 @@ class DistanceMatrix(object):
 
         INPUT:
             [INT] [startpos] -starting base position of reference to be
-            compared when calculating cosine similarity.
+            compared when calculating cosine distance.
 
             [INT] [endpos] - last base position of reference to be compared
-            when calculating cosine similarity.
+            when calculating cosine distance.
 
         RETURN:
             Returns a pairwise matrix containing the angular cosine distance
@@ -289,7 +289,7 @@ class DistanceMatrix(object):
 
         """
         Converts a 2D array (cosine similarity matrix) to a csv-formatted
-        string
+        string. Prints out 8 decimal places.
 
         INPUT:
             [ARRAY] [matrix] - 2D array (cosine similarity matrix)
