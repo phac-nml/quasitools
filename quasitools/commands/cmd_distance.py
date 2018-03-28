@@ -33,12 +33,12 @@ from quasitools.distance import DistanceMatrix
               help="Output an angular distance matrix (by default), or " +
               "output a cosine similarity matrix (cosine similarity is not a" +
               " metric)")
-@click.option('-s', '--start_pos', type=int, help="Set the start base " +
+@click.option('-s', '--startpos', type=int, help="Set the start base " +
               "position of the reference to use in the distance or " +
               "similarity calculation. Start positions must be greater than " +
               "zero and less than the length of the base pileup (number of " +
               "positions to be compared with the reference.)")
-@click.option('-e', '--end_pos', type=int, help="Set the end base position" +
+@click.option('-e', '--endpos', type=int, help="Set the end base position" +
               " of the reference to use in the distance or similarity "
               "calculation. End positions must be greater than zero and less" +
               " than the length of the base pileup (number of positions to" +
