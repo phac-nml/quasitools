@@ -69,7 +69,7 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
        By default the data is normalized and start and end regions of the
        pileup with no coverage are truncated.
 
-       The tool can be used to truncate all pileup regions, including inner
+       It is possible to truncate all pileup regions, including inner
        regions, with no coverage, or turn truncation off completely.
 
        Normalization is done dividing base read counts (A, C, T, G) inside
