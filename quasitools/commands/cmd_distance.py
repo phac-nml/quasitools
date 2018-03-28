@@ -88,10 +88,11 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         message += ("\nError: Start position must be 0 or greater.")
     if type(endpos) == int and int(endpos) < 0:
         message += ("\nError: End position must be 0 or greater.")
-    if (type(startpos) == int and type(endpos) == int and
-        int(startpos) > int(endpos)):
-            message += ("\nError: Start position must be less than" +
-                        " or equal to end position")
+    if (type(startpos) == int and
+            type(endpos) == int and
+            int(startpos) > int(endpos)):
+                message += ("\nError: Start position must be less than" +
+                            " or equal to end position")
     if message == "":  # if no error messages have been created
         util = Pileup_Utilities()
         pileup_list = util.construct_array_of_pileups(bam, reference)
@@ -100,8 +101,8 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         if endpos is None:
             endpos = len(pileup_list[0]) - 1
         if startpos > endpos:
-            message+=("ERROR: Empty pileup was produced from BAM files." +
-                       "Halting program")
+            message += ("ERROR: Empty pileup was produced from BAM files." +
+                        "Halting program")
             valid_pileup = False
         if valid_pileup:
             click.echo("The start position is %d." % startpos)
@@ -113,8 +114,8 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
                            % len(pileup_list[0]))
             else:
                 click.echo("The pileup covers %d positions.")
-            # indicate whether the user-specified start and end position is out of
-            # bounds (comparing to actual number of positions in pileup)
+            # indicate whether the user-specified start and end position is out
+            # of bounds (comparing to actual number of positions in pileup)
             if startpos >= len(pileup_list[0]):
                 message += ("\nError: Start position must be less than " +
                             " number of nucleotide base positions in pileup" +
@@ -150,8 +151,8 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
                 click.echo("The new end position after truncation is %d."
                            % new_end)
                 if new_end < new_start:
-                    message+=("ERROR: Entire pileup was truncated due to " +
-                               "lack of coverage. Halting program")
+                    message += ("ERROR: Entire pileup was truncated due to " +
+                                "lack of coverage. Halting program")
                     valid_pileup = False
                 if new_start < startpos:
                     click.echo("The start position %d you specified was" +
@@ -183,8 +184,8 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
                     click.echo(dist.get_matrix_as_csv(matrix, bam))
                 # end if
                 click.echo("Complete!")
-            #end if
+            # end if
         # end if
     # end if
     click.echo(message)
-#end def
+# end def
