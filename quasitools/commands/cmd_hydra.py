@@ -76,12 +76,14 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
 
     os.mkdir(output_dir)
     reads = forward
+    fasta_id = os.path.basename(forward).split('.')[0]
 
     # Combine the fwd and reverse reads into one fastq file
     if reverse:
         reads = "%s/combined_reads.fastq" % output_dir
         cat_cmd = "cat %s %s > %s" % (forward, reverse, reads)
         os.system(cat_cmd)
+        fasta_id += ("_%s" % os.path.basename(reverse).split('.')[0])
 
     patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
                                        output_dir=output_dir,
@@ -107,5 +109,5 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     variant_filters["min_ac"] = min_ac
     variant_filters["min_freq"] = min_freq
 
-    patient_analyzer.analyze_reads(variant_filters, reporting_threshold,
-                                   generate_consensus)
+    patient_analyzer.analyze_reads(fasta_id, variant_filters,
+                                   reporting_threshold, generate_consensus)
