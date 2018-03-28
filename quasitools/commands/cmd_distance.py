@@ -56,8 +56,8 @@ from quasitools.distance import DistanceMatrix
 @click.pass_context
 def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         output, truncate):
-    """Quasispecies distance produces the evolutionary distance [0 - 1] between
-       quasispecies, computed using the angular cosine distance function
+    """Quasispecies distance produces a measure of evolutionary distance [0 - 1] 
+       between quasispecies, computed using the angular cosine distance function
        defined below.
 
        Cosine similarity = (u * v) / ( ||u|| * ||v|| )
