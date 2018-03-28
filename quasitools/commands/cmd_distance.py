@@ -29,22 +29,23 @@ from quasitools.distance import DistanceMatrix
 @click.option('-n/-dn', '--normalize/--dont_normalize', default=True,
               help="Normalize read count data so that the read counts per " +
               "4-tuple (A, C, T, G) sum to one.")
-@click.option('-a/-s', '--angular_distance/--similarity', default=True,
-              help="Output an angular distance matrix (by default), or output" +
-              " a cosine similarity matrix (cosine similarity is not a " +
-              "metric)")
+@click.option('-od/-os', '--output_distance/--output_similarity', default=True,
+              help="Output an angular distance matrix (by default), or " +
+              "output a cosine similarity matrix (cosine similarity is not a" +
+              " metric)")
 @click.option('-s', '--start_pos', type=int, help="Set the start base " +
-              "position of the reference to use in the distance calculation." +
-              " Start positions must be greater than zero and less than the " +
-              "length of the base pileup (number of positions to be compared" +
-              " with the reference.)")
+              "position of the reference to use in the distance or " +
+              "similarity calculation. Start positions must be greater than " +
+              "zero and less than the length of the base pileup (number of " +
+              "positions to be compared with the reference.)")
 @click.option('-e', '--end_pos', type=int, help="Set the end base position" +
-              " of the reference to use in the distance calculation. End" +
-              " positions must be greater than zero and less than the length" +
-              " of the base pileup (number of positions to be compared with" +
-              " the reference.)")
+              " of the reference to use in the distance or similarity "
+              "calculation. End positions must be greater than zero and less" +
+              " than the length of the base pileup (number of positions to" +
+              " be compared with the reference.)")
 @click.option('-o', '--output', type=click.File('w'), help="Output the " +
-              "quasispecies distance matrix in CSV format in a file.")
+              "quasispecies distance or similarity matrix in CSV format in a" +
+              " file.")
 @click.option('-te', '--truncate_ends', 'truncate', flag_value='truncate_ends',
               default=True, help="Ignore contiguous start and end pileup" +
               " regions with no coverage.")
@@ -53,19 +54,27 @@ from quasitools.distance import DistanceMatrix
 @click.option('-dt', '--dont_truncate', 'truncate', flag_value='dont_truncate',
               help="Do not ignore pileup regions with no coverage.")
 @click.pass_context
-def cli(ctx, reference, bam, normalize, angular_distance, startpos, endpos,
+def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         output, truncate):
-    """This script outputs the evolutionary distance [0 - 1] between
-       quasispecies, computed using the cosine similarity function.
-       It takes as input multiple bam files containing reads from viral
-       quasispecies and a reference file. It outputs a pairwise distance
-       matrix containing the distances between each viral quasispecies. This
-       can later be saved as a CSV file.
+    """Quasispecies distance produces the evolutionary distance [0 - 1] between
+       quasispecies, computed using the angular cosine distance function
+       defined below.
 
-       By default the data is normalized if not specified explicitly.
-       This is done dividing base read counts (A, C, T, G) inside every 4-tuple
-       by the sum of the read counts inside the same tuple. The normalized
-       read counts inside each 4-tuple sum to one."""
+       Cosine similarity = (u * v) / ( ||u|| * ||v|| )
+       Angular Cosine Distance = 2 * ACOS(Cosine similarity) / PI
+
+       It outputs by default an angular cosine distance matrix.
+       Use the flag defined below to instead output a similarity matrix.
+
+       By default the data is normalized and start and end regions of the
+       pileup with no coverage are truncated.
+
+       It possible to truncate all pileup regions, including inner regions,
+       with no coverage, or turn truncation off completely.
+
+       Normalization is done dividing base read counts (A, C, T, G) inside
+       every 4-tuple by the sum of the read counts  inside the same tuple.
+       The normalized read counts inside each 4-tuple sum to one."""
     message = ""
     valid_pileup = True
     click.echo("Using file %s as reference" % (reference))
@@ -79,88 +88,87 @@ def cli(ctx, reference, bam, normalize, angular_distance, startpos, endpos,
         message += ("\nError: Start position must be 0 or greater.")
     if type(endpos) == int and int(endpos) < 0:
         message += ("\nError: End position must be 0 or greater.")
-    if (type(startpos) == int and
-        type(endpos) == int and
-            int(startpos) > int(endpos)):
-                message += ("\nError: Start position must be less than" +
-                            " or equal to end position")
+    if (type(startpos) == int and type(endpos) == int and
+        int(startpos) > int(endpos)):
+            message += ("\nError: Start position must be less than" +
+                        " or equal to end position")
     if message == "":  # if no error messages have been created
-        pileup_util = Pileup_Utilities()
-        pileup_list = pileup_util.construct_array_of_pileups(bam, reference)
+        util = Pileup_Utilities()
+        pileup_list = util.construct_array_of_pileups(bam, reference)
         if startpos is None:
             startpos = 0
         if endpos is None:
             endpos = len(pileup_list[0]) - 1
         if startpos > endpos:
-            click.echo("ERROR: Empty pileup was produced from BAM files." +
+            message+=("ERROR: Empty pileup was produced from BAM files." +
                        "Halting program")
             valid_pileup = False
-        click.echo("The start position is %d." % startpos)
-        click.echo("The end position is %d." % endpos)
-        click.echo("Constructed pileup from reference.")
-        # print the number of positions in pileup
-        if truncate is not 'dont_truncate':
-            click.echo("The pileup covers %d positions before truncation."
-                       % len(pileup_list[0]))
-        else:
-            click.echo("The pileup covers %d positions.")
-        # indicate whether the user-specified start and end position is out of
-        # bounds (comparing to actual number of positions in pileup)
-        if startpos >= len(pileup_list[0]):
-            message += ("\nError: Start position must be less than number of" +
-                        " nucleotide base positions in pileup" +
-                        " (%s)." % len(pileup_list[0]))
-        if endpos >= len(pileup_list[0]):
-            message += ("\nError: End position must be less than length of " +
-                        "nucleotide base positions in pileup" +
-                        " (%s)." % len(pileup_list[0]))
-        # if there is no errors so far, proceed with running program
-        if normalize:
-            pileup_list = pileup_util.get_normalized_pileup(pileup_list)
-        if truncate is not 'dont_truncate':
-            if truncate is 'truncate_ends':
-                truncate_tuple = pileup_util.truncate_output(pileup_list,
-                                                            startpos,
-                                                            endpos)
-                click.echo("Truncating positions with no coverage that " +
-                           "are contiguous with the start or end " +
-                           "position of the pileup only.")
-            elif truncate is 'truncate_all':
-                truncate_tuple = pileup_util.truncate_all_output(pileup_list,
-                                                                startpos,
-                                                                endpos)
+        if valid_pileup:
+            click.echo("The start position is %d." % startpos)
+            click.echo("The end position is %d." % endpos)
+            click.echo("Constructed pileup from reference.")
+            # click.echo the number of positions in pileup
+            if truncate is not 'dont_truncate':
+                click.echo("The pileup covers %d positions before truncation."
+                           % len(pileup_list[0]))
+            else:
+                click.echo("The pileup covers %d positions.")
+            # indicate whether the user-specified start and end position is out of
+            # bounds (comparing to actual number of positions in pileup)
+            if startpos >= len(pileup_list[0]):
+                message += ("\nError: Start position must be less than " +
+                            " number of nucleotide base positions in pileup" +
+                            " (%s)." % len(pileup_list[0]))
+            if endpos >= len(pileup_list[0]):
+                message += ("\nError: End position must be less than length " +
+                            "of nucleotide base positions in pileup" +
+                            " (%s)." % len(pileup_list[0]))
+            # if there is no errors so far, proceed with running program
+            if normalize:
+                pileup_list = util.get_normalized_pileup(pileup_list)
+            if truncate is not 'dont_truncate':
+                if truncate is 'truncate_ends':
+                    truncate_tuple = util.truncate_output(pileup_list,
+                                                          startpos,
+                                                          endpos)
+                    click.echo("Truncating positions with no coverage that " +
+                               "are contiguous with the start or end " +
+                               "position of the pileup only.")
+                elif truncate is 'truncate_all':
+                    truncate_tuple = util.truncate_all_output(pileup_list,
+                                                              startpos,
+                                                              endpos)
                 click.echo("Truncating all positions with no coverage.")
+                # end if
+                pileup_list = truncate_tuple[0]
+                new_start = truncate_tuple[1]
+                new_end = truncate_tuple[2]
+                click.echo("The pileup covers %d positions after truncation."
+                           % len(pileup_list[0]))
+                click.echo("The new start position after truncation is %d."
+                           % new_start)
+                click.echo("The new end position after truncation is %d."
+                           % new_end)
+                if new_end < new_start:
+                    message+=("ERROR: Entire pileup was truncated due to " +
+                               "lack of coverage. Halting program")
+                    valid_pileup = False
+                if new_start < startpos:
+                    click.echo("The start position %d you specified was" +
+                               "truncated due to lack of coverage. Reading" +
+                               "data from closest valid position %d." %
+                               (startpos, new_start))
+                    startpos = new_start
+                if new_end > endpos:
+                    click.echo("The start position %d you specified was" +
+                               "truncated due to lack of coverage. Reading" +
+                               "data from closest valid position %d." %
+                               (startpos, new_start))
+                    endpos = new_end
             # end if
-            pileup_list = truncate_tuple[0]
-            new_start = truncate_tuple[1]
-            new_end = truncate_tuple[2]
-            click.echo("The pileup covers %d positions after truncation."
-                       % len(pileup_list[0]))
-            click.echo("The new start position after truncation is %d."
-                       % new_start)
-            click.echo("The new end position after truncation is %d."
-                       % new_end)
-            if new_end < new_start:
-                click.echo("ERROR: Entire pileup was truncated due to " +
-                           "lack of coverage. Halting program")
-                valid_pileup = False
-            if new_start < startpos:
-                click.echo("The start position %d you specified was" +
-                           "truncated due to lack of coverage. Reading" +
-                           "data from closest valid position %d." %
-                           (startpos, new_start))
-                startpos = new_start
-            if new_end > endpos:
-                click.echo("The start position %d you specified was" +
-                           "truncated due to lack of coverage. Reading" +
-                           "data from closest valid position %d." %
-                           (startpos, new_start))
-                endpos = new_end
-        # end if
-        if message == "":
-            if valid_pileup:
+            if message == "" and valid_pileup:
                 dist = DistanceMatrix(pileup_list)
-                if angular_distance:
+                if output_distance:
                     click.echo("Outputting an angular cosine distance matrix.")
                     matrix = dist.get_angular_cosine_distance_matrix(startpos,
                                                                      endpos)
@@ -174,7 +182,9 @@ def cli(ctx, reference, bam, normalize, angular_distance, startpos, endpos,
                     # click.echo(matrix)
                     click.echo(dist.get_matrix_as_csv(matrix, bam))
                 # end if
-                print("Complete!")
-        # end def
+                click.echo("Complete!")
+            #end if
+        # end if
     # end if
     click.echo(message)
+#end def
