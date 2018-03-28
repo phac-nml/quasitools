@@ -63,14 +63,14 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
        Cosine similarity = (u * v) / ( ||u|| * ||v|| )
        Angular Cosine Distance = 2 * ACOS(Cosine similarity) / PI
 
-       It outputs by default an angular cosine distance matrix.
+       The tool outputs by default an angular cosine distance matrix.
        Use the flag defined below to instead output a similarity matrix.
 
        By default the data is normalized and start and end regions of the
        pileup with no coverage are truncated.
 
-       It possible to truncate all pileup regions, including inner regions,
-       with no coverage, or turn truncation off completely.
+       The tool can be used to truncate all pileup regions, including inner
+       regions, with no coverage, or turn truncation off completely.
 
        Normalization is done dividing base read counts (A, C, T, G) inside
        every 4-tuple by the sum of the read counts  inside the same tuple.
