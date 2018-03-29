@@ -57,10 +57,11 @@ from quasitools.distance import DistanceMatrix
 def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         output, truncate):
     """Quasispecies distance produces a measure of evolutionary distance [0 - 1]
-       between quasispecies, computed using the angular cosine distance function
-       defined below.
+       between quasispecies, computed using the angular cosine distance
+       function defined below.
 
        Cosine similarity = (u * v) / ( ||u|| * ||v|| )
+
        Angular Cosine Distance = 2 * ACOS(Cosine similarity) / PI
 
        The tool outputs by default an angular cosine distance matrix.
@@ -139,7 +140,7 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
                     truncate_tuple = util.truncate_all_output(pileup_list,
                                                               startpos,
                                                               endpos)
-                click.echo("Truncating all positions with no coverage.")
+                    click.echo("Truncating all positions with no coverage.")
                 # end if
                 pileup_list = truncate_tuple[0]
                 new_start = truncate_tuple[1]
