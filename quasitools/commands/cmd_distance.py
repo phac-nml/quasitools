@@ -155,13 +155,13 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
                     message += ("Error: Entire pileup was truncated due to " +
                                 "lack of coverage. Halting program")
                     valid_pileup = False
-                if new_start < startpos:
+                if new_start > startpos:
                     click.echo("The start position %d you specified was" +
                                "truncated due to lack of coverage. Reading" +
                                "data from closest valid position %d." %
                                (startpos, new_start))
                     startpos = new_start
-                if new_end > endpos:
+                if new_end < endpos:
                     click.echo("The start position %d you specified was" +
                                "truncated due to lack of coverage. Reading" +
                                "data from closest valid position %d." %
