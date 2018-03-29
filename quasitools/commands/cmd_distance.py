@@ -56,7 +56,7 @@ from quasitools.distance import DistanceMatrix
 @click.pass_context
 def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         output, truncate):
-    """Quasispecies distance produces a measure of evolutionary distance [0 - 1]
+    """Quasitools distance produces a measure of evolutionary distance [0 - 1]
        between quasispecies, computed using the angular cosine distance
        function defined below.
 
@@ -74,7 +74,7 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
        regions, with no coverage, or turn truncation off completely.
 
        Normalization is done dividing base read counts (A, C, T, G) inside
-       every 4-tuple by the sum of the read counts  inside the same tuple.
+       every 4-tuple by the sum of the read counts inside the same tuple.
        The normalized read counts inside each 4-tuple sum to one."""
     message = ""
     valid_pileup = True
