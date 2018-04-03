@@ -90,6 +90,10 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     if (type(startpos) == int and type(endpos) == int and (startpos > endpos)):
         return ("\nError: Start position must be <= end position")
     pileups = Pileup_List.construct_array_of_pileups(bam, reference)
+    if startpos is None:
+        startpos = 0
+    if endpos is None:
+        endpos = pileups.get_pileup_length() - 1
 
     if pileups.get_pileup_length() == 0:
         return ("Error: Empty pileup was produced from BAM files." +
@@ -100,7 +104,7 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     # click.echo the number of positions in pileup
     if truncate is not 'dont_truncate':
         click.echo("The pileup covers %d positions before truncation."
-                   % len(pileups.get_pileup_length()))
+                   % pileups.get_pileup_length())
     else:
         click.echo("The pileup covers %d positions.")
     # indicate whether the user-specified start and end position is out
@@ -108,11 +112,11 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     if startpos >= pileups.get_pileup_length():
         return ("\nError: Start position must be less than " +
                 " number of nucleotide base positions in pileup" +
-                " (%s)." % len(pileups.get_pileup_length()))
+                " (%s)." % pileups.get_pileup_length())
     if endpos >= pileups.get_pileup_length():
         return ("\nError: End position must be less than length " +
                 "of nucleotide base positions in pileup" +
-                " (%s)." % len(pileups.get_pileup_length()))
+                " (%s)." % pileups.get_pileup_length())
     # if there is no errors so far, proceed with running program
     modified = modify_pileups(ctx, normalize, startpos, endpos, truncate,
                               pileups)
@@ -135,15 +139,12 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
 
 
 def modify_pileups(ctx, normalize, startpos, endpos, truncate, pileups):
-    if startpos is not None or endpos is not None:
-        if startpos is None:
-            startpos = 0
-        if endpos is None:
-            endpos = pileups.get_pileup_length() - 1
-        pileups.select_pileup_range(startpos, endpos)
-        click.echo("The pileup covers %d positions after selecting " +
-                   "range between original pileup positions %d and %d."
-                   % pileups.get_pileup_length(), startpos, endpos)
+    startpos = int(startpos)
+    endpos = int(endpos)
+    pileups.select_pileup_range(startpos, endpos)
+    click.echo(("The pileup covers %s positions after selecting " +
+               "range between original pileup positions %d and %d.")
+               % (pileups.get_pileup_length(), startpos, endpos))
     if normalize:
         pileups.normalize_pileup()
     if truncate is not 'dont_truncate':
