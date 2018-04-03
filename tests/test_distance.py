@@ -272,15 +272,15 @@ test2.bam,1.00000000,1.00000000"""
     pileup10_truncate_start = 0
     pileup10_truncate_end = 0
 
-    truncate_all_tuple = [(pileup3, pileup3_trunc_all_out, pileup3_truncate_start, pileup3_truncate_end)]
+    truncate_all_tuple = [(pileup3, pileup3_trunc_all_out)]
 
-    truncate_ends_tuple = [(pileup4, pileup4_trunc_ends_out, pileup4_truncate_start, pileup4_truncate_end),
-            (pileup5, pileup5_trunc_ends_out, pileup5_truncate_start, pileup5_truncate_end),
-            (pileup6, pileup6_trunc_ends_out, pileup6_truncate_start, pileup6_truncate_end),
-            (pileup7, pileup7_trunc_ends_out, pileup7_truncate_start, pileup7_truncate_end),
-            (pileup8, pileup8_trunc_ends_out, pileup8_truncate_start, pileup8_truncate_end),
-            (pileup9, pileup9_trunc_ends_out, pileup9_truncate_start, pileup9_truncate_end),
-            (pileup10, pileup10_trunc_ends_out, pileup10_truncate_start, pileup10_truncate_end)]
+    truncate_ends_tuple = [(pileup4, pileup4_trunc_ends_out),
+            (pileup5, pileup5_trunc_ends_out),
+            (pileup6, pileup6_trunc_ends_out),
+            (pileup7, pileup7_trunc_ends_out),
+            (pileup8, pileup8_trunc_ends_out),
+            (pileup9, pileup9_trunc_ends_out),
+            (pileup10, pileup10_trunc_ends_out)]
 
     """
     TESTS
@@ -309,21 +309,24 @@ test2.bam,1.00000000,1.00000000"""
         """
         # if boolean normalize flag (request.param[0]) is true normalize
         pileup_util = Pileup_Utilities()
-        if request.param[0] is True:
-            pileup_list = pileup_util.get_normalized_pileup(request.param[1])
+
+        # if startpos is int and endpos is int (aka they are not None)
+        if type(request.param[4]) is int and type(request.param[5]) is int:
+            pileup_list = pileup_util.select_pileup_range(request.param[1],
+                                                          request.param[4],
+                                                          request.param[5])
         else:
             pileup_list = request.param[1]
+        # end if
+
+        if request.param[0] is True:
+            pileup_list = pileup_util.get_normalized_pileup(pileup_list)
 
         # create matrix with pileup
         dist = DistanceMatrix(pileup_list)
 
         # get similarity matrix based on pileup list (request.param[1])
-        # if startpos is int and endpos is int (aka they are not None)
-        if type(request.param[4]) is int and type(request.param[5]) is int:
-            matrix = dist.get_cosine_similarity_matrix(request.param[4], request.param[5])
-        else:
-            matrix = dist.get_cosine_similarity_matrix()
-        #end if
+        matrix = dist.get_cosine_similarity_matrix()
 
         # convert matrix  to csv, passing file list (request.param[2])
         csv_similarity = dist.get_matrix_as_csv(matrix, request.param[2])
@@ -375,21 +378,25 @@ test2.bam,1.00000000,1.00000000"""
         """
         # if boolean normalize flag (request.param[0]) is true normalize
         pileup_util = Pileup_Utilities()
-        if request.param[0] is True:
-            pileup_list = pileup_util.get_normalized_pileup(request.param[1])
+
+        # if startpos is int and endpos is int (aka they are not None)
+        if type(request.param[4]) is int and type(request.param[5]) is int:
+            pileup_list = pileup_util.select_pileup_range(request.param[1],
+                                                          request.param[4],
+                                                          request.param[5])
         else:
             pileup_list = request.param[1]
+        # end if
+
+        if request.param[0] is True:
+            pileup_list = pileup_util.get_normalized_pileup(pileup_list)
 
         # create matrix with pileup
         dist = DistanceMatrix(pileup_list)
 
         # get similarity matrix based on pileup list (request.param[1])
-        # if startpos is int and endpos is int (aka they are not None)
-        if type(request.param[4]) is int and type(request.param[5]) is int:
-            matrix = dist.get_angular_cosine_distance_matrix(request.param[4], request.param[5])
-        else:
-            matrix = dist.get_angular_cosine_distance_matrix()
-        #end if
+
+        matrix = dist.get_angular_cosine_distance_matrix()
 
         # convert matrix  to csv, passing file list (request.param[2])
         csv_similarity = dist.get_matrix_as_csv(matrix, request.param[2])
@@ -481,16 +488,14 @@ test2.bam,1.00000000,1.00000000"""
             [TUPLE]
             --tuple containing actual truncated pileup, start pos, end pos
             --expected truncated pileup
-            --expected truncated start position
-            --expected truncated end position
 
         POST:
             [None]
         """
         util = Pileup_Utilities()
-        truncated = util.truncate_output(request.param[0], 0, len(request.param[0][0]) - 1)
+        truncated = util.truncate_output(request.param[0])
 
-        return (truncated, request.param[1], request.param[2], request.param[3])
+        return (truncated, request.param[1])
 
     def test_truncate_output(self, test_truncate_output_fixture):
         """
@@ -501,8 +506,6 @@ test2.bam,1.00000000,1.00000000"""
             [TUPLE]
             --tuple containing actual truncated pileup, start pos, end pos
             --expected truncated pileup
-            --expected truncated start position
-            --expected truncated end position
 
         RETURN:
             [None]
@@ -511,9 +514,7 @@ test2.bam,1.00000000,1.00000000"""
             Checks that the expected outputs match the actual output
         """
 
-        assert test_truncate_output_fixture[0][0] == test_truncate_output_fixture[1]
-        assert test_truncate_output_fixture[0][1] == test_truncate_output_fixture[2]
-        assert test_truncate_output_fixture[0][2] == test_truncate_output_fixture[3]
+        assert test_truncate_output_fixture[0] == test_truncate_output_fixture[1]
 
     @pytest.fixture(scope="function",
                     params=truncate_all_tuple)
@@ -526,23 +527,19 @@ test2.bam,1.00000000,1.00000000"""
             [TUPLE] [request.param] - a tuple containing:
             --pileup to be truncated
             --expected truncated pileup
-            --expected truncated start position
-            --expected truncated end position
 
         RETURN:
             [TUPLE]
-            --tuple containing actual truncated pileup, start pos, end pos
+            --tuple containing actual truncated pileup
             --expected truncated pileup
-            --expected truncated start position
-            --expected truncated end position
 
         POST:
             [None]
         """
         util = Pileup_Utilities()
-        truncated = util.truncate_all_output(request.param[0], 0, len(request.param[0][0]) - 1)
+        truncated = util.truncate_all_output(request.param[0])
 
-        return (truncated, request.param[1], request.param[2], request.param[3])
+        return (truncated, request.param[1])
 
     def test_truncate_all_output(self, test_truncate_all_output_fixture):
         """
@@ -563,6 +560,102 @@ test2.bam,1.00000000,1.00000000"""
             Checks that the expected outputs match the actual output
         """
 
-        assert test_truncate_all_output_fixture[0][0] == test_truncate_all_output_fixture[1]
-        assert test_truncate_all_output_fixture[0][1] == test_truncate_all_output_fixture[2]
-        assert test_truncate_all_output_fixture[0][2] == test_truncate_all_output_fixture[3]
+        pileup = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
+        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
+        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
+        [{'A': 1}, {'T': 2}, {'C': 3}, {}, {}]] #test 5
+
+        startpos = 2
+        endpos = 4
+        util = Pileup_Utilities()
+
+        pileup = util.select_pileup_range(pileup, startpos, endpos)
+        truncated = util.truncate_all_output(pileup)
+
+        assert truncated == [[{'C': 3}], #test 1
+        [{'C': 3}], #test 2
+        [{'C': 3}], #test 3
+        [{'C': 3}], #test 4
+        [{'C': 3}]]
+
+        startpos = 3
+        endpos = 3
+
+        pileup = util.select_pileup_range(pileup, startpos, endpos)
+        truncated = util.truncate_all_output(pileup)
+
+        assert truncated == [[], #test 1
+        [], #test 2
+        [], #test 3
+        [], #test 4
+        []]
+
+        assert test_truncate_all_output_fixture[0] == test_truncate_all_output_fixture[1]
+
+    @pytest.fixture(scope="function")
+    def truncate_ends_select_range_fixture(self, request):
+        """
+        truncate_ends_and_select_range_fixture - Checks if the program works
+        as expected when truncating contiguous start and end regions after
+        first selecting a specified range.
+
+        INPUT:
+            [None]
+        RETURN:
+            TODO
+        POST:
+            TODO
+        """
+        pileup11 = [[{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 2
+        [{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
+        [{}, {'T': 2}, {}, {'G': 4}, {}], #test 4
+        [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
+
+        user_startpos = 2
+        user_endpos = 4
+
+        pileup11_selected_out = [[{'C': 3}, {'G': 4}, {'A': 5}], #test 1
+        [{'C': 3}, {'G': 4}, {}], #test 2
+        [{'C': 3}, {'G': 4}, {'A': 5}], #test 3
+        [{}, {'G': 4}, {}], #test 4
+        [{'C': 3}, {'G': 4}, {'A': 5}]] #test 5
+
+        pileup11_trunc_ends_out = [[{'G': 4}], #test 1
+        [{'G': 4}], #test 2
+        [{'G': 4}], #test 3
+        [{'G': 4}], #test 4
+        [{'G': 4}]] #test 5
+
+        return (pileup11, user_startpos, user_endpos, pileup11_selected_out, pileup11_trunc_ends_out)
+
+    def test_truncate_ends_select_range(self, truncate_ends_select_range_fixture):
+        """
+        test_truncate_ends_select_range - tests whether works as expected
+        when truncating ends and selecting custom pileup range
+
+        INPUT:
+            [truncate_ends_select_range_fixture]
+        RETURN:
+            [None]
+        POST:
+            [None]
+        """
+
+        pileup = truncate_ends_select_range_fixture[0]
+        startpos = truncate_ends_select_range_fixture[1]
+        endpos = truncate_ends_select_range_fixture[2]
+        pileup_select_range_out = truncate_ends_select_range_fixture[3]
+        pileup_truncate_ends_out = truncate_ends_select_range_fixture[4]
+
+        util = Pileup_Utilities()
+        select_pileup = util.select_pileup_range(pileup, startpos, endpos)
+        # assert that the pileup positions before startpos and after endpos
+        # have been ignored
+        assert select_pileup == pileup_select_range_out
+
+        truncated_pileup = util.truncate_output(select_pileup)
+
+        # assert that the pileup is truncated now as expected
+        assert truncated_pileup == pileup_truncate_ends_out

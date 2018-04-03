@@ -97,10 +97,7 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     if message == "":  # if no error messages have been created
         util = Pileup_Utilities()
         pileup_list = util.construct_array_of_pileups(bam, reference)
-        if startpos is None:
-            startpos = 0
-        if endpos is None:
-            endpos = len(pileup_list[0]) - 1
+
         if startpos > endpos:
             message += ("ERROR: Empty pileup was produced from BAM files." +
                         "Halting program")
@@ -126,31 +123,29 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
                             "of nucleotide base positions in pileup" +
                             " (%s)." % len(pileup_list[0]))
             # if there is no errors so far, proceed with running program
+            if startpos is not None or endpos is not None:
+                if startpos is None:
+                    startpos = 0
+                if endpos is None:
+                    endpos = len(pileup_list[0]) - 1
+                pileup_list = util.select_pileup_range(pileup, startpos, endpos)
+                click.echo("The pileup covers %d positions after selecting " +
+                           "range between original pileup positions %d and %d."
+                           % len(pileup_list[0]), startpos, endpos)
             if normalize:
                 pileup_list = util.get_normalized_pileup(pileup_list)
             if truncate is not 'dont_truncate':
                 if truncate is 'truncate_ends':
-                    truncate_tuple = util.truncate_output(pileup_list,
-                                                          startpos,
-                                                          endpos)
+                    pileup_list = util.truncate_output(pileup_list)
                     click.echo("Truncating positions with no coverage that " +
                                "are contiguous with the start or end " +
                                "position of the pileup only.")
                 elif truncate is 'truncate_all':
-                    truncate_tuple = util.truncate_all_output(pileup_list,
-                                                              startpos,
-                                                              endpos)
+                    pileup_list = util.truncate_all_output(pileup_list)
                     click.echo("Truncating all positions with no coverage.")
                 # end if
-                pileup_list = truncate_tuple[0]
-                new_start = truncate_tuple[1]
-                new_end = truncate_tuple[2]
                 click.echo("The pileup covers %d positions after truncation."
                            % len(pileup_list[0]))
-                click.echo("The new start position after truncation is %d."
-                           % new_start)
-                click.echo("The new end position after truncation is %d."
-                           % new_end)
                 if new_end < new_start:
                     message += ("Error: Entire pileup was truncated due to " +
                                 "lack of coverage. Halting program")
