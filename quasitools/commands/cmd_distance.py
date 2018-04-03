@@ -76,100 +76,90 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
        Normalization is done dividing base read counts (A, C, T, G) inside
        every 4-tuple by the sum of the read counts inside the same tuple.
        The normalized read counts inside each 4-tuple sum to one."""
-    message = ""
     click.echo("Using file %s as reference" % (reference))
     for file in bam:
         click.echo("Reading input from file(s)  %s" % (file))
     if len(bam) < 2:
-        message += ("\nError: At least two bam file locations are" +
-                    " required to perform quasispecies distance comparison")
+        return ("\nError: At least two bam file locations are" +
+                " required to perform quasispecies distance comparison")
     # indicate if the start or end position is < 0 or a priori invalid
     if type(startpos) == int and int(startpos) < 0:
-        message += ("\nError: Start position must be 0 or greater.")
+        return "\nError: Start position must be >= 0."
     if type(endpos) == int and int(endpos) < 0:
-        message += ("\nError: End position must be 0 or greater.")
-    if (type(startpos) == int and
-            type(endpos) == int and
-            int(startpos) > int(endpos)):
-                message += ("\nError: Start position must be less than" +
-                            " or equal to end position")
-    if message == "":  # if no error messages have been created
-        pileups = Pileup_List.construct_array_of_pileups(bam,
-                                                              reference)
-        pileups = Pileup_List(pileups)
+        return "\nError: End position must be >= 0."
+    if (type(startpos) == int and type(endpos) == int and (startpos > endpos)):
+        return ("\nError: Start position must be <= end position")
+    pileups = Pileup_List.construct_array_of_pileups(bam, reference)
+    pileups = Pileup_List(pileups)
 
-        if startpos > endpos:
-            message += ("Error: Empty pileup was produced from BAM files." +
-                        "Halting program")
-        if message == "":
-            click.echo("The start position is %d." % startpos)
-            click.echo("The end position is %d." % endpos)
-            click.echo("Constructed pileup from reference.")
-            # click.echo the number of positions in pileup
-            if truncate is not 'dont_truncate':
-                click.echo("The pileup covers %d positions before truncation."
-                           % len(pileups.get_pileup_length()))
-            else:
-                click.echo("The pileup covers %d positions.")
-            # indicate whether the user-specified start and end position is out
-            # of bounds (comparing to actual number of positions in pileup)
-            if startpos >= pileups.get_pileup_length():
-                message += ("\nError: Start position must be less than " +
-                            " number of nucleotide base positions in pileup" +
-                            " (%s)." % len(pileups.get_pileup_length()))
-            if endpos >= pileups.get_pileup_length():
-                message += ("\nError: End position must be less than length " +
-                            "of nucleotide base positions in pileup" +
-                            " (%s)." % len(pileups.get_pileup_length()))
-            # if there is no errors so far, proceed with running program
-            if startpos is not None or endpos is not None:
-                if startpos is None:
-                    startpos = 0
-                if endpos is None:
-                    endpos = pileups.get_pileup_length() - 1
-                pileups.select_pileup_range(startpos, endpos)
-                click.echo("The pileup covers %d positions after selecting " +
-                           "range between original pileup positions %d and %d."
-                           % pileups.get_pileup_length(),
-                           startpos,
-                           endpos)
-            if normalize:
-                pileups.normalize_pileup()
-            if truncate is not 'dont_truncate':
-                if truncate is 'truncate_ends':
-                    pileups.truncate_output()
-                    click.echo("Truncating positions with no coverage that " +
-                               "are contiguous with the start or end " +
-                               "position of the pileup only.")
-                elif truncate is 'truncate_all':
-                    pileups.truncate_all_output()
-                    click.echo("Truncating all positions with no coverage.")
-                # end if
-                click.echo("The pileup covers %d positions after truncation."
-                           % pileups.get_pileup_length())
-                if pileups.get_pileup_length() == 0:
-                    message += ("Error: Entire pileup was truncated due to " +
-                                "lack of coverage. Halting program")
-            # end if
-            if message == "":
-                dist = DistanceMatrix(pileups.get_pileup())
-                if output_distance:
-                    click.echo("Outputting an angular cosine distance matrix.")
-                    matrix = dist.get_angular_cosine_distance_matrix(startpos,
-                                                                     endpos)
-                else:
-                    click.echo("Outputting a cosine similarity matrix.")
-                    matrix = dist.get_cosine_similarity_matrix(startpos,
-                                                               endpos)
-                if output:
-                    output.write(dist.get_matrix_as_csv(matrix, bam))
-                else:
-                    # click.echo(matrix)
-                    click.echo(dist.get_matrix_as_csv(matrix, bam))
-                # end if
-                click.echo("Complete!")
-            # end if
-        # end if
+    if pileups.get_pileup_length() == 0:
+        return ("Error: Empty pileup was produced from BAM files." +
+                "Halting program")
+    click.echo("The start position is %d." % startpos)
+    click.echo("The end position is %d." % endpos)
+    click.echo("Constructed pileup from reference.")
+    # click.echo the number of positions in pileup
+    if truncate is not 'dont_truncate':
+        click.echo("The pileup covers %d positions before truncation."
+                   % len(pileups.get_pileup_length()))
+    else:
+        click.echo("The pileup covers %d positions.")
+    # indicate whether the user-specified start and end position is out
+    # of bounds (comparing to actual number of positions in pileup)
+    if startpos >= pileups.get_pileup_length():
+        return ("\nError: Start position must be less than " +
+                " number of nucleotide base positions in pileup" +
+                " (%s)." % len(pileups.get_pileup_length()))
+    if endpos >= pileups.get_pileup_length():
+        return ("\nError: End position must be less than length " +
+                "of nucleotide base positions in pileup" +
+                " (%s)." % len(pileups.get_pileup_length()))
+    # if there is no errors so far, proceed with running program
+    modified = modify_pileups(normalize, startpos, endpos, truncate, pileups)
+
+    dist = DistanceMatrix(modified)
+    if output_distance:
+        click.echo("Outputting an angular cosine distance matrix.")
+        matrix = dist.get_angular_cosine_distance_matrix(startpos, endpos)
+    else:
+        click.echo("Outputting a cosine similarity matrix.")
+        matrix = dist.get_cosine_similarity_matrix(startpos, endpos)
     # end if
-    click.echo(message)
+    if output:
+        output.write(dist.get_matrix_as_csv(matrix, bam))
+    else:
+        click.echo(dist.get_matrix_as_csv(matrix, bam))
+    # end if
+    click.echo("Complete!")
 # end def
+
+
+def modify_pileups(normalize, startpos, endpos, truncate, pileups):
+    if startpos is not None or endpos is not None:
+        if startpos is None:
+            startpos = 0
+        if endpos is None:
+            endpos = pileups.get_pileup_length() - 1
+        pileups.select_pileup_range(startpos, endpos)
+        click.echo("The pileup covers %d positions after selecting " +
+                   "range between original pileup positions %d and %d."
+                   % pileups.get_pileup_length(), startpos, endpos)
+    if normalize:
+        pileups.normalize_pileup()
+    if truncate is not 'dont_truncate':
+        if truncate is 'truncate_ends':
+            pileups.truncate_output()
+            click.echo("Truncating positions with no coverage that " +
+                       "are contiguous with the start or end " +
+                       "position of the pileup only.")
+        elif truncate is 'truncate_all':
+            pileups.truncate_all_output()
+            click.echo("Truncating all positions with no coverage.")
+        # end if
+        click.echo("The pileup covers %d positions after truncation."
+                   % pileups.get_pileup_length())
+        if pileups.get_pileup_length() == 0:
+            return ("Error: Entire pileup was truncated due to " +
+                    "lack of coverage. Halting program")
+    # end if
+    return pileups.get_pileup()
