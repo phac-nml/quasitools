@@ -90,7 +90,6 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     if (type(startpos) == int and type(endpos) == int and (startpos > endpos)):
         return ("\nError: Start position must be <= end position")
     pileups = Pileup_List.construct_array_of_pileups(bam, reference)
-    pileups = Pileup_List(pileups)
 
     if pileups.get_pileup_length() == 0:
         return ("Error: Empty pileup was produced from BAM files." +
@@ -115,7 +114,8 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
                 "of nucleotide base positions in pileup" +
                 " (%s)." % len(pileups.get_pileup_length()))
     # if there is no errors so far, proceed with running program
-    modified = modify_pileups(normalize, startpos, endpos, truncate, pileups)
+    modified = modify_pileups(ctx, normalize, startpos, endpos, truncate,
+                              pileups)
 
     dist = DistanceMatrix(modified)
     if output_distance:
@@ -134,7 +134,7 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
 # end def
 
 
-def modify_pileups(normalize, startpos, endpos, truncate, pileups):
+def modify_pileups(ctx, normalize, startpos, endpos, truncate, pileups):
     if startpos is not None or endpos is not None:
         if startpos is None:
             startpos = 0

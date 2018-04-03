@@ -30,20 +30,20 @@ PADDING = '-'
 
 class Pileup_List(object):
 
-    def __init__(self, pileup_list):
+    def __init__(self, pileups):
 
         """
         Creates a array of pileups (which are arrays of dictionaries)
 
         INPUT:
-            [ARRAY] [pileup_list] - list of pileups - each pileup is
+            [ARRAY] [pileups] - list of pileups - each pileup is
                                     represented by a list of dictionaries.
         RETURN:
             [None]
         POST:
             Pileup list is constructed.
         """
-        self.pileup_list = pileup_list
+        self.pileups = pileups
 
     def all_have_coverage(self, position):
         """
@@ -63,7 +63,7 @@ class Pileup_List(object):
         """
 
         if any((np.sum([pileup[position].get(base, 0) for base in BASES]) == 0
-                or pileup[position] == {}) for pileup in self.pileup_list):
+                or pileup[position] == {}) for pileup in self.pileups):
             return False
         else:
             return True
@@ -84,7 +84,7 @@ class Pileup_List(object):
             [Pileup_List] - a new object containing a list of pileups
             (list of dictionaries containing read counts for each base)
         POST:
-            Pileup list object is constructed.
+            [None]
         """
 
         # Build the reference object.
@@ -129,13 +129,13 @@ class Pileup_List(object):
         POST: The Pileup_Util object's data is normalized.
         """
         new_list = []
-        for num in range(0, len(self.pileup_list)):
+        for num in range(0, len(self.pileups)):
             new_list.append([])
-            for i in range(0, len(self.pileup_list[num])):
-                curr_pos = [self.pileup_list[num][i].get(base, 0)
+            for i in range(0, len(self.pileups[num])):
+                curr_pos = [self.pileups[num][i].get(base, 0)
                             for base in BASES]
                 total = float(np.sum(curr_pos))
-                items = self.pileup_list[num][i].items()
+                items = self.pileups[num][i].items()
                 # normalize the data for all samples
                 if total > 0:
                     new_list[num].append(
@@ -145,7 +145,7 @@ class Pileup_List(object):
                     new_list[num].append(
                         {key: 0 for (key, value) in items if key is not '-'})
                 # end if
-        self.pileup_list = new_list
+        self.pileups = new_list
     # end def
 
     def get_pileup(self):
@@ -159,7 +159,7 @@ class Pileup_List(object):
 
         POST: [None]
         """
-        return self.pileup_list
+        return self.pileups
 
     def get_pileup_length(self):
 
@@ -168,11 +168,11 @@ class Pileup_List(object):
 
         INPUT: [None]
 
-        RETURN: [INT] [len(self.pileup_list[0])]
+        RETURN: [INT] [len(self.pileups[0])]
 
         POST: [None]
         """
-        return len(self.pileup_list[0])
+        return len(self.pileups[0])
 
     def remove_pileup_positions(self, deletion_list):
         """
@@ -188,10 +188,10 @@ class Pileup_List(object):
 
         POST:
             The specified positions in deletion_list have been removed from
-            the self.pileup_list in the Pileup_List object.
+            the self.pileups in the Pileup_List object.
         """
         for position2 in deletion_list:
-            for pileup in self.pileup_list:
+            for pileup in self.pileups:
                 del pileup[position2]
             # end for
         # end for
@@ -211,8 +211,8 @@ class Pileup_List(object):
             Positions before curr_start and after curr_end are ignored in the
             pileup list.
         """
-        np_pileup = np.array(self.pileup_list)
-        self.pileup_list = (np_pileup[:, curr_start:curr_end + 1]).tolist()
+        np_pileup = np.array(self.pileups)
+        self.pileups = (np_pileup[:, curr_start:curr_end + 1]).tolist()
 
     def truncate_all_output(self):
         """
@@ -231,9 +231,9 @@ class Pileup_List(object):
             is no coverage are deleted from all pileups in the pileup list.
         """
         deletion_list = []
-        if len(self.pileup_list) > 0 and len(self.pileup_list[0]) > 0:
+        if len(self.pileups) > 0 and len(self.pileups[0]) > 0:
             # iterate through every position in reference
-            for position in range(0, len(self.pileup_list[0])):
+            for position in range(0, len(self.pileups[0])):
                 # add pos'n with empty coverage in pileup to deletion_list
                 if not self.all_have_coverage(position):
                     deletion_list.insert(0, position)
@@ -258,8 +258,8 @@ class Pileup_List(object):
             If curr_start > curr_end the pileup_list is empty after truncation.
         """
         deletion_list_left, deletion_list_right, deletion_list = [], [], []
-        num_pos = len(self.pileup_list[0])
-        if len(self.pileup_list) > 0 and len(self.pileup_list[0]) > 0:
+        num_pos = len(self.pileups[0])
+        if len(self.pileups) > 0 and len(self.pileups[0]) > 0:
             # iterate through every position in reference
             left_key = -1
             for left in range(0, num_pos):
@@ -281,12 +281,12 @@ class Pileup_List(object):
 
 class DistanceMatrix(object):
 
-    def __init__(self, pileup_list):
+    def __init__(self, pileups):
         """
-            [ARRAY] [pileup_list] - list of pileups - each pileup is
+            [ARRAY] [pileups] - list of pileups - each pileup is
             represented by a list of dictionaries.
         """
-        self.pileup_list = pileup_list
+        self.pileups = pileups
     # end def
 
     def get_angular_cosine_distance_matrix(self, startpos=None, endpos=None):
@@ -380,13 +380,13 @@ class DistanceMatrix(object):
         if startpos is not None:
             first = startpos
         # end if
-        for num in range(0, len(self.pileup_list)):
+        for num in range(0, len(self.pileups)):
             # last pos of dicts in each pileup_list[i]
-            last = len(self.pileup_list[num])
+            last = len(self.pileups[num])
             if endpos is not None and (endpos + 1) <= last:
                 last = endpos + 1
             # end if
-            baseList.append([self.pileup_list[num][dict].get(base, 0)
+            baseList.append([self.pileups[num][dict].get(base, 0)
                             for dict in range(first, last) for base in BASES])
         # end for
         baseList = np.array(baseList)
