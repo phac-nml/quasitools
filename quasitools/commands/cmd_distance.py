@@ -76,9 +76,16 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
        Normalization is done dividing base read counts (A, C, T, G) inside
        every 4-tuple by the sum of the read counts inside the same tuple.
        The normalized read counts inside each 4-tuple sum to one."""
+
     click.echo("Using file %s as reference" % (reference))
     for file in bam:
         click.echo("Reading input from file(s)  %s" % (file))
+
+    click.echo(dist(ctx, reference, bam, normalize, output_distance,
+               startpos, endpos, output, truncate))
+
+def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
+         output, truncate):
     if len(bam) < 2:
         return ("\nError: At least two bam file locations are" +
                 " required to perform quasispecies distance comparison")
@@ -121,6 +128,9 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     modified = modify_pileups(ctx, normalize, startpos, endpos, truncate,
                               pileups)
 
+    if (truncate is not dont_truncate) and (len(modified) == 0):
+        return ("Error: Entire pileup was truncated due to " +
+                "lack of coverage. Halting program")
     dist = DistanceMatrix(modified)
     if output_distance:
         click.echo("Outputting an angular cosine distance matrix.")
@@ -135,7 +145,7 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         else:
             click.echo(dist.get_similarity_matrix_as_csv(bam))
     # end if
-    click.echo("Complete!")
+    return "Complete!"
 # end def
 
 
@@ -160,8 +170,5 @@ def modify_pileups(ctx, normalize, startpos, endpos, truncate, pileups):
         # end if
         click.echo("The pileup covers %d positions after truncation."
                    % pileups.get_pileup_length())
-        if pileups.get_pileup_length() == 0:
-            return ("Error: Entire pileup was truncated due to " +
-                    "lack of coverage. Halting program")
     # end if
     return pileups.get_pileup()
