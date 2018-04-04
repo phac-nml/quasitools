@@ -217,8 +217,8 @@ class Pileup_List(object):
     def truncate_all_output(self):
         """
         Deletes all regions of the pileup for all pileups in the pileup list
-        where there is no coverage (all four bases - A, C, T, and G) are
-        absent.
+        where there is no coverage (all four bases - A, C, T, and G)= are
+        absent).
 
         INPUT:
             [None]
@@ -244,7 +244,7 @@ class Pileup_List(object):
         """
         Deletes contiguous start and end regions of the pileup for all pileups
         in the pileup list where there is no coverage (all four bases - A, C,
-        T, and G) are absent.
+        T, and G are absent).
 
         INPUT:
             [None]
