@@ -292,6 +292,7 @@ class Pileup(object):
             # end
             new_pileup += mrc.pileup(indels=True)
         # end for
+        references = None
         return Pileup(new_pileup)
     # end def
 
