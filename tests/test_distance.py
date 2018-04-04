@@ -20,6 +20,7 @@ import os
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.distance import Pileup_List
+from quasitools.distance import Pileup
 from quasitools.distance import DistanceMatrix
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -57,6 +58,20 @@ test2.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
 test3.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
 test4.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
 test5.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000"""
+
+    pileup0_unnormal_angular_distance_out = """Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam
+test1.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
+test2.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
+test3.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
+test4.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
+test5.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000"""
+
+    pileup0_unnormal_angular_distance_out = """Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam
+test1.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
+test2.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
+test3.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
+test4.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
+test5.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000"""
 
     pileup0_startpos = 0
     pileup0_endpos = 0
@@ -128,6 +143,14 @@ test2.bam,1.00000000,1.00000000"""
     pileup2_unnormal_out = """Quasispecies,test1.bam,test2.bam
 test1.bam,1.00000000,1.00000000
 test2.bam,1.00000000,1.00000000"""
+
+    pileup2_normal_angular_distance_out = """Quasispecies,test1.bam,test2.bam
+test1.bam,0.00000000,0.00000000
+test2.bam,0.00000000,0.00000000"""
+
+    pileup2_unnormal_angular_distance_out = """Quasispecies,test1.bam,test2.bam
+test1.bam,0.00000000,0.00000000
+test2.bam,0.00000000,0.00000000"""
 
     similarity_tuple_list = [(True, pileup0, pileup0_files, pileup0_normal_out, pileup0_startpos, pileup0_endpos),
     (True, pileup1, pileup1_files, pileup1_normal_out, None, None),
@@ -299,8 +322,7 @@ test2.bam,1.00000000,1.00000000"""
         POST:
             [None]
         """
-        # if boolean normalize flag (request.param[0]) is true normalize
-        pileup_util = Pileup_List(request.param[1])
+        pileup_util = Pileup_List([Pileup(bam) for bam in request.param[1]])
 
         # if startpos is int and endpos is int (aka they are not None)
         if type(request.param[4]) is int and type(request.param[5]) is int:
@@ -308,11 +330,12 @@ test2.bam,1.00000000,1.00000000"""
                                             request.param[5])
         # end if
 
+        # if boolean normalize flag (request.param[0]) is true normalize
         if request.param[0] is True:
             pileup_util.normalize_pileup()
 
         # create matrix with pileup
-        dist = DistanceMatrix(pileup_util.get_pileup())
+        dist = DistanceMatrix(pileup_util.get_pileups_as_array())
 
         # get similarity matrix based on pileup list (request.param[1])
         matrix = dist.get_similarity_matrix()
@@ -366,7 +389,7 @@ test2.bam,1.00000000,1.00000000"""
             [None]
         """
         # if boolean normalize flag (request.param[0]) is true normalize
-        pileup_util = Pileup_List(request.param[1])
+        pileup_util = Pileup_List([Pileup(bam) for bam in request.param[1]])
 
         # if startpos is int and endpos is int (aka they are not None)
         if type(request.param[4]) is int and type(request.param[5]) is int:
@@ -378,7 +401,7 @@ test2.bam,1.00000000,1.00000000"""
             pileup_util.normalize_pileup()
 
         # create matrix with pileup
-        dist = DistanceMatrix(pileup_util.get_pileup())
+        dist = DistanceMatrix(pileup_util.get_pileups_as_array())
 
         # get similarity matrix based on pileup list (request.param[1])
 
@@ -430,7 +453,7 @@ test2.bam,1.00000000,1.00000000"""
         test_cp_files = ((TEST_PATH+"/data/quasi1.bam"), (TEST_PATH+"/data/quasi2.bam"))
         test_cp_ref = TEST_PATH+"/data/hxb2_pol.fas"
         bamPileup = Pileup_List.construct_array_of_pileups(test_cp_files, test_cp_ref)
-        return bamPileup.get_pileup()
+        return bamPileup.get_pileups_as_array()
     #end def
 
     def test_construct_array_of_pileup(self, pileup_fixture):
@@ -477,9 +500,9 @@ test2.bam,1.00000000,1.00000000"""
         POST:
             [None]
         """
-        util = Pileup_List(request.param[0])
+        util = Pileup_List([Pileup(bam) for bam in request.param[0]])
         util.truncate_output()
-        truncated = util.get_pileup()
+        truncated = util.get_pileups_as_array()
 
         return (truncated, request.param[1])
 
@@ -522,9 +545,9 @@ test2.bam,1.00000000,1.00000000"""
         POST:
             [None]
         """
-        util = Pileup_List(request.param[0])
+        util = Pileup_List([Pileup(bam) for bam in request.param[0]])
         util.truncate_all_output()
-        truncated = util.get_pileup()
+        truncated = util.get_pileups_as_array()
 
         return (truncated, request.param[1])
 
@@ -556,10 +579,10 @@ test2.bam,1.00000000,1.00000000"""
         startpos = 2
         endpos = 4
 
-        util = Pileup_List(pileup)
+        util = Pileup_List([Pileup(bam) for bam in pileup])
         util.select_pileup_range(startpos, endpos)
         util.truncate_all_output()
-        truncated = util.get_pileup()
+        truncated = util.get_pileups_as_array()
 
         assert truncated == [[{'C': 3}], #test 1
         [{'C': 3}], #test 2
@@ -570,10 +593,10 @@ test2.bam,1.00000000,1.00000000"""
         startpos = 3
         endpos = 3
 
-        util = Pileup_List(pileup)
+        util = Pileup_List([Pileup(bam) for bam in pileup])
         util.select_pileup_range(startpos, endpos)
         util.truncate_all_output()
-        truncated = util.get_pileup()
+        truncated = util.get_pileups_as_array()
 
         assert truncated == [[], #test 1
         [], #test 2
@@ -639,15 +662,15 @@ test2.bam,1.00000000,1.00000000"""
         pileup_select_range_out = truncate_ends_select_range_fixture[3]
         pileup_truncate_ends_out = truncate_ends_select_range_fixture[4]
 
-        util = Pileup_List(pileup)
+        util = Pileup_List([Pileup(bam) for bam in pileup])
         util.select_pileup_range(startpos, endpos)
-        select_pileup = util.get_pileup()
+        select_pileup = util.get_pileups_as_array()
         # assert that the pileup positions before startpos and after endpos
         # have been ignored
         assert select_pileup == pileup_select_range_out
 
         util.truncate_output()
-        truncated_pileup = util.get_pileup()
+        truncated_pileup = util.get_pileups_as_array()
 
         # assert that the pileup is truncated now as expected
         assert truncated_pileup == pileup_truncate_ends_out

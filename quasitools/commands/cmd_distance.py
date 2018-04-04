@@ -17,6 +17,7 @@ specific language governing permissions and limitations under the License.
 
 import click
 from quasitools.distance import Pileup_List
+from quasitools.distance import Pileup
 from quasitools.distance import DistanceMatrix
 
 
@@ -168,4 +169,4 @@ def modify_pileups(ctx, normalize, startpos, endpos, truncate, pileups):
         click.echo("The pileup covers %d positions after truncation."
                    % pileups.get_pileup_length())
     # end if
-    return pileups.get_pileup()
+    return pileups.get_pileups_as_array()

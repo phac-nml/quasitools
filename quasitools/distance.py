@@ -33,11 +33,10 @@ class Pileup_List(object):
     def __init__(self, pileups):
 
         """
-        Creates a array of pileups (which are arrays of dictionaries)
+        Creates a array of Pileup objects (which are arrays of dictionaries)
 
         INPUT:
-            [ARRAY] [pileups] - list of pileups - each pileup is
-                                    represented by a list of dictionaries.
+            [ARRAY OF PILEUPS] [pileups] - list of Pileup objects
         RETURN:
             [None]
         POST:
@@ -48,8 +47,8 @@ class Pileup_List(object):
     def all_have_coverage(self, position):
 
         """
-        Determines whether all pileups in the pileup list have coverage at
-        the present position.
+        Determines whether all Pileup objects in the pileup list have coverage
+        at the present position.
 
         INPUT:
             [INT] [position] - position in each pileup to check for coverage
@@ -62,9 +61,7 @@ class Pileup_List(object):
             None
 
         """
-
-        if any((np.sum([pileup[position].get(base, 0) for base in BASES]) == 0
-                or pileup[position] == {}) for pileup in self.pileups):
+        if any(not pileup.has_coverage(position) for pileup in self.pileups):
             return False
         else:
             return True
@@ -83,36 +80,14 @@ class Pileup_List(object):
 
             [FILE LOCATION] [reference_loc] - location of the reference file
         RETURN:
-            [Pileup_List] - a new object containing a list of pileups
-            It is a list of dictionaries containing read counts for each base
+            [Pileup_List] - a new object containing a list of Pileup objects.
         POST:
             [None]
         """
-
-        # Build the reference object.
-        references = parse_references_from_fasta(reference_loc)
-        new_pileup_list = []
-        # Iterate over each reference in the reference object.
-        for reference in references:
-            mrcList = []
-            for bam in file_list:
-                mrcList.append(parse_mapped_reads_from_bam(reference, bam))
-            # end for
-
-            # pileups are a list of dictionaries. The pileup list contains
-            # a list of pileups for each mapped read.
-            for num in range(0, len(mrcList)):
-                if len(new_pileup_list) < (num + 1):
-                    # add a new pileup to the pileup list
-                    new_pileup_list.append(mrcList[num].pileup(indels=True))
-                else:
-                    # add the positions in the pileup for this mapped read
-                    # that have not been added yet to this pileup (e.g. if you
-                    # have multiple references in the reference file)
-                    new_pileup_list[num] += mrcList[num].pileup(indels=True)
-                # end if
-            # end for
-        return Pileup_List(new_pileup_list)
+        pileups = []
+        for bam in file_list:
+            pileups.append(Pileup.construct_pileup(bam, reference_loc))
+        return Pileup_List(pileups)
     # end def
 
     def normalize_pileup(self):
@@ -128,40 +103,24 @@ class Pileup_List(object):
 
         RETURN: [None]
 
-        POST: The Pileup_List object's data is normalized.
+        POST: All Pileups in the Pileup_List are normalized.
         """
-        new_list = []
-        for num in range(0, len(self.pileups)):
-            new_list.append([])
-            for i in range(0, len(self.pileups[num])):
-                curr_pos = [self.pileups[num][i].get(base, 0)
-                            for base in BASES]
-                total = float(np.sum(curr_pos))
-                items = self.pileups[num][i].items()
-                # normalize the data for all samples
-                if total > 0:
-                    new_list[num].append(
-                        {key: (float(val) / total) for (key, val) in items
-                         if key is not GAP})
-                else:
-                    new_list[num].append(
-                        {key: 0 for (key, value) in items if key is not GAP})
-                # end if
-        self.pileups = new_list
+        for pileup in self.pileups:
+            pileup.normalize_pileup()
     # end def
 
-    def get_pileup(self):
+    def get_pileups_as_array(self):
 
         """
-        This function returns the pileup list in the pileup_list object.
+        This function returns the pileups pileup_list object as a 2D array.
 
         INPUT: [None]
 
-        RETURN: [ARRAY] [pileup_list]
+        RETURN: [ARRAY OF DICTIONARIES] [pileup_list]
 
         POST: [None]
         """
-        return self.pileups
+        return [pileup.get_pileup() for pileup in self.pileups]
 
     def get_pileup_length(self):
 
@@ -174,30 +133,7 @@ class Pileup_List(object):
 
         POST: [None]
         """
-        return len(self.pileups[0])
-
-    def remove_pileup_positions(self, deletion_list):
-
-        """
-        Deletes positions in the pileup specified in deletion_list, an array
-        of integers sorted in descending order.
-
-        INPUT:
-            [ARRAY] [deletion_list] - list of positions to delete in descending
-                                      order
-
-        RETURN:
-            [None]
-
-        POST:
-            The specified positions in deletion_list have been removed from
-            the self.pileups in the Pileup_List object.
-        """
-        for position2 in deletion_list:
-            for pileup in self.pileups:
-                del pileup[position2]
-            # end for
-        # end for
+        return self.pileups[0].get_pileup_length()
 
     def select_pileup_range(self, curr_start, curr_end):
 
@@ -215,14 +151,14 @@ class Pileup_List(object):
             Positions before curr_start and after curr_end are ignored in the
             pileup list.
         """
-        np_pileup = np.array(self.pileups)
-        self.pileups = (np_pileup[:, curr_start:curr_end + 1]).tolist()
+        for pileup in self.pileups:
+            pileup.select_pileup_range(curr_start, curr_end)
 
     def truncate_all_output(self):
 
         """
-        Deletes all regions of the pileup for all pileups in the pileup list
-        where there is no coverage (all four bases - A, C, T, and G are
+        Deletes all regions of the pileup for all Pileup objects in the pileup
+        list where there is no coverage (all four bases - A, C, T, and G are
         absent).
 
         INPUT:
@@ -236,13 +172,14 @@ class Pileup_List(object):
             is no coverage are deleted from all pileups in the pileup list.
         """
         deletion_list = []
-        if len(self.pileups) > 0 and len(self.pileups[0]) > 0:
+        if len(self.pileups) > 0 and self.get_pileup_length() > 0:
             # iterate through every position in reference
-            for position in range(0, len(self.pileups[0])):
+            for position in range(0, self.get_pileup_length()):
                 # add pos'n with empty coverage in pileup to deletion_list
                 if not self.all_have_coverage(position):
                     deletion_list.insert(0, position)
-        self.remove_pileup_positions(deletion_list)
+        for pileup in self.pileups:
+            pileup.remove_pileup_positions(deletion_list)
     # end def
 
     def truncate_output(self):
@@ -264,8 +201,8 @@ class Pileup_List(object):
             If curr_start > curr_end the pileup_list is empty after truncation.
         """
         deletion_list_left, deletion_list_right, deletion_list = [], [], []
-        num_pos = len(self.pileups[0])
-        if len(self.pileups) > 0 and len(self.pileups[0]) > 0:
+        num_pos = self.get_pileup_length()
+        if len(self.pileups) > 0 and self.get_pileup_length() > 0:
             # iterate through every position in reference
             left_key = -1
             for left in range(0, num_pos):
@@ -281,8 +218,179 @@ class Pileup_List(object):
                     break
         # example: [7 6 5 3 2 1] = [7 6 5] + [3 2 1]
         deletion_list = deletion_list_right + deletion_list_left
-        self.remove_pileup_positions(deletion_list)
+        for pileup in self.pileups:
+            pileup.remove_pileup_positions(deletion_list)
     # end def
+
+
+class Pileup(object):
+
+    def __init__(self, pileup):
+
+        """
+        Creates a Pileup (which is an array of dictionaries)
+
+        INPUT:
+            [ARRAY OF DICTIONARIES] [pileup]
+        RETURN:
+            [None]
+        POST:
+            Pileup is constructed.
+        """
+        self.pileup = pileup
+        self.pileup_length = len(pileup) - 1
+
+    def has_coverage(self, position):
+
+        """
+        Determines whether the Pileup has coverage at the present position.
+
+        INPUT:
+            [INT] [position] - position in the Pileup to check for coverage
+
+        RETURN:
+            Returns BOOL true if the Pileup has coverage at the position
+
+        POST:
+            None
+
+        """
+        curr_pos_list = [self.pileup[position].get(base, 0) for base in BASES]
+        if (np.sum(curr_pos_list) == 0 or self.pileup[position] == {}):
+            return False
+        else:
+            return True
+        # end if
+
+    # end def
+
+    @staticmethod
+    def construct_pileup(bam, reference_loc):
+
+        """
+        Creates a Pileup.
+        INPUT:
+            [FILE LOCATION] [bam] - file name of BAM file to create mapped
+                                    read against reference
+
+            [FILE LOCATION] [reference_loc] - location of the reference file
+        RETURN:
+            [ARRAY OF DICTIONARIES] [pileup] - contains read counts for each
+                                               base
+        POST:
+            [None]
+        """
+
+        # Build the reference object.
+        references = parse_references_from_fasta(reference_loc)
+        new_pileup = []
+        # Iterate over each reference in the reference object.
+        for reference in references:
+            mrc = parse_mapped_reads_from_bam(reference, bam)
+
+            # append reads mapped against the current reference to the pileup
+            # end
+            new_pileup += mrc.pileup(indels=True)
+        # end for
+        return Pileup(new_pileup)
+    # end def
+
+    def normalize_pileup(self):
+
+        """
+        This function converts the read count for each base in each four-tuple
+        of bases (A, C, T, G) into a decimal proportion of the total read
+        counts for that four-tuple. The bounds are between 0 and 1.
+        This prevents large read counts for a base from inflating
+        the cosine simularity calculation.
+
+        INPUT: [None]
+
+        RETURN: [None]
+
+        POST: The Pileup object's data is normalized.
+        """
+        new_list = []
+        for i in range(0, len(self.pileup)):
+            curr_pos = [self.pileup[i].get(base, 0) for base in BASES]
+            total = float(np.sum(curr_pos))
+            items = self.pileup[i].items()
+            # normalize the data for all dictionaries in the pileup
+            if total > 0:
+                new_list.append(
+                    {key: (float(val) / total) for (key, val) in items
+                     if key is not GAP})
+            else:
+                new_list.append(
+                    {key: 0 for (key, value) in items if key is not GAP})
+            # end if
+        self.pileup = new_list
+    # end def
+
+    def get_pileup(self):
+
+        """
+        This function returns the pileup in the Pileup object.
+
+        INPUT: [None]
+
+        RETURN: [ARRAY] [pileup]
+
+        POST: [None]
+        """
+        return self.pileup
+
+    def get_pileup_length(self):
+
+        """
+        This function returns the length of the Pileup list in the object.
+
+        INPUT: [None]
+
+        RETURN: [INT] [len(self.pileups[0])]
+
+        POST: [None]
+        """
+        return len(self.pileup)
+
+    def remove_pileup_positions(self, deletion_list):
+
+        """
+        Deletes positions in the Pileup specified in deletion_list, an array
+        of integers sorted in descending order.
+
+        INPUT:
+            [ARRAY] [deletion_list] - list of positions to delete in descending
+                                      order
+
+        RETURN:
+            [None]
+
+        POST:
+            The specified positions in deletion_list have been removed from
+            the self.pileup in the Pileup object.
+        """
+        for position in deletion_list:
+            del self.pileup[position]
+        # end for
+
+    def select_pileup_range(self, curr_start, curr_end):
+
+        """
+        Ignores all regions of the Pileup before curr_start and after curr_end
+
+        INPUT:
+            [int] [curr_start] - current start position. Must be between zero
+                                 and the length of the Pileup.
+            [int] [curr_end] - current end position. Must be between zero and
+                               the length of the Pileup.
+        RETURN:
+            [None]
+        POST:
+            Positions before curr_start and after curr_end are ignored in the
+            Pileup.
+        """
+        self.pileup = self.pileup[curr_start:curr_end + 1]
 
 
 class DistanceMatrix(object):
