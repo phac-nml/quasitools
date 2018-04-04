@@ -315,7 +315,7 @@ test2.bam,1.00000000,1.00000000"""
         dist = DistanceMatrix(pileup_util.get_pileup())
 
         # get similarity matrix based on pileup list (request.param[1])
-        matrix = dist.get_cosine_similarity_matrix()
+        matrix = dist.get_similarity_matrix()
 
         # convert matrix  to csv, passing file list (request.param[2])
         csv_similarity = dist.get_similarity_matrix_as_csv(request.param[2])
@@ -382,7 +382,7 @@ test2.bam,1.00000000,1.00000000"""
 
         # get similarity matrix based on pileup list (request.param[1])
 
-        matrix = dist.get_angular_cosine_distance_matrix()
+        matrix = dist.get_distance_matrix()
 
         # convert matrix  to csv, passing file list (request.param[2])
         csv_similarity = dist.get_distance_matrix_as_csv(request.param[2])

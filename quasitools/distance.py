@@ -289,7 +289,7 @@ class DistanceMatrix(object):
         self.pileups = pileups
     # end def
 
-    def get_angular_cosine_distance_matrix(self):
+    def get_distance_matrix(self):
 
         """
         Runs the script, calculating the angular cosine distance function
@@ -310,7 +310,7 @@ class DistanceMatrix(object):
             The internal pileup object is not changed by this function.
 
         """
-        matrix = self.get_cosine_similarity_matrix()
+        matrix = self.get_similarity_matrix()
         new_matrix = 2 * np.arccos(matrix) / np.pi
         return new_matrix.tolist()
     # end def
@@ -327,7 +327,7 @@ class DistanceMatrix(object):
             [STRING] [csvOut] CSV representation of a pairwise similarity
             matrix
         """
-        matrix = self.get_cosine_similarity_matrix()
+        matrix = self.get_similarity_matrix()
         return self.__get_matrix_as_csv(matrix, file_list)
 
     def get_distance_matrix_as_csv(self, file_list):
@@ -342,7 +342,7 @@ class DistanceMatrix(object):
             [STRING] [csvOut] CSV representation of a pairwise similarity
             matrix
         """
-        matrix = self.get_angular_cosine_distance_matrix()
+        matrix = self.get_distance_matrix()
         return self.__get_matrix_as_csv(matrix, file_list)
 
     def __get_matrix_as_csv(self, matrix, file_list):
@@ -376,7 +376,7 @@ class DistanceMatrix(object):
         return csvOut
     # end def
 
-    def get_cosine_similarity_matrix(self):
+    def get_similarity_matrix(self):
 
         """
         Runs the script, calculating the cosine similarity function between
