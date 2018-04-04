@@ -128,7 +128,7 @@ class Pileup_List(object):
 
         RETURN: [None]
 
-        POST: The Pileup_Util object's data is normalized.
+        POST: The Pileup_List object's data is normalized.
         """
         new_list = []
         for num in range(0, len(self.pileups)):
