@@ -318,7 +318,7 @@ test2.bam,1.00000000,1.00000000"""
         matrix = dist.get_cosine_similarity_matrix()
 
         # convert matrix  to csv, passing file list (request.param[2])
-        csv_similarity = dist.get_matrix_as_csv(matrix, request.param[2])
+        csv_similarity = dist.get_similarity_matrix_as_csv(request.param[2])
 
         dist = None
 
@@ -385,7 +385,7 @@ test2.bam,1.00000000,1.00000000"""
         matrix = dist.get_angular_cosine_distance_matrix()
 
         # convert matrix  to csv, passing file list (request.param[2])
-        csv_similarity = dist.get_matrix_as_csv(matrix, request.param[2])
+        csv_similarity = dist.get_distance_matrix_as_csv(request.param[2])
 
         dist = None
 

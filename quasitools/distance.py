@@ -315,7 +315,37 @@ class DistanceMatrix(object):
         return new_matrix.tolist()
     # end def
 
-    def get_matrix_as_csv(self, matrix, file_list):
+    def get_similarity_matrix_as_csv(self, file_list):
+        """
+        Converts a 2D array (angular cosine distance matrix) to a csv-formatted
+        string. Prints out 8 decimal places.
+
+        INPUT:
+            [TUPLE] [file_list] - files names which represent a pileup
+
+        RETURN:
+            [STRING] [csvOut] CSV representation of a pairwise similarity
+            matrix
+        """
+        matrix = self.get_cosine_similarity_matrix()
+        return self.__get_matrix_as_csv(matrix, file_list)
+
+    def get_distance_matrix_as_csv(self, file_list):
+        """
+        Converts a 2D array (angular cosine distance matrix) to a csv-formatted
+        string. Prints out 8 decimal places.
+
+        INPUT:
+            [TUPLE] [file_list] - files names which represent a pileup
+
+        RETURN:
+            [STRING] [csvOut] CSV representation of a pairwise similarity
+            matrix
+        """
+        matrix = self.get_angular_cosine_distance_matrix()
+        return self.__get_matrix_as_csv(matrix, file_list)
+
+    def __get_matrix_as_csv(self, matrix, file_list):
 
         """
         Converts a 2D array (cosine similarity matrix) to a csv-formatted
@@ -369,7 +399,7 @@ class DistanceMatrix(object):
         """
         baseList = []
         first = 0  # first position of dictionaries in each pileup_list[i]
-        last = len(self.pileups[0]) # position after end position
+        last = len(self.pileups[0])  # position after end position
         for num in range(0, len(self.pileups)):
             baseList.append([self.pileups[num][dict].get(base, 0)
                             for dict in range(first, last) for base in BASES])
