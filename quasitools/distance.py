@@ -84,7 +84,7 @@ class Pileup_List(object):
             [FILE LOCATION] [reference_loc] - location of the reference file
         RETURN:
             [Pileup_List] - a new object containing a list of pileups
-            (list of dictionaries containing read counts for each base)
+            It is a list of dictionaries containing read counts for each base
         POST:
             [None]
         """

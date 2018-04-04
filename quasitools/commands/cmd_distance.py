@@ -84,6 +84,7 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     click.echo(dist(ctx, reference, bam, normalize, output_distance,
                startpos, endpos, output, truncate))
 
+
 def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
          output, truncate):
     if len(bam) < 2:
@@ -128,7 +129,7 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     modified = modify_pileups(ctx, normalize, startpos, endpos, truncate,
                               pileups)
 
-    if (truncate is not dont_truncate) and (len(modified) == 0):
+    if (truncate is not 'dont_truncate') and (len(modified) == 0):
         return ("Error: Entire pileup was truncated due to " +
                 "lack of coverage. Halting program")
     dist = DistanceMatrix(modified)
