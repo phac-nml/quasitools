@@ -72,14 +72,15 @@ class Pileup_List(object):
     # end def
 
     @staticmethod
-    def construct_array_of_pileups(viral_files, reference_loc):
+    def construct_array_of_pileups(file_list, reference_loc):
 
         """
         Creates a array of pileups (which are arrays of dictionaries)
         INPUT:
-            [TUPLE] [viral_files] - files names which represent a pileup
+            [FILE LOCATION TUPLE] [file_list] - files names which represent
+                                                a pileup
 
-            [STRING] [reference_loc] - location of the reference file
+            [FILE LOCATION] [reference_loc] - location of the reference file
         RETURN:
             [Pileup_List] - a new object containing a list of pileups
             (list of dictionaries containing read counts for each base)
@@ -93,7 +94,7 @@ class Pileup_List(object):
         # Iterate over each reference in the reference object.
         for reference in references:
             mrcList = []
-            for bam in viral_files:
+            for bam in file_list:
                 mrcList.append(parse_mapped_reads_from_bam(reference, bam))
             # end for
 
@@ -321,7 +322,8 @@ class DistanceMatrix(object):
         string. Prints out 8 decimal places.
 
         INPUT:
-            [TUPLE] [file_list] - files names which represent a pileup
+            [FILE LOCATION TUPLE] [file_list] - files names which represent a
+                                                pileup
 
         RETURN:
             [STRING] [csvOut] CSV representation of a pairwise similarity
@@ -336,7 +338,8 @@ class DistanceMatrix(object):
         string. Prints out 8 decimal places.
 
         INPUT:
-            [TUPLE] [file_list] - files names which represent a pileup
+            [FILE LOCATION TUPLE] [file_list] - files names which represent a
+                                                pileup
 
         RETURN:
             [STRING] [csvOut] CSV representation of a pairwise similarity
@@ -354,7 +357,8 @@ class DistanceMatrix(object):
         INPUT:
             [ARRAY] [matrix] - 2D array (cosine similarity matrix)
 
-            [TUPLE] [file_list] - files names which represent a pileup
+            [FILE LOCATION TUPLE] [file_list] - files names which represent a
+                                                pileup
 
         RETURN:
             [STRING] [csvOut] CSV representation of a pairwise similarity
