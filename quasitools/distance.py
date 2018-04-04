@@ -377,7 +377,7 @@ class DistanceMatrix(object):
         """
         baseList = []
         first = 0  # first position of dictionaries in each pileup_list[i]
-        last = pileups.get_pileup_length() - 1
+        last = self.pileups.get_pileup_length() - 1
         if startpos is not None:
             first = startpos
         if endpos is not None and (endpos + 1) <= last:
