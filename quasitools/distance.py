@@ -46,6 +46,7 @@ class Pileup_List(object):
         self.pileups = pileups
 
     def all_have_coverage(self, position):
+
         """
         Determines whether all pileups in the pileup list have coverage at
         the present position.
@@ -176,6 +177,7 @@ class Pileup_List(object):
         return len(self.pileups[0])
 
     def remove_pileup_positions(self, deletion_list):
+
         """
         Deletes positions in the pileup specified in deletion_list, an array
         of integers sorted in descending order.
@@ -198,6 +200,7 @@ class Pileup_List(object):
         # end for
 
     def select_pileup_range(self, curr_start, curr_end):
+
         """
         Ignores all regions of the pileup before curr_start and after curr_end
 
@@ -216,6 +219,7 @@ class Pileup_List(object):
         self.pileups = (np_pileup[:, curr_start:curr_end + 1]).tolist()
 
     def truncate_all_output(self):
+
         """
         Deletes all regions of the pileup for all pileups in the pileup list
         where there is no coverage (all four bases - A, C, T, and G are
@@ -242,6 +246,7 @@ class Pileup_List(object):
     # end def
 
     def truncate_output(self):
+
         """
         Deletes contiguous start and end regions of the pileup for all pileups
         in the pileup list where there is no coverage (all four bases - A, C,
@@ -283,6 +288,7 @@ class Pileup_List(object):
 class DistanceMatrix(object):
 
     def __init__(self, pileups):
+
         """
             [ARRAY] [pileups] - list of pileups - each pileup is
             represented by a list of dictionaries.
@@ -317,6 +323,7 @@ class DistanceMatrix(object):
     # end def
 
     def get_similarity_matrix_as_csv(self, file_list):
+
         """
         Converts a 2D array (angular cosine distance matrix) to a csv-formatted
         string. Prints out 8 decimal places.
@@ -333,6 +340,7 @@ class DistanceMatrix(object):
         return self.__get_matrix_as_csv(matrix, file_list)
 
     def get_distance_matrix_as_csv(self, file_list):
+
         """
         Converts a 2D array (angular cosine distance matrix) to a csv-formatted
         string. Prints out 8 decimal places.
