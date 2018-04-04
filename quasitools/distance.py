@@ -25,7 +25,7 @@ from scipy.spatial.distance import squareform
 from scipy.spatial.distance import cosine
 
 BASES = ['A', 'C', 'T', 'G']
-PADDING = '-'
+GAP = '-'
 
 
 class Pileup_List(object):
@@ -140,10 +140,10 @@ class Pileup_List(object):
                 if total > 0:
                     new_list[num].append(
                         {key: (float(val) / total) for (key, val) in items
-                         if key is not '-'})
+                         if key is not GAP})
                 else:
                     new_list[num].append(
-                        {key: 0 for (key, value) in items if key is not '-'})
+                        {key: 0 for (key, value) in items if key is not GAP})
                 # end if
         self.pileups = new_list
     # end def
