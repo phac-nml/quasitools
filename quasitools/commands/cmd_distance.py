@@ -124,10 +124,10 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     dist = DistanceMatrix(modified)
     if output_distance:
         click.echo("Outputting an angular cosine distance matrix.")
-        matrix = dist.get_angular_cosine_distance_matrix(startpos, endpos)
+        matrix = dist.get_angular_cosine_distance_matrix()
     else:
         click.echo("Outputting a cosine similarity matrix.")
-        matrix = dist.get_cosine_similarity_matrix(startpos, endpos)
+        matrix = dist.get_cosine_similarity_matrix()
     # end if
     if output:
         output.write(dist.get_matrix_as_csv(matrix, bam))

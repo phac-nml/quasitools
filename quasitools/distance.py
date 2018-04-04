@@ -289,7 +289,7 @@ class DistanceMatrix(object):
         self.pileups = pileups
     # end def
 
-    def get_angular_cosine_distance_matrix(self, startpos=None, endpos=None):
+    def get_angular_cosine_distance_matrix(self):
 
         """
         Runs the script, calculating the angular cosine distance function
@@ -298,11 +298,7 @@ class DistanceMatrix(object):
         Angular Cosine Distance = 2 * ACOS(similarity) / PI
 
         INPUT:
-            [INT] [startpos] -starting base position of reference to be
-            compared when calculating cosine distance.
-
-            [INT] [endpos] - last base position of reference to be compared
-            when calculating cosine distance.
+            [None]
 
         RETURN:
             Returns a pairwise matrix containing the angular cosine distance
@@ -314,7 +310,7 @@ class DistanceMatrix(object):
             The internal pileup object is not changed by this function.
 
         """
-        matrix = self.get_cosine_similarity_matrix(startpos, endpos)
+        matrix = self.get_cosine_similarity_matrix()
         new_matrix = 2 * np.arccos(matrix) / np.pi
         return new_matrix.tolist()
     # end def
@@ -350,7 +346,7 @@ class DistanceMatrix(object):
         return csvOut
     # end def
 
-    def get_cosine_similarity_matrix(self, startpos=None, endpos=None):
+    def get_cosine_similarity_matrix(self):
 
         """
         Runs the script, calculating the cosine similarity function between
@@ -359,11 +355,7 @@ class DistanceMatrix(object):
         Cosine similarity = (u * v) / ( ||u|| * ||v|| )
 
         INPUT:
-            [INT] [startpos] -starting base position of reference to be
-            compared when calculating cosine similarity.
-
-            [INT] [endpos] - last base position of reference to be compared
-            when calculating cosine similarity.
+            [None]
 
         RETURN:
             Returns a pairwise matrix containing the cosine similarity function
@@ -377,11 +369,7 @@ class DistanceMatrix(object):
         """
         baseList = []
         first = 0  # first position of dictionaries in each pileup_list[i]
-        last = self.pileups.get_pileup_length() - 1
-        if startpos is not None:
-            first = startpos
-        if endpos is not None and (endpos + 1) <= last:
-            last = endpos + 1
+        last = len(self.pileups[0]) # position after end position
         for num in range(0, len(self.pileups)):
             baseList.append([self.pileups[num][dict].get(base, 0)
                             for dict in range(first, last) for base in BASES])
