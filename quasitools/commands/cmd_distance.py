@@ -110,11 +110,7 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     click.echo("The end position is %d." % endpos)
     click.echo("Constructed pileup from reference.")
     # click.echo the number of positions in pileup
-    if truncate is not 'dont_truncate':
-        click.echo("The pileup covers %d positions before truncation."
-                   % pileups.get_pileup_length())
-    else:
-        click.echo("The pileup covers %d positions.")
+    click.echo("The pileup covers %d positions before modifications.")
     # indicate whether the user-specified start and end position is out
     # of bounds (comparing to actual number of positions in pileup)
     if startpos >= pileups.get_pileup_length():
