@@ -73,7 +73,8 @@ class Pileup_List(object):
     def construct_array_of_pileups(file_list, reference_loc):
 
         """
-        Creates a array of pileups (which are arrays of dictionaries)
+        Creates an array of Pileup objects (which contain arrays of
+        dictionaries)
         INPUT:
             [FILE LOCATION TUPLE] [file_list] - files names which represent
                                                 a pileup
@@ -96,7 +97,7 @@ class Pileup_List(object):
         This function converts the read count for each base in each four-tuple
         of bases (A, C, T, G) into a decimal proportion of the total read
         counts for that four-tuple. The bounds are between 0 and 1.
-        This prevents large read counts for a base from inflating
+        This prevents large read counts for a single base from inflating
         the cosine simularity calculation.
 
         INPUT: [None]
@@ -112,20 +113,21 @@ class Pileup_List(object):
     def get_pileups_as_array(self):
 
         """
-        This function returns the pileups pileup_list object as a 2D array.
+        This function returns the pileups Pileup_List object as a 2D array.
 
         INPUT: [None]
 
-        RETURN: [ARRAY OF DICTIONARIES] [pileup_list]
+        RETURN: [ARRAY OF ARRAY OF DICTIONARIES] [pileup_list]
 
         POST: [None]
         """
-        return [pileup.get_pileup() for pileup in self.pileups]
+        return [pileup.get_pileup_as_array() for pileup in self.pileups]
 
     def get_pileup_length(self):
 
         """
-        This function returns the length of the pileup list in the object.
+        This function returns the length of the first pileup in pileups.
+        The length of each pileup should be the same.
 
         INPUT: [None]
 
@@ -142,9 +144,11 @@ class Pileup_List(object):
 
         INPUT:
             [int] [curr_start] - current start position. Must be between zero
-                                 and the length of the pileup.
-            [int] [curr_end] - current end position. Must be between zero and
-                               the length of the pileup.
+                                 inclusive and the length of the pileup,
+                                 exclusive.
+            [int] [curr_end] - current end position. Must be between zero
+                               inclusive and the length of the pileup,
+                               exclusive.
         RETURN:
             [None]
         POST:
@@ -169,7 +173,7 @@ class Pileup_List(object):
 
         POST:
             The pileups are truncated (sections of the pileup where there
-            is no coverage are deleted from all pileups in the pileup list.
+            is no coverage are deleted from all pileups in the pileup list).
         """
         deletion_list = []
         if len(self.pileups) > 0 and self.get_pileup_length() > 0:
@@ -328,7 +332,7 @@ class Pileup(object):
         self.pileup = new_list
     # end def
 
-    def get_pileup(self):
+    def get_pileup_as_array(self):
 
         """
         This function returns the pileup in the Pileup object.
@@ -382,9 +386,11 @@ class Pileup(object):
 
         INPUT:
             [int] [curr_start] - current start position. Must be between zero
-                                 and the length of the Pileup.
-            [int] [curr_end] - current end position. Must be between zero and
-                               the length of the Pileup.
+                                 inclusive and the length of the Pileup
+                                 exclusive.
+            [int] [curr_end] - current end position. Must be between zero
+                               inclusive and the length of the Pileup
+                               exclusive.
         RETURN:
             [None]
         POST:
