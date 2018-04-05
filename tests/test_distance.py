@@ -59,7 +59,7 @@ test3.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
 test4.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
 test5.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000"""
 
-    pileup0_unnormal_angular_distance_out = """Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam
+    pileup0_normal_angular_distance_out = """Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam
 test1.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
 test2.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
 test3.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
@@ -181,8 +181,8 @@ test2.bam,0.00000000,0.00000000"""
     [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G':  8}], #test 7
     [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}]] #test 8
 
-    pileup3_truncate_start = 1
-    pileup3_truncate_end = 7
+    pileup3_num_start_truncated = 1
+    pileup3_num_end_truncated = 7
 
     pileup4 = [[{'A': 1, 'T': 0, 'C': 0, 'G': 0},  # test 1 a
                 {'A': 0, 'T': 2, 'C': 0, 'G': 0},  # test 1 b
@@ -194,8 +194,8 @@ test2.bam,0.00000000,0.00000000"""
     pileup4_trunc_ends_out = [[{'A': 0, 'T': 2, 'C': 0, 'G': 0}], #test 1
                             [{'A': 0, 'T': 2, 'C': 0, 'G': 0}]]
 
-    pileup4_truncate_start = 1
-    pileup4_truncate_end = 1
+    pileup4_num_start_truncated = 1
+    pileup4_num_end_truncated = 1
 
     pileup5 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
     [{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
@@ -209,8 +209,8 @@ test2.bam,0.00000000,0.00000000"""
                             [{'T': 2}],
                             [{'T': 2}]]
 
-    pileup5_truncate_start = 1
-    pileup5_truncate_end = 1
+    pileup5_num_start_truncated = 1
+    pileup5_num_end_truncated = 3
 
     pileup6 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
     [{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
@@ -224,8 +224,8 @@ test2.bam,0.00000000,0.00000000"""
                             [{'C': 3}],
                             [{'C': 3}]]
 
-    pileup6_truncate_start = 2
-    pileup6_truncate_end = 2
+    pileup6_num_start_truncated = 2
+    pileup6_num_end_truncated = 2
 
     pileup7 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
@@ -239,8 +239,8 @@ test2.bam,0.00000000,0.00000000"""
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
     [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}]] #test 5
 
-    pileup7_truncate_start = 0
-    pileup7_truncate_end = 4
+    pileup7_num_start_truncated = 0
+    pileup7_num_end_truncated = 0
 
     pileup8 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
     [{'A': 1}, {}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
@@ -254,8 +254,8 @@ test2.bam,0.00000000,0.00000000"""
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
 
-    pileup8_truncate_start = 0
-    pileup8_truncate_end = 4
+    pileup8_num_start_truncated = 0
+    pileup8_num_end_truncated = 0
 
     pileup9 = [[{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 2
@@ -269,8 +269,8 @@ test2.bam,0.00000000,0.00000000"""
     [{'T': 2}, {'C': 3}, {'G': 4}], #test 4
     [{'T': 2}, {'C': 3}, {'G': 4}]] #test 5
 
-    pileup9_truncate_start = 1
-    pileup9_truncate_end = 3
+    pileup9_num_start_truncated = 1
+    pileup9_num_end_truncated = 1
 
     pileup10 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 2
@@ -284,34 +284,47 @@ test2.bam,0.00000000,0.00000000"""
     [{'A': 1}], #test 4
     [{'A': 1}]] #test 5
 
-    pileup10_truncate_start = 0
-    pileup10_truncate_end = 0
+    pileup10_num_start_truncated = 0
+    pileup10_num_end_truncated = 4
 
     truncate_all_tuple = [(pileup3, pileup3_trunc_all_out)]
 
-    truncate_ends_tuple = [(pileup4, pileup4_trunc_ends_out),
-            (pileup5, pileup5_trunc_ends_out),
-            (pileup6, pileup6_trunc_ends_out),
-            (pileup7, pileup7_trunc_ends_out),
-            (pileup8, pileup8_trunc_ends_out),
-            (pileup9, pileup9_trunc_ends_out),
-            (pileup10, pileup10_trunc_ends_out)]
+    truncate_ends_tuple = [(pileup4, pileup4_trunc_ends_out, pileup4_num_start_truncated, pileup4_num_end_truncated),
+            (pileup5, pileup5_trunc_ends_out, pileup5_num_start_truncated, pileup5_num_end_truncated),
+            (pileup6, pileup6_trunc_ends_out, pileup6_num_start_truncated, pileup6_num_end_truncated),
+            (pileup7, pileup7_trunc_ends_out, pileup7_num_start_truncated, pileup7_num_end_truncated),
+            (pileup8, pileup8_trunc_ends_out, pileup8_num_start_truncated, pileup8_num_end_truncated),
+            (pileup9, pileup9_trunc_ends_out, pileup9_num_start_truncated, pileup9_num_end_truncated),
+            (pileup10, pileup10_trunc_ends_out, pileup10_num_start_truncated, pileup10_num_end_truncated)]
+
+    first_tuple_list = [(True, pileup0, pileup0_files, pileup0_normal_out, pileup0_normal_angular_distance_out, pileup0_startpos, pileup0_endpos),
+    (True, pileup1, pileup1_files, pileup1_normal_out, pileup1_normal_angular_distance_out, None, None),
+    (True, pileup2, pileup2_files, pileup2_normal_out, pileup2_normal_angular_distance_out, None, None),
+    (False, pileup0, pileup0_files, pileup0_unnormal_out, pileup0_unnormal_angular_distance_out, pileup0_startpos, pileup0_endpos),
+    (False, pileup1, pileup1_files, pileup1_unnormal_out, pileup1_unnormal_angular_distance_out, None, None),
+    (False, pileup2, pileup2_files, pileup2_unnormal_out, pileup2_unnormal_angular_distance_out, None, None)]
 
     """
     TESTS
     """
 
-    @pytest.fixture(scope="function", params=similarity_tuple_list)
-    def similarity_matrix_fixture(self, request):
+    def setup_class(self):
+        self.expected_csv_distance = ""
+        self.expected_csv_similarity = ""
+
+    @pytest.fixture(scope="function", params=first_tuple_list)
+    def pileup_outputs(self, request):
         """
-        similarity_matrix_fixture - test fixture for the test_get_similarity_matrix function
+        pileup_distance - test fixture for test_get_similarity_matrix function
+                          and test_get_distance_matrix function
 
         INPUT:
             [LIST OF TUPLES]
             ---[BOOL] [normalize] # normalized or not
             ---[ARRAY] [pileup list]
             ---[ARRAY] [pileup_files] # file names corresponding to pileups
-            ---[ARRAY] [pileup#_(normal_out/unnormal_out)] #csv formatted output
+            ---[ARRAY] normalized or unnormalized similarity csv-format output
+            ---[ARRAY] normalized or unnormalized distance csv-format output
             ---[INT or NONE] [startpos or default if NONE]
             ---[INT or NONE] [endpos or default if NONE]
 
@@ -322,34 +335,27 @@ test2.bam,0.00000000,0.00000000"""
         POST:
             [None]
         """
-        pileup_util = Pileup_List([Pileup(bam) for bam in request.param[1]])
+        pileups = Pileup_List([Pileup(bam) for bam in request.param[1]])
 
         # if startpos is int and endpos is int (aka they are not None)
-        if type(request.param[4]) is int and type(request.param[5]) is int:
-            pileup_util.select_pileup_range(request.param[4],
-                                            request.param[5])
-        # end if
+        if type(request.param[5]) is int and type(request.param[6]) is int:
+            pileups.select_pileup_range(request.param[5], request.param[6])
 
         # if boolean normalize flag (request.param[0]) is true normalize
         if request.param[0] is True:
-            pileup_util.normalize_pileup()
+            pileups.normalize_pileup()
 
         # create matrix with pileup
-        dist = DistanceMatrix(pileup_util.get_pileups_as_numerical_array())
+        dist = DistanceMatrix(pileups.get_pileups_as_numerical_array(), request.param[2])
 
-        # get similarity matrix based on pileup list (request.param[1])
-        matrix = dist.get_similarity_matrix()
+        self.expected_csv_similarity = request.param[3]
+        self.expected_csv_distance = request.param[4]
 
-        # convert matrix  to csv, passing file list (request.param[2])
-        csv_similarity = dist.get_similarity_matrix_as_csv(request.param[2])
-
-        dist = None
-
-        return (csv_similarity, request.param[3])
+        return (dist, request.param[3], request.param[4])
 
     #end def
 
-    def test_get_similarity_matrix(self, similarity_matrix_fixture):
+    def test_get_similarity_matrix(self, pileup_outputs):
         """
         test_get_similarity_matrix - Checked that the actual output matches the
         expected output.
@@ -363,60 +369,11 @@ test2.bam,0.00000000,0.00000000"""
         POST:
             [None]
         """
-
-        assert similarity_matrix_fixture[0] == similarity_matrix_fixture[1]
+        csv_similarity = pileup_outputs[0].get_similarity_matrix_as_csv()
+        assert csv_similarity == self.expected_csv_similarity
     #end def
 
-    @pytest.fixture(scope="function", params=angular_distance_tuple_list)
-    def distance_matrix_fixture(self, request):
-        """
-        distance_matrix_fixture - test fixture for the test_get_distance_matrix function
-
-        INPUT:
-            [LIST OF TUPLES]
-            ---[BOOL] [normalize] # normalized or not
-            ---[ARRAY] [pileup list]
-            ---[ARRAY] [pileup_files] # file names corresponding to pileups
-            ---[ARRAY] [pileup#_(normal_out/unnormal_out)] #csv formatted output
-            ---[INT or NONE] [startpos or default if NONE]
-            ---[INT or NONE] [endpos or default if NONE]
-
-        RETURN:
-            Tuple containing: (actual csv-formatted string output,
-            expected csv-formatted string output)
-
-        POST:
-            [None]
-        """
-        # if boolean normalize flag (request.param[0]) is true normalize
-        pileup_util = Pileup_List([Pileup(bam) for bam in request.param[1]])
-
-        # if startpos is int and endpos is int (aka they are not None)
-        if type(request.param[4]) is int and type(request.param[5]) is int:
-            pileup_util.select_pileup_range(request.param[4],
-                                            request.param[5])
-        # end if
-
-        if request.param[0] is True:
-            pileup_util.normalize_pileup()
-
-        # create matrix with pileup
-        dist = DistanceMatrix(pileup_util.get_pileups_as_numerical_array())
-
-        # get similarity matrix based on pileup list (request.param[1])
-
-        matrix = dist.get_distance_matrix()
-
-        # convert matrix  to csv, passing file list (request.param[2])
-        csv_similarity = dist.get_distance_matrix_as_csv(request.param[2])
-
-        dist = None
-
-        return (csv_similarity, request.param[3])
-
-    #end def
-
-    def test_get_distance_matrix(self, distance_matrix_fixture):
+    def test_get_distance_matrix(self, pileup_outputs):
         """
         test_get_distance_matrix - Checked that the actual output matches the
         expected output.
@@ -430,91 +387,49 @@ test2.bam,0.00000000,0.00000000"""
         POST:
             [None]
         """
-
-        assert distance_matrix_fixture[0] == distance_matrix_fixture[1]
+        csv_distance = pileup_outputs[0].get_distance_matrix_as_csv()
+        assert csv_distance == self.expected_csv_distance
     #end def
 
-    @pytest.fixture
-    def pileup_fixture(self):
+    def test_construct_array_of_pileups(self):
         """
-        pileup_fixture - Passes file locations to construct_array_of_pileups function to
-        calculate the bam pileup.
+        test_construct_array_of_pileups - Checks that the pileup length and the
+        first few indices of the pileup are correct.
 
         INPUT:
-            [NONE]
+            [None]
 
         RETURN:
-            [Array] [bamPileup]
+            [None]
 
         POST:
             [None]
         """
-        #files for construct pileup test function
+
         test_cp_files = ((TEST_PATH+"/data/quasi1.bam"), (TEST_PATH+"/data/quasi2.bam"))
         test_cp_ref = TEST_PATH+"/data/hxb2_pol.fas"
         bamPileup = Pileup_List.construct_array_of_pileups(test_cp_files, test_cp_ref)
-        return bamPileup.get_pileups_as_array()
+        pileup_as_array = bamPileup.get_pileups_as_array()
+
+        assert len(pileup_as_array)==2
+        assert len(pileup_as_array[0])==2844
+        assert len(pileup_as_array[1])==2844
+        assert pileup_as_array[0][0:10] == [{'C': 12}, {'C': 12}, {'T': 12}, {'C': 12}, {'G': 2, 'C': 3, 'T': 1, 'A': 6}, {'G': 12}, {'G': 12}, {'T': 12}, {'C': 12}, {'G': 2, 'C': 3, 'T': 1, 'A': 6}]
+        assert pileup_as_array[1][0:10] == [{'C': 12}, {'C': 12}, {'T': 12}, {'C': 12}, {'A': 6, 'C': 5, 'G': 1}, {'G': 12}, {'A': 4, 'G': 8}, {'T': 12}, {'C': 12}, {'A': 7, 'T': 1, 'C': 3, 'G': 1}]
     #end def
 
-    def test_construct_array_of_pileup(self, pileup_fixture):
+    @pytest.mark.parametrize("pileup,expected_truncated_pileup,expected_left_pos_truncated,expected_right_pos_truncated", truncate_ends_tuple)
+    def test_truncate_output(self, pileup, expected_truncated_pileup, expected_left_pos_truncated, expected_right_pos_truncated):
         """
-        test_construct_array_of_pileups - Checks that the pileup length and the first few
-        indices of the pileup are correct.
-
-        INPUT:
-            [FIXTURE] [pileup_fixture]
-
-        RETURN:
-            [None]
-
-        POST:
-            [None]
-        """
-
-        assert len(pileup_fixture)==2
-        assert len(pileup_fixture[0])==2844
-        assert len(pileup_fixture[1])==2844
-        assert pileup_fixture[0][0:10] == [{'C': 12}, {'C': 12}, {'T': 12}, {'C': 12}, {'G': 2, 'C': 3, 'T': 1, 'A': 6}, {'G': 12}, {'G': 12}, {'T': 12}, {'C': 12}, {'G': 2, 'C': 3, 'T': 1, 'A': 6}]
-        assert pileup_fixture[1][0:10] == [{'C': 12}, {'C': 12}, {'T': 12}, {'C': 12}, {'A': 6, 'C': 5, 'G': 1}, {'G': 12}, {'A': 4, 'G': 8}, {'T': 12}, {'C': 12}, {'A': 7, 'T': 1, 'C': 3, 'G': 1}]
-    #end def
-
-    @pytest.fixture(scope="function",
-                    params=truncate_ends_tuple)
-    def test_truncate_output_fixture(self, request):
-        """
-        test_truncate_output_fixture - calls truncateoutput and returns
-        a tuple that can be used for testing this function.
+        test_truncate_output - Checks that the expected truncated outputs
+        matches the actual output.
 
         INPUT:
             [TUPLE] [request.param] - a tuple containing:
             --pileup to be truncated
             --expected truncated pileup
-            --expected truncated start position
-            --expected truncated end position
-
-        RETURN:
-            [TUPLE]
-            --tuple containing actual truncated pileup, start pos, end pos
-            --expected truncated pileup
-
-        POST:
-            [None]
-        """
-        util = Pileup_List([Pileup(bam) for bam in request.param[0]])
-        util.truncate_output()
-        truncated = util.get_pileups_as_array()
-
-        return (truncated, request.param[1])
-
-    def test_truncate_output(self, test_truncate_output_fixture):
-        """
-        test_truncate_output - Checks that the after truncating contiguous
-        beginning and ending zero coverage positions from the pileup that the
-        output is as expected.
-        INPUT:
-            [TUPLE]
-            --tuple containing actual truncated pileup, start pos, end pos
-            --expected truncated pileup
+            --expected number of start positions truncated
+            --expected number of end positions truncated
 
         RETURN:
             [None]
@@ -522,8 +437,13 @@ test2.bam,0.00000000,0.00000000"""
         POST:
             Checks that the expected outputs match the actual output
         """
+        pileups = Pileup_List([Pileup(bam) for bam in pileup])
+        pileups.truncate_output()
+        truncated = pileups.get_pileups_as_array()
 
-        assert test_truncate_output_fixture[0] == test_truncate_output_fixture[1]
+        assert truncated == expected_truncated_pileup
+        assert pileups.get_num_left_positions_truncated() == expected_left_pos_truncated
+        assert pileups.get_num_right_positions_truncated() == expected_right_pos_truncated
 
     @pytest.fixture(scope="function",
                     params=truncate_all_tuple)

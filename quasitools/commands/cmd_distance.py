@@ -130,19 +130,19 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     if (no_coverage is not 'keep_no_coverage') and (len(modified) == 0):
         return ("Error: Entire pileup was truncated due to " +
                 "lack of coverage. Halting program")
-    dist = DistanceMatrix(modified)
+    dist = DistanceMatrix(modified, bam)
     if output_distance:
         click.echo("Outputting an angular cosine distance matrix.")
         if output:
-            output.write(dist.get_distance_matrix_as_csv(bam))
+            output.write(dist.get_distance_matrix_as_csv())
         else:
-            click.echo(dist.get_distance_matrix_as_csv(bam))
+            click.echo(dist.get_distance_matrix_as_csv())
     else:
         click.echo("Outputting a cosine similarity matrix.")
         if output:
-            output.write(dist.get_similarity_matrix_as_csv(bam))
+            output.write(dist.get_similarity_matrix_as_csv())
         else:
-            click.echo(dist.get_similarity_matrix_as_csv(bam))
+            click.echo(dist.get_similarity_matrix_as_csv())
     # end if
     return "Complete!"
 # end def

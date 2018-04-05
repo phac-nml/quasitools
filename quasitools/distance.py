@@ -256,7 +256,7 @@ class Pileup_List(object):
             is no coverage are deleted from all pileups in the pileup list.
             If curr_start > curr_end the pileup_list is empty after truncation.
         """
-        left_pos_truncated, right_pos_truncated = 0, 0
+        self.left_pos_truncated, self.right_pos_truncated = 0, 0
         deletion_list_left, deletion_list_right, deletion_list = [], [], []
         num_pos = self.get_pileup_length()
         if len(self.pileups) > 0 and self.get_pileup_length() > 0:
@@ -264,13 +264,13 @@ class Pileup_List(object):
             for left in range(0, num_pos):
                 if not self.all_have_coverage(left):
                     deletion_list_left.insert(0, left)
-                    left_pos_truncated += 1
+                    self.left_pos_truncated += 1
                 else:
                     break
-            for right in reversed(range(left_pos_truncated, num_pos)):
+            for right in reversed(range(self.left_pos_truncated, num_pos)):
                 if not self.all_have_coverage(right):
                     deletion_list_right.append(right)
-                    right_pos_truncated += 1
+                    self.right_pos_truncated += 1
                 else:
                     break
         # example: [7 6 5 3 2 1] = [7 6 5] + [3 2 1]
@@ -475,15 +475,19 @@ class Pileup(object):
 
 class DistanceMatrix(object):
 
-    def __init__(self, pileups):
+    def __init__(self, pileups, file_list):
 
         """
             [ARRAY] [pileups] - two dimensional numerical array that represents
             a list of pileups - every row represents a pileup and every, four
             values in each row represents the base counts for a particular
             position for the pileup.
+
+            [FILE LOCATION TUPLE] [file_list] - files names which represent a
+                                                pileup
         """
         self.pileups = pileups
+        self.file_list = file_list
     # end def
 
     def get_distance_matrix(self):
@@ -512,41 +516,39 @@ class DistanceMatrix(object):
         return new_matrix.tolist()
     # end def
 
-    def get_similarity_matrix_as_csv(self, file_list):
+    def get_similarity_matrix_as_csv(self):
 
         """
         Converts a 2D array (angular cosine distance matrix) to a csv-formatted
         string. Prints out 8 decimal places.
 
         INPUT:
-            [FILE LOCATION TUPLE] [file_list] - files names which represent a
-                                                pileup
+            [None]
 
         RETURN:
             [STRING] [csvOut] CSV representation of a pairwise similarity
             matrix
         """
         matrix = self.get_similarity_matrix()
-        return self.__get_matrix_as_csv(matrix, file_list)
+        return self.__get_matrix_as_csv(matrix)
 
-    def get_distance_matrix_as_csv(self, file_list):
+    def get_distance_matrix_as_csv(self):
 
         """
         Converts a 2D array (angular cosine distance matrix) to a csv-formatted
         string. Prints out 8 decimal places.
 
         INPUT:
-            [FILE LOCATION TUPLE] [file_list] - files names which represent a
-                                                pileup
+            [None]
 
         RETURN:
             [STRING] [csvOut] CSV representation of a pairwise similarity
             matrix
         """
         matrix = self.get_distance_matrix()
-        return self.__get_matrix_as_csv(matrix, file_list)
+        return self.__get_matrix_as_csv(matrix)
 
-    def __get_matrix_as_csv(self, matrix, file_list):
+    def __get_matrix_as_csv(self, matrix):
 
         """
         Converts a 2D array (cosine similarity matrix) to a csv-formatted
@@ -554,9 +556,6 @@ class DistanceMatrix(object):
 
         INPUT:
             [ARRAY] [matrix] - 2D array (cosine similarity matrix)
-
-            [FILE LOCATION TUPLE] [file_list] - files names which represent a
-                                                pileup
 
         RETURN:
             [STRING] [csvOut] CSV representation of a pairwise similarity
@@ -568,12 +567,12 @@ class DistanceMatrix(object):
         """
         # (distMatrix[i+1]).insert(0, file_list[i])
         # convert from 2d array to csv formatted string
-        files = [file for file in list(file_list)]
+        files = [file for file in list(self.file_list)]
         csvOut = 'Quasispecies,' + ','.join(files)
         for row in range(0, len(matrix)):
             csvOut += "\n"
             currElements = ['%.08f' % element for element in matrix[row]]
-            csvOut += ','.join([file_list[row]] + currElements)
+            csvOut += ','.join([self.file_list[row]] + currElements)
         # end for
         return csvOut
     # end def
