@@ -527,9 +527,9 @@ test2.bam,0.00000000,0.00000000"""
 
     @pytest.fixture(scope="function",
                     params=truncate_all_tuple)
-    def test_truncate_all_output_fixture(self, request):
+    def test_remove_no_coverage_fixture(self, request):
         """
-        test_truncate_all_output_fixture - calls truncate_all_output and returns
+        test_remove_no_coverage_fixture - calls remove_no_coverage and returns
         a tuple that can be used for testing this function.
 
         INPUT:
@@ -546,14 +546,14 @@ test2.bam,0.00000000,0.00000000"""
             [None]
         """
         util = Pileup_List([Pileup(bam) for bam in request.param[0]])
-        util.truncate_all_output()
+        util.remove_no_coverage()
         truncated = util.get_pileups_as_array()
 
         return (truncated, request.param[1])
 
-    def test_truncate_all_output(self, test_truncate_all_output_fixture):
+    def test_remove_no_coverage(self, test_remove_no_coverage_fixture):
         """
-        test_truncate_all_output - Checks that the after truncating all
+        test_remove_no_coverage - Checks that the after truncating all
         empty positions from the pileup that the output is as expected.
 
         INPUT:
@@ -581,7 +581,7 @@ test2.bam,0.00000000,0.00000000"""
 
         util = Pileup_List([Pileup(bam) for bam in pileup])
         util.select_pileup_range(startpos, endpos)
-        util.truncate_all_output()
+        util.remove_no_coverage()
         truncated = util.get_pileups_as_array()
 
         assert truncated == [[{'C': 3}], #test 1
@@ -595,7 +595,7 @@ test2.bam,0.00000000,0.00000000"""
 
         util = Pileup_List([Pileup(bam) for bam in pileup])
         util.select_pileup_range(startpos, endpos)
-        util.truncate_all_output()
+        util.remove_no_coverage()
         truncated = util.get_pileups_as_array()
 
         assert truncated == [[], #test 1
@@ -604,7 +604,7 @@ test2.bam,0.00000000,0.00000000"""
         [], #test 4
         []]
 
-        assert test_truncate_all_output_fixture[0] == test_truncate_all_output_fixture[1]
+        assert test_remove_no_coverage_fixture[0] == test_remove_no_coverage_fixture[1]
 
     @pytest.fixture(scope="function")
     def truncate_ends_select_range_fixture(self, request):

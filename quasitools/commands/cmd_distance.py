@@ -46,16 +46,18 @@ from quasitools.distance import DistanceMatrix
 @click.option('-o', '--output', type=click.File('w'), help="Output the " +
               "quasispecies distance or similarity matrix in CSV format in a" +
               " file.")
-@click.option('-te', '--truncate_ends', 'truncate', flag_value='truncate_ends',
+@click.option('-t', '--truncate', 'no_coverage', flag_value='truncate',
               default=True, help="Ignore contiguous start and end pileup" +
               " regions with no coverage.")
-@click.option('-ta', '--truncate_all', 'truncate', flag_value='truncate_all',
+@click.option('-r', '--remove_no_coverage', 'no_coverage',
+              flag_value='remove_no_coverage',
               help="Ignore all pileup regions with no coverage.")
-@click.option('-dt', '--dont_truncate', 'truncate', flag_value='dont_truncate',
+@click.option('-k', '--keep_no_coverage', 'no_coverage',
+              flag_value='keep_no_coverage',
               help="Do not ignore pileup regions with no coverage.")
 @click.pass_context
 def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
-        output, truncate):
+        output, no_coverage):
     """Quasitools distance produces a measure of evolutionary distance [0 - 1]
        between quasispecies, computed using the angular cosine distance
        function defined below.
@@ -70,8 +72,8 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
        By default the data is normalized and start and end regions of the
        pileup with no coverage are truncated.
 
-       It is possible to truncate all pileup regions, including inner
-       regions, with no coverage, or turn truncation off completely.
+       It is possible to remove all no coverage pileup regions, including inner
+       regions, or keep all no coverage regions in the pileup.
 
        Normalization is done dividing base read counts (A, C, T, G) inside
        every 4-tuple by the sum of the read counts inside the same tuple.
@@ -82,11 +84,11 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         click.echo("Reading input from file(s)  %s" % (file))
 
     click.echo(dist(ctx, reference, bam, normalize, output_distance,
-               startpos, endpos, output, truncate))
+               startpos, endpos, output, no_coverage))
 
 
 def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
-         output, truncate):
+         output, no_coverage):
     if len(bam) < 2:
         return ("\nError: At least two bam file locations are" +
                 " required to perform quasispecies distance comparison")
@@ -122,10 +124,10 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
                 "of nucleotide base positions in pileup" +
                 " (%s)." % pileups.get_pileup_length())
     # if there is no errors so far, proceed with running program
-    modified = modify_pileups(ctx, normalize, startpos, endpos, truncate,
+    modified = modify_pileups(ctx, normalize, startpos, endpos, no_coverage,
                               pileups)
 
-    if (truncate is not 'dont_truncate') and (len(modified) == 0):
+    if (no_coverage is not 'keep_no_coverage') and (len(modified) == 0):
         return ("Error: Entire pileup was truncated due to " +
                 "lack of coverage. Halting program")
     dist = DistanceMatrix(modified)
@@ -146,7 +148,7 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
 # end def
 
 
-def modify_pileups(ctx, normalize, startpos, endpos, truncate, pileups):
+def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
     startpos = int(startpos)
     endpos = int(endpos)
     pileups.select_pileup_range(startpos, endpos)
@@ -155,14 +157,14 @@ def modify_pileups(ctx, normalize, startpos, endpos, truncate, pileups):
                % (pileups.get_pileup_length(), startpos, endpos))
     if normalize:
         pileups.normalize_pileup()
-    if truncate is not 'dont_truncate':
-        if truncate is 'truncate_ends':
+    if no_coverage is not 'keep_no_coverage':
+        if no_coverage is 'truncate':
             pileups.truncate_output()
             click.echo("Truncating positions with no coverage that " +
                        "are contiguous with the start or end " +
                        "position of the pileup only.")
-        elif truncate is 'truncate_all':
-            pileups.truncate_all_output()
+        elif no_coverage is 'remove_no_coverage':
+            pileups.remove_no_coverage()
             click.echo("Truncating all positions with no coverage.")
         # end if
         click.echo("The pileup covers %d positions after truncation."

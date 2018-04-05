@@ -158,7 +158,7 @@ class Pileup_List(object):
         for pileup in self.pileups:
             pileup.select_pileup_range(curr_start, curr_end)
 
-    def truncate_all_output(self):
+    def remove_no_coverage(self):
 
         """
         Deletes all regions of the pileup for all Pileup objects in the pileup
