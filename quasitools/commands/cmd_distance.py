@@ -163,6 +163,10 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
             click.echo("Truncating positions with no coverage that " +
                        "are contiguous with the start or end " +
                        "position of the pileup only.")
+            click.echo("%d positions were truncated on the left" %
+                       pileups.get_num_left_positions_truncated())
+            click.echo("%d positions were truncated on the right" %
+                       pileups.get_num_right_positions_truncated())
         elif no_coverage is 'remove_no_coverage':
             pileups.remove_no_coverage()
             click.echo("Truncating all positions with no coverage.")

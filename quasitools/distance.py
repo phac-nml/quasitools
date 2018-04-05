@@ -43,6 +43,8 @@ class Pileup_List(object):
             Pileup list is constructed.
         """
         self.pileups = pileups
+        self.left_pos_truncated = 0
+        self.right_pos_truncated = 0
 
     def all_have_coverage(self, position):
 
@@ -109,6 +111,34 @@ class Pileup_List(object):
         for pileup in self.pileups:
             pileup.normalize_pileup()
     # end def
+
+    def get_num_left_positions_truncated(self):
+
+        """
+        This functions returns the number of left positions truncated
+        since the last time truncate_output was called.
+
+        INPUT: [None]
+
+        RETURN: [INT] [self.left_pos_truncated]
+
+        POST: [None]
+        """
+        return self.left_pos_truncated
+
+    def get_num_right_positions_truncated(self):
+
+        """
+        This functions returns the number of right positions truncated
+        since the last time truncate_output was called.
+
+        INPUT: [None]
+
+        RETURN: [INT] [self.right_pos_truncated]
+
+        POST: [None]
+        """
+        return self.right_pos_truncated
 
     def get_pileups_as_array(self):
 
@@ -204,20 +234,21 @@ class Pileup_List(object):
             is no coverage are deleted from all pileups in the pileup list.
             If curr_start > curr_end the pileup_list is empty after truncation.
         """
+        left_pos_truncated, right_pos_truncated = 0, 0
         deletion_list_left, deletion_list_right, deletion_list = [], [], []
         num_pos = self.get_pileup_length()
         if len(self.pileups) > 0 and self.get_pileup_length() > 0:
             # iterate through every position in reference
-            left_key = -1
             for left in range(0, num_pos):
                 if not self.all_have_coverage(left):
                     deletion_list_left.insert(0, left)
-                    left_key = left
+                    left_pos_truncated += 1
                 else:
                     break
-            for right in reversed(range(left_key + 1, num_pos)):
+            for right in reversed(range(left_pos_truncated, num_pos)):
                 if not self.all_have_coverage(right):
                     deletion_list_right.append(right)
+                    right_pos_truncated += 1
                 else:
                     break
         # example: [7 6 5 3 2 1] = [7 6 5] + [3 2 1]
