@@ -182,7 +182,7 @@ test2.bam,0.00000000,0.00000000"""
     [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}]] #test 8
 
     pileup3_num_start_truncated = 1
-    pileup3_num_end_truncated = 7
+    pileup3_num_end_truncated = 0
 
     pileup4 = [[{'A': 1, 'T': 0, 'C': 0, 'G': 0},  # test 1 a
                 {'A': 0, 'T': 2, 'C': 0, 'G': 0},  # test 1 b
@@ -287,7 +287,7 @@ test2.bam,0.00000000,0.00000000"""
     pileup10_num_start_truncated = 0
     pileup10_num_end_truncated = 4
 
-    truncate_all_tuple = [(pileup3, pileup3_trunc_all_out)]
+    truncate_all_tuple = [(pileup3, pileup3_trunc_all_out, pileup3_num_start_truncated, pileup3_num_end_truncated)]
 
     truncate_ends_tuple = [(pileup4, pileup4_trunc_ends_out, pileup4_num_start_truncated, pileup4_num_end_truncated),
             (pileup5, pileup5_trunc_ends_out, pileup5_num_start_truncated, pileup5_num_end_truncated),
@@ -312,7 +312,7 @@ test2.bam,0.00000000,0.00000000"""
         self.expected_csv_distance = ""
         self.expected_csv_similarity = ""
 
-    @pytest.fixture(scope="function", params=first_tuple_list)
+    @pytest.fixture(scope="function", params=first_tuple_list, ids=["test","test","test","test","test","test","test"])
     def pileup_outputs(self, request):
         """
         pileup_distance - test fixture for test_get_similarity_matrix function
@@ -445,40 +445,15 @@ test2.bam,0.00000000,0.00000000"""
         assert pileups.get_num_left_positions_truncated() == expected_left_pos_truncated
         assert pileups.get_num_right_positions_truncated() == expected_right_pos_truncated
 
-    @pytest.fixture(scope="function",
-                    params=truncate_all_tuple)
-    def test_remove_no_coverage_fixture(self, request):
+    @pytest.mark.parametrize("pileup,expected_truncated_pileup,expected_left_pos_truncated,expected_right_pos_truncated", truncate_all_tuple)
+    def test_remove_no_coverage(self, pileup, expected_truncated_pileup, expected_left_pos_truncated, expected_right_pos_truncated):
         """
-        test_remove_no_coverage_fixture - calls remove_no_coverage and returns
-        a tuple that can be used for testing this function.
+        test_remove_no_coverage - Checks that the after truncating all
+        empty positions from the pileup that the output is as expected
 
         INPUT:
             [TUPLE] [request.param] - a tuple containing:
             --pileup to be truncated
-            --expected truncated pileup
-
-        RETURN:
-            [TUPLE]
-            --tuple containing actual truncated pileup
-            --expected truncated pileup
-
-        POST:
-            [None]
-        """
-        util = Pileup_List([Pileup(bam) for bam in request.param[0]])
-        util.remove_no_coverage()
-        truncated = util.get_pileups_as_array()
-
-        return (truncated, request.param[1])
-
-    def test_remove_no_coverage(self, test_remove_no_coverage_fixture):
-        """
-        test_remove_no_coverage - Checks that the after truncating all
-        empty positions from the pileup that the output is as expected.
-
-        INPUT:
-            [TUPLE]
-            --tuple containing actual truncated pileup, start pos, end pos
             --expected truncated pileup
             --expected truncated start position
             --expected truncated end position
@@ -488,6 +463,27 @@ test2.bam,0.00000000,0.00000000"""
 
         POST:
             Checks that the expected outputs match the actual output
+        """
+        util = Pileup_List([Pileup(bam) for bam in pileup])
+        util.remove_no_coverage()
+        truncated = util.get_pileups_as_array()
+
+        assert truncated == expected_truncated_pileup
+        assert util.get_num_left_positions_truncated() == expected_left_pos_truncated
+        assert util.get_num_right_positions_truncated() == expected_right_pos_truncated
+
+    def test_select_pileup_range_and_remove_no_coverage(self):
+        """
+        select_pileup_range_and_truncate_output - Checks if the program works
+        as expected when removing all no coverage regions after first selecting
+        a specified range.
+
+        INPUT:
+            [None]
+        RETURN:
+            TODO
+        POST:
+            TODO
         """
 
         pileup = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
@@ -524,12 +520,9 @@ test2.bam,0.00000000,0.00000000"""
         [], #test 4
         []]
 
-        assert test_remove_no_coverage_fixture[0] == test_remove_no_coverage_fixture[1]
-
-    @pytest.fixture(scope="function")
-    def truncate_ends_select_range_fixture(self, request):
+    def select_pileup_range_and_truncate_output(self):
         """
-        truncate_ends_and_select_range_fixture - Checks if the program works
+        select_pileup_range_and_truncate_output - Checks if the program works
         as expected when truncating contiguous start and end regions after
         first selecting a specified range.
 
@@ -540,6 +533,7 @@ test2.bam,0.00000000,0.00000000"""
         POST:
             TODO
         """
+
         pileup11 = [[{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
         [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 2
         [{}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
@@ -549,48 +543,27 @@ test2.bam,0.00000000,0.00000000"""
         user_startpos = 2
         user_endpos = 4
 
-        pileup11_selected_out = [[{'C': 3}, {'G': 4}, {'A': 5}], #test 1
+        pileup_select_range_expected_out = [[{'C': 3}, {'G': 4}, {'A': 5}], #test 1
         [{'C': 3}, {'G': 4}, {}], #test 2
         [{'C': 3}, {'G': 4}, {'A': 5}], #test 3
         [{}, {'G': 4}, {}], #test 4
         [{'C': 3}, {'G': 4}, {'A': 5}]] #test 5
 
-        pileup11_trunc_ends_out = [[{'G': 4}], #test 1
+        pileup_truncate_expected_out = [[{'G': 4}], #test 1
         [{'G': 4}], #test 2
         [{'G': 4}], #test 3
         [{'G': 4}], #test 4
         [{'G': 4}]] #test 5
 
-        return (pileup11, user_startpos, user_endpos, pileup11_selected_out, pileup11_trunc_ends_out)
-
-    def test_truncate_ends_select_range(self, truncate_ends_select_range_fixture):
-        """
-        test_truncate_ends_select_range - tests whether works as expected
-        when truncating ends and selecting custom pileup range
-
-        INPUT:
-            [truncate_ends_select_range_fixture]
-        RETURN:
-            [None]
-        POST:
-            [None]
-        """
-
-        pileup = truncate_ends_select_range_fixture[0]
-        startpos = truncate_ends_select_range_fixture[1]
-        endpos = truncate_ends_select_range_fixture[2]
-        pileup_select_range_out = truncate_ends_select_range_fixture[3]
-        pileup_truncate_ends_out = truncate_ends_select_range_fixture[4]
-
-        util = Pileup_List([Pileup(bam) for bam in pileup])
-        util.select_pileup_range(startpos, endpos)
-        select_pileup = util.get_pileups_as_array()
+        pileups = Pileup_List([Pileup(bam) for bam in pileup11])
+        pileups.select_pileup_range(startpos, endpos)
+        select_pileup = pileups.get_pileups_as_array()
         # assert that the pileup positions before startpos and after endpos
         # have been ignored
-        assert select_pileup == pileup_select_range_out
+        assert select_pileup == pileup_select_range_expected_out
 
-        util.truncate_output()
-        truncated_pileup = util.get_pileups_as_array()
+        pileups.truncate_output()
+        truncated_pileup = pileups.get_pileups_as_array()
 
         # assert that the pileup is truncated now as expected
-        assert truncated_pileup == pileup_truncate_ends_out
+        assert truncated_pileup == pileup_truncate_expected_out
