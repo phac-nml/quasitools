@@ -172,8 +172,8 @@ class Pileup_List(object):
             [None]
 
         POST:
-            The pileups are truncated (sections of the pileup where there
-            is no coverage are deleted from all pileups in the pileup list).
+            Sections of the pileup where there is no coverage are deleted from
+            all pileups in the pileup list.
         """
         deletion_list = []
         if len(self.pileups) > 0 and self.get_pileup_length() > 0:
