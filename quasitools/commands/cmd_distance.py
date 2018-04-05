@@ -157,21 +157,22 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
                % (pileups.get_pileup_length(), startpos, endpos))
     if normalize:
         pileups.normalize_pileup()
+    old_length = pileups.get_pileup_length()
     if no_coverage is not 'keep_no_coverage':
         if no_coverage is 'truncate':
             pileups.truncate_output()
             click.echo("Truncating positions with no coverage that " +
                        "are contiguous with the start or end " +
                        "position of the pileup only.")
-            click.echo("%d positions were truncated on the left" %
-                       pileups.get_num_left_positions_truncated())
-            click.echo("%d positions were truncated on the right" %
-                       pileups.get_num_right_positions_truncated())
         elif no_coverage is 'remove_no_coverage':
             pileups.remove_no_coverage()
             click.echo("Truncating all positions with no coverage.")
         # end if
-        click.echo("The pileup covers %d positions after truncation."
-                   % pileups.get_pileup_length())
+        click.echo("%d positions were truncated on the left" %
+                   pileups.get_num_left_positions_truncated())
+        click.echo("%d positions were truncated on the right" %
+                   pileups.get_num_right_positions_truncated())
+        click.echo("%d positions were removed in total from the pileup" %
+                   (old_length - pileups.get_pileup_length()))
     # end if
     return pileups.get_pileups_as_array()

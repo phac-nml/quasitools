@@ -116,7 +116,7 @@ class Pileup_List(object):
 
         """
         This functions returns the number of left positions truncated
-        since the last time truncate_output was called.
+        since the last time truncate_output or remove_no_coverage was called.
 
         INPUT: [None]
 
@@ -130,7 +130,7 @@ class Pileup_List(object):
 
         """
         This functions returns the number of right positions truncated
-        since the last time truncate_output was called.
+        since the last time truncate_output or remove_no_coverage was called.
 
         INPUT: [None]
 
@@ -205,6 +205,11 @@ class Pileup_List(object):
             Sections of the pileup where there is no coverage are deleted from
             all pileups in the pileup list.
         """
+
+        # First truncate end positions to determine number of contiguous
+        # positions that were truncated on the left and the right.
+        self.truncate_output()
+
         deletion_list = []
         if len(self.pileups) > 0 and self.get_pileup_length() > 0:
             # iterate through every position in reference
@@ -558,6 +563,10 @@ class DistanceMatrix(object):
         baseList = []
         first = 0  # first position of dictionaries in each pileup_list[i]
         last = len(self.pileups[0])  # position after end position
+        # for every pileup in the array of pileups, add a one dimensional array
+        # containing the read counts of each base at each position in the
+        # pileup or zero if the base is not in the dictionary at any position
+        # i.e. it has a read count of zero
         for num in range(0, len(self.pileups)):
             baseList.append([self.pileups[num][dict].get(base, 0)
                             for dict in range(first, last) for base in BASES])
