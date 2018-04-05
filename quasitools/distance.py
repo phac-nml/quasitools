@@ -143,7 +143,8 @@ class Pileup_List(object):
     def get_pileups_as_array(self):
 
         """
-        This function returns the pileups Pileup_List object as a 2D array.
+        This function returns the pileups Pileup_List object as a
+        two-dimensional array of dictionaries.
 
         INPUT: [None]
 
@@ -151,7 +152,23 @@ class Pileup_List(object):
 
         POST: [None]
         """
-        return [pileup.get_pileup_as_array() for pileup in self.pileups]
+        return [pileup.get_pileup_as_array_of_dictionaries()
+                for pileup in self.pileups]
+
+    def get_pileups_as_numerical_array(self):
+
+        """
+        This function returns the pileups Pileup_List object as a
+        two-dimensional numerical array.
+
+        INPUT: [None]
+
+        RETURN: [ARRAY] [pileup_list]
+
+        POST: [None]
+        """
+        return [pileup.get_pileup_as_numerical_array()
+                for pileup in self.pileups]
 
     def get_pileup_length(self):
 
@@ -368,10 +385,24 @@ class Pileup(object):
         self.pileup = new_list
     # end def
 
-    def get_pileup_as_array(self):
+    def get_pileup_as_array_of_dictionaries(self):
 
         """
         This function returns the pileup in the Pileup object.
+
+        INPUT: [None]
+
+        RETURN: [ARRAY OF DICTIONARIES] [pileup]
+
+        POST: [None]
+        """
+        return self.pileup
+
+    def get_pileup_as_numerical_array(self):
+
+        """
+        This function returns the pileup in the Pileup object as a numerical
+        one-dimensional array.
 
         INPUT: [None]
 
@@ -379,7 +410,13 @@ class Pileup(object):
 
         POST: [None]
         """
-        return self.pileup
+        # create a list of the read counts of each base at each position in the
+        # pileup, zero if the base is not in the dictionary at the position
+        first = 0
+        last = len(self.pileup)
+        numerical_array = [self.pileup[dict].get(base, 0)
+                           for dict in range(first, last) for base in BASES]
+        return numerical_array
 
     def get_pileup_length(self):
 
@@ -441,8 +478,10 @@ class DistanceMatrix(object):
     def __init__(self, pileups):
 
         """
-            [ARRAY] [pileups] - list of pileups - each pileup is
-            represented by a list of dictionaries.
+            [ARRAY] [pileups] - two dimensional numerical array that represents
+            a list of pileups - every row represents a pileup and every, four
+            values in each row represents the base counts for a particular
+            position for the pileup.
         """
         self.pileups = pileups
     # end def
@@ -560,19 +599,7 @@ class DistanceMatrix(object):
             The internal pileup object is not changed by this function.
 
         """
-        baseList = []
-        first = 0  # first position of dictionaries in each pileup_list[i]
-        last = len(self.pileups[0])  # position after end position
-        # for every pileup in the array of pileups, add a one dimensional array
-        # containing the read counts of each base at each position in the
-        # pileup or zero if the base is not in the dictionary at any position
-        # i.e. it has a read count of zero
-        for num in range(0, len(self.pileups)):
-            baseList.append([self.pileups[num][dict].get(base, 0)
-                            for dict in range(first, last) for base in BASES])
-        # end for
-        baseList = np.array(baseList)
-        np.set_printoptions(suppress=True)
+        baseList = np.array(self.pileups)
         # create distance matrix for csv file
         simi_matrix = squareform(1 - pdist(baseList, cosine))
         di = np.diag_indices(len(simi_matrix))

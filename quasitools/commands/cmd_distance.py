@@ -175,4 +175,4 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
         click.echo("%d positions were removed in total from the pileup" %
                    (old_length - pileups.get_pileup_length()))
     # end if
-    return pileups.get_pileups_as_array()
+    return pileups.get_pileups_as_numerical_array()

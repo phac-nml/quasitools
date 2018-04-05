@@ -335,7 +335,7 @@ test2.bam,0.00000000,0.00000000"""
             pileup_util.normalize_pileup()
 
         # create matrix with pileup
-        dist = DistanceMatrix(pileup_util.get_pileups_as_array())
+        dist = DistanceMatrix(pileup_util.get_pileups_as_numerical_array())
 
         # get similarity matrix based on pileup list (request.param[1])
         matrix = dist.get_similarity_matrix()
@@ -401,7 +401,7 @@ test2.bam,0.00000000,0.00000000"""
             pileup_util.normalize_pileup()
 
         # create matrix with pileup
-        dist = DistanceMatrix(pileup_util.get_pileups_as_array())
+        dist = DistanceMatrix(pileup_util.get_pileups_as_numerical_array())
 
         # get similarity matrix based on pileup list (request.param[1])
 
