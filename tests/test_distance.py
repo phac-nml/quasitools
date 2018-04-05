@@ -312,7 +312,7 @@ test2.bam,0.00000000,0.00000000"""
         self.expected_csv_distance = ""
         self.expected_csv_similarity = ""
 
-    @pytest.fixture(scope="function", params=first_tuple_list, ids=["test","test","test","test","test","test","test"])
+    @pytest.fixture(scope="function", params=first_tuple_list)
     def pileup_outputs(self, request):
         """
         pileup_distance - test fixture for test_get_similarity_matrix function
