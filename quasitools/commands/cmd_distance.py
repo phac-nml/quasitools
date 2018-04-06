@@ -215,7 +215,7 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
     # converting startpos and endpos back to one-based indexing for click.echo
     click.echo(("The pileup covers %s positions after selecting " +
                "range between original pileup positions %d and %d.")
-               % (pileups.get_pileup_length(), startpos - 1, endpos - 1))
+               % (pileups.get_pileup_length(), startpos + 1, endpos + 1))
     if normalize:
         pileups.normalize_pileup()
     old_length = pileups.get_pileup_length()
