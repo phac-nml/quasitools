@@ -30,7 +30,7 @@ class Pileup_List(object):
     def __init__(self, pileups):
 
         """
-        Creates a array of Pileup objects (which are arrays of dictionaries)
+        Creates a array of Pileup objects.
 
         INPUT:
             [ARRAY OF PILEUPS] [pileups] - list of Pileup objects
