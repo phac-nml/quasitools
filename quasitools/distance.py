@@ -27,8 +27,8 @@ class DistanceMatrix(object):
     def __init__(self, pileups, file_list):
 
         """
-            [ARRAY] [pileups] - two dimensional numerical array that represents
-            a list of pileups - every row represents a pileup and every, four
+            [ARRAY] [pileups] - Two dimensional numerical array that represents
+            a list of pileups. Every row represents a pileup and every four
             values in each row represents the base counts for a particular
             position for the pileup.
 
