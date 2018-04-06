@@ -86,6 +86,7 @@ class Pileup_List(object):
         pileups = []
         for bam in file_list:
             pileups.append(Pileup.construct_pileup(bam, reference_loc))
+
         return Pileup_List(pileups)
     # end def
 
@@ -223,12 +224,14 @@ class Pileup_List(object):
         self.truncate_output()
 
         deletion_list = []
+
         if len(self.pileups) > 0 and self.get_pileup_length() > 0:
             # iterate through every position in reference
             for position in range(0, self.get_pileup_length()):
                 # add pos'n with empty coverage in pileup to deletion_list
                 if not self.all_have_coverage(position):
                     deletion_list.insert(0, position)
+
         for pileup in self.pileups:
             pileup.remove_pileup_positions(deletion_list)
     # end def
@@ -254,6 +257,7 @@ class Pileup_List(object):
         self.left_pos_truncated, self.right_pos_truncated = 0, 0
         deletion_list_left, deletion_list_right, deletion_list = [], [], []
         num_pos = self.get_pileup_length()
+
         if len(self.pileups) > 0 and self.get_pileup_length() > 0:
             # iterate through every position in reference
             for left in range(0, num_pos):
@@ -262,14 +266,17 @@ class Pileup_List(object):
                     self.left_pos_truncated += 1
                 else:
                     break
+
             for right in reversed(range(self.left_pos_truncated, num_pos)):
                 if not self.all_have_coverage(right):
                     deletion_list_right.append(right)
                     self.right_pos_truncated += 1
                 else:
                     break
+
         # example: [7 6 5 3 2 1] = [7 6 5] + [3 2 1]
         deletion_list = deletion_list_right + deletion_list_left
+
         for pileup in self.pileups:
             pileup.remove_pileup_positions(deletion_list)
     # end def
@@ -280,17 +287,20 @@ class Pileup(object):
     def __init__(self, pileup):
 
         """
-        Creates a Pileup (which is an array of dictionaries)
+        Creates a Pileup. The object represents the Pileup of reads
+        mapped against a reference file
 
         INPUT:
             [ARRAY OF DICTIONARIES] [pileup]
+
         RETURN:
             [None]
+
         POST:
             Pileup is constructed.
         """
         self.pileup = pileup
-        self.pileup_length = len(pileup) - 1
+        self.pileup_length = len(self.pileup)
 
     def has_coverage(self, position):
 
@@ -301,13 +311,15 @@ class Pileup(object):
             [INT] [position] - position in the Pileup to check for coverage
 
         RETURN:
-            Returns BOOL true if the Pileup has coverage at the position
+            Returns BOOL true if the Pileup has coverage at the position and
+            false otherwise.
 
         POST:
             None
 
         """
         curr_pos_list = [self.pileup[position].get(base, 0) for base in BASES]
+
         if (np.sum(curr_pos_list) == 0 or self.pileup[position] == {}):
             return False
         else:
@@ -326,6 +338,7 @@ class Pileup(object):
                                     read against reference
 
             [FILE LOCATION] [reference_loc] - location of the reference file
+
         RETURN:
             [ARRAY OF DICTIONARIES] [pileup] - contains read counts for each
                                                base
@@ -353,7 +366,7 @@ class Pileup(object):
         """
         This function converts the read count for each base in each four-tuple
         of bases (A, C, T, G) into a decimal proportion of the total read
-        counts for that four-tuple. The bounds are between 0 and 1.
+        counts for that four-tuple. The bounds are between 0 and 1 inclusive.
         This prevents large read counts for a base from inflating
         the cosine simularity calculation.
 
@@ -361,13 +374,14 @@ class Pileup(object):
 
         RETURN: [None]
 
-        POST: The Pileup object's data is normalized.
+        POST: The Pileup's values are normalized.
         """
         new_list = []
         for i in range(0, len(self.pileup)):
             curr_pos = [self.pileup[i].get(base, 0) for base in BASES]
             total = float(np.sum(curr_pos))
             items = self.pileup[i].items()
+
             # normalize the data for all dictionaries in the pileup
             if total > 0:
                 new_list.append(
@@ -383,7 +397,8 @@ class Pileup(object):
     def get_pileup_as_array_of_dictionaries(self):
 
         """
-        This function returns the pileup in the Pileup object.
+        This function returns the pileup in the Pileup object as an array of
+        dictionaries.
 
         INPUT: [None]
 
@@ -420,7 +435,7 @@ class Pileup(object):
 
         INPUT: [None]
 
-        RETURN: [INT] [len(self.pileups[0])]
+        RETURN: [INT] [len(self.pileup)]
 
         POST: [None]
         """
@@ -434,14 +449,14 @@ class Pileup(object):
 
         INPUT:
             [ARRAY] [deletion_list] - list of positions to delete in descending
-                                      order
+                                      order of indices.
 
         RETURN:
             [None]
 
         POST:
             The specified positions in deletion_list have been removed from
-            the self.pileup in the Pileup object.
+            the Pileup.
         """
         for position in deletion_list:
             del self.pileup[position]
@@ -457,8 +472,10 @@ class Pileup(object):
             (between zero inclusive and the length of the Pileup exclusive).
             [int] [curr_end] - current end position. Must be zero-indexed
             (between zero inclusive and the length of the Pileup exclusive).
+
         RETURN:
             [None]
+
         POST:
             Positions before curr_start and after curr_end are ignored in the
             Pileup.

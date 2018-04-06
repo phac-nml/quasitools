@@ -118,11 +118,13 @@ class DistanceMatrix(object):
         # convert from 2d array to csv formatted string
         files = [file for file in list(self.file_list)]
         csvOut = 'Quasispecies,' + ','.join(files)
+
         for row in range(0, len(matrix)):
             csvOut += "\n"
             currElements = ['%.08f' % element for element in matrix[row]]
             csvOut += ','.join([self.file_list[row]] + currElements)
         # end for
+
         return csvOut
     # end def
 
@@ -148,9 +150,11 @@ class DistanceMatrix(object):
 
         """
         baseList = np.array(self.pileups)
+
         # create distance matrix for csv file
         simi_matrix = squareform(1 - pdist(baseList, cosine))
         di = np.diag_indices(len(simi_matrix))
         simi_matrix[di] = 1.0
         simi_matrix = simi_matrix.tolist()
+
         return simi_matrix

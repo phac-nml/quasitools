@@ -136,12 +136,14 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     if pileups.get_pileup_length() == 0:
         return ("Error: Empty pileup was produced from BAM files." +
                 "Halting program")
+
     click.echo("The start position is %d." % startpos)
     click.echo("The end position is %d." % endpos)
     click.echo("Constructed pileup from reference.")
     # click.echo the number of positions in pileup
     click.echo("The pileup covers %d positions before modifications." %
                pileups.get_pileup_length())
+
     # indicate whether the user-specified start and end position is out
     # of bounds (comparing to actual number of positions in pileup)
     if startpos > pileups.get_pileup_length():
@@ -165,19 +167,23 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     if (no_coverage is not 'keep_no_coverage') and (len(modified) == 0):
         return ("Error: Entire pileup was truncated due to " +
                 "lack of coverage. Halting program")
+
     dist = DistanceMatrix(modified, bam)
+
     if output_distance:
         click.echo("Outputting an angular cosine distance matrix.")
         if output:
             output.write(dist.get_distance_matrix_as_csv())
         else:
             click.echo(dist.get_distance_matrix_as_csv())
+
     else:
         click.echo("Outputting a cosine similarity matrix.")
         if output:
             output.write(dist.get_similarity_matrix_as_csv())
         else:
             click.echo(dist.get_similarity_matrix_as_csv())
+
     # end if
     return "Complete!"
 # end def
@@ -212,13 +218,17 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
     startpos = int(startpos)
     endpos = int(endpos)
     pileups.select_pileup_range(startpos, endpos)
+
     # converting startpos and endpos back to one-based indexing for click.echo
     click.echo(("The pileup covers %s positions after selecting " +
                "range between original pileup positions %d and %d.")
                % (pileups.get_pileup_length(), startpos + 1, endpos + 1))
+
     if normalize:
         pileups.normalize_pileups()
+
     old_length = pileups.get_pileup_length()
+
     if no_coverage is not 'keep_no_coverage':
         if no_coverage is 'truncate':
             pileups.truncate_output()
@@ -228,7 +238,7 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
         elif no_coverage is 'remove_no_coverage':
             pileups.remove_no_coverage()
             click.echo("Truncating all positions with no coverage.")
-        # end if
+
         click.echo("%d positions were truncated on the left" %
                    pileups.get_num_left_positions_truncated())
         click.echo("%d positions were truncated on the right" %

@@ -334,6 +334,7 @@ class TestPileups:
         pileups = Pileup_List([Pileup(bam) for bam in pileup])
         pileups.select_pileup_range(startpos, endpos)
         select_pileup = pileups.get_pileups_as_array()
+
         # assert that the pileup positions before startpos and after endpos
         # have been ignored
         assert select_pileup == pileup_select_range_expected_out
