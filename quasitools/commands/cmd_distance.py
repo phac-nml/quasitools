@@ -21,7 +21,7 @@ from quasitools.distance import DistanceMatrix
 
 
 @click.command('distance', short_help='Calculate the evolutionary distance'
-               'between viral quasispecies using cosine similarity.')
+               'between viral quasispecies using angular cosine distances.')
 @click.argument('reference', nargs=1, required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('bam', nargs=-1,
@@ -92,6 +92,33 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
 
 def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
          output, no_coverage):
+
+    """
+    dist - Performs the main part of the program
+
+    INPUT:
+        [CONTEXT] [ctx]
+        [FASTA FILE LOCATION] [reference]
+        [BAM FILE LOCATION] [bam]
+        [BOOL] [normalize/dont_normalize]
+        [BOOL] [output_distance/output_similarity]
+        [INT] [startpos]
+        [INT] [endpos]
+        [STRING] [output]
+            Output the CSV-formatted matrix output in a file
+            instead of in the terminal.
+        [STRING] [truncate/remove_no_coverage/keep_no_coverage]
+            Options to truncate low-coverage regions on the ends of the pileup,
+            ignore all low coverage regions, or keep all low coverage regions
+
+    RETURN:
+        [STRING] [error message(s) if applicable. Otherwise "Complete!"]
+
+    POST:
+        The calling function, cli, will click.echo the string that is returned.
+
+    """
+
     if len(bam) < 2:
         return ("\nError: At least two bam file locations are" +
                 " required to perform quasispecies distance comparison")
@@ -152,6 +179,31 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
 
 
 def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
+
+    """
+    modify_pileups - Performs normalization, truncation and/or selecting the
+                     range of the pileup, if these options are enabled.
+
+    INPUT:
+        [CONTEXT] [ctx]
+        [BOOL] [normalize/dont_normalize]
+        [INT] [startpos]
+        [INT] [endpos]
+        [STRING] [no_coverage] [truncate/remove_no_coverage/keep_no_coverage]
+            Options to truncate low-coverage regions on the ends of the pileup,
+            ignore all low coverage regions, or keep all low coverage regions
+        [PILEUP_LIST] [pileups]
+            The pileups to be modified
+
+    RETURN:
+        [2D ARRAY] [pileups]
+            The modified pileups, returned as a two-dimensional array.
+
+    POST:
+        The calling function, dist, will use the 2D array that is returned.
+
+    """
+
     startpos = int(startpos)
     endpos = int(endpos)
     pileups.select_pileup_range(startpos, endpos)
