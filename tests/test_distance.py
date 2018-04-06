@@ -314,6 +314,7 @@ test2.bam,0.00000000,0.00000000"""
     TESTS
     """
 
+    @classmethod
     def setup_class(self):
         self.expected_csv_distance = ""
         self.expected_csv_similarity = ""
@@ -448,7 +449,7 @@ test2.bam,0.00000000,0.00000000"""
         INPUT:
             [2D ARRAY OF DICTIONARIES] [pileup] # to be truncated
             [2D ARRAY OF DICTIONARIES] [expected_truncated_pileup]
-            [2D ARRAY OF DICTIONARISE] [expected_left_pos_truncated]
+            [2D ARRAY OF DICTIONARIES] [expected_left_pos_truncated]
             # number of contiguous left positions that were truncated
             [2D ARRAY OF DICTIONARIES] [expected_right_pos_truncated]
             # number of contiguous right positions that were truncated

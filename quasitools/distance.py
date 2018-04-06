@@ -190,12 +190,10 @@ class Pileup_List(object):
         Ignores all regions of the pileup before curr_start and after curr_end
 
         INPUT:
-            [int] [curr_start] - current start position. Must be between zero
-                                 inclusive and the length of the pileup,
-                                 exclusive.
-            [int] [curr_end] - current end position. Must be between zero
-                               inclusive and the length of the pileup,
-                               exclusive.
+            [int] [curr_start] - current start position. Must be zero-indexed
+            (between zero inclusive and the length of the Pileup exclusive).
+            [int] [curr_end] - current end position. Must be zero-indexed
+            (between zero inclusive and the length of the Pileup exclusive).
         RETURN:
             [None]
         POST:
@@ -458,12 +456,10 @@ class Pileup(object):
         Ignores all regions of the Pileup before curr_start and after curr_end
 
         INPUT:
-            [int] [curr_start] - current start position. Must be between zero
-                                 inclusive and the length of the Pileup
-                                 exclusive.
-            [int] [curr_end] - current end position. Must be between zero
-                               inclusive and the length of the Pileup
-                               exclusive.
+            [int] [curr_start] - current start position. Must be zero-indexed
+            (between zero inclusive and the length of the Pileup exclusive).
+            [int] [curr_end] - current end position. Must be zero-indexed
+            (between zero inclusive and the length of the Pileup exclusive).
         RETURN:
             [None]
         POST:

@@ -35,14 +35,14 @@ from quasitools.distance import DistanceMatrix
               " metric)")
 @click.option('-s', '--startpos', type=int, help="Set the start base " +
               "position of the reference to use in the distance or " +
-              "similarity calculation. Start positions must be greater than " +
-              "zero and less than the length of the base pileup (number of " +
-              "positions to be compared with the reference.)")
+              "similarity calculation. Start position is one-indexed. " +
+              " I.e. it must be between one and the total length of the " +
+              "reference sequence(s), inclusive.")
 @click.option('-e', '--endpos', type=int, help="Set the end base position" +
               " of the reference to use in the distance or similarity "
-              "calculation. End positions must be greater than zero and less" +
-              " than the length of the base pileup (number of positions to" +
-              " be compared with the reference.)")
+              "calculation. End position is one-indexed. " +
+              " I.e. it must be between one and the total length of the " +
+              "reference sequence(s), inclusive.")
 @click.option('-o', '--output', type=click.File('w'), help="Output the " +
               "quasispecies distance or similarity matrix in CSV format in a" +
               " file.")
@@ -83,8 +83,11 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     for file in bam:
         click.echo("Reading input from file(s)  %s" % (file))
 
+    # we pass startpos - 1 and endpos - 1, converting from one-indexed start &
+    # end positions to zero-indexed start & end positions, which are expected
+    # from the rest of the program.
     click.echo(dist(ctx, reference, bam, normalize, output_distance,
-               startpos, endpos, output, no_coverage))
+               startpos - 1, endpos - 1, output, no_coverage))
 
 
 def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
