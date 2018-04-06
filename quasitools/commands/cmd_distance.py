@@ -83,11 +83,8 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     for file in bam:
         click.echo("Reading input from file(s)  %s" % (file))
 
-    # we pass startpos - 1 and endpos - 1, converting from one-indexed start &
-    # end positions to zero-indexed start & end positions, which are expected
-    # from the rest of the program.
     click.echo(dist(ctx, reference, bam, normalize, output_distance,
-               startpos - 1, endpos - 1, output, no_coverage))
+               startpos, endpos, output, no_coverage))
 
 
 def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
@@ -123,17 +120,18 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         return ("\nError: At least two bam file locations are" +
                 " required to perform quasispecies distance comparison")
     # indicate if the start or end position is < 0 or a priori invalid
-    if type(startpos) == int and int(startpos) < 0:
-        return "\nError: Start position must be >= 0."
-    if type(endpos) == int and int(endpos) < 0:
-        return "\nError: End position must be >= 0."
+    if type(startpos) == int and int(startpos) < 1:
+        return "\nError: Start position must be >= 1."
+    if type(endpos) == int and int(endpos) < 1:
+        return "\nError: End position must be >= 1."
     if (type(startpos) == int and type(endpos) == int and (startpos > endpos)):
         return ("\nError: Start position must be <= end position")
     pileups = Pileup_List.construct_array_of_pileups(bam, reference)
+
     if startpos is None:
-        startpos = 0
+        startpos = 1
     if endpos is None:
-        endpos = pileups.get_pileup_length() - 1
+        endpos = pileups.get_pileup_length()
 
     if pileups.get_pileup_length() == 0:
         return ("Error: Empty pileup was produced from BAM files." +
@@ -145,14 +143,20 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     click.echo("The pileup covers %d positions before modifications.")
     # indicate whether the user-specified start and end position is out
     # of bounds (comparing to actual number of positions in pileup)
-    if startpos >= pileups.get_pileup_length():
-        return ("\nError: Start position must be less than " +
+    if startpos > pileups.get_pileup_length():
+        return ("\nError: Start position must be less than or equal to " +
                 " number of nucleotide base positions in pileup" +
                 " (%s)." % pileups.get_pileup_length())
-    if endpos >= pileups.get_pileup_length():
-        return ("\nError: End position must be less than length " +
+    if endpos > pileups.get_pileup_length():
+        return ("\nError: End position must be less than or equal to length " +
                 "of nucleotide base positions in pileup" +
                 " (%s)." % pileups.get_pileup_length())
+
+    # we convert the start and end positions from one-based indexing to
+    # zero-based indexing which is expected by distance.py and pileup.py
+    startpos -= 1
+    endpos -= 1
+
     # if there is no errors so far, proceed with running program
     modified = modify_pileups(ctx, normalize, startpos, endpos, no_coverage,
                               pileups)
