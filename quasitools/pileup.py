@@ -72,8 +72,7 @@ class Pileup_List(object):
     def construct_pileup_list(file_list, reference_loc):
 
         """
-        Creates an array of Pileup objects (which contain arrays of
-        dictionaries)
+        Creates a Pileup_List object
         INPUT:
             [FILE LOCATION TUPLE] [file_list] - files names which represent
                                                 a pileup
