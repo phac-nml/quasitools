@@ -196,7 +196,7 @@ test2.bam,0.00000000,0.00000000"""
 
         # if boolean normalize flag (request.param[0]) is true normalize
         if request.param[0] is True:
-            pileups.normalize_pileup()
+            pileups.normalize_pileups()
 
         # create matrix with pileup
         dist = DistanceMatrix(pileups.get_pileups_as_numerical_array(), request.param[2])

@@ -89,7 +89,7 @@ class Pileup_List(object):
         return Pileup_List(pileups)
     # end def
 
-    def normalize_pileup(self):
+    def normalize_pileups(self):
 
         """
         This function converts the read count for each base in each four-tuple

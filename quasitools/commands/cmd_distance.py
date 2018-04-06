@@ -217,7 +217,7 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
                "range between original pileup positions %d and %d.")
                % (pileups.get_pileup_length(), startpos + 1, endpos + 1))
     if normalize:
-        pileups.normalize_pileup()
+        pileups.normalize_pileups()
     old_length = pileups.get_pileup_length()
     if no_coverage is not 'keep_no_coverage':
         if no_coverage is 'truncate':
