@@ -140,7 +140,8 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     click.echo("The end position is %d." % endpos)
     click.echo("Constructed pileup from reference.")
     # click.echo the number of positions in pileup
-    click.echo("The pileup covers %d positions before modifications.")
+    click.echo("The pileup covers %d positions before modifications." %
+               pileups.get_pileup_length())
     # indicate whether the user-specified start and end position is out
     # of bounds (comparing to actual number of positions in pileup)
     if startpos > pileups.get_pileup_length():
@@ -211,9 +212,10 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
     startpos = int(startpos)
     endpos = int(endpos)
     pileups.select_pileup_range(startpos, endpos)
+    # converting startpos and endpos back to one-based indexing for click.echo
     click.echo(("The pileup covers %s positions after selecting " +
                "range between original pileup positions %d and %d.")
-               % (pileups.get_pileup_length(), startpos, endpos))
+               % (pileups.get_pileup_length(), startpos - 1, endpos - 1))
     if normalize:
         pileups.normalize_pileup()
     old_length = pileups.get_pileup_length()
