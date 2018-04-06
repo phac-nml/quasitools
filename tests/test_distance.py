@@ -170,13 +170,13 @@ test2.bam,0.00000000,0.00000000"""
 
         INPUT:
             [LIST OF TUPLES]
-            ---[BOOL] [normalize] # normalized or not
-            ---[ARRAY] [pileup list]
-            ---[ARRAY] [pileup_files] # file names corresponding to pileups
-            ---[ARRAY] normalized or unnormalized similarity csv-format output
-            ---[ARRAY] normalized or unnormalized distance csv-format output
-            ---[INT or NONE] [startpos or default if NONE]
-            ---[INT or NONE] [endpos or default if NONE]
+            request.param[0]---[BOOL] [normalize] # normalized or not
+            request.param[1]---[ARRAY] [pileup list]
+            request.param[2]---[ARRAY] [pileup_files] # file names corresponding to pileups
+            request.param[3]---[ARRAY] normalized or unnormalized similarity csv-format output
+            request.param[4]---[ARRAY] normalized or unnormalized distance csv-format output
+            request.param[5]---[INT or NONE] [startpos or default if NONE]
+            request.param[6]---[INT or NONE] [endpos or default if NONE]
 
         RETURN:
             [DistanceMatrix] [matrix with the pileup to be used]
