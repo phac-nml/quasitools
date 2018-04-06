@@ -204,8 +204,8 @@ class Pileup_List(object):
 
         """
         Deletes all regions of the pileup for all Pileup objects in the pileup
-        list where there is no coverage (all four bases - A, C, T, and G are
-        absent).
+        list where there is no coverage for at least one pileup (all four
+        bases - A, C, T, and G are absent).
 
         INPUT:
             [None]
@@ -214,8 +214,8 @@ class Pileup_List(object):
             [None]
 
         POST:
-            Sections of the pileup where there is no coverage are deleted from
-            all pileups in the pileup list.
+            Sections of the pileup where there is no coverage for at least one
+            pileup are deleted from all pileups in the pileup list.
         """
 
         # First truncate end positions to determine number of contiguous
