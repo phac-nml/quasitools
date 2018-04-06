@@ -169,8 +169,9 @@ class Pileup_List(object):
     def get_pileup_length(self):
 
         """
-        This function returns the length of the first pileup in pileups.
-        The length of each pileup should be the same.
+        This function returns the (single) length of all the pileups in the
+        list of pileups. The function assumes the lengths of all the pileups
+        are the same.
 
         INPUT: [None]
 
