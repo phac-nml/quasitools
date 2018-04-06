@@ -192,9 +192,9 @@ class TestPileups:
     TESTS
     """
 
-    def test_construct_array_of_pileups(self):
+    def test_construct_pileup_list(self):
         """
-        test_construct_array_of_pileups - Checks that the pileup length and the
+        test_construct_pileup_list - Checks that the pileup length and the
         first few indices of the pileup are correct.
 
         INPUT:
@@ -209,7 +209,7 @@ class TestPileups:
 
         test_cp_files = ((TEST_PATH+"/data/quasi1.bam"), (TEST_PATH+"/data/quasi2.bam"))
         test_cp_ref = TEST_PATH+"/data/hxb2_pol.fas"
-        bamPileup = Pileup_List.construct_array_of_pileups(test_cp_files, test_cp_ref)
+        bamPileup = Pileup_List.construct_pileup_list(test_cp_files, test_cp_ref)
         pileup_as_array = bamPileup.get_pileups_as_array()
 
         assert len(pileup_as_array)==2

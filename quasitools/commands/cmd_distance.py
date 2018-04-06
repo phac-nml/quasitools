@@ -126,7 +126,7 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         return "\nError: End position must be >= 1."
     if (type(startpos) == int and type(endpos) == int and (startpos > endpos)):
         return ("\nError: Start position must be <= end position")
-    pileups = Pileup_List.construct_array_of_pileups(bam, reference)
+    pileups = Pileup_List.construct_pileup_list(bam, reference)
 
     if startpos is None:
         startpos = 1

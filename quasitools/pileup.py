@@ -69,7 +69,7 @@ class Pileup_List(object):
     # end def
 
     @staticmethod
-    def construct_array_of_pileups(file_list, reference_loc):
+    def construct_pileup_list(file_list, reference_loc):
 
         """
         Creates an array of Pileup objects (which contain arrays of
