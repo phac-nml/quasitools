@@ -16,7 +16,7 @@ specific language governing permissions and limitations under the License.
 """
 
 import click
-from quasitools.distance import Pileup_List
+from quasitools.pileup import Pileup_List
 from quasitools.distance import DistanceMatrix
 
 
