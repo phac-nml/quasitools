@@ -47,10 +47,10 @@ from quasitools.distance import DistanceMatrix
               "quasispecies distance or similarity matrix in CSV format in a" +
               " file.")
 @click.option('-t', '--truncate', 'no_coverage', flag_value='truncate',
-              default=True, help="Ignore contiguous start and end pileup" +
+              help="Ignore contiguous start and end pileup" +
               " regions with no coverage.")
 @click.option('-r', '--remove_no_coverage', 'no_coverage',
-              flag_value='remove_no_coverage',
+              default=True, flag_value='remove_no_coverage',
               help="Ignore all pileup regions with no coverage.")
 @click.option('-k', '--keep_no_coverage', 'no_coverage',
               flag_value='keep_no_coverage',
@@ -69,11 +69,12 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
        The tool outputs by default an angular cosine distance matrix.
        Use the flag defined below to instead output a similarity matrix.
 
-       By default the data is normalized and start and end regions of the
-       pileup with no coverage are truncated.
+       By default the data is normalized and all regions of the pileup with
+       no coverage are removed.
 
-       It is possible to remove all no coverage pileup regions, including inner
-       regions, or keep all no coverage regions in the pileup.
+       It is possible to truncate only the contiguous start and end regions of
+       the pileup that have no coverage, or keep all no coverage regions in
+       the pileup.
 
        Normalization is done dividing base read counts (A, C, T, G) inside
        every 4-tuple by the sum of the read counts inside the same tuple.
