@@ -287,8 +287,9 @@ class Pileup(object):
     def __init__(self, pileup):
 
         """
-        Creates a Pileup. The object represents the Pileup of reads
-        mapped against a reference file
+        Creates a Pileup. A Pileup is a vector constructed by aligning all
+        quasispecies reads to a reference and observing the number of A, G, C,
+        and T nucleotides aligned at each position of the reference.
 
         INPUT:
             [ARRAY OF DICTIONARIES] [pileup]
