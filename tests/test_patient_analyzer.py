@@ -40,18 +40,18 @@ class TestPatientAnalyzer:
         # Test defaults
         self.patient_analyzer = PatientAnalyzer(id="test",reads=READS,
                                  reference=REFERENCE,
-                                 output_dir=OUTPUT_DIR, 
+                                 output_dir=OUTPUT_DIR,
                                  genes_file=GENES_FILE,
                                  mutation_db=MUTATION_DB,
                                  quiet=False, consensus_pct=20)
-        
+
 
     def test_combine_reads(self):
         # Combine the fwd and reverse into one file
         reads = "%s/combined_reads.fastq" % OUTPUT_DIR
         cat_cmd = "cat %s %s > %s" % (FORWARD, REVERSE, reads)
         os.system(cat_cmd)
-        
+
         assert os.path.isfile("%s/combined_reads.fastq" % OUTPUT_DIR)
 
     def test_filter_reads(self):
@@ -66,19 +66,18 @@ class TestPatientAnalyzer:
         seq_rec_obj = Bio.SeqIO.parse(self.patient_analyzer.filtered_reads, "fastq")
 
         for seq in seq_rec_obj:
-            avg_score = filters["score_cutoff"] + 1
-            avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
-                         float(len(seq.letter_annotations['phred_quality'])))
-            
+            median_score = filters["score_cutoff"] + 1
+            median_score = self.patient_analyzer.get_median_score(seq)
+
             # check that length and score are both over threshold
             assert self.patient_analyzer.filtered["status"] == 1
-            
+
             assert len(seq.seq) >= filters["length_cutoff"] and \
-                avg_score >= filters["score_cutoff"]
+                median_score >= filters["score_cutoff"]
 
     def test_generate_bam(self):
         assert not os.path.isfile("%s/align.bam" % OUTPUT_DIR)
-        
+
         self.patient_analyzer.generate_bam()
 
         assert os.path.isfile("%s/align.bam" % OUTPUT_DIR)
@@ -110,8 +109,7 @@ class TestPatientAnalyzer:
 
         assert not os.path.isfile("%s/tmp.bam" % OUTPUT_DIR)
         assert not os.path.isfile("%s/tmp.sam" % OUTPUT_DIR)
-    
+
         # Remove the output directory so that multiple tests (python 2.x, 3.x, etc.)
         # can run without erroring out with "File/directory exists"
         shutil.rmtree("%s" % OUTPUT_DIR)
-
