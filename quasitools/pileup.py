@@ -180,7 +180,7 @@ class Pileup_List(object):
 
         POST: [None]
         """
-        return len(self.pileups[0])
+        return len(self.pileups[0].get_pileup_as_array_of_dictionaries())
 
     def select_pileup_range(self, curr_start, curr_end):
 

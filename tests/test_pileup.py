@@ -211,10 +211,13 @@ class TestPileups:
         test_cp_ref = TEST_PATH+"/data/hxb2_pol.fas"
         bamPileup = Pileup_List.construct_pileup_list(test_cp_files, test_cp_ref)
         pileup_as_array = bamPileup.get_pileups_as_array()
+        pileup_as_numerical_array = bamPileup.get_pileups_as_numerical_array()
 
         assert len(pileup_as_array)==2
         assert len(pileup_as_array[0])==2844
         assert len(pileup_as_array[1])==2844
+        assert len(pileup_as_numerical_array[0])==(2844 * 4)
+        assert len(pileup_as_numerical_array[1])==(2844 * 4)
         assert pileup_as_array[0][0:10] == [{'C': 12}, {'C': 12}, {'T': 12}, {'C': 12}, {'G': 2, 'C': 3, 'T': 1, 'A': 6}, {'G': 12}, {'G': 12}, {'T': 12}, {'C': 12}, {'G': 2, 'C': 3, 'T': 1, 'A': 6}]
         assert pileup_as_array[1][0:10] == [{'C': 12}, {'C': 12}, {'T': 12}, {'C': 12}, {'A': 6, 'C': 5, 'G': 1}, {'G': 12}, {'A': 4, 'G': 8}, {'T': 12}, {'C': 12}, {'A': 7, 'T': 1, 'C': 3, 'G': 1}]
     #end def
