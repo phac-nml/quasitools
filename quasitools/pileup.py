@@ -180,7 +180,7 @@ class Pileup_List(object):
 
         POST: [None]
         """
-        return self.pileups[0].get_pileup_length()
+        return len(self.pileups[0])
 
     def select_pileup_range(self, curr_start, curr_end):
 
@@ -301,7 +301,6 @@ class Pileup(object):
             Pileup is constructed.
         """
         self.pileup = pileup
-        self.pileup_length = len(self.pileup)
 
     def has_coverage(self, position):
 
@@ -428,19 +427,6 @@ class Pileup(object):
         numerical_array = [self.pileup[dict].get(base, 0)
                            for dict in range(first, last) for base in BASES]
         return numerical_array
-
-    def get_pileup_length(self):
-
-        """
-        This function returns the length of the Pileup list in the object.
-
-        INPUT: [None]
-
-        RETURN: [INT] [len(self.pileup)]
-
-        POST: [None]
-        """
-        return len(self.pileup)
 
     def remove_pileup_positions(self, deletion_list):
 
