@@ -17,10 +17,15 @@ specific language governing permissions and limitations under the License.
 
 import pytest
 import os
+
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.pileup import Pileup_List
 from quasitools.pileup import Pileup
+from quasitools import cli
+from quasitools.commands.cmd_distance import dist
+
+from click.testing import CliRunner
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -73,7 +78,7 @@ class TestPileups:
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {}, {'G':  8}], #test 7
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}, {'T': 6}, {'C': 7}, {'G': 8}]] #test 8
 
-    pileup3_trunc_all_out = [[{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}], #test 1
+    pileup3_remove_out = [[{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}], #test 1
     [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}], #test 2
     [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}], #test 3
     [{'T': 2}, {'C': 3}, {'A': 5}, {'T': 6}, {'G': 8}], #test 4
@@ -92,7 +97,7 @@ class TestPileups:
                 {'A': 0, 'T': 2, 'C': 0, 'G': 0},  # test 2 b
                 {'A': 0, '-': 5, 'C': 0, 'G': 0}]]  # test 2 c
 
-    pileup4_trunc_ends_out = [[{'A': 0, 'T': 2, 'C': 0, 'G': 0}], #test 1
+    pileup4_truncated_out = [[{'A': 0, 'T': 2, 'C': 0, 'G': 0}], #test 1
                             [{'A': 0, 'T': 2, 'C': 0, 'G': 0}]]
 
     pileup4_num_start_truncated = 1
@@ -104,7 +109,7 @@ class TestPileups:
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 4
     [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}]] #test 5
 
-    pileup5_trunc_ends_out = [[{'T': 2}],
+    pileup5_truncated_out = [[{'T': 2}],
                             [{'T': 2}],
                             [{'T': 2}],
                             [{'T': 2}],
@@ -119,7 +124,7 @@ class TestPileups:
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 4
     [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}]] #test 5
 
-    pileup6_trunc_ends_out = [[{'C': 3}],
+    pileup6_truncated_out = [[{'C': 3}],
                             [{'C': 3}],
                             [{'C': 3}],
                             [{'C': 3}],
@@ -134,7 +139,7 @@ class TestPileups:
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
     [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}]] #test 5
 
-    pileup7_trunc_ends_out = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    pileup7_truncated_out = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
@@ -149,7 +154,7 @@ class TestPileups:
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
 
-    pileup8_trunc_ends_out = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
+    pileup8_truncated_out = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
     [{'A': 1}, {}, {'C': 3}, {'G': 4}, {'A': 5}], #test 2
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 3
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 4
@@ -164,7 +169,7 @@ class TestPileups:
     [{}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 4
     [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
 
-    pileup9_trunc_ends_out = [[{'T': 2}, {'C': 3}, {'G': 4}], #test 1
+    pileup9_truncated_out = [[{'T': 2}, {'C': 3}, {'G': 4}], #test 1
     [{'T': 2}, {'C': 3}, {'G': 4}], #test 2
     [{'T': 2}, {'C': 3}, {'G': 4}], #test 3
     [{'T': 2}, {'C': 3}, {'G': 4}], #test 4
@@ -179,7 +184,7 @@ class TestPileups:
     [{'A': 1}, {'T': 2}, {}, {'G': 4}, {}], #test 4
     [{'A': 1}, {}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
 
-    pileup10_trunc_ends_out = [[{'A': 1}], #test 1
+    pileup10_truncated_out = [[{'A': 1}], #test 1
     [{'A': 1}], #test 2
     [{'A': 1}], #test 3
     [{'A': 1}], #test 4
@@ -191,6 +196,13 @@ class TestPileups:
     """
     TESTS
     """
+    @classmethod
+    def setup_class(self):
+        self.bam1 = TEST_PATH + '/data/quasi1.bam'
+        self.bam2 = TEST_PATH + '/data/quasi2.bam'
+        self.test_cp_files = (self.bam1, self.bam2)
+        self.test_cp_ref = TEST_PATH+'/data/hxb2_pol.fas'
+        self.references = parse_references_from_fasta(self.test_cp_ref)
 
     def test_construct_pileup_list(self):
         """
@@ -207,9 +219,7 @@ class TestPileups:
             [None]
         """
 
-        test_cp_files = ((TEST_PATH+"/data/quasi1.bam"), (TEST_PATH+"/data/quasi2.bam"))
-        test_cp_ref = TEST_PATH+"/data/hxb2_pol.fas"
-        bamPileup = Pileup_List.construct_pileup_list(test_cp_files, test_cp_ref)
+        bamPileup = Pileup_List.construct_pileup_list(self.test_cp_files, self.references)
         pileup_as_array = bamPileup.get_pileups_as_array()
         pileup_as_numerical_array = bamPileup.get_pileups_as_numerical_array()
 
@@ -223,13 +233,13 @@ class TestPileups:
     #end def
 
     @pytest.mark.parametrize("pileup,expected_truncated_pileup,expected_left_pos_truncated,expected_right_pos_truncated",
-                             [(pileup4, pileup4_trunc_ends_out, pileup4_num_start_truncated, pileup4_num_end_truncated),
-                              (pileup5, pileup5_trunc_ends_out, pileup5_num_start_truncated, pileup5_num_end_truncated),
-                              (pileup6, pileup6_trunc_ends_out, pileup6_num_start_truncated, pileup6_num_end_truncated),
-                              (pileup7, pileup7_trunc_ends_out, pileup7_num_start_truncated, pileup7_num_end_truncated),
-                              (pileup8, pileup8_trunc_ends_out, pileup8_num_start_truncated, pileup8_num_end_truncated),
-                              (pileup9, pileup9_trunc_ends_out, pileup9_num_start_truncated, pileup9_num_end_truncated),
-                              (pileup10, pileup10_trunc_ends_out, pileup10_num_start_truncated, pileup10_num_end_truncated)])
+                             [(pileup4, pileup4_truncated_out, pileup4_num_start_truncated, pileup4_num_end_truncated),
+                              (pileup5, pileup5_truncated_out, pileup5_num_start_truncated, pileup5_num_end_truncated),
+                              (pileup6, pileup6_truncated_out, pileup6_num_start_truncated, pileup6_num_end_truncated),
+                              (pileup7, pileup7_truncated_out, pileup7_num_start_truncated, pileup7_num_end_truncated),
+                              (pileup8, pileup8_truncated_out, pileup8_num_start_truncated, pileup8_num_end_truncated),
+                              (pileup9, pileup9_truncated_out, pileup9_num_start_truncated, pileup9_num_end_truncated),
+                              (pileup10, pileup10_truncated_out, pileup10_num_start_truncated, pileup10_num_end_truncated)])
     def test_truncate_output(self, pileup, expected_truncated_pileup, expected_left_pos_truncated, expected_right_pos_truncated):
         """
         test_truncate_output - Checks that the expected truncated outputs
@@ -258,7 +268,7 @@ class TestPileups:
         assert pileups.get_num_right_positions_truncated() == expected_right_pos_truncated
 
     @pytest.mark.parametrize("pileup,expected_truncated_pileup,expected_left_pos_truncated,expected_right_pos_truncated",
-                             [(pileup3, pileup3_trunc_all_out, pileup3_num_start_truncated, pileup3_num_end_truncated)])
+                             [(pileup3, pileup3_remove_out, pileup3_num_start_truncated, pileup3_num_end_truncated)])
     def test_remove_no_coverage(self, pileup, expected_truncated_pileup, expected_left_pos_truncated, expected_right_pos_truncated):
         """
         test_remove_no_coverage - Checks that the after truncating all
@@ -266,7 +276,7 @@ class TestPileups:
 
         INPUT:
             [2D ARRAY OF DICTIONARIES] [pileup] # to be truncated
-            [2D ARRAY OF DICTIONARIES] [expected_truncated_pileup]
+            [2D ARRAY OF DICTIONARIES] [expected_remove_no_coverage_pileup]
             [2D ARRAY OF DICTIONARIES] [expected_left_pos_truncated]
             # number of contiguous left positions that were truncated
             [2D ARRAY OF DICTIONARIES] [expected_right_pos_truncated]

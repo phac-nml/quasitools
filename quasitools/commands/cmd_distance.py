@@ -18,6 +18,7 @@ specific language governing permissions and limitations under the License.
 import click
 from quasitools.pileup import Pileup_List
 from quasitools.distance import DistanceMatrix
+from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 
 @click.command('distance', short_help='Calculate the evolutionary distance'
@@ -84,8 +85,10 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     for file in bam:
         click.echo("Reading input from file(s)  %s" % (file))
 
-    click.echo(dist(ctx, reference, bam, normalize, output_distance,
-               startpos, endpos, output, no_coverage))
+    dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
+         output, no_coverage)
+
+    click.echo("Complete!")
 
 
 def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
@@ -110,24 +113,28 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
             ignore all low coverage regions, or keep all low coverage regions
 
     RETURN:
-        [STRING] [error message(s) if applicable. Otherwise "Complete!"]
+        None.
 
     POST:
-        The calling function, cli, will click.echo the string that is returned.
+        The distance matrix is printed out unless an error message was raised.
 
     """
 
     if len(bam) < 2:
-        return ("\nError: At least two bam file locations are" +
-                " required to perform quasispecies distance comparison")
+        raise click.UsageError("At least two bam file locations are required" +
+                               " to perform quasispecies distance comparison")
     # indicate if the start or end position is < 0 or a priori invalid
     if type(startpos) == int and int(startpos) < 1:
-        return "\nError: Start position must be >= 1."
+        raise click.UsageError("Start position must be >= 1.")
     if type(endpos) == int and int(endpos) < 1:
-        return "\nError: End position must be >= 1."
+        raise click.UsageError("End position must be >= 1.")
     if (type(startpos) == int and type(endpos) == int and (startpos > endpos)):
-        return ("\nError: Start position must be <= end position")
-    pileups = Pileup_List.construct_pileup_list(bam, reference)
+        raise click.UsageError("Start position must be <= end position")
+
+    # Build the reference object.
+    references = parse_references_from_fasta(reference)
+
+    pileups = Pileup_List.construct_pileup_list(bam, references)
 
     if startpos is None:
         startpos = 1
@@ -135,8 +142,8 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         endpos = pileups.get_pileup_length()
 
     if pileups.get_pileup_length() == 0:
-        return ("Error: Empty pileup was produced from BAM files." +
-                "Halting program")
+        raise click.UsageError("Empty pileup was produced from BAM files." +
+                               "Halting program")
 
     click.echo("The start position is %d." % startpos)
     click.echo("The end position is %d." % endpos)
@@ -148,13 +155,14 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     # indicate whether the user-specified start and end position is out
     # of bounds (comparing to actual number of positions in pileup)
     if startpos > pileups.get_pileup_length():
-        return ("\nError: Start position must be less than or equal to " +
-                " number of nucleotide base positions in pileup" +
-                " (%s)." % pileups.get_pileup_length())
+        raise click.UsageError("Start position must be less than or" +
+                               " equal to the number of nucleotide base " +
+                               "positions in pileup (%s)."
+                               % pileups.get_pileup_length())
     if endpos > pileups.get_pileup_length():
-        return ("\nError: End position must be less than or equal to length " +
-                "of nucleotide base positions in pileup" +
-                " (%s)." % pileups.get_pileup_length())
+        raise click.UsageError("End position must be less than or equal to " +
+                               "the number of nucleotide base positions in " +
+                               "pileup (%s)." % pileups.get_pileup_length())
 
     # we convert the start and end positions from one-based indexing to
     # zero-based indexing which is expected by distance.py and pileup.py
@@ -166,8 +174,8 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
                               pileups)
 
     if (no_coverage is not 'keep_no_coverage') and (len(modified) == 0):
-        return ("Error: Entire pileup was truncated due to " +
-                "lack of coverage. Halting program")
+        raise click.UsageError("Entire pileup was truncated due to " +
+                               "lack of coverage. Halting program")
 
     dist = DistanceMatrix(modified, bam)
 
@@ -184,9 +192,6 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
             output.write(dist.get_similarity_matrix_as_csv())
         else:
             click.echo(dist.get_similarity_matrix_as_csv())
-
-    # end if
-    return "Complete!"
 # end def
 
 
@@ -222,7 +227,7 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
 
     # converting startpos and endpos back to one-based indexing for click.echo
     click.echo(("The pileup covers %s positions after selecting " +
-               "range between original pileup positions %d and %d.")
+                "range between original pileup positions %d and %d.")
                % (pileups.get_pileup_length(), startpos + 1, endpos + 1))
 
     if normalize:

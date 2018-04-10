@@ -19,7 +19,6 @@ import numpy as np
 
 # Quasitools parsers:
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
-from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 BASES = ['A', 'C', 'T', 'G']
 GAP = '-'
@@ -69,7 +68,7 @@ class Pileup_List(object):
     # end def
 
     @staticmethod
-    def construct_pileup_list(file_list, reference_loc):
+    def construct_pileup_list(file_list, references):
 
         """
         Creates a Pileup_List object
@@ -77,7 +76,7 @@ class Pileup_List(object):
             [FILE LOCATION TUPLE] [file_list] - files names which represent
                                                 a pileup
 
-            [FILE LOCATION] [reference_loc] - location of the reference file
+            [TUPLE] [references] - references tuple
         RETURN:
             [Pileup_List] - a new object containing a list of Pileup objects.
         POST:
@@ -85,7 +84,7 @@ class Pileup_List(object):
         """
         pileups = []
         for bam in file_list:
-            pileups.append(Pileup.construct_pileup(bam, reference_loc))
+            pileups.append(Pileup.construct_pileup(bam, references))
 
         return Pileup_List(pileups)
     # end def
@@ -328,7 +327,7 @@ class Pileup(object):
     # end def
 
     @staticmethod
-    def construct_pileup(bam, reference_loc):
+    def construct_pileup(bam, references):
 
         """
         Creates a Pileup.
@@ -336,7 +335,7 @@ class Pileup(object):
             [FILE LOCATION] [bam] - file name of BAM file to create mapped
                                     read against reference
 
-            [FILE LOCATION] [reference_loc] - location of the reference file
+            [TUPLE] [references] - reference tuple
 
         RETURN:
             [ARRAY OF DICTIONARIES] [pileup] - contains read counts for each
@@ -345,8 +344,6 @@ class Pileup(object):
             [None]
         """
 
-        # Build the reference object.
-        references = parse_references_from_fasta(reference_loc)
         new_pileup = []
         # Iterate over each reference in the reference object.
         for reference in references:
