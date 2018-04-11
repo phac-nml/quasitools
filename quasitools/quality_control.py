@@ -282,8 +282,8 @@ def passes_filters(read, filters):
 """
 # =============================================================================
 
-CREATE DATABASE JOB
--------------------
+FILTER JOBS
+-----------
 
 
 PURPOSE
