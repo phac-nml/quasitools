@@ -197,7 +197,13 @@ PHRED quality score is below the minimum.
 
 def mask_read(read, minimum):
 
-    return
+    scores = list(read.letter_annotations['phred_quality'])
+
+    for position in range(0, len(scores) - 1):
+        if scores[position] < minimum:
+            read.seq[position] = 'N'
+
+    return read
 
 
 """
