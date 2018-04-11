@@ -2,6 +2,18 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.3 ##
+
+2018-04-10
+
+### Added ###
+
+ - commands:
+   - distance: returns the evolutionary distances between viral quasispecies as a distance matrix
+ - modules:
+   - pileup.py: contains Pileup and Pileup_List classes
+   - distance.py: contains Distance_Matrix class
+
 ## 0.2.2 ##
 
 2017-11-27
