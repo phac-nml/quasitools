@@ -17,6 +17,7 @@ specific language governing permissions and limitations under the License.
 """
 
 import Bio.SeqIO
+from Bio.Seq import Seq
 
 TRIMMING = "trimming"
 MASKING = "masking"
@@ -185,9 +186,10 @@ INPUT
 [BIOPYTHON SEQRECORD] [read]
     The read to mask low quality positions within.
 
-[INT] [minimum]
-    The minimum acceptable PHRED score of positions in the read. All positions
-    with PHRED scores less than this minimum will be masked.
+[(FILTER -> VALUE) DICTIONARY] [filters]
+    The filtering critiera, as a dictionary of (filter, value) pairs. The
+    minimum quality score will be taken from this dictionary as the value of
+    the MINIMUM_QUALITY key.
 
 
 POST
@@ -200,12 +202,15 @@ PHRED quality score is below the minimum.
 """
 
 
-def mask_read(read, minimum):
+def mask_read(read, filters):
 
     scores = list(read.letter_annotations['phred_quality'])
+    minimum = int(filters.get(MINIMUM_QUALITY))
 
     # Check every quality score:
     for i in range(0, len(scores)):
+
+        score = int(scores[i])
 
         # Is the score too low?
         if score < minimum:
