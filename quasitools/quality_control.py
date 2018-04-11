@@ -21,6 +21,11 @@ import Bio.SeqIO
 TRIMMING = "trimming"
 MASKING = "masking"
 
+# GLOBALS
+
+MASK_CHARACTER = "N"
+MINIMUM_QUALITY = "minimum_quality"
+
 # FILTERING SPECIFICATIONS
 
 # TODO
@@ -161,6 +166,19 @@ PHRED quality score is below the minimum.
 
 def mask_read(read, minimum):
 
+    scores = list(read.letter_annotations['phred_quality'])
+
+    # Check every quality score:
+    for i in range(0, len(scores)):
+
+        # Is the score too low?
+        if score < minimum:
+
+            # Mask the base at this position:
+            sequence = str(read.seq)
+            sequence = sequence[:i] + MASK_CHARACTER + sequence[i + 1:]
+            read.seq = Seq(sequence)
+
     return
 
 
@@ -255,27 +273,9 @@ def filter_reads(reads_location, output_location, filters):
 
             if filters.get(MASKING):
 
-                mask_read(read, filters)
+                mask_read(read, minimum)
 
             Bio.SeqIO.write(read, output_file, "fastq")
 
     output_file.close()
 
-
-"""
-# =============================================================================
-
-TEMP: TESTING
-
-# =============================================================================
-"""
-
-print("Starting...")
-
-reads_location = "test.fastq"
-output_location = "output.fastq"
-filters = {}
-
-filter_reads(reads_location, output_location, filters)
-
-print("Ending...")
