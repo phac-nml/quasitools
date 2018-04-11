@@ -1,5 +1,0 @@
-{
-  "tests/test_distance.py::TestDistance::()::test_construct_array_of_pileup": true,
-  "tests/test_distance.py::TestDistance::()::test_remove_no_coverage[pileup0-expected_truncated_pileup0-1-7]": true,
-  "tests/test_distance.py::TestDistance::()::test_truncate_all_output[test_truncate_all_output_fixture0]": true
-}
