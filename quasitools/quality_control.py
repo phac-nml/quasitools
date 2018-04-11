@@ -118,7 +118,7 @@ def trim_read(read, filters):
 
     # while read has not passed all filters and is <= the length cutoff,
     # iteratively trim the read
-    while not passes_filters(read) and length > filters["length_cutoff"]:
+    while not passes_filters(read) and length >= filters["length_cutoff"]:
         read = read[:-1]
         length = len(read.seq)
 
