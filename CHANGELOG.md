@@ -14,6 +14,16 @@ All notable changes to Quasitools will be documented in this file.
    - pileup.py: contains Pileup and Pileup_List classes
    - distance.py: contains Distance_Matrix class
 
+## 0.2.3 ##
+
+2018-03-16
+
+### Changed ###
+
+- Fixed FASTA identifier in consensus output for the consensus and hydra commands
+- User can pass in a default id as an option
+- RG tag is used if present in the supplied .bam file
+
 ## 0.2.2 ##
 
 2017-11-27
