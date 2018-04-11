@@ -76,6 +76,42 @@ def get_median_score(read):
 """
 # =============================================================================
 
+GET MEAN SCORE
+-------------------
+
+
+PURPOSE
+-------
+
+Returns the mean score of a sequence record.
+
+
+INPUT
+-----
+
+[BIOPYTHON SEQRECORD] [read]
+    The read where the mean score will be retrieved from.
+
+Returns
+----
+
+[INT] [mean_score]
+
+# =============================================================================
+"""
+
+
+def get_mean_score(read):
+
+    mean_score = (float(sum(read.letter_annotations['phred_quality'])) /
+                  float(len(read.letter_annotations['phred_quality'])))
+
+    return mean_score
+
+
+"""
+# =============================================================================
+
 TRIM READ
 ---------
 
@@ -181,7 +217,6 @@ def mask_read(read, minimum):
 
     return
 
-
 """
 # =============================================================================
 
@@ -218,7 +253,18 @@ RETURN
 
 def passes_filters(read, filters):
 
-    return True
+    if len(read.seq) < filters["length_cutoff"]:
+        return False
+    elif ('median_cutoff' in filters.keys() and
+          get_median_score(read) < filters['median_cutoff']):
+            return False
+    elif ('mean_cutoff' in filters.keys() and
+          get_mean_score(read) < filters['mean_cutoff']):
+            return False
+    elif filters['ns'] and 'n' in read.seq.lower():
+        return False
+    else:
+        return True
 
 
 """
