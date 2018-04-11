@@ -29,6 +29,46 @@ MASKING = "masking"
 """
 # =============================================================================
 
+GET MEDIAN SCORE
+-------------------
+
+
+PURPOSE
+-------
+
+Returns the median score of a sequence record.
+
+
+INPUT
+-----
+
+[BIOPYTHON SEQRECORD] [read]
+    The read where the median score will be retrieved from.
+
+Returns
+----
+
+[INT] [median_score]
+
+# =============================================================================
+"""
+def get_median_score(read):
+    length = len(read.seq)
+    last_pos = length - 1
+
+    scores = list(read.letter_annotations['phred_quality'])
+
+    if length % 2 == 0:
+        median_score = ((scores[int(last_pos // 2)] +
+                         scores[int(last_pos // 2) + 1])/ 2)
+    else:
+        median_score = scores[int(last_pos // 2)]
+
+    return median_score
+
+"""
+# =============================================================================
+
 TRIM READ
 ---------
 
@@ -70,7 +110,15 @@ with iterative trimming.
 """
 def trim_read(read, filters):
 
-    return
+    length = len(read.seq)
+
+    # while read has not passed all filters and is <= the length cutoff,
+    # iteratively trim the read
+    while not passes_filters(read) and length > filters["length_cutoff"]:
+        read = read[:-1]
+        length = len(read.seq)
+
+    return read
 
 """
 # =============================================================================
