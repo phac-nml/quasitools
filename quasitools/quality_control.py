@@ -26,6 +26,9 @@ MASKING = "masking"
 
 MASK_CHARACTER = "N"
 MINIMUM_QUALITY = "minimum_quality"
+LENGTH_CUTOFF = "length_cutoff"
+MEDIAN_CUTOFF = "median_cutoff"
+MEAN_CUTOFF = "mean_cutoff"
 
 # FILTERING SPECIFICATIONS
 
@@ -157,10 +160,11 @@ with iterative trimming.
 def trim_read(read, filters):
 
     length = len(read.seq)
+    length_cutoff = filters.get(LENGTH_CUTOFF)
 
     # while read has not passed all filters and is <= the length cutoff,
     # iteratively trim the read
-    while not passes_filters(read) and length >= filters["length_cutoff"]:
+    while not passes_filters(read) and length >= length_cutoff:
         read = read[:-1]
         length = len(read.seq)
 
@@ -259,15 +263,17 @@ RETURN
 
 def passes_filters(read, filters):
 
-    if len(read.seq) < filters["length_cutoff"]:
+    length_cutoff = filters.get(LENGTH_CUTOFF)
+    median_cutoff = filters.get(MEDIAN_CUTOFF)
+    mean_cutoff = filters.get(MEAN_CUTOFF)
+
+    if length_cutoff and len(read.seq) < length_cutoff:
         return False
-    elif ('median_cutoff' in filters.keys() and
-          get_median_score(read) < filters['median_cutoff']):
-            return False
-    elif ('mean_cutoff' in filters.keys() and
-          get_mean_score(read) < filters['mean_cutoff']):
-            return False
-    elif filters['ns'] and 'n' in read.seq.lower():
+    elif median_cutoff and get_median_score(read) < median_cutoff:
+        return False
+    elif mean_cutoff and get_mean_score(read) < mean_cutoff:
+        return False
+    elif filters.get('ns') and 'n' in read.seq.lower():
         return False
     else:
         return True
