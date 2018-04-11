@@ -16,7 +16,6 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
-import os
 import Bio.SeqIO
 
 TRIMMING = "trimming"
@@ -52,6 +51,8 @@ Returns
 
 # =============================================================================
 """
+
+
 def get_median_score(read):
     length = len(read.seq)
     last_pos = length - 1
@@ -60,11 +61,12 @@ def get_median_score(read):
 
     if length % 2 == 0:
         median_score = ((scores[int(last_pos // 2)] +
-                         scores[int(last_pos // 2) + 1])/ 2)
+                         scores[int(last_pos // 2) + 1]) / 2)
     else:
         median_score = scores[int(last_pos // 2)]
 
     return median_score
+
 
 """
 # =============================================================================
@@ -108,6 +110,8 @@ with iterative trimming.
 
 # =============================================================================
 """
+
+
 def trim_read(read, filters):
 
     length = len(read.seq)
@@ -119,6 +123,7 @@ def trim_read(read, filters):
         length = len(read.seq)
 
     return read
+
 
 """
 # =============================================================================
@@ -152,9 +157,12 @@ PHRED quality score is below the minimum.
 
 # =============================================================================
 """
+
+
 def mask_read(read, minimum):
 
     return
+
 
 """
 # =============================================================================
@@ -188,9 +196,12 @@ RETURN
 
 # =============================================================================
 """
+
+
 def passes_filters(read, filters):
 
     return True
+
 
 """
 # =============================================================================
@@ -227,6 +238,8 @@ The reads that pass the filtering criteria will be written to the
 
 # =============================================================================
 """
+
+
 def filter_reads(reads_location, output_location, filters):
 
     output_file = open(output_location, "w+")
