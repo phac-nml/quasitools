@@ -57,21 +57,6 @@ class PatientAnalyzer():
         if not os.path.isdir(output_dir):
             os.mkdir(output_dir)
 
-    def get_median_score(self, seq):
-        length = len(seq.seq)
-        last_pos = length - 1
-
-        scores = list(seq.letter_annotations['phred_quality'])
-
-        if length % 2 == 0:
-            median_score = ((scores[int(last_pos // 2)] +
-                             scores[int(last_pos // 2) + 1])
-                            / 2)
-        else:
-            median_score = scores[int(last_pos // 2)]
-
-        return median_score
-
     def determine_input_size(self):
         sequences = Bio.SeqIO.parse(self.reads, "fastq")
 
@@ -88,25 +73,15 @@ class PatientAnalyzer():
 
         for seq in seq_rec_obj:
 
+            avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
+                         float(len(seq.letter_annotations['phred_quality'])))
+
             length = len(seq.seq)
-            median_score = self.get_median_score(seq)
 
             if length < filters["length_cutoff"]:
                 self.filtered["length"] += 1
-
-            elif median_score < filters["score_cutoff"]:
-
-                # while length is less than its cutoff iteratively trim the
-                # sequence to try and raise median score to its cutoff value
-                while (length > filters["length_cutoff"]
-                       and median_score < filters["score_cutoff"]):
-                    seq = seq[:-1]
-                    length = len(seq.seq)
-                    median_score = self.get_median_score(seq)
-
-                else:
-                    self.filtered["score"] += 1
-
+            elif avg_score < filters["score_cutoff"]:
+                self.filtered["score"] += 1
             elif filters['ns'] and 'n' in seq.seq.lower():
                 self.filtered['ns'] += 1
             else:
