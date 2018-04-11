@@ -222,6 +222,7 @@ def mask_read(read, filters):
 
     return
 
+
 """
 # =============================================================================
 
@@ -324,9 +325,8 @@ def filter_reads(reads_location, output_location, filters):
 
             if filters.get(MASKING):
 
-                mask_read(read, minimum)
+                mask_read(read, filters)
 
             Bio.SeqIO.write(read, output_file, "fastq")
 
     output_file.close()
-
