@@ -16,30 +16,19 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
-from quasitools.aa_variant import AAVariant, AAVariantCollection
-from collections import defaultdict
+import click
+from quasitools.parsers.mutation_report_parser \
+    import parse_mutations_from_hmcf
 
 
-def parse_mutations_from_hmcf(hmcf_file):
-    mutation_list = defaultdict(lambda: defaultdict(dict))
+@click.argument('hmcf', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.pass_context
+def cli(ctx, hmcf):
+    # simply generate a simplied AAmutation object
+    # it only needs position-mutationAA
+    # perhaps use a map
 
-    with open(hmcf_file, "r") as input:
-        for line in input:
-            if line[0] != "#":
-                (chrom, gene, id, ref, pos, alt,
-                filter, freq, coverage, info) = \
-                    line.rstrip().split("\t")
+    mutation_list = parse_mutations_from_hmcf(hmcf)
 
-                # wc, mc, mcf, cat, srvl = info.rstrip().split(';')
-                print("%s %s\n" % pos, alt)
-
-                mutation_list[pos] = alt
-
-    return mutation_list
-
-                
-        
-
-            
-
-
+    click.echo(mutation_list)
