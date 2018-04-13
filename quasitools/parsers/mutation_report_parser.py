@@ -21,7 +21,9 @@ from collections import defaultdict
 
 
 def parse_mutations_from_hmcf(hmcf_file):
-    mutation_list = defaultdict(lambda: defaultdict(dict))
+    # mutation_list = defaultdict(list)
+    mutation_list = []
+    
 
     with open(hmcf_file, "r") as input:
         for line in input:
@@ -29,11 +31,10 @@ def parse_mutations_from_hmcf(hmcf_file):
                 (chrom, gene, id, ref, pos, alt,
                 filter, freq, coverage, info) = \
                     line.rstrip().split("\t")
-
+                
                 # wc, mc, mcf, cat, srvl = info.rstrip().split(';')
-                print("%s %s\n" % pos, alt)
-
-                mutation_list[pos] = alt
+                # print("%s %s\n" % (pos, alt))
+                mutation_list.append([pos, alt])
 
     return mutation_list
 

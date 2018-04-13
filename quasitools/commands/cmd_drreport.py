@@ -21,6 +21,7 @@ from quasitools.parsers.mutation_report_parser \
     import parse_mutations_from_hmcf
 
 
+@click.command('drreport', short_help='Identifies drug resistances.')
 @click.argument('hmcf', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.pass_context
@@ -32,3 +33,11 @@ def cli(ctx, hmcf):
     mutation_list = parse_mutations_from_hmcf(hmcf)
 
     click.echo(mutation_list)
+
+    # create a class that will handle this work:
+    # parse the drug resistance object from the xml
+    # 
+
+    # 
+
+
