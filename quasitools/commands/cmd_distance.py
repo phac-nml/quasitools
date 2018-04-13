@@ -21,7 +21,7 @@ from quasitools.distance import DistanceMatrix
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 
-@click.command('distance', short_help='Calculate the evolutionary distance'
+@click.command('distance', short_help='Calculate the evolutionary distance '
                'between viral quasispecies using angular cosine distances.')
 @click.argument('reference', nargs=1, required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))

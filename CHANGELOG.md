@@ -2,6 +2,15 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.3.1 ##
+
+2018-04-13
+
+### Added ###
+
+- Updated hydra command to accept an id to be used as the sequence identifier
+  in the consensus report, and as the RG-id in the bam file
+
 ## 0.3.0 ##
 
 2018-04-10
