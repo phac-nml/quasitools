@@ -69,21 +69,26 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               help='the minimum required allele count.')
 @click.option('-mf', '--min_freq', default=0.01,
               help='the minimum required frequency.')
+@click.option('-i', '--id',
+              help='specify default FASTA sequence identifier to be used '
+              'in the consensus report for sequences without an RG tag.')
 @click.pass_context
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         generate_consensus, consensus_pct, quiet, length_cutoff,
-        score_cutoff, ns, error_rate, min_qual, min_dp, min_ac, min_freq):
+        score_cutoff, ns, error_rate, min_qual, min_dp, min_ac, min_freq, id):
 
     os.mkdir(output_dir)
     reads = forward
-    fasta_id = os.path.basename(forward).split('.')[0]
+    fasta_id = None
+
+    if id:
+        fasta_id = id
 
     # Combine the fwd and reverse reads into one fastq file
     if reverse:
         reads = "%s/combined_reads.fastq" % output_dir
         cat_cmd = "cat %s %s > %s" % (forward, reverse, reads)
         os.system(cat_cmd)
-        fasta_id += ("_%s" % os.path.basename(reverse).split('.')[0])
 
     patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
                                        output_dir=output_dir,

@@ -110,6 +110,8 @@ class PatientAnalyzer():
             mrc = parse_mapped_reads_from_bam(r, bam)
             mapped_read_collection_arr.append(mrc)
             if generate_consensus:
+                if fasta_id is None:
+                    fasta_id = os.path.basename(bam).split('.')[0]
                 cons_seq_file.write('>{0}_{1}_{2}\n{3}'.format(
                     fasta_id, reporting_threshold, r.name,
                     mrc.to_consensus(self.consensus_pct)))
