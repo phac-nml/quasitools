@@ -266,17 +266,21 @@ def passes_filters(read, filters):
     length_cutoff = filters.get(LENGTH_CUTOFF)
     median_cutoff = filters.get(MEDIAN_CUTOFF)
     mean_cutoff = filters.get(MEAN_CUTOFF)
+    filter_ns = filters.get('ns')
 
     if length_cutoff and len(read.seq) < length_cutoff:
         return False
-    elif median_cutoff and get_median_score(read) < median_cutoff:
+
+    if median_cutoff and get_median_score(read) < median_cutoff:
         return False
-    elif mean_cutoff and get_mean_score(read) < mean_cutoff:
+
+    if mean_cutoff and get_mean_score(read) < mean_cutoff:
         return False
-    elif filters.get('ns') and 'n' in read.seq.lower():
+
+    if filter_ns and 'n' in read.seq.lower():
         return False
-    else:
-        return True
+
+    return True
 
 
 """
