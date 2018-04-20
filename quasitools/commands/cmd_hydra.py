@@ -1,7 +1,7 @@
 """
-Copyright Government of Canada 2017
+Copyright Government of Canada 2017 - 2018
 
-Written by: Camy Tran, National Microbiology Laboratory,
+Written by: Camy Tran and Matthew Fogel, National Microbiology Laboratory,
             Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -20,6 +20,7 @@ import os
 from collections import defaultdict
 import click
 from quasitools.patient_analyzer import PatientAnalyzer
+from quasitools.quality_control import filter_reads
 
 BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__),
                                          os.pardir, os.pardir, "data"))
@@ -51,12 +52,19 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               'into the consensus sequence.')
 @click.option('-q', '--quiet', is_flag=True,
               help='suppress all normal output')
+@click.option('-tr', '--trim', is_flag=True,
+              help='iteratively trim reads based on filter values')
+@click.option('-mr', '--mask', is_flag=True,
+              help='mask low coverage regions in reads based on filter values')
 @click.option('-lc', '--length_cutoff', default=100,
               help='reads which fall short of the specified length '
                    'will be filtered out.')
 @click.option('-sc', '--score_cutoff', default=30,
               help='reads whose average quality score is less than the '
                    'specified score will be filtered out.')
+@click.option('-md/-mn', '--median_score/--mean_score', 'score_type',
+              default=True,
+              help='use either median or mean score for score cutoff value')
 @click.option('-n', '--ns', is_flag=True, help='flag to enable the '
               'filtering of n\'s')
 @click.option('-e', '--error_rate', default=0.0021,
@@ -71,8 +79,9 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               help='the minimum required frequency.')
 @click.pass_context
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
-        generate_consensus, consensus_pct, quiet, length_cutoff,
-        score_cutoff, ns, error_rate, min_qual, min_dp, min_ac, min_freq):
+        generate_consensus, consensus_pct, quiet, trim, mask, length_cutoff,
+        score_cutoff, score_type, ns, error_rate, min_qual, min_dp, min_ac,
+        min_freq):
 
     os.mkdir(output_dir)
     reads = forward
@@ -93,14 +102,27 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
                                        consensus_pct=consensus_pct)
 
     read_filters = defaultdict(dict)
+
+    if trim:
+        read_filters["TRIMMING"] = "trimming"
+
+    if masking:
+        read_filters["MASKING"] = "masking"
+
     read_filters["length_cutoff"] = length_cutoff
-    read_filters["score_cutoff"] = score_cutoff
+
+    if score_type == "median_score":
+        read_filters["median_score"] = score_cutoff
+    elif score_type == "mean_score":
+        read_filters["mean_score"] = score_cutoff
+    # end if
+
     if ns:
         read_filters["ns"] = True
     else:
         read_filters["ns"] = False
 
-    patient_analyzer.filter_reads(read_filters)
+    quality_control.filter_reads(reads, output_dir, read_filters)
 
     variant_filters = defaultdict(dict)
     variant_filters["error_rate"] = error_rate
