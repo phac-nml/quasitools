@@ -96,7 +96,7 @@ class PatientAnalyzer():
         if not self.quiet:
             print("# Mapping reads...")
 
-        bam = self.generate_bam()
+        bam = self.generate_bam(fasta_id)
 
         if not self.quiet:
             print("# Loading read mappings...")
@@ -190,7 +190,10 @@ class PatientAnalyzer():
 
         self.output_stats(mapped_read_collection_arr)
 
-    def generate_bam(self):
+    # This is a helper method that generates the bam file.
+    # It takes as an argument the fasta_id, which is used by bowtie2 as the
+    # RG-ID in the output bam file.
+    def generate_bam(self, fasta_id):
         """ Runs bowtietwo local alignment on self.reads
             to generate a bam file """
 
@@ -206,8 +209,9 @@ class PatientAnalyzer():
         bowtietwo_index = self.reference[0:self.reference.rindex(".")]
 
         bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' --rfg '8,3' "
-                          "--ma 1 --mp '2,2' -S %s -x %s -U %s") %
-                         (sam_fn, bowtietwo_index, self.filtered_reads))
+                          "--rg-id %s --ma 1 --mp '2,2' -S %s -x %s "
+                          "-U %s") % (fasta_id, sam_fn, bowtietwo_index,
+                                      self.filtered_reads))
 
         os.system(bowtietwo_cmd)
 

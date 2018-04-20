@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2015-2017
+Copyright Government of Canada 2015-2018
 
 Written by: Eric Enns, National Microbiology Laboratory, Public Health Agency of Canada
 
@@ -21,7 +21,7 @@ dependencies = ['biopython', 'click', 'numpy', 'pysam', 'scipy']
 
 setup(
     name='quasitools',
-    version='0.2.2',
+    version='0.3.1',
     url='https://github.com/phac-nml/quasitools.git',
     license='Apache License, Version 2.0',
     author='Eric Enns',
