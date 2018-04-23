@@ -43,48 +43,49 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               default=MUTATION_DB)
 @click.option('-rt', '--reporting_threshold', default=1,
               type=click.IntRange(1, 100, clamp=True),
-              help='minimum mutation frequency percent to report.')
+              help='Minimum mutation frequency percent to report.')
 @click.option('-gc', '--generate_consensus',
               help='Generate a mixed base consensus sequence.', is_flag=True)
 @click.option('-cp', '--consensus_pct', default=20,
               type=click.IntRange(1, 100, clamp=True),
-              help='minimum percentage a base needs to be incorporated'
+              help='Minimum percentage a base needs to be incorporated'
               'into the consensus sequence.')
 @click.option('-q', '--quiet', is_flag=True,
-              help='suppress all normal output')
-@click.option('-tr', '--trim', is_flag=True,
-              help='iteratively trim reads based on filter values')
-@click.option('-mr', '--mask', is_flag=True,
-              help='mask low coverage regions in reads based on filter values')
+              help='Suppress all normal output')
+@click.option('-tr', '--trim_reads', is_flag=True,
+              help='Iteratively trim reads based on filter values if true. '
+                   'Throw out reads which do not meet filter values if false.')
+@click.option('-mr', '--mask_reads', is_flag=True,
+              help='Mask low coverage regions in reads based on filter values')
 @click.option('-lc', '--length_cutoff', default=100,
-              help='reads which fall short of the specified length '
+              help='Reads which fall short of the specified length '
                    'will be filtered out.')
 @click.option('-sc', '--score_cutoff', default=30,
-              help='reads whose average quality score is less than the '
+              help='Reads whose average quality score is less than the '
                    'specified score will be filtered out.')
-@click.option('-md/-mn', '--median_score/--mean_score', 'score_type',
+@click.option('-me/-mn', '--median_score/--mean_score', 'score_type',
               default=True,
-              help='use either median or mean score for score cutoff value')
+              help='Use either median or mean score for score cutoff value')
 @click.option('-n', '--ns', is_flag=True, help='flag to enable the '
               'filtering of n\'s')
 @click.option('-e', '--error_rate', default=0.0021,
-              help='error rate for the sequencing platform.')
-@click.option('-mq', '--min_qual', default=30, help='minimum quality for '
+              help='Error rate for the sequencing platform.')
+@click.option('-mq', '--min_qual', default=30, help='Minimum quality for '
               'variant to be considered later on in the pipeline.')
 @click.option('-md', '--min_dp', default=100,
-              help='minimum required read depth for.')
+              help='Minimum required read depth for.')
 @click.option('-ma', '--min_ac', default=5,
-              help='the minimum required allele count.')
+              help='The minimum required allele count.')
 @click.option('-mf', '--min_freq', default=0.01,
-              help='the minimum required frequency.')
+              help='The minimum required frequency.')
 @click.option('-i', '--id',
-              help='specify FASTA sequence identifier to be used in the '
+              help='Specify FASTA sequence identifier to be used in the '
               'consensus report.')
 @click.pass_context
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
-        generate_consensus, consensus_pct, quiet, trim, mask, length_cutoff,
-        score_cutoff, score_type, ns, error_rate, min_qual, min_dp, min_ac,
-        min_freq):
+        generate_consensus, consensus_pct, quiet, trim_reads, mask_reads,
+        length_cutoff, score_cutoff, score_type, ns, error_rate, min_qual,
+        min_dp, min_ac, min_freq):
 
     os.mkdir(output_dir)
     reads = forward
@@ -116,10 +117,10 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
 
     read_filters = defaultdict(dict)
 
-    if trim:
+    if trim_reads:
         read_filters["TRIMMING"] = "trimming"
 
-    if masking:
+    if mask_reads:
         read_filters["MASKING"] = "masking"
 
     read_filters["length_cutoff"] = length_cutoff
@@ -134,6 +135,8 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         read_filters["ns"] = True
     else:
         read_filters["ns"] = False
+
+    read_filters["minimum_quality"] = min_qual
 
     quality_control.filter_reads(reads, output_dir, read_filters)
 
