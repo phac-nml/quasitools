@@ -41,12 +41,6 @@ class PatientAnalyzer():
         self.quiet = quiet
         self.consensus_pct = consensus_pct
 
-        self.amount_filtered = {}
-        self.amount_filtered["status"] = 0
-        self.amount_filtered["length"] = 0
-        self.amount_filtered["score"] = 0
-        self.amount_filtered["ns"] = 0
-
         self.input_size = 0
         self.determine_input_size()
 
@@ -54,6 +48,8 @@ class PatientAnalyzer():
         self.genes = parse_genes_file(genes_file, self.references[0].name)
 
         self.filtered_reads = "%s/filtered.fastq" % output_dir
+
+        self.quality = QualityControl()
 
         if not os.path.isdir(output_dir):
             os.mkdir(output_dir)
@@ -64,6 +60,7 @@ class PatientAnalyzer():
         for seq in sequences:
             self.input_size += 1
 
+    """
     def filter_reads(self, filters):
         if not self.quiet:
             print("# Filtering reads...")
@@ -90,14 +87,14 @@ class PatientAnalyzer():
 
         self.filtered["status"] = 1
         filtered_reads_file.close()
+    """
 
     def analyze_reads(self, fasta_id, filters, reporting_threshold,
                       generate_consensus):
         #Calls quality_control function
         if not self.quiet:
             print("# Performing quality control on reads...")
-            quality = QualityControl()
-            quality.filter_reads(self.reads, self.filtered_reads, filters)
+            self.quality.filter_reads(self.reads, self.filtered_reads, filters)
 
         # Map reads against reference using bowtietwo
         if not self.quiet:
@@ -249,6 +246,7 @@ class PatientAnalyzer():
         return sorted_bam_fn
 
     def output_stats(self, mapped_read_collection_arr):
+        self.amount_filtered = self.quality.get_amount_filtered()
         mr_len = len(mapped_read_collection_arr[0].mapped_reads)
 
         stats_report = open("%s/stats.txt" % self.output_dir, "w+")

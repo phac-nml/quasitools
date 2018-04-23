@@ -38,6 +38,27 @@ class QualityControl():
 
     """
     # =============================================================================
+    INIT
+    ----
+
+    POST
+    ----
+
+    Creates a dictionary containing frequencies that reads were filtered
+
+    # =============================================================================
+    """
+
+    def __init__(self):
+        self.amount_filtered = {}
+        self.amount_filtered["status"] = 0
+        self.amount_filtered["length"] = 0
+        self.amount_filtered["score"] = 0
+        self.amount_filtered["ns"] = 0
+        self.last_failed = ""
+
+    """
+    # =============================================================================
 
     GET MEDIAN SCORE
     -------------------
@@ -249,15 +270,20 @@ class QualityControl():
         The read that will be evaluated using the filtering criteria.
 
     [(FILTER -> VALUE) DICTIONARY] [filters]
-        The filtering critiera, as a dictionary of (filter, value) pairs, all of
+        The filtering criteria, as a dictionary of (filter, value) pairs, all of
         which will be tested against the read.
 
     RETURN
     ------
 
     [BOOL] [result]
-        TRUE: the the read passes all the filtering criteria.
+        TRUE: the read passes all the filtering criteria.
         FALSE: the read fails at least one of the filtering criteria.
+
+    POST
+    ----
+    The name of the previous filtering criteria that caused FALSE to be
+    returned is written to self.last_failed.
 
     # =============================================================================
     """
@@ -271,15 +297,19 @@ class QualityControl():
         filter_ns = filters.get('ns')
 
         if length_cutoff and len(read.seq) < length_cutoff:
+            self.last_failed = "length"
             return False
 
         if median_cutoff and get_median_score(read) < median_cutoff:
+            self.last_failed = "score"
             return False
 
-        if mean_cutoff and get_mean_score(read) < mean_cutoff:
+        elif mean_cutoff and get_mean_score(read) < mean_cutoff:
+            self.last_failed = "score"
             return False
 
         if filter_ns and 'n' in read.seq.lower():
+            self.last_failed = "ns"
             return False
 
         return True
@@ -308,7 +338,7 @@ class QualityControl():
         The output location of the filtered reads.
 
     [(FILTER -> VALUE) DICTIONARY] [filters]
-        The filtering critiera, as a dictionary of (filter, value) pairs, all of
+        The filtering criteria, as a dictionary of (filter, value) pairs, all of
         which will be tested against the read.
 
 
@@ -316,7 +346,9 @@ class QualityControl():
     ----
 
     The reads that pass the filtering criteria will be written to the
-    [output_location].
+    [output_location]. The self.amount_filtered dict will contain the
+    frequencies that a read was filtered (excluded from being written to the
+    output file) due to failing the filtering criteria.
 
     # =============================================================================
     """
@@ -341,4 +373,41 @@ class QualityControl():
 
                 Bio.SeqIO.write(read, output_file, "fastq")
 
+            else:
+
+                self.amount_filtered[self.last_failed] += 1
+
+        self.filtered["status"] = 1
         filtered_reads_file.close()
+
+    """
+    # =============================================================================
+
+    GET AMOUNT FILTERED
+    -----------
+
+
+    PURPOSE
+    -------
+
+    Returns the dictionary containing the frequencies that the read was
+    filtered (excluded from the output file) due to filtering criteria. E.g.
+    Records how many times the read was filtered due to length and score.
+
+    INPUT
+    -----
+
+    None.
+
+
+    POST
+    ----
+
+    None.
+
+    # =============================================================================
+    """
+
+    def get_amount_filtered(self):
+
+        return amount_filtered
