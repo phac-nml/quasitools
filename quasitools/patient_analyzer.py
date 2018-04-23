@@ -24,6 +24,7 @@ from quasitools.nt_variant import NTVariantCollection
 from quasitools.aa_variant import AAVariantCollection
 from quasitools.mutations import MutationDB
 from quasitools.aa_census import AACensus, CONFIDENT
+from quasitools.quality_control import QualityControl
 import Bio.SeqIO
 
 
@@ -91,7 +92,7 @@ class PatientAnalyzer():
 
     def analyze_reads(self, fasta_id, filters, reporting_threshold,
                       generate_consensus):
-        #Calls quality_control function
+        # Calls quality_control function
         if not self.quiet:
             print("# Performing quality control on reads...")
             self.quality.filter_reads(self.reads, self.filtered_reads, filters)
@@ -255,7 +256,8 @@ class PatientAnalyzer():
         stats_report.write("Number of reads filtered due to length: %i\n" %
                            self.amount_filtered["length"])
         stats_report.write(("Number of reads filtered due to average "
-                            "quality score: %i\n") % self.amount_filtered["score"])
+                            "quality score: %i\n")
+                           % self.amount_filtered["score"])
         stats_report.write(("Number of reads filtered due to presence "
                             "of Ns: %i\n") % self.amount_filtered["ns"])
         stats_report.write("Number of reads filtered due to excess "
@@ -263,7 +265,8 @@ class PatientAnalyzer():
         stats_report.write(("Number of reads filtered due to poor "
                             "mapping: %i\n") %
                            (self.input_size - self.amount_filtered["length"] -
-                            self.amount_filtered["score"] - self.amount_filtered["ns"] -
+                            self.amount_filtered["score"] -
+                            self.amount_filtered["ns"] -
                             mr_len))
         stats_report.write("Percentage of reads filtered: %0.2f" %
                            (float(self.input_size - mr_len) /

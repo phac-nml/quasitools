@@ -32,7 +32,6 @@ MEAN_CUTOFF = "mean_cutoff"
 
 # FILTERING SPECIFICATIONS
 
-# TODO
 
 class QualityControl():
 
@@ -84,8 +83,7 @@ class QualityControl():
     # =============================================================================
     """
 
-
-    def get_median_score(read):
+    def get_median_score(self, read):
         length = len(read.seq)
         last_pos = length - 1
 
@@ -98,7 +96,6 @@ class QualityControl():
             median_score = scores[int(last_pos // 2)]
 
         return median_score
-
 
     """
     # =============================================================================
@@ -127,14 +124,12 @@ class QualityControl():
     # =============================================================================
     """
 
-
-    def get_mean_score(read):
+    def get_mean_score(self, read):
 
         mean_score = (float(sum(read.letter_annotations['phred_quality'])) /
                       float(len(read.letter_annotations['phred_quality'])))
 
         return mean_score
-
 
     """
     # =============================================================================
@@ -147,8 +142,8 @@ class QualityControl():
     -------
 
     Trims the read in an iterative manner until it meets all the filtering
-    criteria. The specifications of the filtering parameters can be found in this
-    file.
+    criteria. The specifications of the filtering parameters can be found in
+    this file.
 
 
     INPUT
@@ -164,38 +159,36 @@ class QualityControl():
     POST
     ----
 
-    The read will first be evaluated against the filtering criteria. If the read
-    passes the filtering criteria, then the read will be returned without
+    The read will first be evaluated against the filtering criteria. If the
+    read passes the filtering criteria, then the read will be returned without
     modification. However, if the read does not meet the filtering criteria, it
     will be trimmed iteratively.
 
-    In the latter case, the read will be trimmed iteratively, base by base, from
-    the tail end of the read, starting at position [len(read) - 1], until either
-    the read meets the filtering criteria, or the read is too short.
+    In the latter case, the read will be trimmed iteratively, base by base,
+    from the tail end of the read, starting at position [len(read) - 1], until
+    either the read meets the filtering criteria, or the read is too short.
 
-    The trimmed and modified read will still be returned if it fails to be improved
-    with iterative trimming.
+    The trimmed and modified read will still be returned if it fails to be
+    improved with iterative trimming.
 
-    # =============================================================================
+    # =========================================================================
     """
 
-
-    def trim_read(read, filters):
+    def trim_read(self, read, filters):
 
         length = len(read.seq)
         length_cutoff = filters.get(LENGTH_CUTOFF)
 
         # while read has not passed all filters and is <= the length cutoff,
         # iteratively trim the read
-        while not passes_filters(read) and length >= length_cutoff:
+        while not self.passes_filters(read) and length >= length_cutoff:
             read = read[:-1]
             length = len(read.seq)
 
         return read
 
-
     """
-    # =============================================================================
+    # =========================================================================
 
     MASK_READ
     ---------
@@ -215,21 +208,20 @@ class QualityControl():
 
     [(FILTER -> VALUE) DICTIONARY] [filters]
         The filtering critiera, as a dictionary of (filter, value) pairs. The
-        minimum quality score will be taken from this dictionary as the value of
-        the MINIMUM_QUALITY key.
+        minimum quality score will be taken from this dictionary as the value
+        of the MINIMUM_QUALITY key.
 
 
     POST
     ----
 
-    The nucleotide positions in the passed read will be masked with "N"s if their
-    PHRED quality score is below the minimum.
+    The nucleotide positions in the passed read will be masked with "N"s if
+    their PHRED quality score is below the minimum.
 
-    # =============================================================================
+    # =========================================================================
     """
 
-
-    def mask_read(read, filters):
+    def mask_read(self, read, filters):
 
         scores = list(read.letter_annotations['phred_quality'])
         minimum = int(filters.get(MINIMUM_QUALITY))
@@ -249,9 +241,8 @@ class QualityControl():
 
         return
 
-
     """
-    # =============================================================================
+    # =========================================================================
 
     PASSES FILTERS
     --------------
@@ -270,8 +261,8 @@ class QualityControl():
         The read that will be evaluated using the filtering criteria.
 
     [(FILTER -> VALUE) DICTIONARY] [filters]
-        The filtering criteria, as a dictionary of (filter, value) pairs, all of
-        which will be tested against the read.
+        The filtering criteria, as a dictionary of (filter, value) pairs, all
+        of which will be tested against the read.
 
     RETURN
     ------
@@ -285,11 +276,10 @@ class QualityControl():
     The name of the previous filtering criteria that caused FALSE to be
     returned is written to self.last_failed.
 
-    # =============================================================================
+    # =========================================================================
     """
 
-
-    def passes_filters(read, filters):
+    def passes_filters(self, read, filters):
 
         length_cutoff = filters.get(LENGTH_CUTOFF)
         median_cutoff = filters.get(MEDIAN_CUTOFF)
@@ -300,11 +290,11 @@ class QualityControl():
             self.last_failed = "length"
             return False
 
-        if median_cutoff and get_median_score(read) < median_cutoff:
+        if median_cutoff and self.get_median_score(read) < median_cutoff:
             self.last_failed = "score"
             return False
 
-        elif mean_cutoff and get_mean_score(read) < mean_cutoff:
+        elif mean_cutoff and self.get_mean_score(read) < mean_cutoff:
             self.last_failed = "score"
             return False
 
@@ -314,9 +304,8 @@ class QualityControl():
 
         return True
 
-
     """
-    # =============================================================================
+    # =========================================================================
 
     FILTER JOBS
     -----------
@@ -338,8 +327,8 @@ class QualityControl():
         The output location of the filtered reads.
 
     [(FILTER -> VALUE) DICTIONARY] [filters]
-        The filtering criteria, as a dictionary of (filter, value) pairs, all of
-        which will be tested against the read.
+        The filtering criteria, as a dictionary of (filter, value) pairs, all
+        of which will be tested against the read.
 
 
     POST
@@ -350,11 +339,10 @@ class QualityControl():
     frequencies that a read was filtered (excluded from being written to the
     output file) due to failing the filtering criteria.
 
-    # =============================================================================
+    # =========================================================================
     """
 
-
-    def filter_reads(reads_location, output_location, filters):
+    def filter_reads(self, reads_location, output_location, filters):
 
         filtered_reads_file = open(output_location, "w+")
         reads = Bio.SeqIO.parse(reads_location, "fastq")
@@ -363,15 +351,15 @@ class QualityControl():
 
             if filters.get(TRIMMING):
 
-                trim_read(read, filters)
+                self.trim_read(read, filters)
 
-            if passes_filters(read, filters):
+            if self.passes_filters(read, filters):
 
                 if filters.get(MASKING):
 
-                    mask_read(read, filters)
+                    self.mask_read(read, filters)
 
-                Bio.SeqIO.write(read, output_file, "fastq")
+                Bio.SeqIO.write(read, filtered_reads_file, "fastq")
 
             else:
 
@@ -381,7 +369,7 @@ class QualityControl():
         filtered_reads_file.close()
 
     """
-    # =============================================================================
+    # =========================================================================
 
     GET AMOUNT FILTERED
     -----------
@@ -405,9 +393,9 @@ class QualityControl():
 
     None.
 
-    # =============================================================================
+    # =========================================================================
     """
 
     def get_amount_filtered(self):
 
-        return amount_filtered
+        return self.amount_filtered

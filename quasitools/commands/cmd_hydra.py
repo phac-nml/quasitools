@@ -20,7 +20,6 @@ import os
 from collections import defaultdict
 import click
 from quasitools.patient_analyzer import PatientAnalyzer
-from quasitools.quality_control import filter_reads
 
 BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__),
                                          os.pardir, os.pardir, "data"))
@@ -137,7 +136,6 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     variant_filters["min_dp"] = min_dp
     variant_filters["min_ac"] = min_ac
     variant_filters["min_freq"] = min_freq
-
 
     patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
                                        output_dir=output_dir,
