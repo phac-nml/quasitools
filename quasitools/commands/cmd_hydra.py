@@ -48,25 +48,25 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               help='Generate a mixed base consensus sequence.', is_flag=True)
 @click.option('-cp', '--consensus_pct', default=20,
               type=click.IntRange(1, 100, clamp=True),
-              help='Minimum percentage a base needs to be incorporated'
+              help='Minimum percentage a base needs to be incorporated '
               'into the consensus sequence.')
 @click.option('-q', '--quiet', is_flag=True,
-              help='Suppress all normal output')
+              help='Suppress all normal output.')
 @click.option('-tr', '--trim_reads', is_flag=True,
-              help='Iteratively trim reads based on filter values if true. '
-                   'Throw out reads which do not meet filter values if false.')
+              help='Iteratively trim reads based on filter values if enabled. '
+                   'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
               help='Mask low coverage regions in reads based on filter values')
 @click.option('-lc', '--length_cutoff', default=100,
               help='Reads which fall short of the specified length '
                    'will be filtered out.')
 @click.option('-sc', '--score_cutoff', default=30,
-              help='Reads whose average quality score is less than the '
+              help='Reads that have an average quality score less than the '
                    'specified score will be filtered out.')
 @click.option('-me/-mn', '--median_score/--mean_score', 'score_type',
               default=True,
               help='Use either median or mean score for score cutoff value')
-@click.option('-n', '--ns', is_flag=True, help='flag to enable the '
+@click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
               'filtering of n\'s')
 @click.option('-e', '--error_rate', default=0.0021,
               help='Error rate for the sequencing platform.')
@@ -108,13 +108,6 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         if not id:
             fasta_id += ("_%s" % os.path.basename(reverse).split('.')[0])
 
-    patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
-                                       output_dir=output_dir,
-                                       reads=reads, reference=REFERENCE,
-                                       genes_file=GENES_FILE,
-                                       mutation_db=mutation_db, quiet=quiet,
-                                       consensus_pct=consensus_pct)
-
     read_filters = defaultdict(dict)
 
     if trim_reads:
@@ -126,9 +119,9 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     read_filters["length_cutoff"] = length_cutoff
 
     if score_type == "median_score":
-        read_filters["median_score"] = score_cutoff
+        read_filters["median_cutoff"] = score_cutoff
     elif score_type == "mean_score":
-        read_filters["mean_score"] = score_cutoff
+        read_filters["mean_cutoff"] = score_cutoff
     # end if
 
     if ns:
@@ -138,14 +131,21 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
 
     read_filters["minimum_quality"] = min_qual
 
-    quality_control.filter_reads(reads, output_dir, read_filters)
-
     variant_filters = defaultdict(dict)
     variant_filters["error_rate"] = error_rate
     variant_filters["min_qual"] = min_qual
     variant_filters["min_dp"] = min_dp
     variant_filters["min_ac"] = min_ac
     variant_filters["min_freq"] = min_freq
+
+
+    patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
+                                       output_dir=output_dir,
+                                       read_filters=read_filters,
+                                       reads=reads, reference=REFERENCE,
+                                       genes_file=GENES_FILE,
+                                       mutation_db=mutation_db, quiet=quiet,
+                                       consensus_pct=consensus_pct)
 
     patient_analyzer.analyze_reads(fasta_id, variant_filters,
                                    reporting_threshold, generate_consensus)

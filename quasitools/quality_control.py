@@ -34,309 +34,311 @@ MEAN_CUTOFF = "mean_cutoff"
 
 # TODO
 
-"""
-# =============================================================================
+class QualityControl():
 
-GET MEDIAN SCORE
--------------------
+    """
+    # =============================================================================
 
-
-PURPOSE
--------
-
-Returns the median score of a sequence record.
+    GET MEDIAN SCORE
+    -------------------
 
 
-INPUT
------
+    PURPOSE
+    -------
 
-[BIOPYTHON SEQRECORD] [read]
-    The read where the median score will be retrieved from.
-
-Returns
-----
-
-[INT] [median_score]
-
-# =============================================================================
-"""
+    Returns the median score of a sequence record.
 
 
-def get_median_score(read):
-    length = len(read.seq)
-    last_pos = length - 1
+    INPUT
+    -----
 
-    scores = list(read.letter_annotations['phred_quality'])
+    [BIOPYTHON SEQRECORD] [read]
+        The read where the median score will be retrieved from.
 
-    if length % 2 == 0:
-        median_score = ((scores[int(last_pos // 2)] +
-                         scores[int(last_pos // 2) + 1]) / 2)
-    else:
-        median_score = scores[int(last_pos // 2)]
+    Returns
+    ----
 
-    return median_score
+    [INT] [median_score]
 
-
-"""
-# =============================================================================
-
-GET MEAN SCORE
--------------------
+    # =============================================================================
+    """
 
 
-PURPOSE
--------
-
-Returns the mean score of a sequence record.
-
-
-INPUT
------
-
-[BIOPYTHON SEQRECORD] [read]
-    The read where the mean score will be retrieved from.
-
-Returns
-----
-
-[INT] [mean_score]
-
-# =============================================================================
-"""
-
-
-def get_mean_score(read):
-
-    mean_score = (float(sum(read.letter_annotations['phred_quality'])) /
-                  float(len(read.letter_annotations['phred_quality'])))
-
-    return mean_score
-
-
-"""
-# =============================================================================
-
-TRIM READ
----------
-
-
-PURPOSE
--------
-
-Trims the read in an iterative manner until it meets all the filtering
-criteria. The specifications of the filtering parameters can be found in this
-file.
-
-
-INPUT
------
-
-[BIOPYTHON SEQRECORD] [read]
-    The read to iteratively trim until it meets filtering criteria.
-
-[(FILTER -> VALUE) DICTIONARY] [filters]
-    The filtering critiera, as a dictionary of (filter, value) pairs, which
-    will be tested against the read after each iteration of read trimming.
-
-POST
-----
-
-The read will first be evaluated against the filtering criteria. If the read
-passes the filtering criteria, then the read will be returned without
-modification. However, if the read does not meet the filtering criteria, it
-will be trimmed iteratively.
-
-In the latter case, the read will be trimmed iteratively, base by base, from
-the tail end of the read, starting at position [len(read) - 1], until either
-the read meets the filtering criteria, or the read is too short.
-
-The trimmed and modified read will still be returned if it fails to be improved
-with iterative trimming.
-
-# =============================================================================
-"""
-
-
-def trim_read(read, filters):
-
-    length = len(read.seq)
-    length_cutoff = filters.get(LENGTH_CUTOFF)
-
-    # while read has not passed all filters and is <= the length cutoff,
-    # iteratively trim the read
-    while not passes_filters(read) and length >= length_cutoff:
-        read = read[:-1]
+    def get_median_score(read):
         length = len(read.seq)
+        last_pos = length - 1
 
-    return read
+        scores = list(read.letter_annotations['phred_quality'])
 
+        if length % 2 == 0:
+            median_score = ((scores[int(last_pos // 2)] +
+                             scores[int(last_pos // 2) + 1]) / 2)
+        else:
+            median_score = scores[int(last_pos // 2)]
 
-"""
-# =============================================================================
+        return median_score
 
-MASK_READ
----------
 
+    """
+    # =============================================================================
 
-PURPOSE
--------
+    GET MEAN SCORE
+    -------------------
 
-Masks the nucleotide of all low quality positions in the read with an "N".
 
+    PURPOSE
+    -------
 
-INPUT
------
+    Returns the mean score of a sequence record.
 
-[BIOPYTHON SEQRECORD] [read]
-    The read to mask low quality positions within.
 
-[(FILTER -> VALUE) DICTIONARY] [filters]
-    The filtering critiera, as a dictionary of (filter, value) pairs. The
-    minimum quality score will be taken from this dictionary as the value of
-    the MINIMUM_QUALITY key.
+    INPUT
+    -----
 
+    [BIOPYTHON SEQRECORD] [read]
+        The read where the mean score will be retrieved from.
 
-POST
-----
+    Returns
+    ----
 
-The nucleotide positions in the passed read will be masked with "N"s if their
-PHRED quality score is below the minimum.
+    [INT] [mean_score]
 
-# =============================================================================
-"""
+    # =============================================================================
+    """
 
 
-def mask_read(read, filters):
+    def get_mean_score(read):
 
-    scores = list(read.letter_annotations['phred_quality'])
-    minimum = int(filters.get(MINIMUM_QUALITY))
+        mean_score = (float(sum(read.letter_annotations['phred_quality'])) /
+                      float(len(read.letter_annotations['phred_quality'])))
 
-    # Check every quality score:
-    for i in range(0, len(scores)):
+        return mean_score
 
-        score = int(scores[i])
 
-        # Is the score too low?
-        if score < minimum:
+    """
+    # =============================================================================
 
-            # Mask the base at this position:
-            sequence = str(read.seq)
-            sequence = sequence[:i] + MASK_CHARACTER + sequence[i + 1:]
-            read.seq = Seq(sequence)
+    TRIM READ
+    ---------
 
-    return
 
+    PURPOSE
+    -------
 
-"""
-# =============================================================================
+    Trims the read in an iterative manner until it meets all the filtering
+    criteria. The specifications of the filtering parameters can be found in this
+    file.
 
-PASSES FILTERS
---------------
 
+    INPUT
+    -----
 
-PURPOSE
--------
+    [BIOPYTHON SEQRECORD] [read]
+        The read to iteratively trim until it meets filtering criteria.
 
-Determines whether or not the read passes all the filtering criteria.
+    [(FILTER -> VALUE) DICTIONARY] [filters]
+        The filtering critiera, as a dictionary of (filter, value) pairs, which
+        will be tested against the read after each iteration of read trimming.
 
+    POST
+    ----
 
-INPUT
------
+    The read will first be evaluated against the filtering criteria. If the read
+    passes the filtering criteria, then the read will be returned without
+    modification. However, if the read does not meet the filtering criteria, it
+    will be trimmed iteratively.
 
-[BIOPYTHON SEQRECORD] [read]
-    The read that will be evaluated using the filtering criteria.
+    In the latter case, the read will be trimmed iteratively, base by base, from
+    the tail end of the read, starting at position [len(read) - 1], until either
+    the read meets the filtering criteria, or the read is too short.
 
-[(FILTER -> VALUE) DICTIONARY] [filters]
-    The filtering critiera, as a dictionary of (filter, value) pairs, all of
-    which will be tested against the read.
+    The trimmed and modified read will still be returned if it fails to be improved
+    with iterative trimming.
 
-RETURN
-------
+    # =============================================================================
+    """
 
-[BOOL] [result]
-    TRUE: the the read passes all the filtering criteria.
-    FALSE: the read fails at least one of the filtering criteria.
 
-# =============================================================================
-"""
+    def trim_read(read, filters):
 
+        length = len(read.seq)
+        length_cutoff = filters.get(LENGTH_CUTOFF)
 
-def passes_filters(read, filters):
+        # while read has not passed all filters and is <= the length cutoff,
+        # iteratively trim the read
+        while not passes_filters(read) and length >= length_cutoff:
+            read = read[:-1]
+            length = len(read.seq)
 
-    length_cutoff = filters.get(LENGTH_CUTOFF)
-    median_cutoff = filters.get(MEDIAN_CUTOFF)
-    mean_cutoff = filters.get(MEAN_CUTOFF)
-    filter_ns = filters.get('ns')
+        return read
 
-    if length_cutoff and len(read.seq) < length_cutoff:
-        return False
 
-    if median_cutoff and get_median_score(read) < median_cutoff:
-        return False
+    """
+    # =============================================================================
 
-    if mean_cutoff and get_mean_score(read) < mean_cutoff:
-        return False
+    MASK_READ
+    ---------
 
-    if filter_ns and 'n' in read.seq.lower():
-        return False
 
-    return True
+    PURPOSE
+    -------
 
+    Masks the nucleotide of all low quality positions in the read with an "N".
 
-"""
-# =============================================================================
 
-FILTER JOBS
------------
+    INPUT
+    -----
 
+    [BIOPYTHON SEQRECORD] [read]
+        The read to mask low quality positions within.
 
-PURPOSE
--------
+    [(FILTER -> VALUE) DICTIONARY] [filters]
+        The filtering critiera, as a dictionary of (filter, value) pairs. The
+        minimum quality score will be taken from this dictionary as the value of
+        the MINIMUM_QUALITY key.
 
-Filters reads according to a variety of filtering criteria.
 
+    POST
+    ----
 
-INPUT
------
+    The nucleotide positions in the passed read will be masked with "N"s if their
+    PHRED quality score is below the minimum.
 
-[FILE LOCATION] [reads_location]
-    The file location of a FASTQ-encoded reads file.
+    # =============================================================================
+    """
 
-[FILE LOCATION] [output_location]
-    The output location of the filtered reads.
 
-[(FILTER -> VALUE) DICTIONARY] [filters]
-    The filtering critiera, as a dictionary of (filter, value) pairs, all of
-    which will be tested against the read.
+    def mask_read(read, filters):
 
+        scores = list(read.letter_annotations['phred_quality'])
+        minimum = int(filters.get(MINIMUM_QUALITY))
 
-POST
-----
+        # Check every quality score:
+        for i in range(0, len(scores)):
 
-The reads that pass the filtering criteria will be written to the
-[output_location].
+            score = int(scores[i])
 
-# =============================================================================
-"""
+            # Is the score too low?
+            if score < minimum:
 
+                # Mask the base at this position:
+                sequence = str(read.seq)
+                sequence = sequence[:i] + MASK_CHARACTER + sequence[i + 1:]
+                read.seq = Seq(sequence)
 
-def filter_reads(reads_location, output_location, filters):
+        return
 
-    output_file = open(output_location, "w+")
-    reads = Bio.SeqIO.parse(reads_location, "fastq")
 
-    for read in reads:
+    """
+    # =============================================================================
 
-        if filters.get(TRIMMING):
+    PASSES FILTERS
+    --------------
 
-            trim_read(read, filters)
 
-        if passes_filters(read, filters):
+    PURPOSE
+    -------
 
-            if filters.get(MASKING):
+    Determines whether or not the read passes all the filtering criteria.
 
-                mask_read(read, filters)
 
-            Bio.SeqIO.write(read, output_file, "fastq")
+    INPUT
+    -----
 
-    output_file.close()
+    [BIOPYTHON SEQRECORD] [read]
+        The read that will be evaluated using the filtering criteria.
+
+    [(FILTER -> VALUE) DICTIONARY] [filters]
+        The filtering critiera, as a dictionary of (filter, value) pairs, all of
+        which will be tested against the read.
+
+    RETURN
+    ------
+
+    [BOOL] [result]
+        TRUE: the the read passes all the filtering criteria.
+        FALSE: the read fails at least one of the filtering criteria.
+
+    # =============================================================================
+    """
+
+
+    def passes_filters(read, filters):
+
+        length_cutoff = filters.get(LENGTH_CUTOFF)
+        median_cutoff = filters.get(MEDIAN_CUTOFF)
+        mean_cutoff = filters.get(MEAN_CUTOFF)
+        filter_ns = filters.get('ns')
+
+        if length_cutoff and len(read.seq) < length_cutoff:
+            return False
+
+        if median_cutoff and get_median_score(read) < median_cutoff:
+            return False
+
+        if mean_cutoff and get_mean_score(read) < mean_cutoff:
+            return False
+
+        if filter_ns and 'n' in read.seq.lower():
+            return False
+
+        return True
+
+
+    """
+    # =============================================================================
+
+    FILTER JOBS
+    -----------
+
+
+    PURPOSE
+    -------
+
+    Filters reads according to a variety of filtering criteria.
+
+
+    INPUT
+    -----
+
+    [FILE LOCATION] [reads_location]
+        The file location of a FASTQ-encoded reads file.
+
+    [FILE LOCATION] [output_location]
+        The output location of the filtered reads.
+
+    [(FILTER -> VALUE) DICTIONARY] [filters]
+        The filtering critiera, as a dictionary of (filter, value) pairs, all of
+        which will be tested against the read.
+
+
+    POST
+    ----
+
+    The reads that pass the filtering criteria will be written to the
+    [output_location].
+
+    # =============================================================================
+    """
+
+
+    def filter_reads(reads_location, output_location, filters):
+
+        filtered_reads_file = open(output_location, "w+")
+        reads = Bio.SeqIO.parse(reads_location, "fastq")
+
+        for read in reads:
+
+            if filters.get(TRIMMING):
+
+                trim_read(read, filters)
+
+            if passes_filters(read, filters):
+
+                if filters.get(MASKING):
+
+                    mask_read(read, filters)
+
+                Bio.SeqIO.write(read, output_file, "fastq")
+
+        filtered_reads_file.close()

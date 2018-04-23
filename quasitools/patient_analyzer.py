@@ -28,10 +28,11 @@ import Bio.SeqIO
 
 
 class PatientAnalyzer():
-    def __init__(self, id, output_dir, reads, reference,
+    def __init__(self, id, output_dir, read_filters, reads, reference,
                  genes_file, mutation_db, quiet, consensus_pct):
         self.id = id
         self.output_dir = output_dir
+        self.read_filters = read_filters
         self.reads = reads
         self.reference = reference
         self.mutation_db = mutation_db
@@ -40,11 +41,11 @@ class PatientAnalyzer():
         self.quiet = quiet
         self.consensus_pct = consensus_pct
 
-        self.filtered = {}
-        self.filtered["status"] = 0
-        self.filtered["length"] = 0
-        self.filtered["score"] = 0
-        self.filtered["ns"] = 0
+        self.amount_filtered = {}
+        self.amount_filtered["status"] = 0
+        self.amount_filtered["length"] = 0
+        self.amount_filtered["score"] = 0
+        self.amount_filtered["ns"] = 0
 
         self.input_size = 0
         self.determine_input_size()
@@ -92,6 +93,12 @@ class PatientAnalyzer():
 
     def analyze_reads(self, fasta_id, filters, reporting_threshold,
                       generate_consensus):
+        #Calls quality_control function
+        if not self.quiet:
+            print("# Performing quality control on reads...")
+            quality = QualityControl()
+            quality.filter_reads(self.reads, self.filtered_reads, filters)
+
         # Map reads against reference using bowtietwo
         if not self.quiet:
             print("# Mapping reads...")
@@ -248,17 +255,17 @@ class PatientAnalyzer():
 
         stats_report.write("Input Size: %i\n" % self.input_size)
         stats_report.write("Number of reads filtered due to length: %i\n" %
-                           self.filtered["length"])
+                           self.amount_filtered["length"])
         stats_report.write(("Number of reads filtered due to average "
-                            "quality score: %i\n") % self.filtered["score"])
+                            "quality score: %i\n") % self.amount_filtered["score"])
         stats_report.write(("Number of reads filtered due to presence "
-                            "of Ns: %i\n") % self.filtered["ns"])
+                            "of Ns: %i\n") % self.amount_filtered["ns"])
         stats_report.write("Number of reads filtered due to excess "
                            "coverage: 0\n")
         stats_report.write(("Number of reads filtered due to poor "
                             "mapping: %i\n") %
-                           (self.input_size - self.filtered["length"] -
-                            self.filtered["score"] - self.filtered["ns"] -
+                           (self.input_size - self.amount_filtered["length"] -
+                            self.amount_filtered["score"] - self.amount_filtered["ns"] -
                             mr_len))
         stats_report.write("Percentage of reads filtered: %0.2f" %
                            (float(self.input_size - mr_len) /
