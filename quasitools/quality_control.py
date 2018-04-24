@@ -335,10 +335,15 @@ class QualityControl():
     POST
     ----
 
-    The reads that pass the filtering criteria will be written to the
-    [output_location]. The self.amount_filtered dict will contain the
-    frequencies that a read was filtered (excluded from being written to the
-    output file) due to failing the filtering criteria.
+    The reads that pass the filtering criteria will be written to
+    [output_location/filtered.fastq]. The self.amount_filtered dict will
+    contain the frequencies that a read was filtered (excluded from being
+    written to the output file) due to failing the filtering criteria.
+
+    RETURN
+    ------
+
+    Filtered reads directory (output_location/filtered.fastq)
 
     # =========================================================================
     """
@@ -371,6 +376,8 @@ class QualityControl():
 
         self.amount_filtered["status"] = 1
         filtered_reads_file.close()
+
+        return filtered_reads_dir
 
     """
     # =========================================================================

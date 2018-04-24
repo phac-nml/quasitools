@@ -1,7 +1,7 @@
 """
 Copyright Government of Canada 2018
 
-Written by: Matthew Fogel, National Microbiology Laboratory,
+Written by: Matthew Fogel and Camy Tran, National Microbiology Laboratory,
             Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -51,10 +51,10 @@ class TestQualityControl:
         read_filters["minimum_quality"] = min_qual
 
         assert self.quality_control.get_amount_filtered()["status"] == 0
-        self.quality_control.filter_reads(READS, OUTPUT_DIR,
-                                          read_filters)
-        self.filtered_reads = "%s/filtered.fastq" % OUTPUT_DIR
-        seq_rec_obj = Bio.SeqIO.parse(self.filtered_reads, "fastq")
+        filtered_reads_dir = self.quality_control.filter_reads(READS,
+                                                               OUTPUT_DIR,
+                                                               read_filters)
+        seq_rec_obj = Bio.SeqIO.parse(filtered_reads_dir, "fastq")
 
         for seq in seq_rec_obj:
             avg_score = read_filters["score_cutoff"] + 1
