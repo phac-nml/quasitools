@@ -107,28 +107,28 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         if not id:
             fasta_id += ("_%s" % os.path.basename(reverse).split('.')[0])
 
-    read_filters = defaultdict(dict)
+    quality_filters = defaultdict(dict)
 
     if trim_reads:
-        read_filters["TRIMMING"] = "trimming"
+        quality_filters["TRIMMING"] = "trimming"
 
     if mask_reads:
-        read_filters["MASKING"] = "masking"
+        quality_filters["MASKING"] = "masking"
 
-    read_filters["length_cutoff"] = length_cutoff
+    quality_filters["length_cutoff"] = length_cutoff
 
     if score_type == "median_score":
-        read_filters["median_cutoff"] = score_cutoff
+        quality_filters["median_cutoff"] = score_cutoff
     elif score_type == "mean_score":
-        read_filters["mean_cutoff"] = score_cutoff
+        quality_filters["mean_cutoff"] = score_cutoff
     # end if
 
     if ns:
-        read_filters["ns"] = True
+        quality_filters["ns"] = True
     else:
-        read_filters["ns"] = False
+        quality_filters["ns"] = False
 
-    read_filters["minimum_quality"] = min_qual
+    quality_filters["minimum_quality"] = min_qual
 
     variant_filters = defaultdict(dict)
     variant_filters["error_rate"] = error_rate
@@ -139,11 +139,10 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
 
     patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
                                        output_dir=output_dir,
-                                       read_filters=read_filters,
                                        reads=reads, reference=REFERENCE,
                                        genes_file=GENES_FILE,
                                        mutation_db=mutation_db, quiet=quiet,
                                        consensus_pct=consensus_pct)
 
-    patient_analyzer.analyze_reads(fasta_id, variant_filters,
+    patient_analyzer.analyze_reads(fasta_id, quality_filters, variant_filters,
                                    reporting_threshold, generate_consensus)

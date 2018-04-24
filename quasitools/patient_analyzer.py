@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2017
+Copyright Government of Canada 2017 - 2018
 
 Written by: Camy Tran, National Microbiology Laboratory,
             Public Health Agency of Canada
@@ -29,11 +29,10 @@ import Bio.SeqIO
 
 
 class PatientAnalyzer():
-    def __init__(self, id, output_dir, read_filters, reads, reference,
+    def __init__(self, id, output_dir, reads, reference,
                  genes_file, mutation_db, quiet, consensus_pct):
         self.id = id
         self.output_dir = output_dir
-        self.read_filters = read_filters
         self.reads = reads
         self.reference = reference
         self.mutation_db = mutation_db
@@ -90,12 +89,13 @@ class PatientAnalyzer():
         filtered_reads_file.close()
     """
 
-    def analyze_reads(self, fasta_id, filters, reporting_threshold,
-                      generate_consensus):
+    def analyze_reads(self, fasta_id, quality_filters, variant_filters,
+                      reporting_threshold, generate_consensus):
         # Calls quality_control function
         if not self.quiet:
             print("# Performing quality control on reads...")
-            self.quality.filter_reads(self.reads, self.filtered_reads, filters)
+            self.quality.filter_reads(self.reads, self.filtered_reads,
+                                      quality_filters)
 
         # Map reads against reference using bowtietwo
         if not self.quiet:
