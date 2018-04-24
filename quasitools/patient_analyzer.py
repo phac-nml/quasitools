@@ -60,35 +60,6 @@ class PatientAnalyzer():
         for seq in sequences:
             self.input_size += 1
 
-    """
-    def filter_reads(self, filters):
-        if not self.quiet:
-            print("# Filtering reads...")
-
-        filtered_reads_file = open(self.filtered_reads, "w+")
-
-        seq_rec_obj = Bio.SeqIO.parse(self.reads, "fastq")
-
-        for seq in seq_rec_obj:
-
-            avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
-                         float(len(seq.letter_annotations['phred_quality'])))
-
-            length = len(seq.seq)
-
-            if length < filters["length_cutoff"]:
-                self.filtered["length"] += 1
-            elif avg_score < filters["score_cutoff"]:
-                self.filtered["score"] += 1
-            elif filters['ns'] and 'n' in seq.seq.lower():
-                self.filtered['ns'] += 1
-            else:
-                Bio.SeqIO.write(seq, filtered_reads_file, "fastq")
-
-        self.filtered["status"] = 1
-        filtered_reads_file.close()
-    """
-
     def analyze_reads(self, fasta_id, quality_filters, variant_filters,
                       reporting_threshold, generate_consensus):
         # Calls quality_control function
