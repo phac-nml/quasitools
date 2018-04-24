@@ -21,17 +21,12 @@ import shutil
 from collections import defaultdict
 import pytest
 from quasitools.patient_analyzer import PatientAnalyzer
+from quasitools.quality_control import QualityControl
 import Bio.SeqIO
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
-TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 READS = TEST_PATH + "/data/reads_w_K103N.fastq"
-FORWARD = TEST_PATH + "/data/forward.fastq"
-REVERSE = TEST_PATH + "data/reverse.fastq"
-REFERENCE = TEST_PATH + "/data/hxb2_pol.fas"
-GENES_FILE = TEST_PATH + "/data/hxb2_pol.bed"
-MUTATION_DB = TEST_PATH + "/data/mutation_db.tsv"
-OUTPUT_DIR = TEST_PATH + "/test_patient_analyzer_output"
+OUTPUT_DIR = TEST_PATH + "/test_quality_control_output"
 
 
 class TestQualityControl:
@@ -45,22 +40,24 @@ class TestQualityControl:
 
         length_cutoff = 100
         score_cutoff = 30
+        min_qual = 30
 
         # read_filters["TRIMMING"] = "trimming"
         # read_filters["MASKING"] = "masking"
 
         read_filters["length_cutoff"] = length_cutoff
-        read_filters["mean_cutoff"] = score_cutoff
+        read_filters["score_cutoff"] = score_cutoff
         read_filters["ns"] = True
         read_filters["minimum_quality"] = min_qual
 
         assert self.quality_control.get_amount_filtered()["status"] == 0
-        self.quality_control.filter_reads(filters)
-        self.filtered_reads = "%s/filtered.fastq" % output_dir
+        self.quality_control.filter_reads(READS, OUTPUT_DIR,
+                                          read_filters)
+        self.filtered_reads = "%s/filtered.fastq" % OUTPUT_DIR
         seq_rec_obj = Bio.SeqIO.parse(self.filtered_reads, "fastq")
 
         for seq in seq_rec_obj:
-            avg_score = filters["score_cutoff"] + 1
+            avg_score = read_filters["score_cutoff"] + 1
             avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
                          float(len(seq.letter_annotations['phred_quality'])))
 

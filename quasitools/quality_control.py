@@ -17,6 +17,7 @@ specific language governing permissions and limitations under the License.
 """
 
 import Bio.SeqIO
+import os
 from Bio.Seq import Seq
 
 TRIMMING = "trimming"
@@ -344,7 +345,10 @@ class QualityControl():
 
     def filter_reads(self, reads_location, output_location, filters):
 
-        filtered_reads_file = open(output_location, "w+")
+        if not os.path.isdir(output_location):
+            os.mkdir(output_location)
+        filtered_reads_dir = "%s/filtered.fastq" % output_location
+        filtered_reads_file = open(filtered_reads_dir, "w+")
         reads = Bio.SeqIO.parse(reads_location, "fastq")
 
         for read in reads:
@@ -365,7 +369,7 @@ class QualityControl():
 
                 self.amount_filtered[self.last_failed] += 1
 
-        self.filtered["status"] = 1
+        self.amount_filtered["status"] = 1
         filtered_reads_file.close()
 
     """

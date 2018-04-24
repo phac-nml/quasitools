@@ -67,6 +67,7 @@ class TestPatientAnalyzer:
 
         length_cutoff = 100
         score_cutoff = 30
+        min_qual = 30
 
         # read_filters["TRIMMING"] = "trimming"
         # read_filters["MASKING"] = "masking"
@@ -79,7 +80,7 @@ class TestPatientAnalyzer:
         # test defaults
         variant_filters = defaultdict(dict)
         variant_filters["error_rate"] = 0.0021
-        variant_filters["min_qual"] = 30
+        variant_filters["min_qual"] = min_qual
         variant_filters["min_dp"] = 100
         variant_filters["min_ac"] = 5
         variant_filters["min_freq"] = 0.01

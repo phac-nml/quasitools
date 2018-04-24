@@ -94,7 +94,7 @@ class PatientAnalyzer():
         # Calls quality_control function
         if not self.quiet:
             print("# Performing quality control on reads...")
-            self.quality.filter_reads(self.reads, self.filtered_reads,
+            self.quality.filter_reads(self.reads, self.output_dir,
                                       quality_filters)
 
         # Map reads against reference using bowtietwo
@@ -127,15 +127,15 @@ class PatientAnalyzer():
             print("# Identifying variants...")
 
         variants = NTVariantCollection.from_mapped_read_collections(
-            filters["error_rate"], self.references,
+            variant_filters["error_rate"], self.references,
             *mapped_read_collection_arr)
 
-        variants.filter('q%s' % filters["min_qual"],
-                        'QUAL<%s' % filters["min_qual"], True)
-        variants.filter('ac%s' % filters["min_ac"],
-                        'AC<%s' % filters["min_ac"], True)
-        variants.filter('dp%s' % filters["min_dp"],
-                        'DP<%s' % filters["min_dp"], True)
+        variants.filter('q%s' % variant_filters["min_qual"],
+                        'QUAL<%s' % variant_filters["min_qual"], True)
+        variants.filter('ac%s' % variant_filters["min_ac"],
+                        'AC<%s' % variant_filters["min_ac"], True)
+        variants.filter('dp%s' % variant_filters["min_dp"],
+                        'DP<%s' % variant_filters["min_dp"], True)
 
         vcf_file = open("%s/hydra.vcf" % self.output_dir, "w+")
         vcf_file.write(variants.to_vcf_file())
@@ -172,8 +172,8 @@ class PatientAnalyzer():
         aa_vars = AAVariantCollection.from_aacensus(aa_census)
 
         # Filter for mutant frequency
-        aa_vars.filter('mf%s' % filters['min_freq'],
-                       'freq<%s' % filters['min_freq'], True)
+        aa_vars.filter('mf%s' % variant_filters['min_freq'],
+                       'freq<%s' % variant_filters['min_freq'], True)
 
         # Build the mutation database and update collection
         if self.mutation_db is not None:
