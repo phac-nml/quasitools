@@ -39,6 +39,29 @@ class TestQualityControl:
         if not os.path.isdir(OUTPUT_DIR):
             os.mkdir(OUTPUT_DIR)
 
+    def test_get_median_score(self):
+        seq = Seq("GATC")
+        seq_record = SeqRecord(seq)
+        seq_record.id = "first"
+        seq_record.letter_annotations["phred_quality"] = [35, 30, 50, 70]
+
+        assert self.quality_control.get_median_score(seq_record) == 40
+
+        seq = Seq("CAT")
+        seq_record = SeqRecord(seq)
+        seq_record.id = "first"
+        seq_record.letter_annotations["phred_quality"] = [35, 30, 50]
+
+        assert self.quality_control.get_median_score(seq_record) == 30
+
+    def test_get_mean_score(self):
+        seq = Seq("GATC")
+        seq_record = SeqRecord(seq)
+        seq_record.id = "first"
+        seq_record.letter_annotations["phred_quality"] = [20, 40, 60, 80]
+
+        assert self.quality_control.get_mean_score(seq_record) == 50
+
     def test_passes_filters(self):
         failed_status = {0: "success", 1: "length", 2: "score", 3: "ns"}
 
