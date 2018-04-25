@@ -55,7 +55,7 @@ class QualityControl():
         self.amount_filtered["length"] = 0
         self.amount_filtered["score"] = 0
         self.amount_filtered["ns"] = 0
-        self.last_failed = ""
+        self.failed_filter = { 1 : "length", 2 : "score", 3 : "ns" }
 
     """
     # =============================================================================
@@ -268,14 +268,11 @@ class QualityControl():
     RETURN
     ------
 
-    [BOOL] [result]
-        TRUE: the read passes all the filtering criteria.
-        FALSE: the read fails at least one of the filtering criteria.
-
-    POST
-    ----
-    The name of the previous filtering criteria that caused FALSE to be
-    returned is written to self.last_failed.
+    [INT] [result]
+        0: the read passes all the filtering criteria
+        1: the read fails due to read length
+        2: the read fails due to read score
+        3: the read fails due to ns
 
     # =========================================================================
     """
@@ -288,22 +285,18 @@ class QualityControl():
         filter_ns = filters.get('ns')
 
         if length_cutoff and len(read.seq) < length_cutoff:
-            self.last_failed = "length"
-            return False
+            return 1
 
         if median_cutoff and self.get_median_score(read) < median_cutoff:
-            self.last_failed = "score"
-            return False
+            return 2
 
         elif mean_cutoff and self.get_mean_score(read) < mean_cutoff:
-            self.last_failed = "score"
-            return False
+            return 2
 
         if filter_ns and 'n' in read.seq.lower():
-            self.last_failed = "ns"
-            return False
+            return 3
 
-        return True
+        return 0
 
     """
     # =========================================================================
@@ -362,7 +355,7 @@ class QualityControl():
 
                 self.trim_read(read, filters)
 
-            if self.passes_filters(read, filters):
+            if key = self.passes_filters(read, filters):
 
                 if filters.get(MASKING):
 
@@ -370,9 +363,9 @@ class QualityControl():
 
                 Bio.SeqIO.write(read, filtered_reads_file, "fastq")
 
-            else:
+            elif self.failed_filter.get(key) in self.amount_filtered:
 
-                self.amount_filtered[self.last_failed] += 1
+                self.amount_filtered[self.failed_filter.get(key)] += 1
 
         self.amount_filtered["status"] = 1
         filtered_reads_file.close()
