@@ -2,6 +2,37 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.3.1 ##
+
+2018-04-13
+
+### Added ###
+
+- Updated hydra command to accept an id to be used as the sequence identifier
+  in the consensus report, and as the RG-id in the bam file
+
+## 0.3.0 ##
+
+2018-04-10
+
+### Added ###
+
+ - commands:
+   - distance: returns the evolutionary distances between viral quasispecies as a distance matrix
+ - modules:
+   - pileup.py: contains Pileup and Pileup_List classes
+   - distance.py: contains Distance_Matrix class
+
+## 0.2.3 ##
+
+2018-03-16
+
+### Changed ###
+
+- Fixed FASTA identifier in consensus output for the consensus and hydra commands
+- User can pass in a default id as an option
+- RG tag is used if present in the supplied .bam file
+
 ## 0.2.2 ##
 
 2017-11-27
