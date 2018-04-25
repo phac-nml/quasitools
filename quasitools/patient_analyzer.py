@@ -52,6 +52,8 @@ class PatientAnalyzer():
         if not os.path.isdir(output_dir):
             os.mkdir(output_dir)
 
+        self.filtered_reads_dir = "%s/filtered.fastq" % output_dir
+
     def determine_input_size(self):
         sequences = Bio.SeqIO.parse(self.reads, "fastq")
 
@@ -63,15 +65,16 @@ class PatientAnalyzer():
         # Calls quality_control function
         if not self.quiet:
             print("# Performing quality control on reads...")
-        filtered_reads_dir = self.quality.filter_reads(self.reads,
-                                                       self.output_dir,
-                                                       quality_filters)
+
+        self.quality.filter_reads(self.reads,
+                                  self.filtered_reads_dir,
+                                  quality_filters)
 
         # Map reads against reference using bowtietwo
         if not self.quiet:
             print("# Mapping reads...")
 
-        bam = self.generate_bam(fasta_id, filtered_reads_dir)
+        bam = self.generate_bam(fasta_id)
 
         if not self.quiet:
             print("# Loading read mappings...")
@@ -167,9 +170,8 @@ class PatientAnalyzer():
 
     # This is a helper method that generates the bam file.
     # It takes as an argument the fasta_id, which is used by bowtie2 as the
-    # RG-ID in the output bam file. It also takes as an argument the directory
-    # of the filtered reads, which is used in the bowtie2 command.
-    def generate_bam(self, fasta_id, filtered_reads_dir):
+    # RG-ID in the output bam file.
+    def generate_bam(self, fasta_id):
         """ Runs bowtietwo local alignment on self.reads
             to generate a bam file """
 
@@ -187,7 +189,7 @@ class PatientAnalyzer():
         bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' --rfg '8,3' "
                           "--rg-id %s --ma 1 --mp '2,2' -S %s -x %s "
                           "-U %s") % (fasta_id, sam_fn, bowtietwo_index,
-                                      filtered_reads_dir))
+                                      self.filtered_reads_dir))
 
         os.system(bowtietwo_cmd)
 

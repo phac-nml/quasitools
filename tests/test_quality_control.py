@@ -29,13 +29,15 @@ from Bio.SeqRecord import SeqRecord
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 READS = TEST_PATH + "/data/reads_w_K103N.fastq"
 OUTPUT_DIR = TEST_PATH + "/test_quality_control_output"
-
+FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
 
 class TestQualityControl:
     @classmethod
     def setup_class(self):
         # Test defaults
         self.quality_control = QualityControl()
+        if not os.path.isdir(OUTPUT_DIR):
+            os.mkdir(OUTPUT_DIR)
 
     def test_passes_filters(self):
         failed_status = {0: "success", 1: "length", 2: "score", 3: "ns"}
@@ -96,10 +98,9 @@ class TestQualityControl:
         read_filters["minimum_quality"] = min_qual
 
         assert self.quality_control.get_amount_filtered()["status"] == 0
-        filtered_reads_dir = self.quality_control.filter_reads(READS,
-                                                               OUTPUT_DIR,
-                                                               read_filters)
-        seq_rec_obj = Bio.SeqIO.parse(filtered_reads_dir, "fastq")
+        self.quality_control.filter_reads(READS, FILTERED_DIR, read_filters)
+        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+
         for seq in seq_rec_obj:
             avg_score = read_filters["score_cutoff"] + 1
             avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
@@ -148,10 +149,11 @@ class TestQualityControl:
 
         Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
 
-        filtered_reads = self.quality_control.filter_reads(INPUT_DIR,
-                                                           OUTPUT_DIR,
-                                                           quality_filters)
-        seq_rec_obj = Bio.SeqIO.parse(filtered_reads, "fastq")
+        self.quality_control.filter_reads(INPUT_DIR,
+                                          FILTERED_DIR,
+                                          quality_filters)
+
+        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
         assert(sum(1 for seq in seq_rec_obj) == 0)
 
         # more sample Biopython reads for testing
@@ -178,8 +180,9 @@ class TestQualityControl:
 
         Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
 
-        filtered_reads = self.quality_control.filter_reads(INPUT_DIR,
-                                                           OUTPUT_DIR,
-                                                           quality_filters)
-        seq_rec_obj = Bio.SeqIO.parse(filtered_reads, "fastq")
+        self.quality_control.filter_reads(INPUT_DIR,
+                                          FILTERED_DIR,
+                                          quality_filters)
+
+        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
         assert(sum(1 for seq in seq_rec_obj) == 2)

@@ -57,7 +57,7 @@ class TestPatientAnalyzer:
     def test_generate_bam(self):
         assert not os.path.isfile("%s/align.bam" % OUTPUT_DIR)
         fasta_id = os.path.basename(self.patient_analyzer.reads).split('.')[0]
-        self.patient_analyzer.generate_bam(fasta_id, READS)
+        self.patient_analyzer.generate_bam(fasta_id)
 
         assert os.path.isfile("%s/align.bam" % OUTPUT_DIR)
 

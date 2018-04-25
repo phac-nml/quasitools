@@ -17,7 +17,6 @@ specific language governing permissions and limitations under the License.
 """
 
 import Bio.SeqIO
-import os
 from Bio.Seq import Seq
 
 TRIMMING = "trimming"
@@ -329,24 +328,16 @@ class QualityControl():
     ----
 
     The reads that pass the filtering criteria will be written to
-    [output_location/filtered.fastq]. The self.amount_filtered dict will
+    [output_location]. The self.amount_filtered dict will
     contain the frequencies that a read was filtered (excluded from being
     written to the output file) due to failing the filtering criteria.
-
-    RETURN
-    ------
-
-    Filtered reads directory (output_location/filtered.fastq)
 
     # =========================================================================
     """
 
     def filter_reads(self, reads_location, output_location, filters):
 
-        if not os.path.isdir(output_location):
-            os.mkdir(output_location)
-        filtered_reads_dir = "%s/filtered.fastq" % output_location
-        filtered_reads_file = open(filtered_reads_dir, "w")
+        filtered_reads_file = open(output_location, "w+")
         reads = Bio.SeqIO.parse(reads_location, "fastq")
 
         for read in reads:
@@ -371,8 +362,6 @@ class QualityControl():
 
         self.amount_filtered["status"] = 1
         filtered_reads_file.close()
-
-        return filtered_reads_dir
 
     """
     # =========================================================================
