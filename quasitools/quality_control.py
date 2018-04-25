@@ -181,7 +181,8 @@ class QualityControl():
 
         # while read has not passed all filters and is <= the length cutoff,
         # iteratively trim the read
-        while not self.passes_filters(read) and length >= length_cutoff:
+        while self.passes_filters(read, filters) > 0 and \
+                                      length >= length_cutoff:
             read = read[:-1]
             length = len(read.seq)
 
