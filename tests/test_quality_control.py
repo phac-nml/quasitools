@@ -71,22 +71,39 @@ class TestQualityControl:
         advanced_filters = defaultdict(dict)
 
         advanced_filters["TRIMMING"] = "trimming"
-        advanced_filters["MASKING"] = "masking"
 
-        length_cutoff = 2
-        score_cutoff = 30
-        min_qual = 30
-
-        advanced_filters["length_cutoff"] = length_cutoff
-        advanced_filters["mean_cutoff"] = score_cutoff
+        advanced_filters["length_cutoff"] = 2
+        advanced_filters["mean_cutoff"] = 30
         advanced_filters["ns"] = True
-        advanced_filters["minimum_quality"] = min_qual
+        advanced_filters["minimum_quality"] = 30
 
         trimmed_read = self.quality_control.trim_read(seq_record,
                                                       advanced_filters)
 
         assert len(trimmed_read.seq) == 2
 
+    def test_mask_reads(self):
+        seq = Seq("GATC")
+        seq_record = SeqRecord(seq)
+        seq_record.id = "first"
+        seq_record.letter_annotations["phred_quality"] = [30, 30, 3, 1]
+
+        advanced_filters = defaultdict(dict)
+
+        advanced_filters["MASKING"] = "masking"
+
+        advanced_filters["length_cutoff"] = 2
+        advanced_filters["mean_cutoff"] = 30
+        advanced_filters["ns"] = True
+        advanced_filters["minimum_quality"] = 30
+
+        self.quality_control.mask_read(seq_record, advanced_filters)
+
+        assert len(seq_record.seq) == 4
+        assert seq_record.seq[3] == 'N'
+        assert seq_record.seq[2] == 'N'
+        assert seq_record.seq[1] == 'A'
+        assert seq_record.seq[0] == 'G'
 
     def test_passes_filters(self):
         failed_status = {0: "success", 1: "length", 2: "score", 3: "ns"}
