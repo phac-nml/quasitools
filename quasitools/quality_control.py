@@ -55,7 +55,7 @@ class QualityControl():
         self.amount_filtered["length"] = 0
         self.amount_filtered["score"] = 0
         self.amount_filtered["ns"] = 0
-        self.failed_filter = { 1 : "length", 2 : "score", 3 : "ns" }
+        self.passes_status = {0: "success", 1: "length", 2: "score", 3: "ns"}
 
     """
     # =============================================================================
@@ -346,7 +346,7 @@ class QualityControl():
         if not os.path.isdir(output_location):
             os.mkdir(output_location)
         filtered_reads_dir = "%s/filtered.fastq" % output_location
-        filtered_reads_file = open(filtered_reads_dir, "w+")
+        filtered_reads_file = open(filtered_reads_dir, "w")
         reads = Bio.SeqIO.parse(reads_location, "fastq")
 
         for read in reads:
@@ -355,7 +355,9 @@ class QualityControl():
 
                 self.trim_read(read, filters)
 
-            if key == self.passes_filters(read, filters):
+            key = self.passes_filters(read, filters)
+
+            if self.passes_status.get(key) == "success":
 
                 if filters.get(MASKING):
 
@@ -363,9 +365,9 @@ class QualityControl():
 
                 Bio.SeqIO.write(read, filtered_reads_file, "fastq")
 
-            elif self.failed_filter.get(key) in self.amount_filtered:
+            elif self.passes_status.get(key) in self.amount_filtered:
 
-                self.amount_filtered[self.failed_filter.get(key)] += 1
+                self.amount_filtered[self.passes_status.get(key)] += 1
 
         self.amount_filtered["status"] = 1
         filtered_reads_file.close()
