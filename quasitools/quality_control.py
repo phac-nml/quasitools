@@ -355,7 +355,7 @@ class QualityControl():
 
                 self.trim_read(read, filters)
 
-            if key = self.passes_filters(read, filters):
+            if key == self.passes_filters(read, filters):
 
                 if filters.get(MASKING):
 
