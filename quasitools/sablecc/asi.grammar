@@ -1,0 +1,147 @@
+/**
+Copyright 2017 Frontier Science & Technology Research Foundation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+ADDITIONAL DISCLAIMER:
+In addition to the standard warranty exclusions and limitations of 
+liability set forth in sections 7, 8 and 9 of the Apache 2.0 license 
+that governs the use and development of this software, Frontier Science 
+& Technology Research Foundation disclaims any liability for use of 
+this software for patient care or in clinical settings. This software 
+was developed solely for use in medical and public health research, and 
+was not intended, designed, or validated to guide patient care.
+*/
+Package org.fstrf.stanfordAsiInterpreter.resistance.grammar;
+
+/**
+ * These are character sets and regular expressions used in
+ * the definition of tokens. 
+ * Note: Helpers can not be used in productions
+ */
+Helpers
+  digit       = ['0' .. '9'];
+
+/**
+ * These are token definitions. The entire grammar is made up of these
+ * expressions.  Every base production (meaning the production does not
+ * depend on any other production) will consist entirely of tokens, all
+ * other production will consist of productions and tokens.             
+ */
+Tokens
+
+  min         = '-';
+  and         = 'AND';
+  or          = 'OR';
+  not         = 'NOT';
+  exclude     = 'EXCLUDE';
+  select      = 'SELECT';
+  from        = 'FROM';
+  atleast     = 'ATLEAST';
+  exactly     = 'EXACTLY';
+  notmorethan = 'NOTMORETHAN';
+  score       = 'SCORE';
+  max         = 'MAX';
+
+  l_par       = '(';
+  r_par       = ')';
+  mapper      = '=>';
+  comma       = ',';
+  blank       = (' ' | 13 | 10 | 9)+;
+
+  integer     = digit+;
+  float       = digit+ '.' digit+;
+  amino_acid  = ('A' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'K' | 'L' | 'M' | 'N' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'V' | 'W' | 'Y' | 'Z' | 'd' | 'i'); 
+
+/** 
+ * These tokens are simply ignored by the parser. 
+ */
+Ignored Tokens
+  blank;
+
+
+/** 
+ * These are the productions of the grammar. The first production is 
+ * used by the implicit start production.                           
+ * ?, * and + have the same meaning as in a regular expression.      
+ *
+ * A production can have more than one factor.
+ *
+ * Each alternative element can be explicitly named by preceding it 
+ * with a name enclosed in brackets and followed by | or a colon 
+ * if it is the last element in list. 
+ */
+
+Productions	
+
+  statement =
+    {logicstatement}     booleancondition |
+    {score}              scorecondition;
+
+
+  booleancondition =	 condition condition2*;
+
+  
+  condition = 
+    {statement}          l_par booleancondition r_par |
+    {residue}            residue |
+    {exclude}            excludestatement |
+    {select}             selectstatement ;
+    
+
+  condition2 = 
+                         logicsymbol condition;
+			
+  logicsymbol =
+    {and}                and |
+    {or}                 or;
+
+  residue = 
+    {residue}            [originalaminoacid]:amino_acid? integer [mutatedaminoacid]:amino_acid+ |
+    {residuenot}         not [originalaminoacid]:amino_acid? integer [mutatedaminoacid]:amino_acid+ |
+    {residueinvert}      [originalaminoacid]:amino_acid? integer l_par not [mutatedaminoacid]:amino_acid+ r_par;
+		  
+  excludestatement =
+                         exclude residue;
+
+  selectstatement =
+                         select selectstatement2;
+
+  selectstatement2 = 
+    {exactly}            exactly integer from l_par selectlist r_par |
+    {atleast}            atleast integer from l_par selectlist r_par |
+    {notmorethan}        notmorethan integer from l_par selectlist r_par |
+    {atleastnotmorethan} atleast [atleastnumber]:integer logicsymbol notmorethan [notmorethannumber]:integer from l_par selectlist r_par;
+
+  selectlist = 
+                         residue listitems*;
+
+  listitems = 
+                         comma residue;
+
+  scorecondition = 
+                         score from l_par scorelist r_par;
+
+  scorelist = 
+                         scoreitem scoreitems*;
+
+  scoreitem = 
+	{statement}			booleancondition mapper min? number |
+	{max}				max l_par scorelist r_par;
+
+  scoreitems = 
+                         comma scoreitem;
+                         
+  number =
+  	{integer}			integer |
+  	{float}				float;

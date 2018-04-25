@@ -20,9 +20,11 @@ from quasitools.aa_variant import AAVariant, AAVariantCollection
 from collections import defaultdict
 
 
+# Parses an hmcf file into a mutation list containing tuples
+# in the form [pos, alt]
 def parse_mutations_from_hmcf(hmcf_file):
-    # mutation_list = defaultdict(list)
-    mutation_list = []
+    mutation_list = defaultdict(list)
+    # mutation_list = []
     
 
     with open(hmcf_file, "r") as input:
@@ -32,9 +34,12 @@ def parse_mutations_from_hmcf(hmcf_file):
                 filter, freq, coverage, info) = \
                     line.rstrip().split("\t")
                 
+                mutation_list[pos].append(alt)
+
                 # wc, mc, mcf, cat, srvl = info.rstrip().split(';')
                 # print("%s %s\n" % (pos, alt))
-                mutation_list.append([pos, alt])
+               # mutation_list.append([pos, alt])
+               # mutation_list.append( ("%s%s" % (pos, alt)) )
 
     return mutation_list
 

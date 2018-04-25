@@ -19,17 +19,21 @@ specific language governing permissions and limitations under the License.
 import click
 from quasitools.parsers.mutation_report_parser \
     import parse_mutations_from_hmcf
-
+from quasitools.parsers.hivdb_alg_parser \
+    import parse_drugs_from_xml
 
 @click.command('drreport', short_help='Identifies drug resistances.')
 @click.argument('hmcf', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('xml', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.pass_context
-def cli(ctx, hmcf):
+def cli(ctx, hmcf, xml):
     # simply generate a simplied AAmutation object
     # it only needs position-mutationAA
     # perhaps use a map
 
+    drugs = parse_drugs_from_xml(xml)
     mutation_list = parse_mutations_from_hmcf(hmcf)
 
     click.echo(mutation_list)
