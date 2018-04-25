@@ -77,7 +77,6 @@ class TestQualityControl:
         assert failed_status.get(key) == "ns" # did not pass filters due to
                                               # score
 
-
     def test_filter_reads(self):
 
         # test without iterative trimming or masking enabled

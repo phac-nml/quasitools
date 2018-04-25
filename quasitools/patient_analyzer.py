@@ -63,9 +63,9 @@ class PatientAnalyzer():
         # Calls quality_control function
         if not self.quiet:
             print("# Performing quality control on reads...")
-            filtered_reads_dir = self.quality.filter_reads(self.reads,
-                                                           self.output_dir,
-                                                           quality_filters)
+        filtered_reads_dir = self.quality.filter_reads(self.reads,
+                                                       self.output_dir,
+                                                       quality_filters)
 
         # Map reads against reference using bowtietwo
         if not self.quiet:
