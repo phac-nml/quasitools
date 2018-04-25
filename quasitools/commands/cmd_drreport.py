@@ -17,18 +17,20 @@ specific language governing permissions and limitations under the License.
 """
 
 import click
-from quasitools.parsers.mutation_report_parser \
-    import parse_mutations_from_hmcf
-from quasitools.parsers.hivdb_alg_parser \
-    import parse_drugs_from_xml
+from quasitools.parsers.mutation_report_parser import parse_mutations_from_hmcf
+from quasitools.parsers.hivdb_alg_parser import parse_drugs_from_xml
+from quasitools.drug import Drug, DrugCollection
+from quasitools.evaluated_drug import EvaluatedDrug, EvaluatedDrugCollection
+
 
 @click.command('drreport', short_help='Identifies drug resistances.')
 @click.argument('hmcf', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('xml', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.option('-o', '--output', type=click.File('w'))
 @click.pass_context
-def cli(ctx, hmcf, xml):
+def cli(ctx, hmcf, xml, output):
     # simply generate a simplied AAmutation object
     # it only needs position-mutationAA
     # perhaps use a map
@@ -42,6 +44,16 @@ def cli(ctx, hmcf, xml):
     # parse the drug resistance object from the xml
     # 
 
-    # 
+    # For each drug in drugs, check is the mutation_list is resistant
+
+    # for drug in drugs.drug_list:
+    #     print(drug.to_csv_entry())
+
+    drug_resistance_list = drugs.evaluate_drug_resistances(mutation_list)
+
+    if output:
+        output.write(drug_resistance_list.to_csv_string())
+    else:
+        click.echo(drug_resistance_list.to_csv_string())
 
 
