@@ -30,8 +30,14 @@ TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 READS = TEST_PATH + "/data/reads_w_K103N.fastq"
 OUTPUT_DIR = TEST_PATH + "/test_quality_control_output"
 FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
+
 TRIMMING = "trimming"
 MASKING = "masking"
+MASK_CHARACTER = "N"
+MINIMUM_QUALITY = "minimum_quality"
+LENGTH_CUTOFF = "length_cutoff"
+MEDIAN_CUTOFF = "median_cutoff"
+MEAN_CUTOFF = "mean_cutoff"
 
 class TestQualityControl:
     @classmethod
@@ -194,10 +200,11 @@ class TestQualityControl:
         assert failed_status.get(key) == "ns" # did not pass filters due to
                                               # score
 
-    def test_filter_reads(self, filters):
+    def test_filter_reads_with_mean_score(self, filters):
         """
-        test_filter_reads - Checks that the filter_reads function performs as
-        expected with iterative trimming and/or masking enabled.
+        test_filter_reads_with_mean_score - Checks that the filter_reads
+        function performs as expected with iterative trimming and/or masking
+        enabled. This includes testing with the mean used for score.
 
         INPUT:
             [dict] [filters] # provided with fixture
@@ -225,6 +232,22 @@ class TestQualityControl:
         seq_record.letter_annotations["phred_quality"] = [29, 29, 29, 29]
         seq_record_list.append(seq_record)
 
+        seq_record = SeqRecord(seq)
+        seq_record.letter_annotations["phred_quality"] = [35, 30, 50, 70]
+        seq_record_list.append(seq_record)
+
+        seq_record = SeqRecord(seq)
+        seq_record.letter_annotations["phred_quality"] = [30, 33, 35, 30]
+        seq_record_list.append(seq_record)
+
+        seq_record = SeqRecord(seq)
+        seq_record.letter_annotations["phred_quality"] = [30, 30, 30, 30]
+        seq_record_list.append(seq_record)
+
+        seq_record = SeqRecord(seq)
+        seq_record.letter_annotations["phred_quality"] = [29, 29, 31, 31]
+        seq_record_list.append(seq_record)
+
         INPUT_DIR = TEST_PATH+"/data/sample.fastq"
 
         Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
@@ -232,28 +255,84 @@ class TestQualityControl:
         self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
 
         seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
-        assert(sum(1 for seq in seq_rec_obj) == 0)
-
-        # more sample Biopython reads for testing
-        seq_record_list = []
-        seq = Seq("GATC")
-        seq_record = SeqRecord(seq)
-        seq_record.letter_annotations["phred_quality"] = [35, 30, 50, 70]
-        seq_record_list.append(seq_record)
-
-        seq_record = SeqRecord(seq)
-        seq_record.letter_annotations["phred_quality"] = [3, 3, 5, 7]
-        seq_record_list.append(seq_record)
-
-        seq_record = SeqRecord(seq)
-        seq_record.letter_annotations["phred_quality"] = [30, 33, 35, 30]
-        seq_record_list.append(seq_record)
-
-        INPUT_DIR = TEST_PATH+"/data/sample2.fastq"
-
-        Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
+        assert(sum(1 for seq in seq_rec_obj) == 4)
 
         self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
 
         seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
-        assert(sum(1 for seq in seq_rec_obj) == 2)
+
+        for read in seq_rec_obj:
+            mean = (float(sum(read.letter_annotations['phred_quality'])) /
+                    float(len(read.letter_annotations['phred_quality'])))
+
+            assert mean >= filters["mean_cutoff"]
+
+            for base_pos in range(0, len(read.seq)):
+                if (read.letter_annotations['phred_quality'][base_pos]
+                    < filters['minimum_quality']):
+                    assert read.seq[base_pos] == MASK_CHARACTER
+
+    def test_filter_reads_with_median_score(self, filters):
+        """
+        test_filter_reads_with_median_score - Checks that the filter_reads
+        function performs as expected with iterative trimming and/or masking
+        enabled. This includes testing with the median used for score.
+
+        INPUT:
+            [dict] [filters] # provided with fixture
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
+        # test with iterative trimming and masking enabled
+        # tests with median_cutoff used instead of mean_cutoff
+        filters["median_cutoff"] = 30
+        del filters["mean_cutoff"]
+
+        INPUT_DIR = TEST_PATH+"/data/sample2.fastq"
+
+        # more sample Biopython reads for testing
+        seq_record_list = []
+        seq = Seq("GATC")
+
+        seq_record = SeqRecord(seq)
+        seq_record.letter_annotations["phred_quality"] = [35, 30, 50, 10]
+        seq_record_list.append(seq_record)
+
+        seq_record = SeqRecord(seq)
+        seq_record.letter_annotations["phred_quality"] = [29, 30, 29, 29]
+        seq_record_list.append(seq_record)
+
+        seq_record = SeqRecord(seq)
+        seq_record.letter_annotations["phred_quality"] = [29, 29, 30, 29]
+        seq_record_list.append(seq_record)
+
+        seq_record = SeqRecord(seq)
+        seq_record.letter_annotations["phred_quality"] = [29, 29, 29, 29]
+        seq_record_list.append(seq_record)
+
+
+        Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
+        self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
+        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+
+        for read in seq_rec_obj:
+            length = len(read.seq)
+
+            scores = list(read.letter_annotations['phred_quality'])
+            if length % 2 == 0:
+                median_score = ((scores[int((length - 1) // 2)] +
+                                 scores[int((length - 1) // 2) + 1]) / 2)
+            else:
+                median_score = scores[int((length - 1) // 2)]
+
+            assert self.quality_control.get_median_score(read) >= \
+                   filters.get("median_cutoff")
+
+            for base_pos in range(0, len(read.seq)):
+                if (read.letter_annotations['phred_quality'][base_pos]
+                    < filters['minimum_quality']):
+                    assert read.seq[base_pos] == MASK_CHARACTER
