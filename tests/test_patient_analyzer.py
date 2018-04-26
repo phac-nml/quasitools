@@ -71,9 +71,6 @@ class TestPatientAnalyzer:
         score_cutoff = 30
         min_qual = 30
 
-        # read_filters["TRIMMING"] = "trimming"
-        # read_filters["MASKING"] = "masking"
-
         quality_filters["length_cutoff"] = length_cutoff
         quality_filters["mean_cutoff"] = score_cutoff
         quality_filters["ns"] = True

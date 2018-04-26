@@ -110,10 +110,10 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     quality_filters = defaultdict(dict)
 
     if trim_reads:
-        quality_filters["TRIMMING"] = "trimming"
+        quality_filters["trimming"] = True
 
     if mask_reads:
-        quality_filters["MASKING"] = "masking"
+        quality_filters["masking"] = True
 
     quality_filters["length_cutoff"] = length_cutoff
 

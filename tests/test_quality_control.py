@@ -70,7 +70,7 @@ class TestQualityControl:
 
         advanced_filters = defaultdict(dict)
 
-        advanced_filters["TRIMMING"] = "trimming"
+        advanced_filters["trimming"] = True
 
         advanced_filters["length_cutoff"] = 2
         advanced_filters["mean_cutoff"] = 30
@@ -90,7 +90,7 @@ class TestQualityControl:
 
         advanced_filters = defaultdict(dict)
 
-        advanced_filters["MASKING"] = "masking"
+        advanced_filters["masking"] = True
 
         advanced_filters["length_cutoff"] = 2
         advanced_filters["mean_cutoff"] = 30
@@ -179,8 +179,8 @@ class TestQualityControl:
 
         advanced_filters = defaultdict(dict)
 
-        advanced_filters["TRIMMING"] = "trimming"
-        advanced_filters["MASKING"] = "masking"
+        advanced_filters["trimming"] = True
+        advanced_filters["masking"] = True
 
         length_cutoff = 2
         score_cutoff = 30
