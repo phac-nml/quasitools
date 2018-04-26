@@ -144,5 +144,6 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
                                        mutation_db=mutation_db, quiet=quiet,
                                        consensus_pct=consensus_pct)
 
-    patient_analyzer.analyze_reads(fasta_id, quality_filters, variant_filters,
+    patient_analyzer.filter_reads(quality_filters)
+    patient_analyzer.analyze_reads(fasta_id, variant_filters,
                                    reporting_threshold, generate_consensus)

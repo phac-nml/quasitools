@@ -1,7 +1,7 @@
 """
 Copyright Government of Canada 2018
 
-Written by: Matthew Fogel and Camy Tran, National Microbiology Laboratory,
+Written by: Matthew Fogel, National Microbiology Laboratory,
             Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -146,34 +146,6 @@ class TestQualityControl:
                                               # score
 
     def test_filter_reads(self):
-
-        # test without iterative trimming or masking enabled
-
-        simple_filters = defaultdict(dict)
-
-        length_cutoff = 100
-        score_cutoff = 30
-        min_qual = 30
-
-        simple_filters["length_cutoff"] = length_cutoff
-        simple_filters["mean_cutoff"] = score_cutoff
-        simple_filters["ns"] = True
-        simple_filters["minimum_quality"] = min_qual
-
-        filtered = self.quality_control.filter_reads(READS,
-                                                     FILTERED_DIR,
-                                                     simple_filters)
-        assert filtered == True
-        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
-
-        for seq in seq_rec_obj:
-            avg_score = simple_filters["mean_cutoff"] + 1
-            avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
-                         float(len(seq.letter_annotations['phred_quality'])))
-
-            # check that length and score are both over threshold
-            assert len(seq.seq) >= simple_filters["length_cutoff"] and \
-                avg_score >= simple_filters["mean_cutoff"]
 
         # test with iterative trimming and masking enabled
 

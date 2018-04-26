@@ -60,15 +60,18 @@ class PatientAnalyzer():
         for seq in sequences:
             self.input_size += 1
 
-    def analyze_reads(self, fasta_id, quality_filters, variant_filters,
-                      reporting_threshold, generate_consensus):
-        # Calls quality_control function
+    def filter_reads(self, quality_filters):
+        # Calls quality_control.filter_reads function
         if not self.quiet:
             print("# Performing quality control on reads...")
 
-        self.quality.filter_reads(self.reads,
-                                  self.filtered_reads_dir,
-                                  quality_filters)
+        # return true if filtering function finished successfully
+        return self.quality.filter_reads(self.reads,
+                                         self.filtered_reads_dir,
+                                         quality_filters)
+
+    def analyze_reads(self, fasta_id, variant_filters,
+                      reporting_threshold, generate_consensus):
 
         # Map reads against reference using bowtietwo
         if not self.quiet:

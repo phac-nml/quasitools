@@ -23,7 +23,7 @@ import pytest
 from quasitools.patient_analyzer import PatientAnalyzer
 import Bio.SeqIO
 
-
+# globals
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 READS = TEST_PATH + "/data/reads_w_K103N.fastq"
 FORWARD = TEST_PATH + "/data/forward.fastq"
@@ -32,7 +32,10 @@ REFERENCE = TEST_PATH + "/data/hxb2_pol.fas"
 GENES_FILE = TEST_PATH + "/data/hxb2_pol.bed"
 MUTATION_DB = TEST_PATH + "/data/mutation_db.tsv"
 OUTPUT_DIR = TEST_PATH + "/test_patient_analyzer_output"
-
+FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
+LENGTH_CUTOFF = 100
+SCORE_CUTOFF = 30
+MIN_QUAL = 30
 
 class TestPatientAnalyzer:
     @classmethod
@@ -64,22 +67,43 @@ class TestPatientAnalyzer:
         if os.path.isfile("%s/align.bam" % OUTPUT_DIR):
             os.remove("%s/align.bam" % OUTPUT_DIR)
 
-    def test_analyze_reads(self):
+    def test_filter_reads(self):
+
+        # tests for filtering of reads without iterative trimming or masking
+        # of coverage regions enabled
+
         quality_filters = defaultdict(dict)
 
-        length_cutoff = 100
-        score_cutoff = 30
-        min_qual = 30
-
-        quality_filters["length_cutoff"] = length_cutoff
-        quality_filters["mean_cutoff"] = score_cutoff
+        quality_filters["length_cutoff"] = LENGTH_CUTOFF
+        quality_filters["mean_cutoff"] = SCORE_CUTOFF
         quality_filters["ns"] = True
-        quality_filters["minimum_quality"] = min_qual
+        quality_filters["minimum_quality"] = MIN_QUAL
+
+        status = self.patient_analyzer.filter_reads(quality_filters)
+
+        assert status # assert that status is true (filtering has occured)
+
+        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+
+        for seq in seq_rec_obj:
+            avg_score = quality_filters["mean_cutoff"] + 1
+            avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
+                         float(len(seq.letter_annotations['phred_quality'])))
+
+            # check that length and score are both over threshold
+            assert len(seq.seq) >= quality_filters["length_cutoff"] and \
+                avg_score >= quality_filters["mean_cutoff"]
+
+        # patient_analyzer.filter_reads calls quality_control.filter_reads
+        # more tests for filtering reads can be found in test_quality_control
+
+    def test_analyze_reads(self):
+        quality_filters = defaultdict(dict)
 
         # test defaults
         variant_filters = defaultdict(dict)
         variant_filters["error_rate"] = 0.0021
-        variant_filters["min_qual"] = min_qual
+        variant_filters["min_qual"] = MIN_QUAL
         variant_filters["min_dp"] = 100
         variant_filters["min_ac"] = 5
         variant_filters["min_freq"] = 0.01
@@ -89,7 +113,7 @@ class TestPatientAnalyzer:
 
         fasta_id = os.path.basename(self.patient_analyzer.reads).split('.')[0]
 
-        self.patient_analyzer.analyze_reads(fasta_id, quality_filters,
+        self.patient_analyzer.analyze_reads(fasta_id,
                                             variant_filters,
                                             reporting_threshold,
                                             generate_consensus)
