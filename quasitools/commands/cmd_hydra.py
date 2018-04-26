@@ -85,7 +85,7 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         generate_consensus, consensus_pct, quiet, trim_reads, mask_reads,
         length_cutoff, score_cutoff, score_type, ns, error_rate, min_qual,
-        min_dp, min_ac, min_freq):
+        min_dp, min_ac, min_freq, id):
 
     os.mkdir(output_dir)
     reads = forward
