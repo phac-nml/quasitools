@@ -195,7 +195,7 @@ class QualityControl():
     PURPOSE
     -------
 
-    Masks the nucleotide of all low quality positions in the read with an "N".
+    Masks the nucleotide of all low quality positions in the read with an MASK_CHARACTER
 
 
     INPUT
@@ -213,7 +213,7 @@ class QualityControl():
     POST
     ----
 
-    The nucleotide positions in the passed read will be masked with "N"s if
+    The nucleotide positions in the passed read will be masked with MASK_CHARACTERs if
     their PHRED quality score is below the minimum.
 
     # =========================================================================
