@@ -64,7 +64,8 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
                    'specified score will be filtered out.')
 @click.option('-me/-mn', '--median_score/--mean_score', 'score_type',
               default=True,
-              help='Use either median or mean score for score cutoff value')
+              help='Use either median score (default) or mean score for score cutoff '
+              'value')
 @click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
               'filtering of n\'s')
 @click.option('-e', '--error_rate', default=0.0021,
