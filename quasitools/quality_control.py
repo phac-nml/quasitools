@@ -52,7 +52,7 @@ class QualityControl():
         self.amount_filtered["length"] = 0
         self.amount_filtered["score"] = 0
         self.amount_filtered["ns"] = 0
-        self.passes_status = {0: "success", 1: "length", 2: "score", 3: "ns"}
+        self.status = {0: "success", 1: "length", 2: "score", 3: "ns"}
 
     """
     # =============================================================================
@@ -179,7 +179,8 @@ class QualityControl():
 
         # while read has not passed all filters and is >= the length cutoff,
         # iteratively trim the read
-        while self.passes_filters(read, filters) > 0 and length >= len_cutoff:
+        while self.status[self.passes_filters(read, filters)]!= "success" \
+            and length >= len_cutoff:
             read = read[:-1]
             length = len(read.seq)
 
@@ -350,7 +351,7 @@ class QualityControl():
 
             key = self.passes_filters(read, filters)
 
-            if self.passes_status.get(key) == "success":
+            if self.status.get(key) == "success":
 
                 if filters.get(MASKING):
 
@@ -358,9 +359,9 @@ class QualityControl():
 
                 Bio.SeqIO.write(read, filtered_reads_file, "fastq")
 
-            elif self.passes_status.get(key) in self.amount_filtered:
+            elif self.status.get(key) in self.amount_filtered:
 
-                self.amount_filtered[self.passes_status.get(key)] += 1
+                self.amount_filtered[self.status.get(key)] += 1
 
         filtered_reads_file.close()
 
