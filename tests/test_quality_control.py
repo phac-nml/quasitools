@@ -42,7 +42,7 @@ class TestQualityControl:
             os.mkdir(OUTPUT_DIR)
 
     @pytest.fixture
-    def filter(self):
+    def filters(self):
         filtering = defaultdict(dict)
 
         filtering["trimming"] = True
@@ -56,6 +56,19 @@ class TestQualityControl:
         return filtering
 
     def test_get_median_score(self):
+        """
+        test_get_median_score - Checks that the function correctly calculates
+        median score
+
+        INPUT:
+            [None]
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
         seq = Seq("GATC")
         seq_record = SeqRecord(seq)
         seq_record.id = "first"
@@ -71,6 +84,19 @@ class TestQualityControl:
         assert self.quality_control.get_median_score(seq_record) == 30
 
     def test_get_mean_score(self):
+        """
+        test_get_mean_score - Checks that the function correctly calculates
+        mean score
+
+        INPUT:
+            [None]
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
         seq = Seq("GATC")
         seq_record = SeqRecord(seq)
         seq_record.id = "first"
@@ -78,48 +104,85 @@ class TestQualityControl:
 
         assert self.quality_control.get_mean_score(seq_record) == 50
 
-    def test_trim_reads(self, filter):
+    def test_trim_reads(self, filters):
+        """
+        test_trim_reads - Checks that the reads have been trimmed until all
+        filters pass or read falls below length cutoff
+
+        INPUT:
+            [dict] [filters] # provided with fixture
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
         seq = Seq("GATC")
         seq_record = SeqRecord(seq)
         seq_record.id = "first"
         seq_record.letter_annotations["phred_quality"] = [30, 30, 3, 1]
 
-        filter[MASKING] == False
-        filter[TRIMMING] = True
-        trimmed_read = self.quality_control.trim_read(seq_record, filter)
+        filters[MASKING] == False
+        filters[TRIMMING] = True
+        trimmed_read = self.quality_control.trim_read(seq_record, filters)
 
         assert len(trimmed_read.seq) == 2
 
-    def test_mask_reads(self, filter):
+    def test_mask_reads(self, filters):
+        """
+        test_mask_reads - Checks that all low coverage regions have been
+        masked with an N.
+
+        INPUT:
+            [dict] [filters] # provided with fixture
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
         seq = Seq("GATC")
         seq_record = SeqRecord(seq)
         seq_record.id = "first"
         seq_record.letter_annotations["phred_quality"] = [30, 30, 3, 1]
 
-        filter[TRIMMING] = False
-        filter[MASKING] == True
-        self.quality_control.mask_read(seq_record, filter)
+        filters[TRIMMING] = False
+        filters[MASKING] == True
+        self.quality_control.mask_read(seq_record, filters)
 
         assert len(seq_record.seq) == 4
         assert seq_record.seq[0:4] == 'GANN'
 
-    def test_passes_filters(self, filter):
+    def test_passes_filters(self, filters):
+        """
+        test_passes_filters - Checks that the correct status is returned if
+        the read fails to pass at least one of the filters
+
+        INPUT:
+            [dict] [filters] # provided with fixture
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
         failed_status = {0: "success", 1: "length", 2: "score", 3: "ns"}
 
         # sample Biopython read for testing
         seq = Seq("GATC")
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [35, 3, 5, 7]
-        key = self.quality_control.passes_filters(seq_record,
-                                                  filter)
+        key = self.quality_control.passes_filters(seq_record, filters)
         assert failed_status.get(key) == "score" # did not pass filters due to
                                                  # score
 
         seq = Seq("G")
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [35]
-        key = self.quality_control.passes_filters(seq_record,
-                                                  filter)
+        key = self.quality_control.passes_filters(seq_record, filters)
         assert failed_status.get(key) == "length" # did not pass filters due to
                                                   # score
 
@@ -127,13 +190,24 @@ class TestQualityControl:
         seq = Seq("GNNN")
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [40, 40, 40, 40]
-        key = self.quality_control.passes_filters(seq_record,
-                                                  filter)
+        key = self.quality_control.passes_filters(seq_record, filters)
         assert failed_status.get(key) == "ns" # did not pass filters due to
                                               # score
 
-    def test_filter_reads(self, filter):
+    def test_filter_reads(self, filters):
+        """
+        test_filter_reads - Checks that the filter_reads function performs as
+        expected with iterative trimming and/or masking enabled.
 
+        INPUT:
+            [dict] [filters] # provided with fixture
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
         # test with iterative trimming and masking enabled
 
         # sample Biopython reads for testing
@@ -143,12 +217,10 @@ class TestQualityControl:
         seq_record.letter_annotations["phred_quality"] = [35, 3, 5, 7]
         seq_record_list.append(seq_record)
 
-        seq = Seq("CGTA")
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [4, 3, 5, 7]
         seq_record_list.append(seq_record)
 
-        seq = Seq("CGTA")
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [29, 29, 29, 29]
         seq_record_list.append(seq_record)
@@ -157,9 +229,7 @@ class TestQualityControl:
 
         Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
 
-        self.quality_control.filter_reads(INPUT_DIR,
-                                          FILTERED_DIR,
-                                          filter)
+        self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
 
         seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
         assert(sum(1 for seq in seq_rec_obj) == 0)
@@ -168,19 +238,14 @@ class TestQualityControl:
         seq_record_list = []
         seq = Seq("GATC")
         seq_record = SeqRecord(seq)
-        seq_record.id = "first"
         seq_record.letter_annotations["phred_quality"] = [35, 30, 50, 70]
         seq_record_list.append(seq_record)
 
-        seq = Seq("CGTA")
         seq_record = SeqRecord(seq)
-        seq_record.id = "second"
         seq_record.letter_annotations["phred_quality"] = [3, 3, 5, 7]
         seq_record_list.append(seq_record)
 
-        seq = Seq("CGTA")
         seq_record = SeqRecord(seq)
-        seq_record.id = "third"
         seq_record.letter_annotations["phred_quality"] = [30, 33, 35, 30]
         seq_record_list.append(seq_record)
 
@@ -188,9 +253,7 @@ class TestQualityControl:
 
         Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
 
-        self.quality_control.filter_reads(INPUT_DIR,
-                                          FILTERED_DIR,
-                                          filter)
+        self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
 
         seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
         assert(sum(1 for seq in seq_rec_obj) == 2)
