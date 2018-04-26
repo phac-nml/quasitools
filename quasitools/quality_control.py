@@ -19,11 +19,10 @@ specific language governing permissions and limitations under the License.
 import Bio.SeqIO
 from Bio.Seq import Seq
 
-TRIMMING = "trimming"
-MASKING = "masking"
-
 # GLOBALS
 
+TRIMMING = "trimming"
+MASKING = "masking"
 MASK_CHARACTER = "N"
 MINIMUM_QUALITY = "minimum_quality"
 LENGTH_CUTOFF = "length_cutoff"
@@ -40,17 +39,16 @@ class QualityControl():
     INIT
     ----
 
-    POST
-    ----
-
-    Creates a dictionary containing frequencies that reads were filtered
+    Initializes a dictionary containing frequencies that reads were filtered
+    for reasons such as length, score, and ns. Initializes
+    another dictionary that contains status values and keys for the last time
+    passes_filters was called.
 
     # =============================================================================
     """
 
     def __init__(self):
         self.amount_filtered = {}
-        self.amount_filtered["status"] = 0
         self.amount_filtered["length"] = 0
         self.amount_filtered["score"] = 0
         self.amount_filtered["ns"] = 0
@@ -300,7 +298,7 @@ class QualityControl():
     """
     # =========================================================================
 
-    FILTER JOBS
+    FILTER READS
     -----------
 
 
@@ -323,6 +321,10 @@ class QualityControl():
         The filtering criteria, as a dictionary of (filter, value) pairs, all
         of which will be tested against the read.
 
+    RETURN
+    ------
+
+    Returns true if function completed successfully.
 
     POST
     ----
@@ -360,8 +362,9 @@ class QualityControl():
 
                 self.amount_filtered[self.passes_status.get(key)] += 1
 
-        self.amount_filtered["status"] = 1
         filtered_reads_file.close()
+
+        return True
 
     """
     # =========================================================================

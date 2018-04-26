@@ -160,8 +160,10 @@ class TestQualityControl:
         simple_filters["ns"] = True
         simple_filters["minimum_quality"] = min_qual
 
-        assert self.quality_control.get_amount_filtered()["status"] == 0
-        self.quality_control.filter_reads(READS, FILTERED_DIR, simple_filters)
+        filtered = self.quality_control.filter_reads(READS,
+                                                     FILTERED_DIR,
+                                                     simple_filters)
+        assert filtered == True
         seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
 
         for seq in seq_rec_obj:
@@ -170,8 +172,6 @@ class TestQualityControl:
                          float(len(seq.letter_annotations['phred_quality'])))
 
             # check that length and score are both over threshold
-            assert self.quality_control.get_amount_filtered()["status"] == 1
-
             assert len(seq.seq) >= simple_filters["length_cutoff"] and \
                 avg_score >= simple_filters["mean_cutoff"]
 
