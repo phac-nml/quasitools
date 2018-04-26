@@ -176,13 +176,13 @@ class QualityControl():
 
         length = len(read.seq)
         len_cutoff = filters.get(LENGTH_CUTOFF)
-
+        status = self.status.get(self.passes_filters(read, filters))
         # while read has not passed all filters and is >= the length cutoff,
         # iteratively trim the read
-        while self.status[self.passes_filters(read, filters)]!= "success" \
-            and length >= len_cutoff:
+        while status is not "success" and length >= len_cutoff:
             read = read[:-1]
             length = len(read.seq)
+            status = self.status.get(self.passes_filters(read, filters))
 
         return read
 
@@ -196,7 +196,8 @@ class QualityControl():
     PURPOSE
     -------
 
-    Masks the nucleotide of all low quality positions in the read with an MASK_CHARACTER
+    Masks the nucleotide of all low quality positions in the read with an
+    MASK_CHARACTER
 
 
     INPUT
@@ -214,8 +215,8 @@ class QualityControl():
     POST
     ----
 
-    The nucleotide positions in the passed read will be masked with MASK_CHARACTERs if
-    their PHRED quality score is below the minimum.
+    The nucleotide positions in the passed read will be masked with
+    a MASK_CHARACTER if their PHRED quality score is below the minimum.
 
     # =========================================================================
     """
