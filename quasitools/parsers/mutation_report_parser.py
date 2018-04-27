@@ -24,9 +24,8 @@ from collections import defaultdict
 # in the form [pos, alt]
 def parse_mutations_from_hmcf(hmcf_file):
     mutation_list = defaultdict(list)
-    # mutation_list = []
-    
 
+    # generate a mutation_list
     with open(hmcf_file, "r") as input:
         for line in input:
             if line[0] != "#":

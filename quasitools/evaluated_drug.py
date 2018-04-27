@@ -26,8 +26,8 @@ class EvaluatedDrug(object):
         self.resistance_level = resistance_level
     
     def to_csv_entry(self):
-        return "%s,%s\n" % (
-            self.name, self.resistance_level
+        return "%s,%s,%s\n" % (
+            self.name, self.total_score, self.resistance_level
         )
         
 
@@ -42,7 +42,7 @@ class EvaluatedDrugCollection(object):
         """"Build a string representation of our EvaluatedDrugCollection
         objects (i.e. a csv file)."""
 
-        report = ("#Drug Name,Drug Resistance Level\n")
+        report = ("#Drug Name,Total Score,Drug Resistance Level\n")
 
         for drug in self.drug_list:
             report += drug.to_csv_entry()

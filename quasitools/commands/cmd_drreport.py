@@ -17,28 +17,37 @@ specific language governing permissions and limitations under the License.
 """
 
 import click
+import os
 from quasitools.parsers.mutation_report_parser import parse_mutations_from_hmcf
 from quasitools.parsers.hivdb_alg_parser import parse_drugs_from_xml
 from quasitools.drug import Drug, DrugCollection
 from quasitools.evaluated_drug import EvaluatedDrug, EvaluatedDrugCollection
 
+BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__),
+                                         os.pardir, os.pardir, "data"))
+DEFAULT_XML = os.path.join(BASE_PATH, "HIVDB_8.4.xml")
+
 
 @click.command('drreport', short_help='Identifies drug resistances.')
 @click.argument('hmcf', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('xml', required=True,
+@click.argument('xml', required=False,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-o', '--output', type=click.File('w'))
 @click.pass_context
 def cli(ctx, hmcf, xml, output):
-    # simply generate a simplied AAmutation object
+    # generate a simplied AAmutation object
     # it only needs position-mutationAA
     # perhaps use a map
 
-    drugs = parse_drugs_from_xml(xml)
+    if xml:
+        drugs = parse_drugs_from_xml(xml)
+    else:
+        drugs = parse_drugs_from_xml(DEFAULT_XML)
+
     mutation_list = parse_mutations_from_hmcf(hmcf)
 
-    click.echo(mutation_list)
+    # click.echo(mutation_list)
 
     # create a class that will handle this work:
     # parse the drug resistance object from the xml

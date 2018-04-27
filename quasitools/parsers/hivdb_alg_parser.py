@@ -18,7 +18,6 @@ specific language governing permissions and limitations under the License.
 
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-# from quasitools.grammar.parser import Parser
 from quasitools.drug import Drug, DrugCollection
 
 def parse_drugs_from_xml(xml_file):
@@ -34,7 +33,7 @@ def parse_drugs_from_xml(xml_file):
     # {'148': { {H: 60}, {K: 60}, {N: 10} }
     for drug in root.findall('DRUG'):
         name = drug.find('NAME').text
-        rule_string = drug.find('RULE').find('CONDITION').text
+        rule_string = drug.find('RULE').find('CONDITION').text.strip()
 
         rules = parse_rules_from_string(rule_string)
 
@@ -45,4 +44,23 @@ def parse_drugs_from_xml(xml_file):
 
 def parse_rules_from_string(rule_string):
     rules = ""
+
+    lines = rule_string.split('\n')
+
+    for line in lines:
+        line = line.strip()
+        # print("line: %s" % line)
+        tokens = line.split(" ")
+        # print(tokens[0])
+
+        # handle first line, which will start with "SCORE FROM"
+        # if tokens[0] == "SCORE":
+        # handle max scores
+
+        # if tokens[0] == "MAX":
+            # print("line: %s" % line)
+            # handle max scores
+        # handle conjunctions
+
+
     return rules
