@@ -19,7 +19,7 @@ specific language governing permissions and limitations under the License.
 import click
 import os
 from quasitools.parsers.mutation_report_parser import parse_mutations_from_hmcf
-from quasitools.parsers.hivdb_alg_parser import parse_drugs_from_xml
+from quasitools.parsers.algorithm_parser import parse_drugs_from_xml
 from quasitools.drug import Drug, DrugCollection
 from quasitools.evaluated_drug import EvaluatedDrug, EvaluatedDrugCollection
 
