@@ -21,6 +21,8 @@ from collections import defaultdict
 from quasitools.drug import Drug, DrugCollection
 
 def parse_drugs_from_xml(xml_file):
+    """Parses an algorithm in xml format and generates a DrugCollection object"""
+    
     tree = ET.parse(xml_file)
     root = tree.getroot()
 
@@ -43,6 +45,9 @@ def parse_drugs_from_xml(xml_file):
     return DrugCollection(drug_list)
 
 def parse_rules_from_string(rule_string):
+    """A helper method that parses rules for a Drug object from a string
+    containing rules"""
+
     rules = ""
 
     lines = rule_string.split('\n')
@@ -54,13 +59,28 @@ def parse_rules_from_string(rule_string):
         # print(tokens[0])
 
         # handle first line, which will start with "SCORE FROM"
-        # if tokens[0] == "SCORE":
-        # handle max scores
+        if tokens[0] == "SCORE":
+            line = line.split("(", 1)[1]
+            line = line.split(",", 1)[0]
+            # print(line)
 
-        # if tokens[0] == "MAX":
-            # print("line: %s" % line)
-            # handle max scores
+        # handle max scores
+        elif tokens[0] == "MAX":
+            line = line.split("(", 1)[1]
+            line = line.split(")", 1)[0]
+            # print(line)
+
         # handle conjunctions
+        elif tokens[0][0] == '(':
+            line = line.split("(", 1)[1]
+            line = line.split(",", 1)[0]
+            # print(line)
+
+        # handle regular rule
+        else:
+            line = line.split(",", 1)[0]
+            # print(line)
+
 
 
     return rules

@@ -37,6 +37,17 @@ class Drug(object):
         # High-level resistance: Total score >= 60
         total_score = 0
 
+        # for pos in mutations:
+        #   if pos in self.rules:
+        #         for mutant in mutations[pos]:
+        #             if mutations[pos][mutant]
+    
+        for pos in self.rules:
+            if pos in mutations:
+                for mutant in self.rules[pos]:
+                    if mutant in mutations[pos]:
+                        total_score += self.rules[pos][mutant]
+
         return total_score
 
     # temporary, for testing
@@ -63,10 +74,9 @@ class Drug(object):
         return resistance
 
 
-"""
-    Collection of drugs that are parsed from hivdb algorithm
-"""
 class DrugCollection(object):
+    """Collection of drugs that are parsed from an xml-format algorithm"""
+    
     def __init__(self, drug_list):
         self.drug_list = drug_list
 

@@ -32,7 +32,7 @@ class EvaluatedDrug(object):
         
 
 """
-    Collection of drugs for which a mutant is resistant to
+    Collection of drugs for which a mutant is resistant to.
 """
 class EvaluatedDrugCollection(object):
     def __init__(self, drug_list):

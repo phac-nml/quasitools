@@ -23,6 +23,10 @@ from collections import defaultdict
 # Parses an hmcf file into a mutation list containing tuples
 # in the form [pos, alt]
 def parse_mutations_from_hmcf(hmcf_file):
+    """Parses an hmcf file and generates a dictionary of mutations.
+    The mutation list will have the format:
+    {pos1: [mutA, mutB], pos2: [mutA]}"""
+
     mutation_list = defaultdict(list)
 
     # generate a mutation_list
@@ -34,11 +38,6 @@ def parse_mutations_from_hmcf(hmcf_file):
                     line.rstrip().split("\t")
                 
                 mutation_list[pos].append(alt)
-
-                # wc, mc, mcf, cat, srvl = info.rstrip().split(';')
-                # print("%s %s\n" % (pos, alt))
-               # mutation_list.append([pos, alt])
-               # mutation_list.append( ("%s%s" % (pos, alt)) )
 
     return mutation_list
 
