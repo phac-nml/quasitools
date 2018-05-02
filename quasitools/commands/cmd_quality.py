@@ -20,6 +20,15 @@ from collections import defaultdict
 import click
 from quasitools.quality_control import QualityControl
 
+# GLOBALS
+
+TRIMMING = "trimming"
+MASKING = "masking"
+MASK_CHARACTER = "N"
+MINIMUM_QUALITY = "minimum_quality"
+LENGTH_CUTOFF = "length_cutoff"
+MEDIAN_CUTOFF = "median_cutoff"
+MEAN_CUTOFF = "mean_cutoff"
 
 @click.command('quality', short_help='Perform quality control on FASTQ reads.')
 @click.argument('forward', required=True,
@@ -68,25 +77,25 @@ def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads, min_qual,
     quality_filters = defaultdict(dict)
 
     if trim_reads:
-        quality_filters["trimming"] = True
+        quality_filters[TRIMMING] = True
 
     if mask_reads:
-        quality_filters["masking"] = True
+        quality_filters[MASKING] = True
 
-    quality_filters["length_cutoff"] = length_cutoff
+    quality_filters[LENGTH_CUTOFF] = length_cutoff
 
     if score_type == "median_score":
-        quality_filters["median_cutoff"] = score_cutoff
+        quality_filters[MEDIAN_CUTOFF] = score_cutoff
     elif score_type == "mean_score":
-        quality_filters["mean_cutoff"] = score_cutoff
+        quality_filters[MEAN_CUTOFF] = score_cutoff
     # end if
 
     if ns:
-        quality_filters["ns"] = True
+        quality_filters[MASK_CHARACTER] = True
     else:
-        quality_filters["ns"] = False
+        quality_filters[MASK_CHARACTER] = False
 
-    quality_filters["minimum_quality"] = min_qual
+    quality_filters[MINIMUM_QUALITY] = min_qual
 
     filter_dir = "%s/filtered.fastq" % output_dir
     quality_control = QualityControl()
