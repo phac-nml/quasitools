@@ -122,14 +122,14 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
 
     if len(bam) < 2:
         raise click.UsageError("At least two bam file locations are required" +
-                               " to perform quasispecies distance comparison")
+                               " to perform quasispecies distance comparison.")
     # Build the reference object.
     references = parse_references_from_fasta(reference)
 
     pileups = Pileup_List.construct_pileup_list(bam, references)
 
     if pileups.get_pileup_length() == 0:
-        raise click.UsageError("Empty pileup was produced from BAM files." +
+        raise click.UsageError("Empty pileup was produced from BAM files. " +
                                "Halting program")
 
     click.echo("Constructed pileup from reference.")
@@ -151,7 +151,7 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     if int(endpos) < 1:
         raise click.UsageError("End position must be >= 1.")
     if int(startpos) > int(endpos):
-        raise click.UsageError("Start position must be <= end position")
+        raise click.UsageError("Start position must be <= end position.")
 
     # indicate whether the user-specified start and end position is out
     # of bounds (comparing to actual number of positions in pileup)
@@ -246,11 +246,11 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
             pileups.remove_no_coverage()
             click.echo("Truncating all positions with no coverage.")
 
-        click.echo("%d positions were truncated on the left" %
+        click.echo("%d positions were truncated on the left." %
                    pileups.get_num_left_positions_truncated())
-        click.echo("%d positions were truncated on the right" %
+        click.echo("%d positions were truncated on the right." %
                    pileups.get_num_right_positions_truncated())
-        click.echo("%d positions were removed in total from the pileup" %
+        click.echo("%d positions were removed in total from the pileup." %
                    (old_length - pileups.get_pileup_length()))
     # end if
     return pileups.get_pileups_as_numerical_array()
