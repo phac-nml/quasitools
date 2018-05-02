@@ -21,6 +21,16 @@ from collections import defaultdict
 import click
 from quasitools.patient_analyzer import PatientAnalyzer
 
+# GLOBALS
+
+TRIMMING = "trimming"
+MASKING = "masking"
+MASK_CHARACTER = "N"
+MINIMUM_QUALITY = "minimum_quality"
+LENGTH_CUTOFF = "length_cutoff"
+MEDIAN_CUTOFF = "median_cutoff"
+MEAN_CUTOFF = "mean_cutoff"
+
 BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__),
                                          os.pardir, os.pardir, "data"))
 REFERENCE = os.path.join(BASE_PATH, "hxb2_pol.fas")
@@ -75,7 +85,7 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 @click.option('-mq', '--min_qual', default=30, help='Minimum quality for '
               'variant to be considered later on in the pipeline.')
 @click.option('-md', '--min_dp', default=100,
-              help='Minimum required read depth for.')
+              help='Minimum required read depth for variant calling.')
 @click.option('-ma', '--min_ac', default=5,
               help='The minimum required allele count.')
 @click.option('-mf', '--min_freq', default=0.01,
@@ -113,25 +123,25 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     quality_filters = defaultdict(dict)
 
     if trim_reads:
-        quality_filters["trimming"] = True
+        quality_filters[TRIMMING] = True
 
     if mask_reads:
-        quality_filters["masking"] = True
+        quality_filters[MASKING] = True
 
-    quality_filters["length_cutoff"] = length_cutoff
+    quality_filters[LENGTH_CUTOFF] = length_cutoff
 
     if score_type == "median_score":
-        quality_filters["median_cutoff"] = score_cutoff
+        quality_filters[MEDIAN_CUTOFF] = score_cutoff
     elif score_type == "mean_score":
-        quality_filters["mean_cutoff"] = score_cutoff
+        quality_filters[MEAN_CUTOFF] = score_cutoff
     # end if
 
     if ns:
-        quality_filters["ns"] = True
+        quality_filters[MASK_CHARACTER] = True
     else:
-        quality_filters["ns"] = False
+        quality_filters[MASK_CHARACTER] = False
 
-    quality_filters["minimum_quality"] = read_qual
+    quality_filters[MINIMUM_QUALITY] = read_qual
 
     variant_filters = defaultdict(dict)
     variant_filters["error_rate"] = error_rate
