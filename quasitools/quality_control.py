@@ -28,10 +28,13 @@ MINIMUM_QUALITY = "minimum_quality"
 LENGTH_CUTOFF = "length_cutoff"
 MEDIAN_CUTOFF = "median_cutoff"
 MEAN_CUTOFF = "mean_cutoff"
-SUCCESS = "success"
 LENGTH = "length"
 SCORE = "score"
 NS = "ns"
+PASS = 0
+FAIL_LENGTH = 1
+FAIL_SCORE = 2
+FAIL_NS = 3
 
 # FILTERING SPECIFICATIONS
 
@@ -56,7 +59,10 @@ class QualityControl():
         self.amount_filtered[LENGTH] = 0
         self.amount_filtered[SCORE] = 0
         self.amount_filtered[NS] = 0
-        self.status = {SUCCESS: 0, LENGTH: 1, SCORE: 2, NS: 3}
+        self.status = {PASS: "pass",
+                       FAIL_LENGTH: "length",
+                       FAIL_SCORE: "score",
+                       FAIL_NS: "ns"}
 
     """
     # =============================================================================
@@ -183,10 +189,10 @@ class QualityControl():
         status = self.passes_filters(read, filters)
         # while read has not passed all filters and is >= the length cutoff,
         # iteratively trim the read
-        while status is not self.status.get(SUCCESS) and length >= len_cutoff:
+        while status is not PASS and length >= len_cutoff:
             read = read[:-1]
             length = len(read.seq)
-            status = self.status.get(self.passes_filters(read, filters))
+            status = self.passes_filters(read, filters)
 
         return read
 
@@ -272,10 +278,10 @@ class QualityControl():
     ------
 
     [INT] [result]
-        0: the read passes all the filtering criteria
-        1: the read fails due to read length
-        2: the read fails due to read score
-        3: the read fails due to ns
+        PASS: the read passes all the filtering criteria
+        FAIL_LENGTH: the read fails due to read length
+        FAIL_SCORE: the read fails due to read score
+        FAIL_NS: the read fails due to ns
 
     # =========================================================================
     """
@@ -288,18 +294,18 @@ class QualityControl():
         filter_ns = filters.get(NS)
 
         if length_cutoff and len(read.seq) < length_cutoff:
-            return LENGTH
+            return FAIL_LENGTH
 
         if median_cutoff and self.get_median_score(read) < median_cutoff:
-            return SCORE
+            return FAIL_SCORE
 
         elif mean_cutoff and self.get_mean_score(read) < mean_cutoff:
-            return SCORE
+            return FAIL_SCORE
 
         if filter_ns and 'n' in read.seq.lower():
-            return NS
+            return FAIL_NS
 
-        return 0
+        return PASS
 
     """
     # =========================================================================
@@ -354,9 +360,9 @@ class QualityControl():
 
                 self.trim_read(read, filters)
 
-            value = self.passes_filters(read, filters)
+            key = self.passes_filters(read, filters)
 
-            if self.status.get(value) == SUCCESS:
+            if key == PASS:
 
                 if filters.get(MASKING):
 
@@ -364,9 +370,9 @@ class QualityControl():
 
                 Bio.SeqIO.write(read, filtered_reads_file, "fastq")
 
-            elif self.status.get(value) in self.amount_filtered:
+            elif self.status.get(key) in self.amount_filtered:
 
-                self.amount_filtered[self.status.get(value)] += 1
+                self.amount_filtered[self.status.get(key)] += 1
 
         filtered_reads_file.close()
 
