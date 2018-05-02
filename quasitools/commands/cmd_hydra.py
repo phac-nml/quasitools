@@ -56,6 +56,8 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
                    'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
               help='Mask low coverage regions in reads based on filter values')
+@click.option('-rq', '--read_qual', default=30, help='Minimum quality for '
+              'a position in a read to be masked.')
 @click.option('-lc', '--length_cutoff', default=100,
               help='Reads which fall short of the specified length '
                    'will be filtered out.')
@@ -85,7 +87,7 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         generate_consensus, consensus_pct, quiet, trim_reads, mask_reads,
         length_cutoff, score_cutoff, score_type, ns, error_rate, min_qual,
-        min_dp, min_ac, min_freq, id):
+        min_dp, min_ac, min_freq, id, read_qual):
 
     os.mkdir(output_dir)
     reads = forward
@@ -129,7 +131,7 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     else:
         quality_filters["ns"] = False
 
-    quality_filters["minimum_quality"] = min_qual
+    quality_filters["minimum_quality"] = read_qual
 
     variant_filters = defaultdict(dict)
     variant_filters["error_rate"] = error_rate
