@@ -56,7 +56,7 @@ class QualityControl():
         self.amount_filtered[LENGTH] = 0
         self.amount_filtered[SCORE] = 0
         self.amount_filtered[NS] = 0
-        self.status = {0: SUCCESS, 1: LENGTH, 2: SCORE, 3: NS}
+        self.status = {SUCCESS: 0, LENGTH: 1, SCORE: 2, NS: 3}
 
     """
     # =============================================================================
@@ -180,10 +180,10 @@ class QualityControl():
 
         length = len(read.seq)
         len_cutoff = filters.get(LENGTH_CUTOFF)
-        status = self.status.get(self.passes_filters(read, filters))
+        status = self.passes_filters(read, filters)
         # while read has not passed all filters and is >= the length cutoff,
         # iteratively trim the read
-        while status is not SUCCESS and length >= len_cutoff:
+        while status is not self.status.get(SUCCESS) and length >= len_cutoff:
             read = read[:-1]
             length = len(read.seq)
             status = self.status.get(self.passes_filters(read, filters))
@@ -288,16 +288,16 @@ class QualityControl():
         filter_ns = filters.get(NS)
 
         if length_cutoff and len(read.seq) < length_cutoff:
-            return 1
+            return LENGTH
 
         if median_cutoff and self.get_median_score(read) < median_cutoff:
-            return 2
+            return SCORE
 
         elif mean_cutoff and self.get_mean_score(read) < mean_cutoff:
-            return 2
+            return SCORE
 
         if filter_ns and 'n' in read.seq.lower():
-            return 3
+            return NS
 
         return 0
 
@@ -354,9 +354,9 @@ class QualityControl():
 
                 self.trim_read(read, filters)
 
-            key = self.passes_filters(read, filters)
+            value = self.passes_filters(read, filters)
 
-            if self.status.get(key) == SUCCESS:
+            if self.status.get(value) == SUCCESS:
 
                 if filters.get(MASKING):
 
@@ -364,9 +364,9 @@ class QualityControl():
 
                 Bio.SeqIO.write(read, filtered_reads_file, "fastq")
 
-            elif self.status.get(key) in self.amount_filtered:
+            elif self.status.get(value) in self.amount_filtered:
 
-                self.amount_filtered[self.status.get(key)] += 1
+                self.amount_filtered[self.status.get(value)] += 1
 
         filtered_reads_file.close()
 
