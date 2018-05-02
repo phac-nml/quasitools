@@ -28,6 +28,7 @@ MINIMUM_QUALITY = "minimum_quality"
 LENGTH_CUTOFF = "length_cutoff"
 MEDIAN_CUTOFF = "median_cutoff"
 MEAN_CUTOFF = "mean_cutoff"
+SUCCESS = "success"
 LENGTH = "length"
 SCORE = "score"
 NS = "ns"
@@ -59,10 +60,10 @@ class QualityControl():
         self.amount_filtered[LENGTH] = 0
         self.amount_filtered[SCORE] = 0
         self.amount_filtered[NS] = 0
-        self.status = {PASS: "pass",
-                       FAIL_LENGTH: "length",
-                       FAIL_SCORE: "score",
-                       FAIL_NS: "ns"}
+        self.status = {PASS: SUCCESS,
+                       FAIL_LENGTH: LENGTH,
+                       FAIL_SCORE: SCORE,
+                       FAIL_NS: NS}
 
     """
     # =============================================================================
