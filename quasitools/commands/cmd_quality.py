@@ -54,7 +54,8 @@ def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads, min_qual,
     """Quasitools quality performs quality control on FASTQ reads and outputs
        the filtered FASTQ reads in the specified directory."""
 
-    os.mkdir(output_dir)
+    if not os.path.isdir(output_dir):
+        os.mkdir(output_dir)
     reads = forward
 
     # Combine the fwd and reverse reads into one fastq file
@@ -86,5 +87,6 @@ def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads, min_qual,
 
     quality_filters["minimum_quality"] = min_qual
 
+    filter_dir = "%s/filtered.fastq" % output_dir
     quality_control = QualityControl()
-    quality_control.filter_reads(quality_filters)
+    quality_control.filter_reads(reads, filter_dir, quality_filters)
