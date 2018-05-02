@@ -123,20 +123,6 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     if len(bam) < 2:
         raise click.UsageError("At least two bam file locations are required" +
                                " to perform quasispecies distance comparison")
-
-    if startpos is None:
-        startpos = 1
-    if endpos is None:
-        endpos = pileups.get_pileup_length()
-
-    # indicate if the start or end position is < 0 or a priori invalid
-    if int(startpos) < 1:
-        raise click.UsageError("Start position must be >= 1.")
-    if int(endpos) < 1:
-        raise click.UsageError("End position must be >= 1.")
-    if int(startpos) > int(endpos):
-        raise click.UsageError("Start position must be <= end position")
-
     # Build the reference object.
     references = parse_references_from_fasta(reference)
 
@@ -146,12 +132,26 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
         raise click.UsageError("Empty pileup was produced from BAM files." +
                                "Halting program")
 
-    click.echo("The start position is %d." % startpos)
-    click.echo("The end position is %d." % endpos)
     click.echo("Constructed pileup from reference.")
     # click.echo the number of positions in pileup
     click.echo("The pileup covers %d positions before modifications." %
                pileups.get_pileup_length())
+
+    click.echo("The start position is %d." % startpos)
+    click.echo("The end position is %d." % endpos)
+
+    if startpos is None:
+        startpos = 1
+    if endpos is None:
+        endpos = pileups.get_pileup_length()
+
+    # indicate if the start or end position is < 1 or a priori invalid
+    if int(startpos) < 1:
+        raise click.UsageError("Start position must be >= 1.")
+    if int(endpos) < 1:
+        raise click.UsageError("End position must be >= 1.")
+    if int(startpos) > int(endpos):
+        raise click.UsageError("Start position must be <= end position")
 
     # indicate whether the user-specified start and end position is out
     # of bounds (comparing to actual number of positions in pileup)
