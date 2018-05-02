@@ -28,6 +28,10 @@ MINIMUM_QUALITY = "minimum_quality"
 LENGTH_CUTOFF = "length_cutoff"
 MEDIAN_CUTOFF = "median_cutoff"
 MEAN_CUTOFF = "mean_cutoff"
+SUCCESS = "success"
+LENGTH = "length"
+SCORE = "score"
+NS = "ns"
 
 # FILTERING SPECIFICATIONS
 
@@ -49,10 +53,10 @@ class QualityControl():
 
     def __init__(self):
         self.amount_filtered = {}
-        self.amount_filtered["length"] = 0
-        self.amount_filtered["score"] = 0
-        self.amount_filtered["ns"] = 0
-        self.status = {0: "success", 1: "length", 2: "score", 3: "ns"}
+        self.amount_filtered[LENGTH] = 0
+        self.amount_filtered[SCORE] = 0
+        self.amount_filtered[NS] = 0
+        self.status = {0: SUCCESS, 1: LENGTH, 2: SCORE, 3: NS}
 
     """
     # =============================================================================
@@ -179,7 +183,7 @@ class QualityControl():
         status = self.status.get(self.passes_filters(read, filters))
         # while read has not passed all filters and is >= the length cutoff,
         # iteratively trim the read
-        while status is not "success" and length >= len_cutoff:
+        while status is not SUCCESS and length >= len_cutoff:
             read = read[:-1]
             length = len(read.seq)
             status = self.status.get(self.passes_filters(read, filters))
@@ -197,7 +201,7 @@ class QualityControl():
     -------
 
     Masks the nucleotide of all low quality positions in the read with an
-    MASK_CHARACTER
+    MASK_CHARACTER.
 
 
     INPUT
@@ -281,7 +285,7 @@ class QualityControl():
         length_cutoff = filters.get(LENGTH_CUTOFF)
         median_cutoff = filters.get(MEDIAN_CUTOFF)
         mean_cutoff = filters.get(MEAN_CUTOFF)
-        filter_ns = filters.get('ns')
+        filter_ns = filters.get(NS)
 
         if length_cutoff and len(read.seq) < length_cutoff:
             return 1
@@ -352,7 +356,7 @@ class QualityControl():
 
             key = self.passes_filters(read, filters)
 
-            if self.status.get(key) == "success":
+            if self.status.get(key) == SUCCESS:
 
                 if filters.get(MASKING):
 
