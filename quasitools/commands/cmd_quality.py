@@ -35,7 +35,7 @@ from quasitools.quality_control import QualityControl
 @click.option('-mr', '--mask_reads', is_flag=True,
               help='Mask low coverage regions in reads based on filter values')
 @click.option('-mq', '--min_qual', default=30, help='Minimum quality for '
-              'read to be considered if masking is enabled.')
+              'positions in read if masking is enabled.')
 @click.option('-lc', '--length_cutoff', default=100,
               help='Reads which fall short of the specified length '
                    'will be filtered out.')
