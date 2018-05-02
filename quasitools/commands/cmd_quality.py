@@ -20,6 +20,7 @@ from collections import defaultdict
 import click
 from quasitools.quality_control import QualityControl
 
+
 @click.command('quality', short_help='Perform quality control on FASTQ reads.')
 @click.argument('forward', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
