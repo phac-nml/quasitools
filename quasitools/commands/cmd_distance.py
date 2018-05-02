@@ -123,23 +123,24 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     if len(bam) < 2:
         raise click.UsageError("At least two bam file locations are required" +
                                " to perform quasispecies distance comparison")
+
+    if startpos is None:
+        startpos = 1
+    if endpos is None:
+        endpos = pileups.get_pileup_length()
+
     # indicate if the start or end position is < 0 or a priori invalid
-    if type(startpos) == int and int(startpos) < 1:
+    if int(startpos) < 1:
         raise click.UsageError("Start position must be >= 1.")
-    if type(endpos) == int and int(endpos) < 1:
+    if int(endpos) < 1:
         raise click.UsageError("End position must be >= 1.")
-    if (type(startpos) == int and type(endpos) == int and (startpos > endpos)):
+    if int(startpos) > int(endpos):
         raise click.UsageError("Start position must be <= end position")
 
     # Build the reference object.
     references = parse_references_from_fasta(reference)
 
     pileups = Pileup_List.construct_pileup_list(bam, references)
-
-    if startpos is None:
-        startpos = 1
-    if endpos is None:
-        endpos = pileups.get_pileup_length()
 
     if pileups.get_pileup_length() == 0:
         raise click.UsageError("Empty pileup was produced from BAM files." +
