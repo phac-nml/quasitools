@@ -137,13 +137,13 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     click.echo("The pileup covers %d positions before modifications." %
                pileups.get_pileup_length())
 
-    click.echo("The start position is %d." % startpos)
-    click.echo("The end position is %d." % endpos)
-
     if startpos is None:
         startpos = 1
     if endpos is None:
         endpos = pileups.get_pileup_length()
+
+    click.echo("The start position is %d." % startpos)
+    click.echo("The end position is %d." % endpos)
 
     # indicate if the start or end position is < 1 or a priori invalid
     if int(startpos) < 1:
