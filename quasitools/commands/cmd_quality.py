@@ -33,7 +33,8 @@ from quasitools.quality_control import QualityControl
               help='Iteratively trim reads based on filter values if enabled. '
                    'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
-              help='Mask low coverage regions in reads based on filter values')
+              help='Mask low coverage regions in reads based on filter'
+              'values.')
 @click.option('-mq', '--min_qual', default=30, help='Minimum quality for '
               'positions in read if masking is enabled.')
 @click.option('-lc', '--length_cutoff', default=100,
@@ -45,9 +46,9 @@ from quasitools.quality_control import QualityControl
 @click.option('-me/-mn', '--median_score/--mean_score', 'score_type',
               default=True,
               help='Use either median score (default) or mean score for '
-              'score cutoff value')
+              'score cutoff value.')
 @click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
-              'filtering of n\'s')
+              'filtering of n\'s.')
 @click.pass_context
 def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads, min_qual,
         length_cutoff, score_cutoff, score_type, ns):
