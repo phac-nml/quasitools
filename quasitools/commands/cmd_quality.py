@@ -34,6 +34,8 @@ from quasitools.quality_control import QualityControl
                    'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
               help='Mask low coverage regions in reads based on filter values')
+@click.option('-mq', '--min_qual', default=30, help='Minimum quality for '
+              'read to be considered if masking is enabled.')
 @click.option('-lc', '--length_cutoff', default=100,
               help='Reads which fall short of the specified length '
                    'will be filtered out.')
@@ -46,11 +48,11 @@ from quasitools.quality_control import QualityControl
               'score cutoff value')
 @click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
               'filtering of n\'s')
-@click.option('-mq', '--min_qual', default=30, help='Minimum quality for '
-              'variant to be considered later on in the pipeline.')
 @click.pass_context
-def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads,
-        length_cutoff, score_cutoff, score_type, ns, min_qual):
+def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads, min_qual,
+        length_cutoff, score_cutoff, score_type, ns):
+    """Quasitools quality performs quality control on FASTQ reads and outputs
+       the filtered FASTQ reads in the specified directory."""
 
     os.mkdir(output_dir)
     reads = forward
