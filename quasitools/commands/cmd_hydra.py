@@ -85,11 +85,14 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 @click.option('-mq', '--min_qual', default=30, help='Minimum quality for '
               'variant to be considered later on in the pipeline.')
 @click.option('-md', '--min_dp', default=100,
-              help='Minimum required read depth for variant calling.')
+              help='Minimum required read depth for variant to be considered'
+              ' later on in the pipeline.')
 @click.option('-ma', '--min_ac', default=5,
-              help='The minimum required allele count.')
+              help='The minimum required allele count for variant to be '
+              'considered later on in the pipeline.')
 @click.option('-mf', '--min_freq', default=0.01,
-              help='The minimum required frequency.')
+              help='The minimum required frequency for mutation to be '
+              'considered in drug resistance report.')
 @click.option('-i', '--id',
               help='Specify FASTA sequence identifier to be used in the '
               'consensus report.')
