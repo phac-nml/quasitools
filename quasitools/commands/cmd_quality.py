@@ -22,13 +22,13 @@ from quasitools.quality_control import QualityControl
 
 # GLOBALS
 
-TRIMMING = "trimming"
-MASKING = "masking"
-MASK_CHARACTER = "N"
-MINIMUM_QUALITY = "minimum_quality"
-LENGTH_CUTOFF = "length_cutoff"
-MEDIAN_CUTOFF = "median_cutoff"
-MEAN_CUTOFF = "mean_cutoff"
+from quasitools.quality_control import TRIMMING
+from quasitools.quality_control import MASKING
+from quasitools.quality_control import MASK_CHARACTER
+from quasitools.quality_control import MINIMUM_QUALITY
+from quasitools.quality_control import LENGTH_CUTOFF
+from quasitools.quality_control import MEDIAN_CUTOFF
+from quasitools.quality_control import MEAN_CUTOFF
 
 
 @click.command('quality', short_help='Perform quality control on FASTQ reads.')

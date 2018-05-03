@@ -23,13 +23,13 @@ from quasitools.patient_analyzer import PatientAnalyzer
 
 # GLOBALS
 
-TRIMMING = "trimming"
-MASKING = "masking"
-MASK_CHARACTER = "N"
-MINIMUM_QUALITY = "minimum_quality"
-LENGTH_CUTOFF = "length_cutoff"
-MEDIAN_CUTOFF = "median_cutoff"
-MEAN_CUTOFF = "mean_cutoff"
+from quasitools.quality_control import TRIMMING
+from quasitools.quality_control import MASKING
+from quasitools.quality_control import MASK_CHARACTER
+from quasitools.quality_control import MINIMUM_QUALITY
+from quasitools.quality_control import LENGTH_CUTOFF
+from quasitools.quality_control import MEDIAN_CUTOFF
+from quasitools.quality_control import MEAN_CUTOFF
 
 BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__),
                                          os.pardir, os.pardir, "data"))
@@ -74,7 +74,7 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 @click.option('-sc', '--score_cutoff', default=30,
               help='Reads that have an average quality score less than the '
                    'specified score will be filtered out.')
-@click.option('-me/-mn', '--median_score/--mean_score', 'score_type',
+@click.option('-me/-mn', '--median/--mean', 'score_type',
               default=True,
               help='Use either median score (default) or mean score for '
               'score cutoff value')
@@ -133,9 +133,9 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
 
     quality_filters[LENGTH_CUTOFF] = length_cutoff
 
-    if score_type == "median_score":
+    if score_type == "median":
         quality_filters[MEDIAN_CUTOFF] = score_cutoff
-    elif score_type == "mean_score":
+    elif score_type == "mean":
         quality_filters[MEAN_CUTOFF] = score_cutoff
     # end if
 
