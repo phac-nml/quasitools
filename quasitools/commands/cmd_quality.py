@@ -53,7 +53,7 @@ from quasitools.quality_control import MEAN_CUTOFF
 @click.option('-sc', '--score_cutoff', default=30,
               help='Reads that have an average quality score less than the '
                    'specified score will be filtered out.')
-@click.option('-me/-mn', '--median_score/--mean_score', 'score_type',
+@click.option('-me/-mn', '--median/--mean', 'score_type',
               default=True,
               help='Use either median score (default) or mean score for '
               'score cutoff value.')
@@ -85,9 +85,9 @@ def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads, min_qual,
 
     quality_filters[LENGTH_CUTOFF] = length_cutoff
 
-    if score_type == "median_score":
+    if score_type == "median":
         quality_filters[MEDIAN_CUTOFF] = score_cutoff
-    elif score_type == "mean_score":
+    elif score_type == "mean":
         quality_filters[MEAN_CUTOFF] = score_cutoff
     # end if
 
