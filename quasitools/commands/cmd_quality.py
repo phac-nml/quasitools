@@ -25,7 +25,7 @@ from quasitools.quality_control import QualityControl
 from quasitools.quality_control import TRIMMING
 from quasitools.quality_control import MASKING
 from quasitools.quality_control import MASK_CHARACTER
-from quasitools.quality_control import MINIMUM_QUALITY
+from quasitools.quality_control import MIN_READ_QUAL
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
 from quasitools.quality_control import MEAN_CUTOFF
@@ -45,7 +45,7 @@ from quasitools.quality_control import MEAN_CUTOFF
 @click.option('-mr', '--mask_reads', is_flag=True,
               help='Mask low coverage regions in reads based on filter'
               'values.')
-@click.option('-mq', '--min_qual', default=30, help='Minimum quality for '
+@click.option('-rq', '--min_read_qual', default=30, help='Minimum quality for '
               'positions in read if masking is enabled.')
 @click.option('-lc', '--length_cutoff', default=100,
               help='Reads which fall short of the specified length '
@@ -60,8 +60,8 @@ from quasitools.quality_control import MEAN_CUTOFF
 @click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
               'filtering of n\'s.')
 @click.pass_context
-def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads, min_qual,
-        length_cutoff, score_cutoff, score_type, ns):
+def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads,
+        min_read_qual, length_cutoff, score_cutoff, score_type, ns):
     """Quasitools quality performs quality control on FASTQ reads and outputs
        the filtered FASTQ reads in the specified directory."""
 
@@ -96,7 +96,7 @@ def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads, min_qual,
     else:
         quality_filters[MASK_CHARACTER] = False
 
-    quality_filters[MINIMUM_QUALITY] = min_qual
+    quality_filters[MIN_READ_QUAL] = min_read_qual
 
     filter_dir = "%s/filtered.fastq" % output_dir
     quality_control = QualityControl()

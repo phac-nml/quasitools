@@ -31,13 +31,19 @@ READS = TEST_PATH + "/data/reads_w_K103N.fastq"
 OUTPUT_DIR = TEST_PATH + "/test_quality_control_output"
 FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
 
-TRIMMING = "trimming"
-MASKING = "masking"
-MASK_CHARACTER = "N"
-MINIMUM_QUALITY = "minimum_quality"
-LENGTH_CUTOFF = "length_cutoff"
-MEDIAN_CUTOFF = "median_cutoff"
-MEAN_CUTOFF = "mean_cutoff"
+# globals
+
+from quasitools.quality_control import TRIMMING
+from quasitools.quality_control import MASKING
+from quasitools.quality_control import MASK_CHARACTER
+from quasitools.quality_control import MIN_READ_QUAL
+from quasitools.quality_control import LENGTH_CUTOFF
+from quasitools.quality_control import MEDIAN_CUTOFF
+from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.quality_control import PASS
+from quasitools.quality_control import FAIL_LENGTH
+from quasitools.quality_control import FAIL_SCORE
+from quasitools.quality_control import FAIL_NS
 
 class TestQualityControl:
     @classmethod
@@ -51,13 +57,13 @@ class TestQualityControl:
     def filters(self):
         filtering = defaultdict(dict)
 
-        filtering["trimming"] = True
-        filtering["masking"] = True
+        filtering[TRIMMING] = True
+        filtering[MASKING] = True
 
-        filtering["length_cutoff"] = 2
-        filtering["mean_cutoff"] = 30
-        filtering["ns"] = True
-        filtering["minimum_quality"] = 30
+        filtering[LENGTH_CUTOFF] = 2
+        filtering[MEAN_CUTOFF] = 30
+        filtering[MASKING] = True
+        filtering[MIN_READ_QUAL] = 30
 
         return filtering
 
@@ -182,22 +188,22 @@ class TestQualityControl:
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [35, 3, 5, 7]
         key = self.quality_control.passes_filters(seq_record, filters)
-        assert failed_status.get(key) == "score" # did not pass filters due to
-                                                 # score
+        assert key == FAIL_SCORE # did not pass filters due
+                                                 # to score
 
         seq = Seq("G")
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [35]
         key = self.quality_control.passes_filters(seq_record, filters)
-        assert failed_status.get(key) == "length" # did not pass filters due to
-                                                  # score
+        assert key == FAIL_LENGTH # did not pass filters due
+                                                  # to score
 
         # test where multiple characters are masked due to low quality
         seq = Seq("GNNN")
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [40, 40, 40, 40]
         key = self.quality_control.passes_filters(seq_record, filters)
-        assert failed_status.get(key) == "ns" # did not pass filters due to
+        assert key == FAIL_NS # did not pass filters due to
                                               # score
 
     def test_filter_reads_with_mean_score(self, filters):
@@ -265,11 +271,11 @@ class TestQualityControl:
             mean = (float(sum(read.letter_annotations['phred_quality'])) /
                     float(len(read.letter_annotations['phred_quality'])))
 
-            assert mean >= filters["mean_cutoff"]
+            assert mean >= filters[MEAN_CUTOFF]
 
             for base_pos in range(0, len(read.seq)):
                 if (read.letter_annotations['phred_quality'][base_pos]
-                    < filters['minimum_quality']):
+                    < filters[MIN_READ_QUAL]):
                     assert read.seq[base_pos] == MASK_CHARACTER
 
     def test_filter_reads_with_median_score(self, filters):
@@ -289,8 +295,8 @@ class TestQualityControl:
         """
         # test with iterative trimming and masking enabled
         # tests with median_cutoff used instead of mean_cutoff
-        filters["median_cutoff"] = 30
-        del filters["mean_cutoff"]
+        filters[MEDIAN_CUTOFF] = 30
+        del filters[MEAN_CUTOFF]
 
         INPUT_DIR = TEST_PATH+"/data/sample2.fastq"
 
@@ -330,9 +336,9 @@ class TestQualityControl:
                 median_score = scores[int((length - 1) // 2)]
 
             assert self.quality_control.get_median_score(read) >= \
-                   filters.get("median_cutoff")
+                   filters.get(MEDIAN_CUTOFF)
 
             for base_pos in range(0, len(read.seq)):
                 if (read.letter_annotations['phred_quality'][base_pos]
-                    < filters['minimum_quality']):
+                    < filters[MIN_READ_QUAL]):
                     assert read.seq[base_pos] == MASK_CHARACTER

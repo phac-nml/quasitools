@@ -26,10 +26,15 @@ from quasitools.patient_analyzer import PatientAnalyzer
 from quasitools.quality_control import TRIMMING
 from quasitools.quality_control import MASKING
 from quasitools.quality_control import MASK_CHARACTER
-from quasitools.quality_control import MINIMUM_QUALITY
+from quasitools.quality_control import MIN_READ_QUAL
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
 from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.patient_analyzer import ERROR_RATE
+from quasitools.patient_analyzer import MIN_VARIANT_QUAL
+from quasitools.patient_analyzer import MIN_DP
+from quasitools.patient_analyzer import MIN_AC
+from quasitools.patient_analyzer import MIN_FREQ
 
 BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__),
                                          os.pardir, os.pardir, "data"))
@@ -66,7 +71,7 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
                    'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
               help='Mask low coverage regions in reads based on filter values')
-@click.option('-rq', '--read_qual', default=30, help='Minimum quality for '
+@click.option('-rq', '--min_read_qual', default=30, help='Minimum quality for '
               'a position in a read to be masked.')
 @click.option('-lc', '--length_cutoff', default=100,
               help='Reads which fall short of the specified length '
@@ -82,8 +87,8 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               'filtering of n\'s')
 @click.option('-e', '--error_rate', default=0.0021,
               help='Error rate for the sequencing platform.')
-@click.option('-mq', '--min_qual', default=30, help='Minimum quality for '
-              'variant to be considered later on in the pipeline.')
+@click.option('-vq', '--min_variant_qual', default=30, help='Minimum quality '
+              'for variant to be considered later on in the pipeline.')
 @click.option('-md', '--min_dp', default=100,
               help='Minimum required read depth for variant to be considered'
               ' later on in the pipeline.')
@@ -99,8 +104,8 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 @click.pass_context
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         generate_consensus, consensus_pct, quiet, trim_reads, mask_reads,
-        length_cutoff, score_cutoff, score_type, ns, error_rate, min_qual,
-        min_dp, min_ac, min_freq, id, read_qual):
+        min_read_qual, length_cutoff, score_cutoff, score_type, ns, error_rate,
+        min_variant_qual, min_dp, min_ac, min_freq, id, read_qual):
 
     os.mkdir(output_dir)
     reads = forward
@@ -144,14 +149,14 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     else:
         quality_filters[MASK_CHARACTER] = False
 
-    quality_filters[MINIMUM_QUALITY] = read_qual
+    quality_filters[MIN_READ_QUAL] = min_read_qual
 
     variant_filters = defaultdict(dict)
-    variant_filters["error_rate"] = error_rate
-    variant_filters["min_qual"] = min_qual
-    variant_filters["min_dp"] = min_dp
-    variant_filters["min_ac"] = min_ac
-    variant_filters["min_freq"] = min_freq
+    variant_filters[ERROR_RATE] = error_rate
+    variant_filters[MIN_VARIANT_QUAL] = min_variant_qual
+    variant_filters[MIN_DP] = min_dp
+    variant_filters[MIN_AC] = min_ac
+    variant_filters[MIN_FREQ] = min_freq
 
     patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
                                        output_dir=output_dir,

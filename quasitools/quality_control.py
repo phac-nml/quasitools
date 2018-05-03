@@ -24,7 +24,7 @@ from Bio.Seq import Seq
 TRIMMING = "trimming"
 MASKING = "masking"
 MASK_CHARACTER = "N"
-MINIMUM_QUALITY = "minimum_quality"
+MIN_READ_QUAL = "min_read_qual"
 LENGTH_CUTOFF = "length_cutoff"
 MEDIAN_CUTOFF = "median_cutoff"
 MEAN_CUTOFF = "mean_cutoff"
@@ -220,7 +220,7 @@ class QualityControl():
     [(FILTER -> VALUE) DICTIONARY] [filters]
         The filtering critiera, as a dictionary of (filter, value) pairs. The
         minimum quality score will be taken from this dictionary as the value
-        of the MINIMUM_QUALITY key.
+        of the MIN_READ_QUAL key.
 
 
     POST
@@ -235,7 +235,7 @@ class QualityControl():
     def mask_read(self, read, filters):
 
         scores = list(read.letter_annotations['phred_quality'])
-        minimum = int(filters.get(MINIMUM_QUALITY))
+        minimum = int(filters.get(MIN_READ_QUAL))
 
         # Check every quality score:
         for i in range(0, len(scores)):

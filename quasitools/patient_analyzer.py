@@ -25,7 +25,18 @@ from quasitools.aa_variant import AAVariantCollection
 from quasitools.mutations import MutationDB
 from quasitools.aa_census import AACensus, CONFIDENT
 from quasitools.quality_control import QualityControl
+from quasitools.quality_control import LENGTH
+from quasitools.quality_control import SCORE
+from quasitools.quality_control import NS
 import Bio.SeqIO
+
+# GLOBALS
+
+ERROR_RATE = "error_rate"
+MIN_VARIANT_QUAL = "min_variant_qual"
+MIN_AC = "min_ac"
+MIN_DP = "min_dp"
+MIN_FREQ = 'min_freq'
 
 
 class PatientAnalyzer():
@@ -103,15 +114,15 @@ class PatientAnalyzer():
             print("# Identifying variants...")
 
         variants = NTVariantCollection.from_mapped_read_collections(
-            variant_filters["error_rate"], self.references,
+            variant_filters[ERROR_RATE], self.references,
             *mapped_read_collection_arr)
 
-        variants.filter('q%s' % variant_filters["min_qual"],
-                        'QUAL<%s' % variant_filters["min_qual"], True)
-        variants.filter('ac%s' % variant_filters["min_ac"],
-                        'AC<%s' % variant_filters["min_ac"], True)
-        variants.filter('dp%s' % variant_filters["min_dp"],
-                        'DP<%s' % variant_filters["min_dp"], True)
+        variants.filter('q%s' % variant_filters[MIN_VARIANT_QUAL],
+                        'QUAL<%s' % variant_filters[MIN_VARIANT_QUAL], True)
+        variants.filter('ac%s' % variant_filters[MIN_AC],
+                        'AC<%s' % variant_filters[MIN_AC], True)
+        variants.filter('dp%s' % variant_filters[MIN_DP],
+                        'DP<%s' % variant_filters[MIN_DP], True)
 
         vcf_file = open("%s/hydra.vcf" % self.output_dir, "w+")
         vcf_file.write(variants.to_vcf_file())
@@ -148,8 +159,8 @@ class PatientAnalyzer():
         aa_vars = AAVariantCollection.from_aacensus(aa_census)
 
         # Filter for mutant frequency
-        aa_vars.filter('mf%s' % variant_filters['min_freq'],
-                       'freq<%s' % variant_filters['min_freq'], True)
+        aa_vars.filter('mf%s' % variant_filters[MIN_FREQ],
+                       'freq<%s' % variant_filters[MIN_FREQ], True)
 
         # Build the mutation database and update collection
         if self.mutation_db is not None:
@@ -230,19 +241,19 @@ class PatientAnalyzer():
 
         stats_report.write("Input Size: %i\n" % self.input_size)
         stats_report.write("Number of reads filtered due to length: %i\n" %
-                           self.amount_filtered["length"])
+                           self.amount_filtered[LENGTH])
         stats_report.write(("Number of reads filtered due to average "
                             "quality score: %i\n")
-                           % self.amount_filtered["score"])
+                           % self.amount_filtered[SCORE])
         stats_report.write(("Number of reads filtered due to presence "
-                            "of Ns: %i\n") % self.amount_filtered["ns"])
+                            "of Ns: %i\n") % self.amount_filtered[NS])
         stats_report.write("Number of reads filtered due to excess "
                            "coverage: 0\n")
         stats_report.write(("Number of reads filtered due to poor "
                             "mapping: %i\n") %
-                           (self.input_size - self.amount_filtered["length"] -
-                            self.amount_filtered["score"] -
-                            self.amount_filtered["ns"] -
+                           (self.input_size - self.amount_filtered[LENGTH] -
+                            self.amount_filtered[SCORE] -
+                            self.amount_filtered[NS] -
                             mr_len))
         stats_report.write("Percentage of reads filtered: %0.2f" %
                            (float(self.input_size - mr_len) /

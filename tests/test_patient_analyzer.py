@@ -33,9 +33,19 @@ GENES_FILE = TEST_PATH + "/data/hxb2_pol.bed"
 MUTATION_DB = TEST_PATH + "/data/mutation_db.tsv"
 OUTPUT_DIR = TEST_PATH + "/test_patient_analyzer_output"
 FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
-LENGTH_CUTOFF = 100
-SCORE_CUTOFF = 30
-MIN_QUAL = 30
+
+from quasitools.quality_control import TRIMMING
+from quasitools.quality_control import MASKING
+from quasitools.quality_control import MASK_CHARACTER
+from quasitools.quality_control import MIN_READ_QUAL
+from quasitools.quality_control import LENGTH_CUTOFF
+from quasitools.quality_control import MEDIAN_CUTOFF
+from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.patient_analyzer import ERROR_RATE
+from quasitools.patient_analyzer import MIN_VARIANT_QUAL
+from quasitools.patient_analyzer import MIN_AC
+from quasitools.patient_analyzer import MIN_DP
+from quasitools.patient_analyzer import MIN_FREQ
 
 class TestPatientAnalyzer:
     @classmethod
@@ -74,10 +84,10 @@ class TestPatientAnalyzer:
 
         quality_filters = defaultdict(dict)
 
-        quality_filters["length_cutoff"] = LENGTH_CUTOFF
-        quality_filters["mean_cutoff"] = SCORE_CUTOFF
-        quality_filters["ns"] = True
-        quality_filters["minimum_quality"] = MIN_QUAL
+        quality_filters[LENGTH_CUTOFF] = 100
+        quality_filters[MEAN_CUTOFF] = 30
+        quality_filters[MASK_CHARACTER] = True
+        quality_filters[MIN_READ_QUAL] = 30
 
         status = self.patient_analyzer.filter_reads(quality_filters)
 
@@ -86,13 +96,13 @@ class TestPatientAnalyzer:
         seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
 
         for seq in seq_rec_obj:
-            avg_score = quality_filters["mean_cutoff"] + 1
+            avg_score = quality_filters[MEAN_CUTOFF] + 1
             avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
                          float(len(seq.letter_annotations['phred_quality'])))
 
             # check that length and score are both over threshold
-            assert len(seq.seq) >= quality_filters["length_cutoff"] and \
-                avg_score >= quality_filters["mean_cutoff"]
+            assert len(seq.seq) >= quality_filters[LENGTH_CUTOFF] and \
+                avg_score >= quality_filters[MEAN_CUTOFF]
 
         # patient_analyzer.filter_reads calls quality_control.filter_reads
         # more tests for filtering reads can be found in test_quality_control
@@ -102,11 +112,11 @@ class TestPatientAnalyzer:
 
         # test defaults
         variant_filters = defaultdict(dict)
-        variant_filters["error_rate"] = 0.0021
-        variant_filters["min_qual"] = MIN_QUAL
-        variant_filters["min_dp"] = 100
-        variant_filters["min_ac"] = 5
-        variant_filters["min_freq"] = 0.01
+        variant_filters[ERROR_RATE] = 0.0021
+        variant_filters[MIN_VARIANT_QUAL] = 30
+        variant_filters[MIN_DP] = 100
+        variant_filters[MIN_AC] = 5
+        variant_filters[MIN_FREQ] = 0.01
 
         generate_consensus = True
         reporting_threshold = 20
