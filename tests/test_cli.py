@@ -118,6 +118,6 @@ def test_cli_quality(runner):
     assert result.exit_code == 0 # test expected to pass
     assert not result.exception # exception should not be raised
 
-    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality', '-tr', '-mr', '-me', '-n'])
+    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality', '-tr', '-mr', '-me', '-n', '-sc', '30', '-lc', '100', '-mq', '30'])
     assert result.exit_code == 0 # test expected to pass
     assert not result.exception # exception should not be raised
