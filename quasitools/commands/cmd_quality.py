@@ -30,6 +30,7 @@ LENGTH_CUTOFF = "length_cutoff"
 MEDIAN_CUTOFF = "median_cutoff"
 MEAN_CUTOFF = "mean_cutoff"
 
+
 @click.command('quality', short_help='Perform quality control on FASTQ reads.')
 @click.argument('forward', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
