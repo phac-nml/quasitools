@@ -29,6 +29,7 @@ from quasitools.quality_control import MIN_READ_QUAL
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
 from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.quality_control import NS
 
 
 @click.command('quality', short_help='Perform quality control on FASTQ reads.')
@@ -93,9 +94,9 @@ def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads,
     # end if
 
     if ns:
-        quality_filters[MASK_CHARACTER] = True
+        quality_filters[NS] = True
     else:
-        quality_filters[MASK_CHARACTER] = False
+        quality_filters[NS] = False
 
     quality_filters[MIN_READ_QUAL] = min_read_qual
 

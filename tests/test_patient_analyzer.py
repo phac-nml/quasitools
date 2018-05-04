@@ -35,12 +35,19 @@ OUTPUT_DIR = TEST_PATH + "/test_patient_analyzer_output"
 FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
 
 from quasitools.quality_control import TRIMMING
+
+# used for masking
 from quasitools.quality_control import MASKING
 from quasitools.quality_control import MASK_CHARACTER
 from quasitools.quality_control import MIN_READ_QUAL
+
+# used in quality_control.passes_filters
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
 from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.quality_control import NS
+
+# used in patient_analyzer
 from quasitools.patient_analyzer import ERROR_RATE
 from quasitools.patient_analyzer import MIN_VARIANT_QUAL
 from quasitools.patient_analyzer import MIN_AC
@@ -86,7 +93,7 @@ class TestPatientAnalyzer:
 
         quality_filters[LENGTH_CUTOFF] = 100
         quality_filters[MEAN_CUTOFF] = 30
-        quality_filters[MASK_CHARACTER] = True
+        quality_filters[MASKING] = True
         quality_filters[MIN_READ_QUAL] = 30
 
         status = self.patient_analyzer.filter_reads(quality_filters)

@@ -34,13 +34,19 @@ FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
 # globals
 
 from quasitools.quality_control import TRIMMING
+
+# used for masking
 from quasitools.quality_control import MASKING
 from quasitools.quality_control import MASK_CHARACTER
 from quasitools.quality_control import MIN_READ_QUAL
+
+# used in quality_control.passes_filters
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
 from quasitools.quality_control import MEAN_CUTOFF
 from quasitools.quality_control import NS
+
+# used in qaulity_control.passes_filters
 from quasitools.quality_control import PASS
 from quasitools.quality_control import FAIL_LENGTH
 from quasitools.quality_control import FAIL_SCORE
