@@ -30,6 +30,7 @@ from quasitools.quality_control import MIN_READ_QUAL
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
 from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.quality_control import NS
 from quasitools.patient_analyzer import ERROR_RATE
 from quasitools.patient_analyzer import MIN_VARIANT_QUAL
 from quasitools.patient_analyzer import MIN_DP
@@ -147,9 +148,9 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     # end if
 
     if ns:
-        quality_filters[MASK_CHARACTER] = True
+        quality_filters[NS] = True
     else:
-        quality_filters[MASK_CHARACTER] = False
+        quality_filters[NS] = False
 
     quality_filters[MIN_READ_QUAL] = min_read_qual
 
