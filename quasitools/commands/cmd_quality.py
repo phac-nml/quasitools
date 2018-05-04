@@ -51,8 +51,8 @@ from quasitools.quality_control import MEAN_CUTOFF
               help='Reads which fall short of the specified length '
                    'will be filtered out.')
 @click.option('-sc', '--score_cutoff', default=30,
-              help='Reads that have an median or mean quality score (depending'
-                   ' on the score_type specified) less than the score cutoff'
+              help='Reads that have a median or mean quality score (depending'
+                   ' on the score type specified) less than the score cutoff'
                    'value will be filtered out.')
 @click.option('-me/-mn', '--median/--mean', 'score_type',
               default=True,
