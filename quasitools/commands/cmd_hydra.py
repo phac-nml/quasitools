@@ -78,8 +78,8 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               help='Reads which fall short of the specified length '
                    'will be filtered out.')
 @click.option('-sc', '--score_cutoff', default=30,
-              help='Reads that have an median or mean quality score (depending'
-                   ' on the score_type specified) less than the score cutoff'
+              help='Reads that have a median or mean quality score (depending'
+                   ' on the score type specified) less than the score cutoff'
                    'value will be filtered out.')
 @click.option('-me/-mn', '--median/--mean', 'score_type',
               default=True,
@@ -107,7 +107,7 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         generate_consensus, consensus_pct, quiet, trim_reads, mask_reads,
         min_read_qual, length_cutoff, score_cutoff, score_type, ns, error_rate,
-        min_variant_qual, min_dp, min_ac, min_freq, id, read_qual):
+        min_variant_qual, min_dp, min_ac, min_freq, id):
 
     os.mkdir(output_dir)
     reads = forward
