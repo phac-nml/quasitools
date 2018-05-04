@@ -218,7 +218,7 @@ class QualityControl():
         The read to mask low quality positions within.
 
     [(FILTER -> VALUE) DICTIONARY] [filters]
-        The filtering critiera, as a dictionary of (filter, value) pairs. The
+        The filtering criteria, as a dictionary of (filter, value) pairs. The
         minimum quality score will be taken from this dictionary as the value
         of the MIN_READ_QUAL key.
 
@@ -303,7 +303,7 @@ class QualityControl():
         elif mean_cutoff and self.get_mean_score(read) < mean_cutoff:
             return FAIL_SCORE
 
-        if filter_ns and 'n' in read.seq.lower():
+        if filter_ns and MASK_CHARACTER.lower() in read.seq.lower():
             return FAIL_NS
 
         return PASS
