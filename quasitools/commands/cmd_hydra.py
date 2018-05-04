@@ -70,21 +70,23 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               help='Iteratively trim reads based on filter values if enabled. '
                    'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
-              help='Mask low coverage regions in reads based on filter values')
+              help='Mask low coverage regions in reads based on filter'
+              ' values.')
 @click.option('-rq', '--min_read_qual', default=30, help='Minimum quality for '
               'a position in a read to be masked.')
 @click.option('-lc', '--length_cutoff', default=100,
               help='Reads which fall short of the specified length '
                    'will be filtered out.')
 @click.option('-sc', '--score_cutoff', default=30,
-              help='Reads that have an average quality score less than the '
-                   'specified score will be filtered out.')
+              help='Reads that have an median or mean quality score (depending'
+                   ' on the score_type specified) less than the score cutoff'
+                   'value will be filtered out.')
 @click.option('-me/-mn', '--median/--mean', 'score_type',
               default=True,
-              help='Use either median score (default) or mean score for '
-              'score cutoff value')
+              help='Use either median score (default) or mean score for the '
+              'score cutoff value.')
 @click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
-              'filtering of n\'s')
+              'filtering of n\'s.')
 @click.option('-e', '--error_rate', default=0.0021,
               help='Error rate for the sequencing platform.')
 @click.option('-vq', '--min_variant_qual', default=30, help='Minimum quality '
