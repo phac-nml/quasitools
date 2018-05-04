@@ -282,7 +282,7 @@ class QualityControl():
         PASS: the read passes all the filtering criteria
         FAIL_LENGTH: the read fails due to read length
         FAIL_SCORE: the read fails due to read score
-        FAIL_NS: the read fails due to ns
+        FAIL_NS: the read fails due to MASK_CHARACTERs
 
     # =========================================================================
     """
