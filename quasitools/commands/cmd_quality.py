@@ -24,7 +24,6 @@ from quasitools.quality_control import QualityControl
 
 from quasitools.quality_control import TRIMMING
 from quasitools.quality_control import MASKING
-from quasitools.quality_control import MASK_CHARACTER
 from quasitools.quality_control import MIN_READ_QUAL
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
