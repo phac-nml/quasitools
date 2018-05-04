@@ -1,7 +1,7 @@
 """
 Copyright Government of Canada 2017 - 2018
 
-Written by: Camy Tran, National Microbiology Laboratory,
+Written by: Camy Tran and Matthew Fogel, National Microbiology Laboratory,
             Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
