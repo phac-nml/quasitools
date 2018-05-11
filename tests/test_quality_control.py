@@ -44,13 +44,11 @@ from quasitools.quality_control import MIN_READ_QUAL
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
 from quasitools.quality_control import MEAN_CUTOFF
-from quasitools.quality_control import NS
 
 # used in qaulity_control.passes_filters
 from quasitools.quality_control import PASS
 from quasitools.quality_control import FAIL_LENGTH
 from quasitools.quality_control import FAIL_SCORE
-from quasitools.quality_control import FAIL_NS
 
 class TestQualityControl:
     @classmethod
@@ -70,7 +68,6 @@ class TestQualityControl:
         filtering[LENGTH_CUTOFF] = 2
         filtering[MEAN_CUTOFF] = 30
         filtering[MIN_READ_QUAL] = 30
-        filtering[NS] = True
 
         return filtering
 
@@ -188,7 +185,7 @@ class TestQualityControl:
         POST:
             [None]
         """
-        failed_status = {0: "success", 1: "length", 2: "score", 3: "ns"}
+        failed_status = {0: "success", 1: "length", 2: "score"}
 
         # sample Biopython read for testing
         seq = Seq("GATC")
@@ -204,14 +201,6 @@ class TestQualityControl:
         key = self.quality_control.passes_filters(seq_record, filters)
         assert key == FAIL_LENGTH # did not pass filters due
                                                   # to score
-
-        # test where multiple characters are already masked due to low quality
-        seq = Seq("GNNN")
-        seq_record = SeqRecord(seq)
-        seq_record.letter_annotations["phred_quality"] = [80, 20, 20, 20]
-        key = self.quality_control.passes_filters(seq_record, filters)
-        assert key == FAIL_NS # did not pass filters due to
-                                              # score
 
     def test_filter_reads_with_mean_score(self, filters):
         """
