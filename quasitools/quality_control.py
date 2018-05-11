@@ -41,7 +41,7 @@ FAIL_NS = 3
 
 
 class QualityControl():
-    """Perform quality control on FASTQ reads."""
+    """This class performs quality control on FASTQ reads."""
 
     def __init__(self):
         """
