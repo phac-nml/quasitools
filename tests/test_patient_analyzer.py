@@ -45,6 +45,7 @@ from quasitools.quality_control import MIN_READ_QUAL
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
 from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.quality_control import NS
 
 # used in patient_analyzer
 from quasitools.patient_analyzer import ERROR_RATE

@@ -27,6 +27,7 @@ from quasitools.aa_census import AACensus, CONFIDENT
 from quasitools.quality_control import QualityControl
 from quasitools.quality_control import LENGTH
 from quasitools.quality_control import SCORE
+from quasitools.quality_control import NS
 import Bio.SeqIO
 
 # GLOBALS
@@ -244,12 +245,15 @@ class PatientAnalyzer():
         stats_report.write(("Number of reads filtered due to average "
                             "quality score: %i\n")
                            % self.amount_filtered[SCORE])
+        stats_report.write(("Number of reads filtered due to presence "
+                            "of Ns: %i\n") % self.amount_filtered[NS])
         stats_report.write("Number of reads filtered due to excess "
                            "coverage: 0\n")
         stats_report.write(("Number of reads filtered due to poor "
                             "mapping: %i\n") %
                            (self.input_size - self.amount_filtered[LENGTH] -
                             self.amount_filtered[SCORE] -
+                            self.amount_filtered[NS] -
                             mr_len))
         stats_report.write("Percentage of reads filtered: %0.2f" %
                            (float(self.input_size - mr_len) /

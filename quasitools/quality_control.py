@@ -31,9 +31,11 @@ MEAN_CUTOFF = "mean_cutoff"
 SUCCESS = "success"
 LENGTH = "length"
 SCORE = "score"
+NS = "ns"
 PASS = 0
 FAIL_LENGTH = 1
 FAIL_SCORE = 2
+FAIL_NS = 3
 
 # FILTERING SPECIFICATIONS
 
@@ -54,9 +56,11 @@ class QualityControl():
         self.amount_filtered = {}
         self.amount_filtered[LENGTH] = 0
         self.amount_filtered[SCORE] = 0
+        self.amount_filtered[NS] = 0
         self.status = {PASS: SUCCESS,
                        FAIL_LENGTH: LENGTH,
-                       FAIL_SCORE: SCORE}
+                       FAIL_SCORE: SCORE,
+                       FAIL_NS: NS}
 
     def get_median_score(self, read):
         """
@@ -213,11 +217,13 @@ class QualityControl():
         PASS: the read passes all the filtering criteria
         FAIL_LENGTH: the read fails due to read length
         FAIL_SCORE: the read fails due to read score
+        FAIL_NS: the read fails due to MASK_CHARACTERs
 
         """
         length_cutoff = filters.get(LENGTH_CUTOFF)
         median_cutoff = filters.get(MEDIAN_CUTOFF)
         mean_cutoff = filters.get(MEAN_CUTOFF)
+        filter_ns = filters.get(NS)
 
         if length_cutoff and len(read.seq) < length_cutoff:
             return FAIL_LENGTH
@@ -227,6 +233,9 @@ class QualityControl():
 
         elif mean_cutoff and self.get_mean_score(read) < mean_cutoff:
             return FAIL_SCORE
+
+        if filter_ns and MASK_CHARACTER.lower() in read.seq.lower():
+            return FAIL_NS
 
         return PASS
 

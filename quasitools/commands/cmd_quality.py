@@ -28,6 +28,7 @@ from quasitools.quality_control import MIN_READ_QUAL
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
 from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.quality_control import NS
 
 
 @click.command('quality', short_help='Perform quality control on FASTQ reads.')
@@ -57,9 +58,11 @@ from quasitools.quality_control import MEAN_CUTOFF
               default=True,
               help='Use either median score (default) or mean score for the '
               'score cutoff value.')
+@click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
+              'filtering of n\'s.')
 @click.pass_context
 def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads,
-        min_read_qual, length_cutoff, score_cutoff, score_type):
+        min_read_qual, length_cutoff, score_cutoff, score_type, ns):
     """Quasitools quality performs quality control on FASTQ reads and outputs
        the filtered FASTQ reads in the specified directory."""
 
@@ -88,6 +91,11 @@ def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads,
     elif score_type == "mean":
         quality_filters[MEAN_CUTOFF] = score_cutoff
     # end if
+
+    if ns:
+        quality_filters[NS] = True
+    else:
+        quality_filters[NS] = False
 
     quality_filters[MIN_READ_QUAL] = min_read_qual
 

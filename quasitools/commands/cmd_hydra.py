@@ -29,6 +29,7 @@ from quasitools.quality_control import MIN_READ_QUAL
 from quasitools.quality_control import LENGTH_CUTOFF
 from quasitools.quality_control import MEDIAN_CUTOFF
 from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.quality_control import NS
 from quasitools.patient_analyzer import ERROR_RATE
 from quasitools.patient_analyzer import MIN_VARIANT_QUAL
 from quasitools.patient_analyzer import MIN_DP
@@ -84,6 +85,8 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               default=True,
               help='Use either median score (default) or mean score for the '
               'score cutoff value.')
+@click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
+              'filtering of n\'s.')
 @click.option('-e', '--error_rate', default=0.0021,
               help='Error rate for the sequencing platform.')
 @click.option('-vq', '--min_variant_qual', default=30, help='Minimum quality '
@@ -103,7 +106,7 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 @click.pass_context
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         generate_consensus, consensus_pct, quiet, trim_reads, mask_reads,
-        min_read_qual, length_cutoff, score_cutoff, score_type, error_rate,
+        min_read_qual, length_cutoff, score_cutoff, score_type, ns, error_rate,
         min_variant_qual, min_dp, min_ac, min_freq, id):
 
     os.mkdir(output_dir)
@@ -142,6 +145,11 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     elif score_type == "mean":
         quality_filters[MEAN_CUTOFF] = score_cutoff
     # end if
+
+    if ns:
+        quality_filters[NS] = True
+    else:
+        quality_filters[NS] = False
 
     quality_filters[MIN_READ_QUAL] = min_read_qual
 
