@@ -25,11 +25,11 @@ GAP = '-'
 
 
 class Pileup_List(object):
+    """This class contains a list of Pileups."""
 
     def __init__(self, pileups):
-
         """
-        Creates a array of Pileup objects.
+        Create a array of Pileup objects.
 
         INPUT:
             [ARRAY OF PILEUPS] [pileups] - list of Pileup objects
@@ -37,16 +37,15 @@ class Pileup_List(object):
             [None]
         POST:
             Pileup list is constructed.
+
         """
         self.pileups = pileups
         self.left_pos_truncated = 0
         self.right_pos_truncated = 0
 
     def all_have_coverage(self, position):
-
         """
-        Determines whether all Pileup objects in the pileup list have coverage
-        at the present position.
+        Determine if all Pileup objects have coverage at the present position.
 
         INPUT:
             [INT] [position] - position in each pileup to check for coverage
@@ -69,9 +68,9 @@ class Pileup_List(object):
 
     @staticmethod
     def construct_pileup_list(file_list, references):
-
         """
-        Creates a Pileup_List object
+        Create a Pileup_List object.
+
         INPUT:
             [FILE LOCATION TUPLE] [file_list] - files names which represent
                                                 a pileup
@@ -81,6 +80,7 @@ class Pileup_List(object):
             [Pileup_List] - a new object containing a list of Pileup objects.
         POST:
             [None]
+
         """
         pileups = []
         for bam in file_list:
@@ -90,9 +90,10 @@ class Pileup_List(object):
     # end def
 
     def normalize_pileups(self):
-
         """
-        This function converts the read count for each base in each four-tuple
+        Normalize pileups.
+
+        Convert the read count for each base in each four-tuple
         of bases (A, C, T, G) into a decimal proportion of the total read
         counts for that four-tuple. The bounds are between 0 and 1.
         This prevents large read counts for a single base from inflating
@@ -103,72 +104,76 @@ class Pileup_List(object):
         RETURN: [None]
 
         POST: All Pileups in the Pileup_List are normalized.
+
         """
         for pileup in self.pileups:
             pileup.normalize_pileup()
     # end def
 
     def get_num_left_positions_truncated(self):
-
         """
-        This functions returns the number of left positions truncated
-        since the last time truncate_output or remove_no_coverage was called.
+        Return number of left positions truncated.
+
+        Returned value was saved the most recent time truncate_output or
+        remove_no_coverage was called.
 
         INPUT: [None]
 
         RETURN: [INT] [self.left_pos_truncated]
 
         POST: [None]
+
         """
         return self.left_pos_truncated
 
     def get_num_right_positions_truncated(self):
-
         """
-        This functions returns the number of right positions truncated
-        since the last time truncate_output or remove_no_coverage was called.
+        Return number of right positions truncated.
+
+        Returned value was saved the most recent time truncate_output or
+        remove_no_coverage was called.
 
         INPUT: [None]
 
         RETURN: [INT] [self.right_pos_truncated]
 
         POST: [None]
+
         """
         return self.right_pos_truncated
 
     def get_pileups_as_array(self):
-
         """
-        This function returns the pileups Pileup_List object as a
-        two-dimensional array of dictionaries.
+        Return Pileup_List object as a two-dimensional array of dictionaries.
 
         INPUT: [None]
 
         RETURN: [ARRAY OF ARRAY OF DICTIONARIES] [pileup_list]
 
         POST: [None]
+
         """
         return [pileup.get_pileup_as_array_of_dictionaries()
                 for pileup in self.pileups]
 
     def get_pileups_as_numerical_array(self):
-
         """
-        This function returns the pileups Pileup_List object as a
-        two-dimensional numerical array.
+        Return Pileup_List object as a two-dimensional numerical array.
 
         INPUT: [None]
 
         RETURN: [ARRAY] [pileup_list]
 
         POST: [None]
+
         """
         return [pileup.get_pileup_as_numerical_array()
                 for pileup in self.pileups]
 
     def get_pileup_length(self):
-
         """
+        Get pileup length.
+
         This function returns the (single) length of all the pileups in the
         list of pileups. The function assumes the lengths of all the pileups
         are the same.
@@ -178,13 +183,13 @@ class Pileup_List(object):
         RETURN: [INT] [len(self.pileups[0])]
 
         POST: [None]
+
         """
         return len(self.pileups[0].get_pileup_as_array_of_dictionaries())
 
     def select_pileup_range(self, curr_start, curr_end):
-
         """
-        Ignores all regions of the pileup before curr_start and after curr_end
+        Ignore all regions of the pileup before curr_start and after curr_end.
 
         INPUT:
             [int] [curr_start] - current start position. Must be zero-indexed
@@ -196,14 +201,16 @@ class Pileup_List(object):
         POST:
             Positions before curr_start and after curr_end are ignored in the
             pileup list.
+
         """
         for pileup in self.pileups:
             pileup.select_pileup_range(curr_start, curr_end)
 
     def remove_no_coverage(self):
-
         """
-        Deletes all regions of the pileup for all Pileup objects in the pileup
+        Remove no coverage regions.
+
+        Delete all regions of the pileup for all Pileup objects in the pileup
         list where there is no coverage for at least one pileup (all four
         bases - A, C, T, and G are absent).
 
@@ -216,8 +223,8 @@ class Pileup_List(object):
         POST:
             Sections of the pileup where there is no coverage for at least one
             pileup are deleted from all pileups in the pileup list.
-        """
 
+        """
         # First truncate end positions to determine number of contiguous
         # positions that were truncated on the left and the right.
         self.truncate_output()
@@ -236,9 +243,10 @@ class Pileup_List(object):
     # end def
 
     def truncate_output(self):
-
         """
-        Deletes contiguous start and end regions of the pileup for all pileups
+        Truncate output.
+
+        Delete contiguous start and end regions of the pileup for all pileups
         in the pileup list where there is no coverage (all four bases - A, C,
         T, and G are absent).
 
@@ -252,6 +260,7 @@ class Pileup_List(object):
             The pileups are truncated (sections of the pileup where there
             is no coverage are deleted from all pileups in the pileup list.
             If curr_start > curr_end the pileup_list is empty after truncation.
+
         """
         self.left_pos_truncated, self.right_pos_truncated = 0, 0
         deletion_list_left, deletion_list_right, deletion_list = [], [], []
@@ -282,11 +291,13 @@ class Pileup_List(object):
 
 
 class Pileup(object):
+    """This class stores a pileup and utilities for modifying the pileup."""
 
     def __init__(self, pileup):
-
         """
-        Creates a Pileup. The object represents the Pileup of reads
+        Create a Pileup.
+
+        The object represents the Pileup of reads
         mapped against a reference file.
 
         INPUT:
@@ -297,13 +308,13 @@ class Pileup(object):
 
         POST:
             Pileup is constructed.
+
         """
         self.pileup = pileup
 
     def has_coverage(self, position):
-
         """
-        Determines whether the Pileup has coverage at the present position.
+        Determine whether the Pileup has coverage at the present position.
 
         INPUT:
             [INT] [position] - position in the Pileup to check for coverage
@@ -328,9 +339,9 @@ class Pileup(object):
 
     @staticmethod
     def construct_pileup(bam, references):
-
         """
-        Creates a Pileup.
+        Create a Pileup.
+
         INPUT:
             [FILE LOCATION] [bam] - file name of BAM file to create mapped
                                     read against reference
@@ -342,8 +353,8 @@ class Pileup(object):
                                                base
         POST:
             [None]
-        """
 
+        """
         new_pileup = []
         # Iterate over each reference in the reference object.
         for reference in references:
@@ -358,8 +369,9 @@ class Pileup(object):
     # end def
 
     def normalize_pileup(self):
-
         """
+        Normalize pileup.
+
         This function converts the read count for each base in each four-tuple
         of bases (A, C, T, G) into a decimal proportion of the total read
         counts for that four-tuple. The bounds are between 0 and 1 inclusive.
@@ -371,6 +383,7 @@ class Pileup(object):
         RETURN: [None]
 
         POST: The Pileup's values are normalized.
+
         """
         new_list = []
         for i in range(0, len(self.pileup)):
@@ -391,30 +404,28 @@ class Pileup(object):
     # end def
 
     def get_pileup_as_array_of_dictionaries(self):
-
         """
-        This function returns the pileup in the Pileup object as an array of
-        dictionaries.
+        Return the pileup in the Pileup object as an array of dictionaries.
 
         INPUT: [None]
 
         RETURN: [ARRAY OF DICTIONARIES] [pileup]
 
         POST: [None]
+
         """
         return self.pileup
 
     def get_pileup_as_numerical_array(self):
-
         """
-        This function returns the pileup in the Pileup object as a numerical
-        one-dimensional array.
+        Return the pileup in the Pileup object as a numerical 1D array.
 
         INPUT: [None]
 
         RETURN: [ARRAY] [pileup]
 
         POST: [None]
+
         """
         # create a list of the read counts of each base at each position in the
         # pileup, zero if the base is not in the dictionary at the position
@@ -425,9 +436,10 @@ class Pileup(object):
         return numerical_array
 
     def remove_pileup_positions(self, deletion_list):
-
         """
-        Deletes positions in the Pileup specified in deletion_list, an array
+        Remove pileup positions.
+
+        Delete positions in the Pileup specified in deletion_list, an array
         of integers sorted in descending order.
 
         INPUT:
@@ -440,15 +452,15 @@ class Pileup(object):
         POST:
             The specified positions in deletion_list have been removed from
             the Pileup.
+
         """
         for position in deletion_list:
             del self.pileup[position]
         # end for
 
     def select_pileup_range(self, curr_start, curr_end):
-
         """
-        Ignores all regions of the Pileup before curr_start and after curr_end
+        Ignore all regions of the Pileup before curr_start and after curr_end.
 
         INPUT:
             [int] [curr_start] - current start position. Must be zero-indexed
@@ -462,5 +474,6 @@ class Pileup(object):
         POST:
             Positions before curr_start and after curr_end are ignored in the
             Pileup.
+
         """
         self.pileup = self.pileup[curr_start:curr_end + 1]

@@ -22,7 +22,7 @@ from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 
 @click.command('distance', short_help='Calculate the evolutionary distance '
-               'between viral quasispecies using angular cosine distances.')
+               'between viral quasispecies using angular cosine distance.')
 @click.argument('reference', nargs=1, required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('bam', nargs=-1,
@@ -122,35 +122,36 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
 
     if len(bam) < 2:
         raise click.UsageError("At least two bam file locations are required" +
-                               " to perform quasispecies distance comparison")
-    # indicate if the start or end position is < 0 or a priori invalid
-    if type(startpos) == int and int(startpos) < 1:
-        raise click.UsageError("Start position must be >= 1.")
-    if type(endpos) == int and int(endpos) < 1:
-        raise click.UsageError("End position must be >= 1.")
-    if (type(startpos) == int and type(endpos) == int and (startpos > endpos)):
-        raise click.UsageError("Start position must be <= end position")
-
+                               " to perform quasispecies distance comparison.")
     # Build the reference object.
     references = parse_references_from_fasta(reference)
 
     pileups = Pileup_List.construct_pileup_list(bam, references)
+
+    if pileups.get_pileup_length() == 0:
+        raise click.UsageError("Empty pileup was produced from BAM files. " +
+                               "Halting program")
+
+    click.echo("Constructed pileup from reference.")
+    # click.echo the number of positions in pileup
+    click.echo("The pileup covers %d positions before modifications." %
+               pileups.get_pileup_length())
 
     if startpos is None:
         startpos = 1
     if endpos is None:
         endpos = pileups.get_pileup_length()
 
-    if pileups.get_pileup_length() == 0:
-        raise click.UsageError("Empty pileup was produced from BAM files." +
-                               "Halting program")
-
     click.echo("The start position is %d." % startpos)
     click.echo("The end position is %d." % endpos)
-    click.echo("Constructed pileup from reference.")
-    # click.echo the number of positions in pileup
-    click.echo("The pileup covers %d positions before modifications." %
-               pileups.get_pileup_length())
+
+    # indicate if the start or end position is < 1 or a priori invalid
+    if int(startpos) < 1:
+        raise click.UsageError("Start position must be >= 1.")
+    if int(endpos) < 1:
+        raise click.UsageError("End position must be >= 1.")
+    if int(startpos) > int(endpos):
+        raise click.UsageError("Start position must be <= end position.")
 
     # indicate whether the user-specified start and end position is out
     # of bounds (comparing to actual number of positions in pileup)
@@ -245,11 +246,11 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
             pileups.remove_no_coverage()
             click.echo("Truncating all positions with no coverage.")
 
-        click.echo("%d positions were truncated on the left" %
+        click.echo("%d positions were truncated on the left." %
                    pileups.get_num_left_positions_truncated())
-        click.echo("%d positions were truncated on the right" %
+        click.echo("%d positions were truncated on the right." %
                    pileups.get_num_right_positions_truncated())
-        click.echo("%d positions were removed in total from the pileup" %
+        click.echo("%d positions were removed in total from the pileup." %
                    (old_length - pileups.get_pileup_length()))
     # end if
     return pileups.get_pileups_as_numerical_array()
