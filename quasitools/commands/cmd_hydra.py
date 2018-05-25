@@ -70,8 +70,8 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               help='Iteratively trim reads based on filter values if enabled. '
                    'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
-              help='Mask low coverage regions in reads based on filter'
-              ' values. When this option and --ns are both enabled, filtering'
+              help='Mask low coverage regions in reads if below minimum read'
+              ' quality. When this option and --ns are both enabled, filtering'
               ' of n\'s will be performed before masking of low coverage'
               ' regions.')
 @click.option('-rq', '--min_read_qual', default=30, help='Minimum quality for '
