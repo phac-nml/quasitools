@@ -121,3 +121,16 @@ def test_cli_quality(runner):
     result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality', '-tr', '-mr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
     assert result.exit_code == 0 # test expected to pass
     assert not result.exception # exception should not be raised
+
+def test_cli_hydra(runner):
+    """
+    test_cli_hydra - Adds tests to cli
+
+    INPUT:
+        [None]
+    RETURN:
+        [None]
+    POST:
+        [None]
+    """
+    result = runner.invoke(cli.cli, ['hydra', FORWARD, REVERSE, '-o', 'test_cli_hydra', '-tr', '-mr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
