@@ -71,7 +71,9 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
                    'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
               help='Mask low coverage regions in reads based on filter'
-              ' values.')
+              ' values. When this option and --ns are both enabled, filtering'
+              ' of n\'s will be performed before masking of low coverage'
+              ' regions.')
 @click.option('-rq', '--min_read_qual', default=30, help='Minimum quality for '
               'a position in a read to be masked.')
 @click.option('-lc', '--length_cutoff', default=100,
@@ -86,7 +88,9 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               help='Use either median score (default) or mean score for the '
               'score cutoff value.')
 @click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
-              'filtering of n\'s.')
+              'filtering of n\'s. When this option and --mask_reads are both'
+              'enabled, filtering of n\'s will be performed before masking'
+              ' of low coverage regions.')
 @click.option('-e', '--error_rate', default=0.0021,
               help='Error rate for the sequencing platform.')
 @click.option('-vq', '--min_variant_qual', default=30, help='Minimum quality '
