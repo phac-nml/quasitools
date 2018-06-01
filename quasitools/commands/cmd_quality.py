@@ -44,9 +44,8 @@ from quasitools.quality_control import NS
                    'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
               help='Mask low coverage regions in reads if below minimum read'
-              ' quality. When this option and --ns are both enabled, filtering'
-              ' of n\'s will be performed before masking of low coverage'
-              ' regions.')
+              ' quality. This option and --ns cannot be both enabled '
+              'simultaneously.')
 @click.option('-rq', '--min_read_qual', default=30, help='Minimum quality for '
               'positions in read if masking is enabled.')
 @click.option('-lc', '--length_cutoff', default=100,
@@ -61,14 +60,17 @@ from quasitools.quality_control import NS
               help='Use either median score (default) or mean score for the '
               'score cutoff value.')
 @click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
-              'filtering of n\'s. When this option and --mask_reads are both'
-              'enabled, filtering of n\'s will be performed before masking'
-              ' of low coverage regions.')
+              'filtering of n\'s. This option and --mask_reads cannot be both '
+              'enabled simultaneously.')
 @click.pass_context
 def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads,
         min_read_qual, length_cutoff, score_cutoff, score_type, ns):
     """Quasitools quality performs quality control on FASTQ reads and outputs
        the filtered FASTQ reads in the specified directory."""
+
+    if mask_reads and ns:
+        raise click.UsageError("--ns and --mask_reads cannot be enabled" +
+                               " simultaneously.")
 
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)

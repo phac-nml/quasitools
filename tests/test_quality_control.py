@@ -70,7 +70,7 @@ class TestQualityControl:
         filtering[LENGTH_CUTOFF] = 2
         filtering[MEAN_CUTOFF] = 30
         filtering[MIN_READ_QUAL] = 30
-        filtering[NS] = True
+        #filtering[NS] = True
 
         return filtering
 
@@ -169,6 +169,7 @@ class TestQualityControl:
 
         filters[TRIMMING] = False
         filters[MASKING] == True
+        filters[NS] = False
         self.quality_control.mask_read(seq_record, filters)
 
         assert len(seq_record.seq) == 4
@@ -206,6 +207,8 @@ class TestQualityControl:
                                                   # to score
 
         # test where multiple characters are already masked due to low quality
+        filters[NS] = True  # turn on filtering of ns in the sequence
+        filters[MASKING] = False  # turn off masking of low coverage regions
         seq = Seq("GNNN")
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [80, 20, 20, 20]

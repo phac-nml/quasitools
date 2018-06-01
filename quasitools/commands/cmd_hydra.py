@@ -71,9 +71,8 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
                    'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
               help='Mask low coverage regions in reads if below minimum read'
-              ' quality. When this option and --ns are both enabled, filtering'
-              ' of n\'s will be performed before masking of low coverage'
-              ' regions.')
+              ' quality. This option and --ns cannot be both enabled '
+              'simultaneously.')
 @click.option('-rq', '--min_read_qual', default=30, help='Minimum quality for '
               'a position in a read to be masked.')
 @click.option('-lc', '--length_cutoff', default=100,
@@ -88,9 +87,8 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               help='Use either median score (default) or mean score for the '
               'score cutoff value.')
 @click.option('-n', '--ns', is_flag=True, help='Flag to enable the '
-              'filtering of n\'s. When this option and --mask_reads are both'
-              'enabled, filtering of n\'s will be performed before masking'
-              ' of low coverage regions.')
+              'filtering of n\'s.  This option and --mask_reads cannot be both'
+              ' enabled simultaneously.')
 @click.option('-e', '--error_rate', default=0.0021,
               help='Error rate for the sequencing platform.')
 @click.option('-vq', '--min_variant_qual', default=30, help='Minimum quality '
@@ -113,8 +111,13 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         min_read_qual, length_cutoff, score_cutoff, score_type, ns, error_rate,
         min_variant_qual, min_dp, min_ac, min_freq, id):
 
-    os.mkdir(output_dir)
+    if not os.path.isdir(output_dir):
+        os.mkdir(output_dir)
     reads = forward
+
+    if mask_reads and ns:
+        raise click.UsageError("--ns and --mask_reads cannot be enabled" +
+                               " simultaneously.")
 
     # The fasta_id is used as the sequence id in the consensus report
     # and as the RG-ID in the bt2-generated bam file.
