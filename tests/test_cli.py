@@ -118,9 +118,18 @@ def test_cli_quality(runner):
     assert result.exit_code == 0 # test expected to pass
     assert not result.exception # exception should not be raised
 
-    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality', '-tr', '-mr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
+    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality', '-tr', '-mr', '-me', '-sc', '30', '-lc', '100', '-rq', '30'])
     assert result.exit_code == 0 # test expected to pass
     assert not result.exception # exception should not be raised
+
+    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality', '-tr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 0 # test expected to pass
+    assert not result.exception # exception should not be raised
+
+    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality', '-tr', '-mr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 2 # test expected to fail, UsageError raised
+    assert result.exception # exception should be raised
+
 
 def test_cli_hydra(runner):
     """
@@ -133,4 +142,14 @@ def test_cli_hydra(runner):
     POST:
         [None]
     """
+    result = runner.invoke(cli.cli, ['hydra', FORWARD, REVERSE, '-o', 'test_cli_hydra', '-tr', '-mr', '-me', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 0 # test expected to pass
+    assert not result.exception # exception should not be raised
+
+    result = runner.invoke(cli.cli, ['hydra', FORWARD, REVERSE, '-o', 'test_cli_hydra', '-tr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 0 # test expected to pass
+    assert not result.exception # exception should not be raised
+
     result = runner.invoke(cli.cli, ['hydra', FORWARD, REVERSE, '-o', 'test_cli_hydra', '-tr', '-mr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 2 #  # test expected to fail, UsageError raised
+    assert result.exception # exception should be raised
