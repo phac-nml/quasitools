@@ -20,6 +20,7 @@ import pysam
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
 from quasitools.mapped_read import MappedRead, MappedReadCollection
+from quasitools.pileup import Pileup
 
 REVERSE_COMPLEMENTED = 16
 FORWARD = '+'
@@ -59,6 +60,27 @@ def parse_mapped_reads_from_bam(reference, bam):
 
     return mrc
 
+def parse_pileup_from_bam(reference, bam_location):
+
+    pileup = []
+    samfile = pysam.AlignmentFile(bam_location, "rb" )
+
+    for column in samfile.pileup(reference=reference.name):
+
+        dictionary = {}
+
+        for read in column.pileups:
+
+            if not read.is_del and not read.is_refskip:
+                # query position is None if is_del or is_refskip is set.
+
+                base = read.alignment.query_sequence[read.query_position]
+
+                dictionary[base] = dictionary.get(base, 0) + 1
+
+        pileup.append(dictionary)
+
+    return Pileup(pileup)
 
 if __name__ == '__main__':
     import doctest
