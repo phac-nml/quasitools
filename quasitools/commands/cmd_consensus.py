@@ -57,7 +57,8 @@ def cli(ctx, bam, reference, percentage, id, output):
         if output:
             output.write('>{0}_{1}_{2}\n{3}'.format(fasta_id, percentage,
                                                     r.name, conseq))
-            output.close()
         else:
             click.echo('>{0}_{1}_{2}\n{3}'.format(fasta_id, percentage, r.name,
                                                   conseq))
+    if output:
+        output.close()

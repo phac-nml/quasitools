@@ -23,10 +23,13 @@ from scipy.spatial.distance import cosine
 
 
 class DistanceMatrix(object):
+    """This class performs distance comparison on pileups."""
 
     def __init__(self, pileups, file_list):
-
         """
+        Intialize DistanceMatrix object.
+
+        INPUT:
             [ARRAY] [pileups] - Two dimensional numerical array that represents
             a list of pileups. Every row represents a pileup and every four
             values in each row represents the base counts for a particular
@@ -40,10 +43,10 @@ class DistanceMatrix(object):
     # end def
 
     def get_distance_matrix(self):
-
         """
-        Runs the script, calculating the angular cosine distance function
-        between viral quasispecies provided in the pileup.
+        Calculate angular cosine distance between viral quasispecies.
+
+        The viral quasispecies are represented by the pileups.
 
         Angular Cosine Distance = 2 * ACOS(similarity) / PI
 
@@ -66,10 +69,12 @@ class DistanceMatrix(object):
     # end def
 
     def get_similarity_matrix_as_csv(self):
-
         """
-        Converts a 2D array (angular cosine distance matrix) to a csv-formatted
-        string. Prints out 8 decimal places.
+        Convert a 2D array to a csv-formatted string.
+
+        The 2D array is a cosine similarity matrix.
+
+        Print out 8 decimal places.
 
         INPUT:
             [None]
@@ -82,10 +87,12 @@ class DistanceMatrix(object):
         return self.__get_matrix_as_csv(matrix)
 
     def get_distance_matrix_as_csv(self):
-
         """
-        Converts a 2D array (angular cosine distance matrix) to a csv-formatted
-        string. Prints out 8 decimal places.
+        Convert a 2D array to a csv-formatted string.
+
+        The 2D array is an angular cosine distance matrix.
+
+        Print out 8 decimal places.
 
         INPUT:
             [None]
@@ -98,10 +105,10 @@ class DistanceMatrix(object):
         return self.__get_matrix_as_csv(matrix)
 
     def __get_matrix_as_csv(self, matrix):
-
         """
-        Converts a 2D array (cosine similarity matrix) to a csv-formatted
-        string. Prints out 8 decimal places.
+        Convert a 2D array to a csv-formatted string.
+
+        Print out 8 decimal places.
 
         INPUT:
             [ARRAY] [matrix] - 2D array (cosine similarity matrix)
@@ -129,10 +136,10 @@ class DistanceMatrix(object):
     # end def
 
     def get_similarity_matrix(self):
-
         """
-        Runs the script, calculating the cosine similarity function between
-        viral quasispecies provided in the pileup.
+        Calculate cosine similarity between viral quasispecies.
+
+        The viral quasispecies are represented by the pileups.
 
         Cosine similarity = (u * v) / ( ||u|| * ||v|| )
 

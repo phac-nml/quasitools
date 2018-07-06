@@ -1,7 +1,7 @@
 """
-Copyright Government of Canada 2017
+Copyright Government of Canada 2017 - 2018
 
-Written by: Camy Tran, National Microbiology Laboratory,
+Written by: Camy Tran and Matthew Fogel, National Microbiology Laboratory,
             Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -24,7 +24,19 @@ from quasitools.nt_variant import NTVariantCollection
 from quasitools.aa_variant import AAVariantCollection
 from quasitools.mutations import MutationDB
 from quasitools.aa_census import AACensus, CONFIDENT
+from quasitools.quality_control import QualityControl
+from quasitools.quality_control import LENGTH
+from quasitools.quality_control import SCORE
+from quasitools.quality_control import NS
 import Bio.SeqIO
+
+# GLOBALS
+
+ERROR_RATE = "error_rate"
+MIN_VARIANT_QUAL = "min_variant_qual"
+MIN_AC = "min_ac"
+MIN_DP = "min_dp"
+MIN_FREQ = 'min_freq'
 
 
 class PatientAnalyzer():
@@ -40,22 +52,18 @@ class PatientAnalyzer():
         self.quiet = quiet
         self.consensus_pct = consensus_pct
 
-        self.filtered = {}
-        self.filtered["status"] = 0
-        self.filtered["length"] = 0
-        self.filtered["score"] = 0
-        self.filtered["ns"] = 0
-
         self.input_size = 0
         self.determine_input_size()
 
         self.references = parse_references_from_fasta(self.reference)
         self.genes = parse_genes_file(genes_file, self.references[0].name)
 
-        self.filtered_reads = "%s/filtered.fastq" % output_dir
+        self.quality = QualityControl()
 
         if not os.path.isdir(output_dir):
             os.mkdir(output_dir)
+
+        self.filtered_reads_dir = "%s/filtered.fastq" % output_dir
 
     def determine_input_size(self):
         sequences = Bio.SeqIO.parse(self.reads, "fastq")
@@ -63,35 +71,19 @@ class PatientAnalyzer():
         for seq in sequences:
             self.input_size += 1
 
-    def filter_reads(self, filters):
+    def filter_reads(self, quality_filters):
+        # Calls quality_control.filter_reads function
         if not self.quiet:
-            print("# Filtering reads...")
+            print("# Performing quality control on reads...")
 
-        filtered_reads_file = open(self.filtered_reads, "w+")
+        # return true if filtering function finished successfully
+        return self.quality.filter_reads(self.reads,
+                                         self.filtered_reads_dir,
+                                         quality_filters)
 
-        seq_rec_obj = Bio.SeqIO.parse(self.reads, "fastq")
+    def analyze_reads(self, fasta_id, variant_filters,
+                      reporting_threshold, generate_consensus):
 
-        for seq in seq_rec_obj:
-
-            avg_score = (float(sum(seq.letter_annotations['phred_quality'])) /
-                         float(len(seq.letter_annotations['phred_quality'])))
-
-            length = len(seq.seq)
-
-            if length < filters["length_cutoff"]:
-                self.filtered["length"] += 1
-            elif avg_score < filters["score_cutoff"]:
-                self.filtered["score"] += 1
-            elif filters['ns'] and 'n' in seq.seq.lower():
-                self.filtered['ns'] += 1
-            else:
-                Bio.SeqIO.write(seq, filtered_reads_file, "fastq")
-
-        self.filtered["status"] = 1
-        filtered_reads_file.close()
-
-    def analyze_reads(self, fasta_id, filters, reporting_threshold,
-                      generate_consensus):
         # Map reads against reference using bowtietwo
         if not self.quiet:
             print("# Mapping reads...")
@@ -122,15 +114,15 @@ class PatientAnalyzer():
             print("# Identifying variants...")
 
         variants = NTVariantCollection.from_mapped_read_collections(
-            filters["error_rate"], self.references,
+            variant_filters[ERROR_RATE], self.references,
             *mapped_read_collection_arr)
 
-        variants.filter('q%s' % filters["min_qual"],
-                        'QUAL<%s' % filters["min_qual"], True)
-        variants.filter('ac%s' % filters["min_ac"],
-                        'AC<%s' % filters["min_ac"], True)
-        variants.filter('dp%s' % filters["min_dp"],
-                        'DP<%s' % filters["min_dp"], True)
+        variants.filter('q%s' % variant_filters[MIN_VARIANT_QUAL],
+                        'QUAL<%s' % variant_filters[MIN_VARIANT_QUAL], True)
+        variants.filter('ac%s' % variant_filters[MIN_AC],
+                        'AC<%s' % variant_filters[MIN_AC], True)
+        variants.filter('dp%s' % variant_filters[MIN_DP],
+                        'DP<%s' % variant_filters[MIN_DP], True)
 
         vcf_file = open("%s/hydra.vcf" % self.output_dir, "w+")
         vcf_file.write(variants.to_vcf_file())
@@ -167,8 +159,8 @@ class PatientAnalyzer():
         aa_vars = AAVariantCollection.from_aacensus(aa_census)
 
         # Filter for mutant frequency
-        aa_vars.filter('mf%s' % filters['min_freq'],
-                       'freq<%s' % filters['min_freq'], True)
+        aa_vars.filter('mf%s' % variant_filters[MIN_FREQ],
+                       'freq<%s' % variant_filters[MIN_FREQ], True)
 
         # Build the mutation database and update collection
         if self.mutation_db is not None:
@@ -211,7 +203,7 @@ class PatientAnalyzer():
         bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' --rfg '8,3' "
                           "--rg-id %s --ma 1 --mp '2,2' -S %s -x %s "
                           "-U %s") % (fasta_id, sam_fn, bowtietwo_index,
-                                      self.filtered_reads))
+                                      self.filtered_reads_dir))
 
         os.system(bowtietwo_cmd)
 
@@ -242,23 +234,26 @@ class PatientAnalyzer():
         return sorted_bam_fn
 
     def output_stats(self, mapped_read_collection_arr):
+        self.amount_filtered = self.quality.get_amount_filtered()
         mr_len = len(mapped_read_collection_arr[0].mapped_reads)
 
         stats_report = open("%s/stats.txt" % self.output_dir, "w+")
 
         stats_report.write("Input Size: %i\n" % self.input_size)
         stats_report.write("Number of reads filtered due to length: %i\n" %
-                           self.filtered["length"])
+                           self.amount_filtered[LENGTH])
         stats_report.write(("Number of reads filtered due to average "
-                            "quality score: %i\n") % self.filtered["score"])
+                            "quality score: %i\n")
+                           % self.amount_filtered[SCORE])
         stats_report.write(("Number of reads filtered due to presence "
-                            "of Ns: %i\n") % self.filtered["ns"])
+                            "of Ns: %i\n") % self.amount_filtered[NS])
         stats_report.write("Number of reads filtered due to excess "
                            "coverage: 0\n")
         stats_report.write(("Number of reads filtered due to poor "
                             "mapping: %i\n") %
-                           (self.input_size - self.filtered["length"] -
-                            self.filtered["score"] - self.filtered["ns"] -
+                           (self.input_size - self.amount_filtered[LENGTH] -
+                            self.amount_filtered[SCORE] -
+                            self.amount_filtered[NS] -
                             mr_len))
         stats_report.write("Percentage of reads filtered: %0.2f" %
                            (float(self.input_size - mr_len) /
