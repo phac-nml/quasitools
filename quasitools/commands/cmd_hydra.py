@@ -82,7 +82,7 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
               help='Reads that have a median or mean quality score (depending'
                    ' on the score type specified) less than the score cutoff '
                    'value will be filtered out.')
-@click.option('-me/-mn', '--median/--mean', 'score_type',
+@click.option('-me/-mn', '--median/--mean',
               default=True,
               help='Use either median score (default) or mean score for the '
               'score cutoff value.')
@@ -108,7 +108,7 @@ MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 @click.pass_context
 def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
         generate_consensus, consensus_pct, quiet, trim_reads, mask_reads,
-        min_read_qual, length_cutoff, score_cutoff, score_type, ns, error_rate,
+        min_read_qual, length_cutoff, score_cutoff, median, ns, error_rate,
         min_variant_qual, min_dp, min_ac, min_freq, id):
 
     if not os.path.isdir(output_dir):
@@ -147,9 +147,9 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
 
     quality_filters[LENGTH_CUTOFF] = length_cutoff
 
-    if score_type == "median":
+    if median:
         quality_filters[MEDIAN_CUTOFF] = score_cutoff
-    elif score_type == "mean":
+    else:
         quality_filters[MEAN_CUTOFF] = score_cutoff
     # end if
 
