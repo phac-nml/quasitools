@@ -60,25 +60,27 @@ def parse_mapped_reads_from_bam(reference, bam):
 
     return mrc
 
-def parse_pileup_from_bam(reference, bam_location):
+def parse_pileup_from_bam(references, bam_location):
 
     pileup = []
     samfile = pysam.AlignmentFile(bam_location, "rb" )
 
-    for column in samfile.pileup(reference=reference.name):
+    for reference in references:
 
-        dictionary = {}
+        for column in samfile.pileup(reference=reference.name):
 
-        for read in column.pileups:
+            dictionary = {}
 
-            if not read.is_del and not read.is_refskip:
-                # query position is None if is_del or is_refskip is set.
+            for read in column.pileups:
 
-                base = read.alignment.query_sequence[read.query_position]
+                if not read.is_del and not read.is_refskip:
+                    # query position is None if is_del or is_refskip is set.
 
-                dictionary[base] = dictionary.get(base, 0) + 1
+                    base = read.alignment.query_sequence[read.query_position]
 
-        pileup.append(dictionary)
+                    dictionary[base] = dictionary.get(base, 0) + 1
+
+            pileup.append(dictionary)
 
     return Pileup(pileup)
 
@@ -169,7 +171,6 @@ def parse_pileup_list_from_bam(references, file_list):
 
     [Pileup_List]
         A new Pileup_List object representing a collection of Pileup objects.
-
 
     """
 
