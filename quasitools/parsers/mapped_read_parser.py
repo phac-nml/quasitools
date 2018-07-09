@@ -20,7 +20,7 @@ import pysam
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
 from quasitools.mapped_read import MappedRead, MappedReadCollection
-from quasitools.pileup import Pileup
+from quasitools.pileup import Pileup, Pileup_List
 
 REVERSE_COMPLEMENTED = 16
 FORWARD = '+'
@@ -60,27 +60,57 @@ def parse_mapped_reads_from_bam(reference, bam):
 
     return mrc
 
-def parse_pileup_from_bam(reference, bam_location):
+def parse_pileup_from_bam(references, bam_location):
 
     pileup = []
     samfile = pysam.AlignmentFile(bam_location, "rb" )
 
-    for column in samfile.pileup(reference=reference.name):
+    for reference in references:
 
-        dictionary = {}
+        for column in samfile.pileup(reference=reference.name):
 
-        for read in column.pileups:
+            dictionary = {}
 
-            if not read.is_del and not read.is_refskip:
-                # query position is None if is_del or is_refskip is set.
+            for read in column.pileups:
 
-                base = read.alignment.query_sequence[read.query_position]
+                if not read.is_del and not read.is_refskip:
+                    # query position is None if is_del or is_refskip is set.
 
-                dictionary[base] = dictionary.get(base, 0) + 1
+                    base = read.alignment.query_sequence[read.query_position]
 
-        pileup.append(dictionary)
+                    dictionary[base] = dictionary.get(base, 0) + 1
+
+            pileup.append(dictionary)
 
     return Pileup(pileup)
+
+def parse_pileup_list_from_bam(references, file_list):
+    """
+    Create a Pileup_List object.
+
+    INPUT:
+        [TUPLE] [references] - references tuple
+
+        [FILE LOCATION TUPLE] [file_list] - files names which represent
+                                            a pileup
+
+    RETURN:
+        [Pileup_List] - a new object containing a list of Pileup objects.
+
+    POST:
+        [None]
+
+    """
+
+    pileups = []
+
+    for bam_location in file_list:
+
+        pileup = parse_pileup_from_bam(references, bam_location)  
+        pileups.append(pileup)
+
+    return Pileup_List(pileups)
+
 
 if __name__ == '__main__':
     import doctest
