@@ -60,10 +60,11 @@ def parse_mapped_reads_from_bam(reference, bam):
 
     return mrc
 
+
 def parse_pileup_from_bam(references, bam_location):
 
     pileup = []
-    samfile = pysam.AlignmentFile(bam_location, "rb" )
+    samfile = pysam.AlignmentFile(bam_location, "rb")
 
     for reference in references:
 
@@ -83,6 +84,7 @@ def parse_pileup_from_bam(references, bam_location):
             pileup.append(dictionary)
 
     return Pileup(pileup)
+
 
 def parse_pileup_list_from_bam(references, file_list):
     """
@@ -106,7 +108,7 @@ def parse_pileup_list_from_bam(references, file_list):
 
     for bam_location in file_list:
 
-        pileup = parse_pileup_from_bam(references, bam_location)  
+        pileup = parse_pileup_from_bam(references, bam_location)
         pileups.append(pileup)
 
     return Pileup_List(pileups)

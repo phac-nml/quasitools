@@ -16,7 +16,6 @@ specific language governing permissions and limitations under the License.
 """
 
 import click
-from quasitools.pileup import Pileup_List
 from quasitools.distance import DistanceMatrix
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_pileup_list_from_bam
