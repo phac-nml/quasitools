@@ -18,7 +18,7 @@ specific language governing permissions and limitations under the License.
 import pytest
 import os
 
-from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
+from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam, parse_pileup_list_from_bam
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.pileup import Pileup_List
 from quasitools.pileup import Pileup
@@ -219,7 +219,7 @@ class TestPileups:
             [None]
         """
 
-        bamPileup = Pileup_List.construct_pileup_list(self.test_cp_files, self.references)
+        bamPileup = parse_pileup_list_from_bam(self.references, self.test_cp_files)
         pileup_as_array = bamPileup.get_pileups_as_array()
         pileup_as_numerical_array = bamPileup.get_pileups_as_numerical_array()
 

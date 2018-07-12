@@ -19,6 +19,7 @@ import click
 from quasitools.pileup import Pileup_List
 from quasitools.distance import DistanceMatrix
 from quasitools.parsers.reference_parser import parse_references_from_fasta
+from quasitools.parsers.mapped_read_parser import parse_pileup_list_from_bam
 
 
 @click.command('distance', short_help='Calculate the evolutionary distance '
@@ -100,7 +101,7 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     INPUT:
         [CONTEXT] [ctx]
         [FASTA FILE LOCATION] [reference]
-        [BAM FILE LOCATION] [bam]
+        [LIST (BAM FILE LOCATION)] [bam]
         [BOOL] [normalize/dont_normalize]
         [BOOL] [output_distance/output_similarity]
         [INT] [startpos]
@@ -126,7 +127,7 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     # Build the reference object.
     references = parse_references_from_fasta(reference)
 
-    pileups = Pileup_List.construct_pileup_list(bam, references)
+    pileups = parse_pileup_list_from_bam(references, bam)
 
     if pileups.get_pileup_length() == 0:
         raise click.UsageError("Empty pileup was produced from BAM files. " +
