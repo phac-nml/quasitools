@@ -420,3 +420,61 @@ class Pileup(object):
 
         """
         self.pileup = self.pileup[curr_start:curr_end + 1]
+
+    """
+    # =============================================================================
+    # =============================================================================
+    """
+    def build_consensus(self):
+
+        consensus = []
+
+        for position in self.pileup:
+
+            sorted_position = sorted(position, key=position.get, reverse=True)
+            base = sorted_position[0]
+
+            consensus.append(base)
+
+        return consensus
+
+    """
+    # =============================================================================
+    # =============================================================================
+    """
+    def count_unique_mutations(self):
+
+        # !!This assumes there are no gaps in the passed pileup!!
+
+        # We need the number mutations at all mutation sites.
+        # These are positions in the pileup with at least 1 disagreement.
+        unique_mutations = 0
+
+        for position in self.pileup:
+
+            unique_mutations += len(position) - 1 # Number of different bases at position.
+
+        return unique_mutations
+
+    """
+    # =============================================================================
+    # =============================================================================
+    """
+    def count_polymorphic_sites(self):
+
+        # !!This assumes there are no gaps in the passed pileup!!
+
+        # We need the number of polymorphic sites.
+        # These are positions in the pileup with at least 1 disagreement.
+        polymorphic_sites = 0
+
+        for position in self.pileup:
+
+            if len(position) > 1:
+
+                polymorphic_sites += 1
+
+        return polymorphic_sites
+
+
+
