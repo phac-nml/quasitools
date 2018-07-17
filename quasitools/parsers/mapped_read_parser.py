@@ -1,7 +1,10 @@
 """
-Copyright Government of Canada 2015-2017
+Copyright Government of Canada 2015-2018
 
 Written by: Eric Enns, National Microbiology Laboratory,
+            Public Health Agency of Canada
+
+Modified by: Matthew Fogel and Eric Marinier, National Microbiology Laboratory,
             Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -121,6 +124,8 @@ def parse_pileup_from_bam(references, bam_location):
 
 def parse_pileup_list_from_bam(references, file_list):
     """
+    # ========================================================================
+
     PARSE PILEUP LIST FROM BAM
 
 
@@ -151,7 +156,7 @@ def parse_pileup_list_from_bam(references, file_list):
     [Pileup_List]
         A new Pileup_List object representing a collection of Pileup objects.
 
-
+    # ========================================================================
     """
 
     pileups = []
