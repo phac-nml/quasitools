@@ -30,7 +30,7 @@ import Bio
 from Bio import SeqIO
 import numpy
 
-import quasitools.calculate
+import quasitools.calculate as calculate
 
 class Haplotype:
 
