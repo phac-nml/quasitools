@@ -20,14 +20,13 @@ __version__ = '0.1.0'
 import click
 from quasitools.cli import pass_context
 
-import time
-
+import math
 import os
 import sys
 
-import quasitools.calculate
-import quasitools.pileup
-import quasitools.haplotype
+import quasitools.calculate as calculate
+import quasitools.pileup as pileup
+import quasitools.haplotype as haplotype
 
 from quasitools.parsers.mapped_read_parser import parse_pileup_from_fasta
 
@@ -129,9 +128,9 @@ def complexity(ctx, fasta):
     # ========================================================================
     """
 
-    pileup = parse_pileup_from_fasta(reads_location)
+    pileup = parse_pileup_from_fasta(fasta)
     consensus = pileup.build_consensus()
-    haplotypes = haplotype.build_from_reads(reads_location, consensus)
+    haplotypes = haplotype.build_from_reads(fasta, consensus)
 
     distance_matrix = haplotype.build_distiance_matrix(haplotypes)
     counts = haplotype.build_counts(haplotypes)
