@@ -18,14 +18,16 @@ specific language governing permissions and limitations under the License.
 __version__ = '0.1.0'
 
 import click
+from quasitools.cli import pass_context
+
 import time
 
 import os
 import sys
 
-import calculate
-import pileup
-import haplotype
+import quasitools.calculate
+import quasitools.pileup
+import quasitools.haplotype
 
 from quasitools.parsers.mapped_read_parser import parse_pileup_from_fasta
 
@@ -39,10 +41,10 @@ CLICK
 
 # ============================================================================
 """
-@click.command('complexity', short_help='Calculates various quasispecies \
-        complexity measures.')
+@click.command('complexity', short_help='Calculates various quasispecies '
+        'complexity measures.')
 
-@click.argument('fasta', nargs=-1,
+@click.argument('fasta', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 
 @click.pass_context
