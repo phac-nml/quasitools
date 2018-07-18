@@ -21,8 +21,6 @@ import click
 from quasitools.cli import pass_context
 
 import math
-import os
-import sys
 
 import quasitools.calculate as calculate
 import quasitools.pileup as pileup
@@ -83,15 +81,12 @@ def cli(ctx, fasta):
     # ========================================================================
     """
 
-    click.echo("\n")
-    click.echo("Starting...")
-
-    click.echo("Calculating the complexity from file: %s" % (fasta))
+    click.echo("\nStarting...")
+    click.echo("\nCalculating the complexity from file: %s" % (fasta))
 
     complexity(ctx, fasta)
 
-    click.echo("Complete!")
-
+    click.echo("\nComplete!")
 
 def complexity(ctx, fasta):
     """
@@ -170,11 +165,44 @@ def complexity(ctx, fasta):
     click.echo("------")
     report_sample_nucleotide_diversity(haplotypes, frequencies, distance_matrix)
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_shannon_entropy(haplotypes, frequencies):
+    """
+    # ========================================================================
+
+    REPORT SHANNON ENTROPY
+
+
+    PURPOSE
+    -------
+
+    Reports the Shannon entropy of the haplotypes.
+
+
+    INPUT
+    -----
+
+    [HAPLOTYPE LIST] [haplotypes]
+        A list of Haplotype objects, for which to report the Shannon entropy.
+
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The Shannon entropy, normalized to the number of haplotypes, and the
+    Shannon entropy, normalized to the total number of clones, will be
+    reported to output.
+
+    # ========================================================================
+    """
 
     Hs = calculate.shannon_entropy(frequencies)
     H = len(haplotypes)
@@ -183,15 +211,46 @@ def report_shannon_entropy(haplotypes, frequencies):
     Hsn = float(Hs) / float(math.log(N))   # entropy normalized to N
     Hsh = float(Hs) / float(math.log(H))   # entropy normalized to H
 
-    print("Shannon Entropy (Hs) : " + str(Hs))
-    print("Shannon Entropy, normalized to log(N) (Hsn) : " + str(Hsn))
-    print("Shannon Entropy, normalized to log(H) (Hsh) : " + str(Hsh))
+    click.echo("Shannon Entropy (Hs) : " + str(Hs))
+    click.echo("Shannon Entropy, normalized to log(N) (Hsn) : " + str(Hsn))
+    click.echo("Shannon Entropy, normalized to log(H) (Hsh) : " + str(Hsh))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_minimum_mutation_frequency(pileup, haplotypes):
+    """
+    # ========================================================================
+
+    REPORT MINIMUM MUTATION FREQUENCY
+
+
+    PURPOSE
+    -------
+
+    Reports the minimum mutation frequency of the haplotypes.
+
+
+    INPUT
+    -----
+
+    [PILEUP] [pileup]
+        A Pileup object, which represents the pileup of aligned reads.
+
+    [HAPLOTYPE LIST] [haplotypes]
+        A list of Haplotype objects.
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The minimum mutation frequency will be reported to output.
+
+    # ========================================================================
+    """
 
     M = pileup.count_unique_mutations()
     N = haplotype.calculate_total_clones(haplotypes)
@@ -199,27 +258,96 @@ def report_minimum_mutation_frequency(pileup, haplotypes):
 
     minimum_mutation_frequency = calculate.minimum_mutation_frequency(M, N, a)
 
-    print("Minimum Mutation Frequency (Mf min) : " + str(minimum_mutation_frequency))
+    click.echo("Minimum Mutation Frequency (Mf min) : " + str(minimum_mutation_frequency))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_mutation_frequency(distance_matrix):
+    """
+    # ========================================================================
+
+    REPORT MUTATION FREQUENCY
+
+
+    PURPOSE
+    -------
+
+    Reports the mutation frequency of the haplotypes.
+
+
+    INPUT
+    -----
+
+    [2D ARRAY] [distance_matrix]
+        A two dimensional array, representing the distance matrix of distances
+        between the haplotypes.
+
+        This is expected to be calculated in a similar manner as:
+            haplotype.build_distiance_matrix(haplotypes)
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The mutation frequency will be reported to output.
+
+    # ========================================================================
+    """
 
     H = len(distance_matrix)
     D = distance_matrix
 
     mutation_frequency = calculate.mutation_frequency(H, D)
 
-    print("Mutation Frequency (Mfe) : " + str(mutation_frequency))
+    click.echo("Mutation Frequency (Mfe) : " + str(mutation_frequency))
 
-
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_maximum_mutation_frequency(counts, frequencies, distance_matrix):
+    """
+    # ========================================================================
+
+    REPORT MAXMIMUM MUTATION FREQUENCY
+
+
+    PURPOSE
+    -------
+
+    Reports the maximum mutation frequency of the haplotypes.
+
+
+    INPUT
+    -----
+
+    [INT LIST] [counts]
+        A sorted list of haplotype counts, from the counts of the most
+        abundant to the counts of the least abundant haplotype.
+
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
+    [2D ARRAY] [distance_matrix]
+        A two dimensional array, representing the distance matrix of distances
+        between the haplotypes.
+
+        This is expected to be calculated in a similar manner as:
+            haplotype.build_distiance_matrix(haplotypes)
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The maximum mutation frequency will be reported to output.
+
+    # ========================================================================
+    """
 
     H = len(counts)
     F = frequencies
@@ -227,27 +355,97 @@ def report_maximum_mutation_frequency(counts, frequencies, distance_matrix):
 
     maximum_mutation_frequency = calculate.maximum_mutation_frequency(H, F, D)
 
-    print("Maximum Mutation Frequency (Mf max) : " + str(maximum_mutation_frequency))
+    click.echo("Maximum Mutation Frequency (Mf max) : " + str(maximum_mutation_frequency))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_sample_nucleotide_diversity_entity(frequencies, distance_matrix):
+    """
+    # ========================================================================
+
+    REPORT SAMPLE NUCLEOTIDE DIVERSITY (ENTITY LEVEL)
+
+
+    PURPOSE
+    -------
+
+    Reports the entity-level sample nucleotide diversity.
+
+
+    INPUT
+    -----
+
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
+    [2D ARRAY] [distance_matrix]
+        A two dimensional array, representing the distance matrix of distances
+        between the haplotypes.
+
+        This is expected to be calculated in a similar manner as:
+            haplotype.build_distiance_matrix(haplotypes)
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The entity-level sample nucleotide diversity will be reported to output.
+
+    # ========================================================================
+    """
 
     H = len(frequencies)
     D = distance_matrix
 
     sample_nucleotide_diversity = calculate.sample_nucleotide_diversity_entity(H, D)
 
-    print("Sample Nucleotide Diversity, Entity Level (^PIe) : " + str(sample_nucleotide_diversity))
+    click.echo("Sample Nucleotide Diversity, Entity Level (^PIe) : " + str(sample_nucleotide_diversity))
 
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_population_nucleotide_diversity(frequencies, distance_matrix):
+    """
+    # ========================================================================
+
+    REPORT POPULATION NUCLEOTIDE DIVERSITY
+
+
+    PURPOSE
+    -------
+
+    Reports the population nucleotide diversity.
+
+
+    INPUT
+    -----
+
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
+    [2D ARRAY] [distance_matrix]
+        A two dimensional array, representing the distance matrix of distances
+        between the haplotypes.
+
+        This is expected to be calculated in a similar manner as:
+            haplotype.build_distiance_matrix(haplotypes)
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The population sample nucleotide diversity will be reported to output.
+
+    # ========================================================================
+    """
 
     H = len(frequencies)
     P = frequencies
@@ -255,13 +453,51 @@ def report_population_nucleotide_diversity(frequencies, distance_matrix):
 
     population_nucleotide_diversity = calculate.population_nucleotide_diversity(H, P, D)
 
-    print("Population Nucleotide Diversity (PI) : " + str(population_nucleotide_diversity))
+    click.echo("Population Nucleotide Diversity (PI) : " + str(population_nucleotide_diversity))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_sample_nucleotide_diversity(haplotypes, frequencies, distance_matrix):
+    """
+    # ========================================================================
+
+    REPORT SAMPLE NUCLEOTIDE DIVERSITY
+
+
+    PURPOSE
+    -------
+
+    Reports the sample nucleotide diversity.
+
+
+    INPUT
+    -----
+
+    [HAPLOTYPE LIST] [haplotypes]
+        A list of Haplotype objects.
+
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
+    [2D ARRAY] [distance_matrix]
+        A two dimensional array, representing the distance matrix of distances
+        between the haplotypes.
+
+        This is expected to be calculated in a similar manner as:
+            haplotype.build_distiance_matrix(haplotypes)
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The sample nucleotide diversity will be reported to output.
+
+    # ========================================================================
+    """
 
     N = haplotype.calculate_total_clones(haplotypes)
     H = len(frequencies)
@@ -270,39 +506,123 @@ def report_sample_nucleotide_diversity(haplotypes, frequencies, distance_matrix)
 
     sample_nucleotide_diversity = calculate.sample_nucleotide_diversity(N, H, P, D)
 
-    print("Sample Nucleotide Diversity (^PI) : " + str(sample_nucleotide_diversity))
+    click.echo("Sample Nucleotide Diversity (^PI) : " + str(sample_nucleotide_diversity))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_simpson_index(frequencies):
+    """
+    # ========================================================================
+
+    REPORT SIMPSON INDEX
+
+
+    PURPOSE
+    -------
+
+    Reports the simpson index.
+
+
+    INPUT
+    -----
+
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The Simpson index will be reported to output.
+
+    # ========================================================================
+    """
 
     H = len(frequencies)
     P = frequencies
 
     simpson_index = calculate.simpson_index(H, P)
 
-    print("Simpson Index (Hsi) : " + str(simpson_index))
+    click.echo("Simpson Index (Hsi) : " + str(simpson_index))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_gini_simpson_index(frequencies):
+    """
+    # ========================================================================
+
+    REPORT GINI-SIMPSON INDEX
+
+
+    PURPOSE
+    -------
+
+    Reports the Gini-Simpson index.
+
+
+    INPUT
+    -----
+
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The Gini-Simpson index will be reported to output.
+
+    # ========================================================================
+    """
 
     H = len(frequencies)
     P = frequencies
 
     gini_simpson_index = calculate.gini_simpson_index(H, P)
 
-    print("Gini-Simpson Index (Hgs) : " + str(gini_simpson_index))
+    click.echo("Gini-Simpson Index (Hgs) : " + str(gini_simpson_index))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_hill_numbers(frequencies):
+    """
+    # ========================================================================
+
+    REPORT HILL NUMBERS
+
+
+    PURPOSE
+    -------
+
+    Reports the 0, 1, 2, and 3 Hill numbers.
+
+
+    INPUT
+    -----
+
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The 0, 1, 2, and 3 Hill numbers will be reported to output.
+
+    # ========================================================================
+    """
 
     H = len(frequencies)
     P = frequencies
@@ -312,51 +632,167 @@ def report_hill_numbers(frequencies):
     q2 = calculate.hill_number(H, P, 2)
     q3 = calculate.hill_number(H, P, 3)
 
-    print("Hill numbers")
-    print("  q = 0 : " + str(q0))
-    print("  q = 1 : " + str(q1))
-    print("  q = 2 : " + str(q2))
-    print("  q = 3 : " + str(q3))
+    click.echo("Hill numbers")
+    click.echo("  q = 0 : " + str(q0))
+    click.echo("  q = 1 : " + str(q1))
+    click.echo("  q = 2 : " + str(q2))
+    click.echo("  q = 3 : " + str(q3))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_FAD(distance_matrix):
+    """
+    # ========================================================================
+
+    REPORT FUNCTIONAL ATTRIBUTE DIVERSITY
+
+
+    PURPOSE
+    -------
+
+    Reports the functional attribute diversity.
+
+
+    INPUT
+    -----
+
+    [2D ARRAY] [distance_matrix]
+        A two dimensional array, representing the distance matrix of distances
+        between the haplotypes.
+
+        This is expected to be calculated in a similar manner as:
+            haplotype.build_distiance_matrix(haplotypes)
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The functional attribute diversity will be reported to output.
+
+    # ========================================================================
+    """
 
     H = len(distance_matrix)
     D = distance_matrix
 
     FAD = calculate.FAD(H, D)
 
-    print("Functional Attribute Diversity (FAD) : " + str(FAD))
+    click.echo("Functional Attribute Diversity (FAD) : " + str(FAD))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_number_of_haplotypes(haplotypes):
+    """
+    # ========================================================================
+
+    REPORT NUMBER OF HAPLOTYPES
+
+
+    PURPOSE
+    -------
+
+    Reports the number of (unique) haplotypes.
+
+
+    INPUT
+    -----
+
+    [HAPLOTYPE LIST] [haplotypes]
+        A list of Haplotype objects.
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The number of (unique) haplotypes will be reported to output.
+
+    # ========================================================================
+    """
 
     H = len(haplotypes)
 
-    print("Number of haplotypes (H) : " + str(H))
+    click.echo("Number of haplotypes (H) : " + str(H))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_number_of_mutations(pileup):
+    """
+    # ========================================================================
+
+    REPORT NUMBER OF MUTATIONS
+
+
+    PURPOSE
+    -------
+
+    Reports the number of mutations.
+
+
+    INPUT
+    -----
+
+    [PILEUP] [pileup]
+        A Pileup object, which represents the pileup of aligned reads.
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The number of mutations will be reported to output.
+
+    # ========================================================================
+    """
 
     M = pileup.count_unique_mutations()
 
-    print("Number of unique mutations (M) : " + str(M))
+    click.echo("Number of unique mutations (M) : " + str(M))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def report_number_of_polymorphic_sites(pileup):
+    """
+    # ========================================================================
+
+    REPORT NUMBER OF POLYMORPHIC SITES
+
+
+    PURPOSE
+    -------
+
+    Reports the number of polymorphic sites.
+
+
+    INPUT
+    -----
+
+    [PILEUP] [pileup]
+        A Pileup object, which represents the pileup of aligned reads.
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+
+    POST
+    ----
+
+    The number of polymorphic sites will be reported to output.
+
+    # ========================================================================
+    """
 
     P = pileup.count_polymorphic_sites()
 
-    print("Number of polymorphic sites (P) : " + str(P))
+    click.echo("Number of polymorphic sites (P) : " + str(P))
