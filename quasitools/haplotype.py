@@ -315,11 +315,51 @@ def build_counts(haplotypes):
 
     return counts
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def build_frequencies(haplotypes):
+    """
+    # ========================================================================
+
+    BUILD FREQUENCIES
+
+
+    PURPOSE
+    -------
+
+    Builds the a list of the frequencies of each haplotype in a passed
+    haplotype list.
+
+    Example:
+
+    haplotype1.sequence = "AAA"
+    haplotype1.count = 3
+
+    haplotype1.sequence = "CGC"
+    haplotype1.count = 5
+
+    haplotype1.sequence = "TCC"
+    haplotype1.count = 1
+
+    haplotypes = [haplotype1, haplotype2, haplotype3]
+
+    build_counts(haplotypes) -> [3/9, 5/9, 1/9]
+
+
+    INPUT
+    -----
+
+    [HAPLOTYPE LIST] [haplotypes]
+        The list of Haplotypes.
+
+
+    RETURN
+    ------
+
+    [FLOAT LIST]
+        A list of the frequencies of each haplotype, in the same order as the
+        original haplotype list.
+
+    # ========================================================================
+    """
 
     counts = build_counts(haplotypes)
     total = calculate_total_clones(haplotypes)
@@ -331,5 +371,3 @@ def build_frequencies(haplotypes):
         frequencies.append(frequency)
 
     return frequencies
-
-
