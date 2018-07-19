@@ -29,11 +29,34 @@ import numpy
 
 GAP = '-'
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def shannon_entropy(frequencies):
+    """
+    # ========================================================================
+
+    SHANNON ENTROPY
+
+
+    PURPOSE
+    -------
+
+    Calculates the Shannon entropy of a list of frequencies.
+
+
+    INPUT
+    -----
+
+    [FLOAT LIST] [frequencies]
+        The list of frequencies. These frequencies should sum to 1.
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The Shannon entropy of the frequencies.
+
+    # ========================================================================
+    """
 
     entropy = 0
 
@@ -43,21 +66,78 @@ def shannon_entropy(frequencies):
 
     return entropy
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def minimum_mutation_frequency(M, N, a):
+    """
+    # ========================================================================
+
+    MINIMUM MUTATION FREQUENCY
+
+
+    PURPOSE
+    -------
+
+    Calculates the minimum mutation frequency.
+
+
+    INPUT
+    -----
+
+    [INT] [M]
+        The number of mutations.
+
+    [INT] [N]
+        The total number of clones (reads) sampled from the viral
+        quasispecies.
+
+    [INT] [a]
+        The length of the amplicons.
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The minimum mutation frequency.
+
+    # ========================================================================
+    """
 
     Mfmin = float(M) / (float(N) * float(a))
 
     return Mfmin
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def mutation_frequency(H, D):
+    """
+    # ========================================================================
+
+    MUTATION FREQUENCY
+
+
+    PURPOSE
+    -------
+
+    Calculates the mutation frequency.
+
+
+    INPUT
+    -----
+    
+    [INT] [H]
+        The number of haplotypes.
+
+    [2D ARRAY] [D]
+        A distance matrix of haplotypes pair-wise genetic distances
+        (fraction of nt differences).
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The mutation frequency.
+
+    # ========================================================================
+    """
 
     sumd = 0
 
@@ -69,11 +149,41 @@ def mutation_frequency(H, D):
 
     return Mfe
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def maximum_mutation_frequency(H, F, D):
+    """
+    # ========================================================================
+
+    MAXIMUM MUTATION FREQUENCY
+
+
+    PURPOSE
+    -------
+
+    Calculates the maximum mutation frequency.
+
+
+    INPUT
+    -----
+    
+    [INT] [H]
+        The number of haplotypes.
+
+    [FLOAT LIST] [F]
+        A list of (relative) frequencies.
+
+    [2D ARRAY] [D]
+        A distance matrix of haplotypes pair-wise genetic distances
+        (fraction of nt differences).
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The maximum mutation frequency.
+
+    # ========================================================================
+    """
 
     Mfmax = 0
 
@@ -83,11 +193,38 @@ def maximum_mutation_frequency(H, F, D):
 
     return Mfmax
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def sample_nucleotide_diversity_entity(H, D):
+    """
+    # ========================================================================
+
+    SAMPLE NUCLEOTIDE DIVERSITY (ENTITY-LEVEL)
+
+
+    PURPOSE
+    -------
+
+    Calculates the sample nucleotide diversity.
+
+
+    INPUT
+    -----
+    
+    [INT] [H]
+        The number of haplotypes.
+
+    [2D ARRAY] [D]
+        A distance matrix of haplotypes pair-wise genetic distances
+        (fraction of nt differences).
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The entity-level sample nucleotide diversity.
+
+    # ========================================================================
+    """
 
     sum_substitutions = 0
 
@@ -101,11 +238,41 @@ def sample_nucleotide_diversity_entity(H, D):
 
     return diversity
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def population_nucleotide_diversity(H, p, D):
+    """
+    # ========================================================================
+
+    POPULATION NUCLEOTIDE DIVERSITY
+
+
+    PURPOSE
+    -------
+
+    Calculates the population nucleotide diversity.
+
+
+    INPUT
+    -----
+    
+    [INT] [H]
+        The number of haplotypes.
+
+    [FLOAT] [p]
+        A list of (relative) frequencies.    
+
+    [2D ARRAY] [D]
+        A distance matrix of haplotypes pair-wise genetic distances
+        (fraction of nt differences).
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The population nucleotide diversity.
+
+    # ========================================================================
+    """
 
     diversity = 0
 
@@ -117,12 +284,45 @@ def population_nucleotide_diversity(H, p, D):
 
     return diversity
 
-
-"""
-# =============================================================================
-# =============================================================================
-"""
 def sample_nucleotide_diversity(N, H, p, D):
+    """
+    # ========================================================================
+
+    SAMPLE NUCLEOTIDE DIVERSITY
+
+
+    PURPOSE
+    -------
+
+    Calculates the sample nucleotide diversity.
+
+
+    INPUT
+    -----
+
+    [INT] [N]
+        The total number of clones (reads) sampled from the viral
+        quasispecies.
+
+    [INT] [H]
+        The number of haplotypes.
+
+    [FLOAT] [p]
+        A list of (relative) frequencies.    
+
+    [2D ARRAY] [D]
+        A distance matrix of haplotypes pair-wise genetic distances
+        (fraction of nt differences).
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The sample nucleotide diversity.
+
+    # ========================================================================
+    """
 
     diversity = 0
 
@@ -137,11 +337,37 @@ def sample_nucleotide_diversity(N, H, p, D):
     return diversity
 
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def simpson_index(H, P):
+    """
+    # ========================================================================
+
+    SIMPSON INDEX
+
+
+    PURPOSE
+    -------
+
+    Calculates the Simpson index.
+
+
+    INPUT
+    -----
+
+    [INT] [H]
+        The number of haplotypes.
+
+    [FLOAT] [P]
+        A list of (relative) frequencies.    
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The Simpson index.
+
+    # ========================================================================
+    """
 
     index = 0
 
@@ -151,19 +377,74 @@ def simpson_index(H, P):
 
     return index
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def gini_simpson_index(H, P):
+    """
+    # ========================================================================
+
+    GINI-SIMPSON INDEX
+
+
+    PURPOSE
+    -------
+
+    Calculates the Gini-Simpson index.
+
+
+    INPUT
+    -----
+
+    [INT] [H]
+        The number of haplotypes.
+
+    [FLOAT] [P]
+        A list of (relative) frequencies.    
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The Gini-Simpson index.
+
+    # ========================================================================
+    """
 
     return (1 - simpson_index(H, P))
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def hill_number(H, P, Q):
+    """
+    # ========================================================================
+
+    HILL NUMBER
+
+
+    PURPOSE
+    -------
+
+    Calculates the simpson index.
+
+
+    INPUT
+    -----
+
+    [INT] [H]
+        The number of haplotypes.
+
+    [FLOAT] [P]
+        A list of (relative) frequencies.    
+
+    [INT] [Q]
+        The particular Hill number to calculate.
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The Hill number for the passed Q.
+
+    # ========================================================================
+    """
 
     # Undefined at one, exponent of entropy:
     if Q == 1:
@@ -184,11 +465,38 @@ def hill_number(H, P, Q):
 
         return number
 
-"""
-# =============================================================================
-# =============================================================================
-"""
 def FAD(H, D):
+    """
+    # ========================================================================
+
+    FUNCTIONAL ATTRIBUTE DIVERSITY
+
+
+    PURPOSE
+    -------
+
+    Calculates the functional attribute diversity.
+
+
+    INPUT
+    -----
+
+    [INT] [H]
+        The number of haplotypes.
+
+     [2D ARRAY] [D]
+        A distance matrix of haplotypes pair-wise genetic distances
+        (fraction of nt differences).
+
+
+    RETURN
+    ------
+
+    [FLOAT]
+        The functional attribute diversity.
+
+    # ========================================================================
+    """
 
     number = 0
 
@@ -200,27 +508,37 @@ def FAD(H, D):
 
     return number
 
-"""
-# =============================================================================
-# =============================================================================
-"""
-def normalize(frequencies):
-
-    normalized = []
-
-    total = sum(frequencies)
-
-    for frequency in frequencies:
-
-        normalized.append(float(frequency) / float(total))
-
-    return normalized
-
-"""
-# =============================================================================
-# =============================================================================
-"""
 def hamming_distance(sequence1, sequence2):
+    """
+    # ========================================================================
+
+    HAMMING DISTANCE
+
+
+    PURPOSE
+    -------
+
+    Calculates the Hamming distance between two sequences.
+
+
+    INPUT
+    -----
+
+    [STRING] [sequence1]
+        The first of two sequences.
+
+    [STRING] [sequence2]
+        The second of two sequences.
+
+
+    RETURN
+    ------
+
+    [INT]
+        The Hamming distance between the two passed sequences.
+
+    # ========================================================================
+    """
 
     if len(sequence1) != len(sequence2):
         raise ValueError("Hamming Distance is undefined for sequences of unequal length.")
@@ -234,6 +552,3 @@ def hamming_distance(sequence1, sequence2):
             distance += 1
 
     return distance
-
-
-
