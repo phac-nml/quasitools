@@ -25,9 +25,9 @@ specific language governing permissions and limitations under the License.
 """
 
 import math
-import numpy
 
 GAP = '-'
+
 
 def shannon_entropy(frequencies):
     """
@@ -65,6 +65,7 @@ def shannon_entropy(frequencies):
         entropy -= float(frequency) * math.log(float(frequency))
 
     return entropy
+
 
 def minimum_mutation_frequency(M, N, a):
     """
@@ -106,6 +107,7 @@ def minimum_mutation_frequency(M, N, a):
 
     return Mfmin
 
+
 def mutation_frequency(H, D):
     """
     # ========================================================================
@@ -121,7 +123,7 @@ def mutation_frequency(H, D):
 
     INPUT
     -----
-    
+
     [INT] [H]
         The number of haplotypes.
 
@@ -149,6 +151,7 @@ def mutation_frequency(H, D):
 
     return Mfe
 
+
 def maximum_mutation_frequency(H, F, D):
     """
     # ========================================================================
@@ -164,7 +167,7 @@ def maximum_mutation_frequency(H, F, D):
 
     INPUT
     -----
-    
+
     [INT] [H]
         The number of haplotypes.
 
@@ -193,6 +196,7 @@ def maximum_mutation_frequency(H, F, D):
 
     return Mfmax
 
+
 def sample_nucleotide_diversity_entity(H, D):
     """
     # ========================================================================
@@ -208,7 +212,7 @@ def sample_nucleotide_diversity_entity(H, D):
 
     INPUT
     -----
-    
+
     [INT] [H]
         The number of haplotypes.
 
@@ -238,6 +242,7 @@ def sample_nucleotide_diversity_entity(H, D):
 
     return diversity
 
+
 def population_nucleotide_diversity(H, p, D):
     """
     # ========================================================================
@@ -253,12 +258,12 @@ def population_nucleotide_diversity(H, p, D):
 
     INPUT
     -----
-    
+
     [INT] [H]
         The number of haplotypes.
 
     [FLOAT] [p]
-        A list of (relative) frequencies.    
+        A list of (relative) frequencies.
 
     [2D ARRAY] [D]
         A distance matrix of haplotypes pair-wise genetic distances
@@ -284,6 +289,7 @@ def population_nucleotide_diversity(H, p, D):
 
     return diversity
 
+
 def sample_nucleotide_diversity(N, H, p, D):
     """
     # ========================================================================
@@ -308,7 +314,7 @@ def sample_nucleotide_diversity(N, H, p, D):
         The number of haplotypes.
 
     [FLOAT] [p]
-        A list of (relative) frequencies.    
+        A list of (relative) frequencies.
 
     [2D ARRAY] [D]
         A distance matrix of haplotypes pair-wise genetic distances
@@ -357,7 +363,7 @@ def simpson_index(H, P):
         The number of haplotypes.
 
     [FLOAT] [P]
-        A list of (relative) frequencies.    
+        A list of (relative) frequencies.
 
 
     RETURN
@@ -376,6 +382,7 @@ def simpson_index(H, P):
         index += float(P[i]) * float(P[i])
 
     return index
+
 
 def gini_simpson_index(H, P):
     """
@@ -397,7 +404,7 @@ def gini_simpson_index(H, P):
         The number of haplotypes.
 
     [FLOAT] [P]
-        A list of (relative) frequencies.    
+        A list of (relative) frequencies.
 
 
     RETURN
@@ -410,6 +417,7 @@ def gini_simpson_index(H, P):
     """
 
     return (1 - simpson_index(H, P))
+
 
 def hill_number(H, P, Q):
     """
@@ -431,7 +439,7 @@ def hill_number(H, P, Q):
         The number of haplotypes.
 
     [FLOAT] [P]
-        A list of (relative) frequencies.    
+        A list of (relative) frequencies.
 
     [INT] [Q]
         The particular Hill number to calculate.
@@ -461,9 +469,10 @@ def hill_number(H, P, Q):
 
             number += math.pow(P[i], Q)
 
-        number = math.pow(number, (1 / (1 - Q) ))
+        number = math.pow(number, (1 / (1 - Q)))
 
         return number
+
 
 def FAD(H, D):
     """
@@ -508,6 +517,7 @@ def FAD(H, D):
 
     return number
 
+
 def hamming_distance(sequence1, sequence2):
     """
     # ========================================================================
@@ -541,13 +551,15 @@ def hamming_distance(sequence1, sequence2):
     """
 
     if len(sequence1) != len(sequence2):
-        raise ValueError("Hamming Distance is undefined for sequences of unequal length.")
+        raise ValueError(
+            "Hamming Distance is undefined for sequences of unequal length.")
 
     distance = 0
 
     for i in range(0, len(sequence1)):
 
-        if (sequence1[i] != sequence2[i]) and (sequence1[i] != GAP) and (sequence2[i] != GAP):
+        if (sequence1[i] != sequence2[i]) \
+                and (sequence1[i] != GAP) and (sequence2[i] != GAP):
 
             distance += 1
 

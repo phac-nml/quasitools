@@ -27,34 +27,64 @@ specific language governing permissions and limitations under the License.
 from operator import attrgetter
 
 import Bio
-from Bio import SeqIO
 import numpy
 
 import quasitools.calculate as calculate
 
+
 class Haplotype:
+    """
+    # ========================================================================
+
+    HAPLOTYPE
+
+    # ========================================================================
+    """
 
     def __init__(self, sequence, consensus, count=1):
+        """
+        # ====================================================================
+
+        INIT
+
+        # ====================================================================
+        """
 
         self.sequence = sequence
         self.count = count
         self.mutations = calculate.hamming_distance(sequence, consensus)
 
     def __eq__(self, other):
+        """
+        # ====================================================================
+
+        EQUALS
+
+        # ====================================================================
+        """
+
         # Override the default Equals behavior:
 
         if isinstance(other, self.__class__):
             return self.sequence == other.sequence
 
         return False
- 
+
     def __ne__(self, other):
+        """
+        # ====================================================================
+
+        NOT EQUALS
+
+        # ====================================================================
+        """
         # Override the default Unequal behavior
 
         if isinstance(other, self.__class__):
             return self.sequence != other.sequence
 
         return False
+
 
 def build_from_reads(reads_location, consensus):
     """
@@ -85,7 +115,7 @@ def build_from_reads(reads_location, consensus):
     # ========================================================================
     """
 
-    haplotypes = {} # (sequence, Haplotype)
+    haplotypes = {}  # (sequence, Haplotype)
 
     reads = Bio.SeqIO.parse(reads_location, "fasta")
 
@@ -106,6 +136,7 @@ def build_from_reads(reads_location, consensus):
     haplotypes_sorted = sort_haplotypes(haplotypes_list)
 
     return haplotypes_sorted
+
 
 def sort_haplotypes(haplotypes):
     """
@@ -138,9 +169,11 @@ def sort_haplotypes(haplotypes):
     # ========================================================================
     """
 
-    sorted_haplotypes = sorted(haplotypes, key=attrgetter('mutations'), reverse=False)
+    sorted_haplotypes = \
+        sorted(haplotypes, key=attrgetter('mutations'), reverse=False)
 
     return sorted_haplotypes
+
 
 def build_distiance_matrix(haplotypes):
     """
@@ -184,6 +217,7 @@ def build_distiance_matrix(haplotypes):
 
     return matrix
 
+
 def calculate_distance(haplotype1, haplotype2):
     """
     # ========================================================================
@@ -216,10 +250,12 @@ def calculate_distance(haplotype1, haplotype2):
     # ========================================================================
     """
 
-    hamming_distance = calculate.hamming_distance(haplotype1.sequence, haplotype2.sequence)
+    hamming_distance = \
+        calculate.hamming_distance(haplotype1.sequence, haplotype2.sequence)
     genetic_distance = hamming_distance / len(haplotype1.sequence)
 
     return genetic_distance
+
 
 def calculate_total_clones(haplotypes):
     """
@@ -258,6 +294,7 @@ def calculate_total_clones(haplotypes):
         total += haplotype.count
 
     return total
+
 
 def build_counts(haplotypes):
     """
@@ -314,6 +351,7 @@ def build_counts(haplotypes):
         counts.append(count)
 
     return counts
+
 
 def build_frequencies(haplotypes):
     """

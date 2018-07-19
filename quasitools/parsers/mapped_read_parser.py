@@ -21,7 +21,6 @@ specific language governing permissions and limitations under the License.
 
 import pysam
 import Bio
-from Bio import SeqIO
 
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
@@ -32,6 +31,7 @@ REVERSE_COMPLEMENTED = 16
 FORWARD = '+'
 REVERSE = '-'
 GAP = '-'
+
 
 def parse_mapped_reads_from_bam(reference, bam):
     """Parse MappedRead mrcects from a bam file and produce a MappedReadCollection.

@@ -452,7 +452,8 @@ class Pileup(object):
 
         for position in self.pileup:
 
-            unique_mutations += len(position) - 1 # Number of different bases at position.
+            unique_mutations += len(position) - 1
+            # Number of different bases at position.
 
         return unique_mutations
 
@@ -475,6 +476,3 @@ class Pileup(object):
                 polymorphic_sites += 1
 
         return polymorphic_sites
-
-
-
