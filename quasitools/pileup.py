@@ -421,11 +421,27 @@ class Pileup(object):
         """
         self.pileup = self.pileup[curr_start:curr_end + 1]
 
-    """
-    # =============================================================================
-    # =============================================================================
-    """
     def build_consensus(self):
+        """
+        # ====================================================================
+
+        BUILD CONSENSUS
+
+
+        PURPOSE
+        -------
+
+        Builds the consensus sequence of the pileup.
+
+
+        RETURN
+        ------
+
+        [STRING]
+            The consensus sequence of the pileup.
+
+        # ====================================================================
+        """
 
         consensus = []
 
@@ -438,11 +454,28 @@ class Pileup(object):
 
         return consensus
 
-    """
-    # =============================================================================
-    # =============================================================================
-    """
     def count_unique_mutations(self):
+        """
+        # ====================================================================
+
+        COUNT UNIQUE MUTATIONS
+
+
+        PURPOSE
+        -------
+
+        Counts the number of unique mutations in the pileup. There should be
+        no gaps in the pileup when using this function.
+
+
+        RETURN
+        ------
+
+        [INT]
+            The number of unique mutations.
+
+        # ====================================================================
+        """
 
         # !!This assumes there are no gaps in the passed pileup!!
 
@@ -457,11 +490,27 @@ class Pileup(object):
 
         return unique_mutations
 
-    """
-    # =============================================================================
-    # =============================================================================
-    """
     def count_polymorphic_sites(self):
+        """
+        # ====================================================================
+
+        COUNT POLYMOPRHIC SITES
+
+
+        PURPOSE
+        -------
+
+        Counts the number of polymorphic sites in the pileup.
+
+
+        RETURN
+        ------
+
+        [INT]
+            The number of polymporphic sites in the pileup.
+
+        # ====================================================================
+        """
 
         # !!This assumes there are no gaps in the passed pileup!!
 
