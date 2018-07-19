@@ -18,12 +18,10 @@ specific language governing permissions and limitations under the License.
 __version__ = '0.1.0'
 
 import click
-from quasitools.cli import pass_context
 
 import math
 
 import quasitools.calculate as calculate
-import quasitools.pileup as pileup
 import quasitools.haplotype as haplotype
 
 from quasitools.parsers.mapped_read_parser import parse_pileup_from_fasta
@@ -31,19 +29,12 @@ from quasitools.parsers.mapped_read_parser import parse_pileup_from_fasta
 BASES = ['A', 'C', 'T', 'G']
 GAP = '-'
 
-"""
-# ============================================================================
 
-CLICK
-
-# ============================================================================
-"""
-@click.command('complexity', short_help='Calculates various quasispecies '
-        'complexity measures.')
-
+@click.command(
+    'complexity', short_help='Calculates various quasispecies complexity \
+    measures.')
 @click.argument('fasta', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-
 @click.pass_context
 def cli(ctx, fasta):
     """
@@ -87,6 +78,7 @@ def cli(ctx, fasta):
     complexity(ctx, fasta)
 
     click.echo("\nComplete!")
+
 
 def complexity(ctx, fasta):
     """
@@ -163,7 +155,9 @@ def complexity(ctx, fasta):
     click.echo("\n")
     click.echo("Other")
     click.echo("------")
-    report_sample_nucleotide_diversity(haplotypes, frequencies, distance_matrix)
+    report_sample_nucleotide_diversity(
+        haplotypes, frequencies, distance_matrix)
+
 
 def report_shannon_entropy(haplotypes, frequencies):
     """
@@ -215,6 +209,7 @@ def report_shannon_entropy(haplotypes, frequencies):
     click.echo("Shannon Entropy, normalized to log(N) (Hsn) : " + str(Hsn))
     click.echo("Shannon Entropy, normalized to log(H) (Hsh) : " + str(Hsh))
 
+
 def report_minimum_mutation_frequency(pileup, haplotypes):
     """
     # ========================================================================
@@ -258,7 +253,10 @@ def report_minimum_mutation_frequency(pileup, haplotypes):
 
     minimum_mutation_frequency = calculate.minimum_mutation_frequency(M, N, a)
 
-    click.echo("Minimum Mutation Frequency (Mf min) : " + str(minimum_mutation_frequency))
+    click.echo(
+        "Minimum Mutation Frequency (Mf min) : "
+        + str(minimum_mutation_frequency))
+
 
 def report_mutation_frequency(distance_matrix):
     """
@@ -304,6 +302,7 @@ def report_mutation_frequency(distance_matrix):
     mutation_frequency = calculate.mutation_frequency(H, D)
 
     click.echo("Mutation Frequency (Mfe) : " + str(mutation_frequency))
+
 
 def report_maximum_mutation_frequency(counts, frequencies, distance_matrix):
     """
@@ -355,7 +354,10 @@ def report_maximum_mutation_frequency(counts, frequencies, distance_matrix):
 
     maximum_mutation_frequency = calculate.maximum_mutation_frequency(H, F, D)
 
-    click.echo("Maximum Mutation Frequency (Mf max) : " + str(maximum_mutation_frequency))
+    click.echo(
+        "Maximum Mutation Frequency (Mf max) : "
+        + str(maximum_mutation_frequency))
+
 
 def report_sample_nucleotide_diversity_entity(frequencies, distance_matrix):
     """
@@ -401,9 +403,12 @@ def report_sample_nucleotide_diversity_entity(frequencies, distance_matrix):
     H = len(frequencies)
     D = distance_matrix
 
-    sample_nucleotide_diversity = calculate.sample_nucleotide_diversity_entity(H, D)
+    sample_nucleotide_diversity = \
+        calculate.sample_nucleotide_diversity_entity(H, D)
 
-    click.echo("Sample Nucleotide Diversity, Entity Level (^PIe) : " + str(sample_nucleotide_diversity))
+    click.echo(
+        "Sample Nucleotide Diversity, Entity Level (^PIe) : "
+        + str(sample_nucleotide_diversity))
 
 
 def report_population_nucleotide_diversity(frequencies, distance_matrix):
@@ -451,11 +456,16 @@ def report_population_nucleotide_diversity(frequencies, distance_matrix):
     P = frequencies
     D = distance_matrix
 
-    population_nucleotide_diversity = calculate.population_nucleotide_diversity(H, P, D)
+    population_nucleotide_diversity = \
+        calculate.population_nucleotide_diversity(H, P, D)
 
-    click.echo("Population Nucleotide Diversity (PI) : " + str(population_nucleotide_diversity))
+    click.echo(
+        "Population Nucleotide Diversity (PI) : "
+        + str(population_nucleotide_diversity))
 
-def report_sample_nucleotide_diversity(haplotypes, frequencies, distance_matrix):
+
+def report_sample_nucleotide_diversity(
+        haplotypes, frequencies, distance_matrix):
     """
     # ========================================================================
 
@@ -504,9 +514,13 @@ def report_sample_nucleotide_diversity(haplotypes, frequencies, distance_matrix)
     P = frequencies
     D = distance_matrix
 
-    sample_nucleotide_diversity = calculate.sample_nucleotide_diversity(N, H, P, D)
+    sample_nucleotide_diversity = \
+        calculate.sample_nucleotide_diversity(N, H, P, D)
 
-    click.echo("Sample Nucleotide Diversity (^PI) : " + str(sample_nucleotide_diversity))
+    click.echo(
+        "Sample Nucleotide Diversity (^PI) : "
+        + str(sample_nucleotide_diversity))
+
 
 def report_simpson_index(frequencies):
     """
@@ -549,6 +563,7 @@ def report_simpson_index(frequencies):
 
     click.echo("Simpson Index (Hsi) : " + str(simpson_index))
 
+
 def report_gini_simpson_index(frequencies):
     """
     # ========================================================================
@@ -589,6 +604,7 @@ def report_gini_simpson_index(frequencies):
     gini_simpson_index = calculate.gini_simpson_index(H, P)
 
     click.echo("Gini-Simpson Index (Hgs) : " + str(gini_simpson_index))
+
 
 def report_hill_numbers(frequencies):
     """
@@ -638,6 +654,7 @@ def report_hill_numbers(frequencies):
     click.echo("  q = 2 : " + str(q2))
     click.echo("  q = 3 : " + str(q3))
 
+
 def report_FAD(distance_matrix):
     """
     # ========================================================================
@@ -683,6 +700,7 @@ def report_FAD(distance_matrix):
 
     click.echo("Functional Attribute Diversity (FAD) : " + str(FAD))
 
+
 def report_number_of_haplotypes(haplotypes):
     """
     # ========================================================================
@@ -721,6 +739,7 @@ def report_number_of_haplotypes(haplotypes):
 
     click.echo("Number of haplotypes (H) : " + str(H))
 
+
 def report_number_of_mutations(pileup):
     """
     # ========================================================================
@@ -758,6 +777,7 @@ def report_number_of_mutations(pileup):
     M = pileup.count_unique_mutations()
 
     click.echo("Number of unique mutations (M) : " + str(M))
+
 
 def report_number_of_polymorphic_sites(pileup):
     """
