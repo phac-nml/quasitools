@@ -24,7 +24,8 @@ import math
 import quasitools.calculate as calculate
 import quasitools.haplotype as haplotype
 
-from quasitools.parsers.mapped_read_parser import parse_pileup_from_fasta
+from quasitools.parsers.mapped_read_parser \
+    import parse_pileup_from_fasta, parse_haplotypes_from_fasta
 
 BASES = ['A', 'C', 'T', 'G']
 GAP = '-'
@@ -117,7 +118,7 @@ def complexity(ctx, fasta):
 
     pileup = parse_pileup_from_fasta(fasta)
     consensus = pileup.build_consensus()
-    haplotypes = haplotype.build_from_reads(fasta, consensus)
+    haplotypes = parse_haplotypes_from_fasta(fasta, consensus)
 
     distance_matrix = haplotype.build_distiance_matrix(haplotypes)
     counts = haplotype.build_counts(haplotypes)
