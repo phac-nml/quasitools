@@ -21,11 +21,13 @@ specific language governing permissions and limitations under the License.
 
 import pysam
 import Bio
+from Bio import SeqIO
 
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
 from quasitools.mapped_read import MappedRead, MappedReadCollection
 from quasitools.pileup import Pileup, Pileup_List
+from quasitools.haplotype import Haplotype, sort_haplotypes
 
 REVERSE_COMPLEMENTED = 16
 FORWARD = '+'
@@ -235,6 +237,61 @@ def parse_pileup_from_fasta(reads_location, gaps=False):
             position.pop(GAP, None)
 
     return Pileup(pileup)
+
+
+def parse_haplotypes_from_fasta(reads_location, consensus):
+    """
+    # ========================================================================
+
+    PARSE HAPLOTYPES FROM READS
+
+
+    PURPOSE
+    -------
+
+    Builds a list of Haplotype objects from aligned FASTA reads.
+
+
+    INPUT
+    -----
+
+    [FILE LOCATION] [reads_location]
+        The location of the aligned FASTA reads.
+
+    [STRING] [consensus]
+        The consensus sequence of the pileup.
+
+
+    RETURN
+    ------
+
+    [HAPLOTYPE LIST]
+        A list of Haplotype objects, defined by the aligned FASTA reads.
+
+    # ========================================================================
+    """
+
+    haplotypes = {}  # (sequence, Haplotype)
+
+    reads = SeqIO.parse(reads_location, "fasta")
+
+    for read in reads:
+
+        sequence = str(read.seq)
+
+        if sequence in haplotypes:
+
+            haplotype = haplotypes.get(sequence)
+            haplotype.count += 1
+
+        else:
+
+            haplotypes[sequence] = Haplotype(sequence, consensus)
+
+    haplotypes_list = list(haplotypes.values())
+    haplotypes_sorted = sort_haplotypes(haplotypes_list)
+
+    return haplotypes_sorted
 
 
 if __name__ == '__main__':

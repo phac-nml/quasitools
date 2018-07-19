@@ -26,7 +26,6 @@ specific language governing permissions and limitations under the License.
 
 from operator import attrgetter
 
-import Bio
 import numpy
 
 import quasitools.calculate as calculate
@@ -84,58 +83,6 @@ class Haplotype:
             return self.sequence != other.sequence
 
         return False
-
-
-def build_from_reads(reads_location, consensus):
-    """
-    # ========================================================================
-
-    BUILD FROM READS
-
-
-    PURPOSE
-    -------
-
-    Builds a list of Haplotype objects from aligned FASTA reads.
-
-
-    INPUT
-    -----
-
-    [FILE LOCATION] [reads_location]
-        The location of the aligned FASTA reads.
-
-
-    RETURN
-    ------
-
-    [HAPLOTYPE LIST]
-        A list of Haplotype objects, defined by the align FASTA reads.
-
-    # ========================================================================
-    """
-
-    haplotypes = {}  # (sequence, Haplotype)
-
-    reads = Bio.SeqIO.parse(reads_location, "fasta")
-
-    for read in reads:
-
-        sequence = str(read.seq)
-
-        if sequence in haplotypes:
-
-            haplotype = haplotypes.get(sequence)
-            haplotype.count += 1
-
-        else:
-
-            haplotypes[sequence] = Haplotype(sequence, consensus)
-
-    haplotypes_list = list(haplotypes.values())
-    haplotypes_sorted = sort_haplotypes(haplotypes_list)
-
-    return haplotypes_sorted
 
 
 def sort_haplotypes(haplotypes):
