@@ -39,38 +39,13 @@ GAP = '-'
 @click.pass_context
 def cli(ctx, fasta):
     """
-    # ========================================================================
 
-    CLICK PARSER / COMPLEXITY
+    Reports the complexity of a quasispecies using several measures outlined
+    in the following work:
 
+    Gregori, Josep, et al. "Viral quasispecies complexity measures."
+    Virology 493 (2016): 227-237.
 
-    PURPOSE
-    -------
-
-    Parses the command line parameters and initiates computation of
-    complexity.
-
-
-    INPUT
-    -----
-
-    [(FASTA) FILE LOCATION] [fasta]
-        The file location of an aligned FASTA file for which to calculate the
-        complexity measures.
-
-
-    RETURN
-    ------
-
-    [NONE]
-
-
-    POST
-    ----
-
-    The complexity computation and reporting will be complete.
-
-    # ========================================================================
     """
 
     click.echo("\nStarting...")
