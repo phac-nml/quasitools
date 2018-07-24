@@ -2,7 +2,17 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.4.1 ##
+
+2018-07-24
+
+### Changed ###
+
+- Updated hydra command and quality command to fix boolean flag for enabling median or mean score cutoff value.
+
 ## 0.4.0 ##
+
+2018-06-29
 
 ### Added ###
 
