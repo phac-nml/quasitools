@@ -20,6 +20,7 @@ import pysam
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
 from quasitools.mapped_read import MappedRead, MappedReadCollection
+from quasitools.pileup import Pileup, Pileup_List
 
 REVERSE_COMPLEMENTED = 16
 FORWARD = '+'
@@ -58,6 +59,107 @@ def parse_mapped_reads_from_bam(reference, bam):
         mrc.mapped_reads[read_id] = mapped_read
 
     return mrc
+
+
+def parse_pileup_from_bam(references, bam_location):
+    """
+    PARSE PILEUP FROM BAM
+
+
+    PURPOSE
+    -------
+
+    Constructs a Pileup obect from reference objects and a BAM file.
+
+
+    INPUT
+    -----
+
+    [LIST (REFERENCE)] [references]
+        A list of quasitools Reference objects.
+
+
+    [BAM FILE LOCATION)] [bam_location]
+        The file location of the aligned BAM file from which to build the
+        pileup object.
+
+
+    RETURN
+    ------
+
+    [Pileup]
+        A new pileup object constructed from the information in the Reference
+        object(s) and the BAM file.
+
+    """
+
+    pileup = []
+    samfile = pysam.AlignmentFile(bam_location, "rb")
+
+    for reference in references:
+
+        for column in samfile.pileup(reference=reference.name):
+
+            dictionary = {}
+
+            for read in column.pileups:
+
+                if not read.is_del and not read.is_refskip:
+                    # query position is None if is_del or is_refskip is set.
+
+                    base = read.alignment.query_sequence[read.query_position]
+
+                    dictionary[base] = dictionary.get(base, 0) + 1
+
+            pileup.append(dictionary)
+
+    return Pileup(pileup)
+
+
+def parse_pileup_list_from_bam(references, file_list):
+    """
+    PARSE PILEUP LIST FROM BAM
+
+
+    PURPOSE
+    -------
+
+    Constructs a Pileup_List object from Reference objects and multiple BAM
+    files. The Pileup_List will contain multiple Pileup objects, one
+    associated with each BAM file. The Reference objects must be correspond to
+    every BAM file.
+
+
+    INPUT
+
+    -----
+
+    [LIST (REFERENCE)] [references]
+        A list of quasitools Reference objects.
+
+    [LIST (BAM FILE LOCATIONS)] [file_list]
+        A list of BAM file locations, each corresponding to one alignment
+        pileup. All BAM files must each correspond to the same associated
+        References objects.
+
+
+    RETURN
+    ------
+
+    [Pileup_List]
+        A new Pileup_List object representing a collection of Pileup objects.
+
+
+    """
+
+    pileups = []
+
+    for bam_location in file_list:
+
+        pileup = parse_pileup_from_bam(references, bam_location)
+        pileups.append(pileup)
+
+    return Pileup_List(pileups)
 
 
 if __name__ == '__main__':

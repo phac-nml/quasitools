@@ -17,9 +17,6 @@ specific language governing permissions and limitations under the License.
 
 import numpy as np
 
-# Quasitools parsers:
-from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
-
 BASES = ['A', 'C', 'T', 'G']
 GAP = '-'
 
@@ -64,29 +61,6 @@ class Pileup_List(object):
             return True
         # end if
 
-    # end def
-
-    @staticmethod
-    def construct_pileup_list(file_list, references):
-        """
-        Create a Pileup_List object.
-
-        INPUT:
-            [FILE LOCATION TUPLE] [file_list] - files names which represent
-                                                a pileup
-
-            [TUPLE] [references] - references tuple
-        RETURN:
-            [Pileup_List] - a new object containing a list of Pileup objects.
-        POST:
-            [None]
-
-        """
-        pileups = []
-        for bam in file_list:
-            pileups.append(Pileup.construct_pileup(bam, references))
-
-        return Pileup_List(pileups)
     # end def
 
     def normalize_pileups(self):
@@ -335,37 +309,6 @@ class Pileup(object):
             return True
         # end if
 
-    # end def
-
-    @staticmethod
-    def construct_pileup(bam, references):
-        """
-        Create a Pileup.
-
-        INPUT:
-            [FILE LOCATION] [bam] - file name of BAM file to create mapped
-                                    read against reference
-
-            [TUPLE] [references] - reference tuple
-
-        RETURN:
-            [ARRAY OF DICTIONARIES] [pileup] - contains read counts for each
-                                               base
-        POST:
-            [None]
-
-        """
-        new_pileup = []
-        # Iterate over each reference in the reference object.
-        for reference in references:
-            mrc = parse_mapped_reads_from_bam(reference, bam)
-
-            # append reads mapped against the current reference to the pileup
-            # end
-            new_pileup += mrc.pileup(indels=True)
-        # end for
-
-        return Pileup(new_pileup)
     # end def
 
     def normalize_pileup(self):
