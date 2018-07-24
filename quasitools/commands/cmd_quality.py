@@ -55,7 +55,7 @@ from quasitools.quality_control import NS
               help='Reads that have a median or mean quality score (depending'
                    ' on the score type specified) less than the score cutoff '
                    'value will be filtered out.')
-@click.option('-me/-mn', '--median/--mean', 'score_type',
+@click.option('-me/-mn', '--median/--mean',
               default=True,
               help='Use either median score (default) or mean score for the '
               'score cutoff value.')
@@ -64,7 +64,7 @@ from quasitools.quality_control import NS
               'enabled simultaneously.')
 @click.pass_context
 def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads,
-        min_read_qual, length_cutoff, score_cutoff, score_type, ns):
+        min_read_qual, length_cutoff, score_cutoff, median, ns):
     """Quasitools quality performs quality control on FASTQ reads and outputs
        the filtered FASTQ reads in the specified directory."""
 
@@ -92,9 +92,9 @@ def cli(ctx, forward, reverse, output_dir, trim_reads, mask_reads,
 
     quality_filters[LENGTH_CUTOFF] = length_cutoff
 
-    if score_type == "median":
+    if median:
         quality_filters[MEDIAN_CUTOFF] = score_cutoff
-    elif score_type == "mean":
+    else:
         quality_filters[MEAN_CUTOFF] = score_cutoff
     # end if
 
