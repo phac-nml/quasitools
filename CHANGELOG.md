@@ -2,6 +2,30 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.4.1 ##
+
+2018-07-24
+
+### Changed ###
+
+- Updated hydra command and quality command to fix boolean flag for enabling median or mean score cutoff value.
+
+## 0.4.0 ##
+
+2018-06-29
+
+### Added ###
+
+ - commands:
+  - quality: performs quality control on FASTQ reads
+ - modules:
+  - quality_control.py: contains QualityControl class
+
+### Changed ###
+
+- Updated hydra command to use new quality control class, masking and/or trimming reads based on command-line options that user has specified.
+- Fixed bug in cmd_consensus.py which occured when there are multiple records in the reference file and the user is writing to a file.
+
 ## 0.3.1 ##
 
 2018-04-13
