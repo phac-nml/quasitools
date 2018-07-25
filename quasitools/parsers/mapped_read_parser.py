@@ -1,7 +1,10 @@
 """
-Copyright Government of Canada 2015-2017
+Copyright Government of Canada 2015-2018
 
 Written by: Eric Enns, National Microbiology Laboratory,
+            Public Health Agency of Canada
+
+Modified by: Matthew Fogel and Eric Marinier, National Microbiology Laboratory,
             Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -17,14 +20,18 @@ specific language governing permissions and limitations under the License.
 """
 
 import pysam
+import Bio.SeqIO
+
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
 from quasitools.mapped_read import MappedRead, MappedReadCollection
 from quasitools.pileup import Pileup, Pileup_List
+from quasitools.haplotype import Haplotype, sort_haplotypes
 
 REVERSE_COMPLEMENTED = 16
 FORWARD = '+'
 REVERSE = '-'
+GAP = '-'
 
 
 def parse_mapped_reads_from_bam(reference, bam):
@@ -118,6 +125,8 @@ def parse_pileup_from_bam(references, bam_location):
 
 def parse_pileup_list_from_bam(references, file_list):
     """
+    # ========================================================================
+
     PARSE PILEUP LIST FROM BAM
 
 
@@ -131,7 +140,6 @@ def parse_pileup_list_from_bam(references, file_list):
 
 
     INPUT
-
     -----
 
     [LIST (REFERENCE)] [references]
@@ -149,7 +157,7 @@ def parse_pileup_list_from_bam(references, file_list):
     [Pileup_List]
         A new Pileup_List object representing a collection of Pileup objects.
 
-
+    # ========================================================================
     """
 
     pileups = []
@@ -160,6 +168,129 @@ def parse_pileup_list_from_bam(references, file_list):
         pileups.append(pileup)
 
     return Pileup_List(pileups)
+
+
+def parse_pileup_from_fasta(reads_location, gaps=False):
+    """
+    # ========================================================================
+
+    PARSE PILEUP FROM FASTA
+
+
+    PURPOSE
+    -------
+
+    Parses an aligned FASTA file and returns a Pileup file corresponding to
+    the aligned FASTA file.
+
+
+    INPUT
+    -----
+
+    [(FASTA) FILE LOCATION] [reads_location]
+        The file location of the aligned FASTA file.
+
+    [BOOLEAN] [gaps]
+        Whether or not to include gaps in the pileup. This is default by
+        false.
+
+
+    RETURN
+    ------
+
+    [Pileup]
+        A new pileup object constructed from the information in the aligned
+        FASTA file.
+
+    # ========================================================================
+    """
+
+    pileup = []
+    reads = Bio.SeqIO.parse(reads_location, "fasta")
+
+    read = next(reads)
+
+    for i in range(len(read)):
+
+        pileup.append({})
+
+    while read:
+
+        for i in range(len(read)):
+
+            base = read[i]
+
+            if pileup[i].get(base):
+                pileup[i][base] += 1
+
+            else:
+                pileup[i][base] = 1
+
+        read = next(reads, None)
+
+    # Remove the gaps from the pileup.
+    if not gaps:
+
+        for position in pileup:
+
+            position.pop(GAP, None)
+
+    return Pileup(pileup)
+
+
+def parse_haplotypes_from_fasta(reads_location, consensus):
+    """
+    # ========================================================================
+
+    PARSE HAPLOTYPES FROM READS
+
+
+    PURPOSE
+    -------
+
+    Builds a list of Haplotype objects from aligned FASTA reads.
+
+
+    INPUT
+    -----
+
+    [FILE LOCATION] [reads_location]
+        The location of the aligned FASTA reads.
+
+    [STRING] [consensus]
+        The consensus sequence of the pileup.
+
+
+    RETURN
+    ------
+
+    [HAPLOTYPE LIST]
+        A list of Haplotype objects, defined by the aligned FASTA reads.
+
+    # ========================================================================
+    """
+
+    haplotypes = {}  # (sequence, Haplotype)
+
+    reads = Bio.SeqIO.parse(reads_location, "fasta")
+
+    for read in reads:
+
+        sequence = str(read.seq)
+
+        if sequence in haplotypes:
+
+            haplotype = haplotypes.get(sequence)
+            haplotype.count += 1
+
+        else:
+
+            haplotypes[sequence] = Haplotype(sequence, consensus)
+
+    haplotypes_list = list(haplotypes.values())
+    haplotypes_sorted = sort_haplotypes(haplotypes_list)
+
+    return haplotypes_sorted
 
 
 if __name__ == '__main__':

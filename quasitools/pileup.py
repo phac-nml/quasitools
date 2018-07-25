@@ -420,3 +420,108 @@ class Pileup(object):
 
         """
         self.pileup = self.pileup[curr_start:curr_end + 1]
+
+    def build_consensus(self):
+        """
+        # ====================================================================
+
+        BUILD CONSENSUS
+
+
+        PURPOSE
+        -------
+
+        Builds the consensus sequence of the pileup.
+
+
+        RETURN
+        ------
+
+        [STRING]
+            The consensus sequence of the pileup.
+
+        # ====================================================================
+        """
+
+        consensus = []
+
+        for position in self.pileup:
+
+            sorted_position = sorted(position, key=position.get, reverse=True)
+            base = sorted_position[0]
+
+            consensus.append(base)
+
+        return consensus
+
+    def count_unique_mutations(self):
+        """
+        # ====================================================================
+
+        COUNT UNIQUE MUTATIONS
+
+
+        PURPOSE
+        -------
+
+        Counts the number of unique mutations in the pileup. There should be
+        no gaps in the pileup when using this function.
+
+
+        RETURN
+        ------
+
+        [INT]
+            The number of unique mutations.
+
+        # ====================================================================
+        """
+
+        # !!This assumes there are no gaps in the passed pileup!!
+
+        # We need the number mutations at all mutation sites.
+        # These are positions in the pileup with at least 1 disagreement.
+        unique_mutations = 0
+
+        for position in self.pileup:
+
+            unique_mutations += len(position) - 1
+            # Number of different bases at position.
+
+        return unique_mutations
+
+    def count_polymorphic_sites(self):
+        """
+        # ====================================================================
+
+        COUNT POLYMOPRHIC SITES
+
+
+        PURPOSE
+        -------
+
+        Counts the number of polymorphic sites in the pileup.
+
+
+        RETURN
+        ------
+
+        [INT]
+            The number of polymporphic sites in the pileup.
+
+        # ====================================================================
+        """
+
+        # !!This assumes there are no gaps in the passed pileup!!
+
+        # We need the number of polymorphic sites.
+        # These are positions in the pileup with at least 1 disagreement.
+        polymorphic_sites = 0
+
+        for position in self.pileup:
+
+            if len(position) > 1:
+
+                polymorphic_sites += 1
+
+        return polymorphic_sites
