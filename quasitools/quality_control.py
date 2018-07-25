@@ -277,7 +277,7 @@ class QualityControl():
 
             if filters.get(TRIMMING):
 
-                self.trim_read(read, filters)
+                read = self.trim_read(read, filters)
 
             key = self.passes_filters(read, filters)
 
