@@ -2,6 +2,14 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.4.2 ##
+
+2018-07-25
+
+### Changed ###
+
+- Fix bug in quality_control where iteratively trimmed reads are not used when printing output file.
+
 ## 0.4.1 ##
 
 2018-07-24
