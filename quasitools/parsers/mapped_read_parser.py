@@ -20,8 +20,7 @@ specific language governing permissions and limitations under the License.
 """
 
 import pysam
-import Bio
-from Bio import SeqIO
+import Bio.SeqIO
 
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
@@ -273,7 +272,7 @@ def parse_haplotypes_from_fasta(reads_location, consensus):
 
     haplotypes = {}  # (sequence, Haplotype)
 
-    reads = SeqIO.parse(reads_location, "fasta")
+    reads = Bio.SeqIO.parse(reads_location, "fasta")
 
     for read in reads:
 
