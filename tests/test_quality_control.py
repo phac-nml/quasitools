@@ -123,6 +123,41 @@ class TestQualityControl:
 
         assert self.quality_control.get_mean_score(seq_record) == 50
 
+    def test_filter_and_trim_reads(self, filters):
+        """
+        test_filter_and_trim_reads - Checks that the reads have been trimmed
+        until all filters pass or read falls below length cutoff and that this
+        result is reflected in the filtered read saved to file by filter reads
+
+        INPUT:
+            [dict] [filters] # provided with fixture
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
+        seq = Seq("GATC")
+        seq_record = SeqRecord(seq)
+        seq_record.id = "first"
+        seq_record.letter_annotations["phred_quality"] = [30, 30, 3, 1]
+
+        filters[MASKING] == False
+        filters[TRIMMING] = True
+
+        INPUT_DIR = TEST_PATH + "/data/sample_filter.fastq"
+
+        Bio.SeqIO.write(seq_record, INPUT_DIR, "fastq")
+
+        self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
+
+        # there should be only one object in the seq_rec_obj iterable
+        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+        recs = list(seq_rec_obj)
+        assert len(recs) == 1
+        assert len(recs[0].seq) == 2
+
     def test_trim_reads(self, filters):
         """
         test_trim_reads - Checks that the reads have been trimmed until all
@@ -147,6 +182,47 @@ class TestQualityControl:
         trimmed_read = self.quality_control.trim_read(seq_record, filters)
 
         assert len(trimmed_read.seq) == 2
+
+    def test_filter_and_mask_reads(self, filters):
+        """
+        test_filter_and_mask_reads - Checks that all low coverage regions have
+        been masked with an N and that this result is
+        reflected in the filtered read saved to file by filter reads
+
+        INPUT:
+            [dict] [filters] # provided with fixture
+
+        RETURN:
+            [None]
+
+        POST:
+            [None]
+        """
+        seq = Seq("GATC")
+        seq_record = SeqRecord(seq)
+        seq_record.id = "first"
+        seq_record.letter_annotations["phred_quality"] = [30, 30, 3, 1]
+
+        filters[TRIMMING] = False
+        filters[MASKING] == True
+        filters[NS] = False
+        # we are not testing any other functions that will be called when
+        # score < MEAN_CUTOFF, only testing masking, so we set below filter val
+        # to 0
+        filters[MEAN_CUTOFF] = 0
+
+        INPUT_DIR = TEST_PATH + "/data/sample_mask.fastq"
+
+        Bio.SeqIO.write(seq_record, INPUT_DIR, "fastq")
+
+        self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
+
+        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+        recs = list(seq_rec_obj)
+        assert len(recs) == 1
+        # there should be only one object in the seq_rec_obj iterable
+        assert len(recs[0].seq) == 4
+        assert recs[0].seq[0:4] == 'GANN'
 
     def test_mask_reads(self, filters):
         """
@@ -264,7 +340,7 @@ class TestQualityControl:
         seq_record.letter_annotations["phred_quality"] = [29, 29, 31, 31]
         seq_record_list.append(seq_record)
 
-        INPUT_DIR = TEST_PATH+"/data/sample.fastq"
+        INPUT_DIR = TEST_PATH+"/data/sample_mean.fastq"
 
         Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
 
