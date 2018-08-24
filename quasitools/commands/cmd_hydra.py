@@ -175,5 +175,8 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
                                        consensus_pct=consensus_pct)
 
     patient_analyzer.filter_reads(quality_filters)
-    patient_analyzer.analyze_reads(fasta_id, variant_filters,
-                                   reporting_threshold, generate_consensus)
+    try:
+        patient_analyzer.analyze_reads(fasta_id, variant_filters,
+                                       reporting_threshold, generate_consensus)
+    except Exception as error:
+        raise click.UsageError(str(error))

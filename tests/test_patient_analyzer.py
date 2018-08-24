@@ -74,16 +74,6 @@ class TestPatientAnalyzer:
 
         assert os.path.isfile("%s/combined_reads.fastq" % OUTPUT_DIR)
 
-    def test_generate_bam(self):
-        assert not os.path.isfile("%s/align.bam" % OUTPUT_DIR)
-        fasta_id = os.path.basename(self.patient_analyzer.reads).split('.')[0]
-        self.patient_analyzer.generate_bam(fasta_id)
-
-        assert os.path.isfile("%s/align.bam" % OUTPUT_DIR)
-
-        if os.path.isfile("%s/align.bam" % OUTPUT_DIR):
-            os.remove("%s/align.bam" % OUTPUT_DIR)
-
     def test_filter_reads(self):
 
         # tests for filtering of reads without iterative trimming or masking
@@ -113,6 +103,16 @@ class TestPatientAnalyzer:
 
         # patient_analyzer.filter_reads calls quality_control.filter_reads
         # more tests for filtering reads can be found in test_quality_control
+
+    def test_generate_bam(self):
+        assert not os.path.isfile("%s/align.bam" % OUTPUT_DIR)
+        fasta_id = os.path.basename(self.patient_analyzer.reads).split('.')[0]
+        self.patient_analyzer.generate_bam(fasta_id)
+
+        assert os.path.isfile("%s/align.bam" % OUTPUT_DIR)
+
+        if os.path.isfile("%s/align.bam" % OUTPUT_DIR):
+            os.remove("%s/align.bam" % OUTPUT_DIR)
 
     def test_analyze_reads(self):
         quality_filters = defaultdict(dict)
