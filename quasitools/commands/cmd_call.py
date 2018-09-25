@@ -51,11 +51,6 @@ def ntvar(bam, reference, error_rate, output):
         # create MappedReadCollection object
         mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, bam))
 
-    mapped_read_collection_arr = []
-    for r in rs:
-        # create MappedReadCollection object
-        mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, bam))
-
     variants = NTVariantCollection.from_mapped_read_collections(
         error_rate, rs, *mapped_read_collection_arr)
 

@@ -17,6 +17,7 @@ specific language governing permissions and limitations under the License.
 """
 
 import os
+import subprocess
 from quasitools.parsers.genes_file_parser import parse_genes_file
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
@@ -88,7 +89,10 @@ class PatientAnalyzer():
         if not self.quiet:
             print("# Mapping reads...")
 
-        bam = self.generate_bam(fasta_id)
+        try:
+            bam = self.generate_bam(fasta_id)
+        except Exception as error:
+            raise(error)
 
         if not self.quiet:
             print("# Loading read mappings...")
@@ -190,6 +194,7 @@ class PatientAnalyzer():
             to generate a bam file """
 
         sorted_bam_fn = "%s/align.bam" % self.output_dir
+        log_fn = "%s/log.txt" % self.output_dir
         bowtietwo_bam_output = sorted_bam_fn[0:sorted_bam_fn.rindex(".")]
         bam_fn = "%s/tmp.bam" % self.output_dir
         sam_fn = "%s/tmp.sam" % self.output_dir
@@ -197,33 +202,63 @@ class PatientAnalyzer():
         # create the files
         bam_fh = open(bam_fn, "w+")
         sam_fh = open(sam_fn, "w+")
+        log_fh = open(log_fn, "w+")
+        log_fh.write("Log output:\n")
+        log_fh.close()
 
         bowtietwo_index = self.reference[0:self.reference.rindex(".")]
 
-        bowtietwo_cmd = (("bowtie2 --local --rdg '8,3' --rfg '8,3' "
-                          "--rg-id %s --ma 1 --mp '2,2' -S %s -x %s "
-                          "-U %s") % (fasta_id, sam_fn, bowtietwo_index,
-                                      self.filtered_reads_dir))
+        bowtietwo_cmd = ["bowtie2", "--local", "--rdg", '8,3', "--rfg", '8,3',
+                         "--rg-id", fasta_id, "--ma", "1", "--mp", '2,2', "-S",
+                         sam_fn, "-x", bowtietwo_index, "-U",
+                         self.filtered_reads_dir]
 
-        os.system(bowtietwo_cmd)
+        proc = subprocess.Popen(bowtietwo_cmd,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+
+        try:
+            self.process_tool_output(proc, log_fn, "bowtie2")
+        except Exception as error:
+            raise(error)
 
         # Convert sam output to bam output
-        sam_to_bam_cmd = "samtools view -bt %s.fai -o %s %s" % (self.reference,
-                                                                bam_fn, sam_fn)
+        sam_to_bam_cmd = ["samtools", "view", "-bt",
+                          ("%s.fai" % self.reference), "-o", bam_fn, sam_fn]
 
-        os.system(sam_to_bam_cmd)
+        proc = subprocess.Popen(sam_to_bam_cmd,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+
+        try:
+            self.process_tool_output(proc, log_fn, "samtools view")
+        except Exception as error:
+            raise(error)
 
         # Sort bam output
-        sort_bam_cmd = "samtools sort %s -T %s -o %s" % (bam_fn,
-                                                         bowtietwo_bam_output,
-                                                         sorted_bam_fn)
+        sort_bam_cmd = ["samtools", "sort", bam_fn, "-T", bowtietwo_bam_output,
+                        "-o", sorted_bam_fn]
 
-        os.system(sort_bam_cmd)
+        proc = subprocess.Popen(sort_bam_cmd,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+
+        try:
+            self.process_tool_output(proc, log_fn, "samtools sort")
+        except Exception as error:
+            raise(error)
 
         # Index bam output
-        index_bam_cmd = "samtools index %s" % sorted_bam_fn
+        index_bam_cmd = ["samtools", "index", sorted_bam_fn]
 
-        os.system(index_bam_cmd)
+        proc = subprocess.Popen(index_bam_cmd,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+
+        try:
+            self.process_tool_output(proc, log_fn, "samtools index")
+        except Exception as error:
+            raise(error)
 
         bam_fh.close()
         sam_fh.close()
@@ -232,6 +267,24 @@ class PatientAnalyzer():
         os.unlink(sam_fn)
 
         return sorted_bam_fn
+
+    def process_tool_output(self, proc, log_fn, name):
+        """Captures process output, printing it to a log file and
+           throwing an exception if an error has occured"""
+        output, error = proc.communicate()
+        if proc.returncode is not 0:
+            fd = open(log_fn, "a+")
+            fd.write("Error: %s returned the following output:"
+                     "\n%s" % (name, error))
+            fd.close()
+            raise Exception("%s returned the following output:"
+                            "\n%s" % (name, error))
+        else:
+            fd = open(log_fn, "a+")
+            fd.write("%s output: %s %s" % (name, output, error))
+            # printing stdout and stderr though bowtie2 currently will always
+            # output to stderr instead of stdout even if no error occurred
+            fd.close()
 
     def output_stats(self, mapped_read_collection_arr):
         self.amount_filtered = self.quality.get_amount_filtered()
