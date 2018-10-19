@@ -1,7 +1,7 @@
 """
-Copyright Government of Canada 2017
+Copyright Government of Canada 2017 - 2018
 
-Written by: Eric Enns, Cole Peters, Eric Chubaty, Camy Tran,
+Written by: Eric Enns, Cole Peters, Eric Chubaty, Camy Tran, and Matthew Fogel
             National Microbiology Laboratory, Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -40,7 +40,7 @@ def cli(ctx):
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('reference', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.option('-e', '--error_rate', default=0.01,
+@click.option('-e', '--error_rate', default=0.0021,
               help='estimated sequencing error rate.')
 @click.option('-o', '--output', type=click.File('w'))
 def ntvar(bam, reference, error_rate, output):
@@ -70,17 +70,19 @@ def ntvar(bam, reference, error_rate, output):
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('reference', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('variants', required=True,
-                type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('genes_file', required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('variants', required=False,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('mutation_db', required=False,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-f', '--min_freq', default=0.01,
               help='the minimum required frequency.')
+@click.option('-e', '--error_rate', default=0.0021,
+              help='estimated sequencing error rate.')
 @click.option('-o', '--output', type=click.File('w'))
-def aavar(bam, reference, variants, genes_file, min_freq,
-          mutation_db, output):
+def aavar(bam, reference, genes_file, variants, mutation_db,
+          min_freq, error_rate, output):
     rs = parse_references_from_fasta(reference)
 
     mapped_read_collection_arr = []
@@ -88,7 +90,15 @@ def aavar(bam, reference, variants, genes_file, min_freq,
         # Create a MappedReadCollection object
         mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, bam))
 
-    variants_obj = parse_nt_variants_from_vcf(variants, rs)
+    if variants:
+        variants_obj = parse_nt_variants_from_vcf(variants, rs)
+    else:
+        variants = NTVariantCollection.from_mapped_read_collections(
+            error_rate, rs, *mapped_read_collection_arr)
+        variants.filter('q30', 'QUAL<30', True)
+        variants.filter('ac5', 'AC<5', True)
+        variants.filter('dp100', 'DP<100', True)
+        variants_obj = variants
 
     # Mask the unconfident differences
     for mrc in mapped_read_collection_arr:
@@ -132,10 +142,12 @@ def aavar(bam, reference, variants, genes_file, min_freq,
 @click.argument('offset', required=True, type=float)
 @click.argument('genes_file', required=True, type=click.Path(exists=True,
                 file_okay=True, dir_okay=False))
-@click.option('-e', '--error_rate', default=0.01,
+@click.argument('variants', required=False,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.option('-e', '--error_rate', default=0.0021,
               help='estimated sequencing error rate.')
 @click.option('-o', '--output', type=click.File('w'))
-def codonvar(bam, reference, offset, genes_file, error_rate, output):
+def codonvar(bam, reference, offset, genes_file, variants, error_rate, output):
     rs = parse_references_from_fasta(reference)
     mapped_read_collection_arr = []
 
@@ -143,15 +155,19 @@ def codonvar(bam, reference, offset, genes_file, error_rate, output):
     for r in rs:
         mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, bam))
 
-    variants = NTVariantCollection.from_mapped_read_collections(
-        error_rate, rs, *mapped_read_collection_arr)
-    variants.filter('q30', 'QUAL<30', True)
-    variants.filter('ac5', 'AC<5', True)
-    variants.filter('dp100', 'DP<100', True)
+    if variants:
+        variants_obj = parse_nt_variants_from_vcf(variants, rs)
+    else:
+        variants = NTVariantCollection.from_mapped_read_collections(
+            error_rate, rs, *mapped_read_collection_arr)
+        variants.filter('q30', 'QUAL<30', True)
+        variants.filter('ac5', 'AC<5', True)
+        variants.filter('dp100', 'DP<100', True)
+        variants_obj = variants
 
     # Mask the unconfident differences
     for mrc in mapped_read_collection_arr:
-        mrc.mask_unconfident_differences(variants)
+        mrc.mask_unconfident_differences(variants_obj)
 
     # Parse the genes from the gene file
     genes = parse_genes_file(genes_file, rs[0].name)

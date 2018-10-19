@@ -85,7 +85,7 @@ class NTVariantCollection(VariantCollection):
                                                         'AF': event_frequency
                                                     })
 
-                            obj.variants[rid][pos+1][alt_allele] = variant_obj
+                        obj.variants[rid][pos+1][alt_allele] = variant_obj
 
                 for alt_allele, variant in obj.variants[rid][pos+1].items():
                     variant.qual = obj.__calculate_variant_qual(
