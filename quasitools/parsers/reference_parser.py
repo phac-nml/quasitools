@@ -35,7 +35,7 @@ def parse_references_from_fasta(fasta):
     handle = open(fasta)
 
     for header, seq in Bio.SeqIO.FastaIO.SimpleFastaParser(handle):
-        name = re.search("(\S+)", header).group(0)
+        name = re.search(r"(\S+)", header).group(0)
         references += (Reference(name, seq),)
 
     return references
