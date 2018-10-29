@@ -1,0 +1,9 @@
+site_name: quasitools
+
+theme: 'material'
+copyright: "Copyright Government of Canada 2017-2018"
+
+site_dir: 'public'
+
+nav:
+    - Home: index.md
