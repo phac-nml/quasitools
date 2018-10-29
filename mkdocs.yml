@@ -7,3 +7,8 @@ site_dir: 'public'
 
 nav:
     - Home: index.md
+    - Tools:
+        - complexity: complexity.md
+        - distance: distance.md
+        - quality: quality.md
+
