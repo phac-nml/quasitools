@@ -10,14 +10,14 @@ before_script:
 
 tests:2.7:
   script:
-    - conda create -q -n test-environment python=2.7 samtools=1.3 bowtie2 virtualenv
+    - conda create -q -n test-environment python=2.7 samtools=1.3 bowtie2 virtualenv openssl=1.0.2p-h14c3975_0
     - conda install -c conda-forge tox
     - chmod +x /root/miniconda3/bin/tox
     - source activate test-environment
     - tox -r -e py27
 tests:3.6:
   script:
-    - conda create -q -n test-environment python=3.6 samtools=1.3 bowtie2 virtualenv
+    - conda create -q -n test-environment python=3.6 samtools=1.3 bowtie2 virtualenv openssl=1.0.2p-h14c3975_0
     - conda install -c conda-forge tox
     - chmod +x /root/miniconda3/bin/tox
     - source activate test-environment
