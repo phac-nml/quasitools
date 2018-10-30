@@ -1,4 +1,4 @@
-# Complexity
+# complexity
 
 Reports various measures of viral quasispecies complexity. The input data is a single, aligned FASTA file, representing a genomic region from the mutant spectrum of interest.
 
