@@ -1,16 +1,15 @@
-# dnds
+# dNdS
 
-Calculate the dn/ds value for each region in a bed file.
+Determines the dNdS ratio for each codon variant in a supplied csv file (codon variants).
 
-## Basic Usage
+## Basic Usage 
 
+```
+quasitools dnds [options] <codon variants csv> <reference file> <offset>
+```
 
+Options:  
 
-## Output
-
-
-
-## Applications
-
+* -o, --output [FILENAME]
 
 

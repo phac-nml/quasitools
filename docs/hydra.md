@@ -1,16 +1,8 @@
-# hydra
+# HyDRA
 
-Identify HIV Drug Resistance in a next generation sequencing dataset.
+Identify HIV drug resistance in a next generation sequencing dataset.  
 
-## Basic Usage
+## Basic Usage  
 
-
-
-## Output
-
-
-
-## Applications
-
-
-
+```
+```
