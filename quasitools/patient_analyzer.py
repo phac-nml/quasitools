@@ -105,10 +105,11 @@ class PatientAnalyzer():
         for r in self.references:
             mrc = parse_mapped_reads_from_bam(r, bam)
             mapped_read_collection_arr.append(mrc)
-            if generate_consensus:
+            consensus_seq = mrc.to_consensus(self.consensus_pct)
+            if generate_consensus and len(consensus_seq) > 0:
                 cons_seq_file.write('>{0}_{1}_{2}\n{3}'.format(
                     fasta_id, reporting_threshold, r.name,
-                    mrc.to_consensus(self.consensus_pct)))
+                    consensus_seq))
 
         if generate_consensus:
             cons_seq_file.close()
