@@ -43,7 +43,7 @@ from quasitools.quality_control import NS
               help='Iteratively trim reads based on filter values if enabled. '
                    'Remove reads which do not meet filter values if disabled.')
 @click.option('-mr', '--mask_reads', is_flag=True,
-              help='Mask low coverage regions in reads if below minimum read'
+              help='Mask low quality regions in reads if below minimum read'
               ' quality. This option and --ns cannot be both enabled '
               'simultaneously.')
 @click.option('-rq', '--min_read_qual', default=30, help='Minimum quality for '
