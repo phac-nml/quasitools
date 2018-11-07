@@ -6,7 +6,10 @@ quasitools
 Quasitools is a collection of tools for analysing viral quasispecies data. The following tools are currently available in quasitools:
 
 * **aa_coverage**: builds an amino acid consensus and returns its coverage
-* **call**: call nucleotide variants from a BAM file
+* **call**: 
+	* **ntvar**: call nucleotide variants from a BAM file
+	* **aavar**: call amino acid variants from a BAM file
+	* **codonvar**: call codon variants from a BAM file
 * **complexity**: reports the complexity of a quasispecies using several measures
 * **consensus**: generate a consensus sequence from a BAM file
 * **distance**: measures the distance between quasispecies using angular cosine distance

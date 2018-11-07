@@ -1,6 +1,6 @@
 # Drug Resistance Mutations
 
-Generates a report detailing the drug resistant mutations found, above the reporting threshold (default: 1%).  
+Generates a report detailing the drug resistant mutations found.  
 
 ## Basic Usage
 
@@ -8,13 +8,24 @@ Generates a report detailing the drug resistant mutations found, above the repor
 quasitools drmutations [options] <BAM file> <reference file> <variants file> <genes file> <mutation db file>
 ```
 
-Options:  
+## Options  
 
-* -f, --min_freq [FLOAT]  
-The minimum required frequency. Default: 0.01.  
+```text
+-f, --min_freq FLOAT  
+```
 
-* -t, --reporting_threshold [INTEGER]  
+The minimum required frequency. Defaults to 0.01.  
+
+```text
+-t, --reporting_threshold INTEGER  
+```
+
 The minimum percentage required for an entry in the drug resistance report. Default: 1. 
 
-* -o, --output [FILENAME]  
+```text
+-o, --output FILENAME
+```
+
+This is used to direct from standard output to a file.
+
 
