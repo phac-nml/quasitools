@@ -8,9 +8,13 @@ Builds an amino acid census and returns its coverage.
 quasitools aacoverage [options] <BAM file> <reference file> <genes file>  
 ```
 
-Options:  
+## Options
 
-* -o, --output [FILENAME]
+### Output  
+
+```text
+-o, --output FILENAME
+```
 
 ## Output  
 
