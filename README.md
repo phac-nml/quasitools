@@ -5,8 +5,8 @@ quasitools
 
 Quasitools is a collection of tools for analysing viral quasispecies data. The following tools are currently available in quasitools:
 
-* **aa_coverage**: builds an amino acid consensus and returns its coverage
-* **call**: 
+* **aacoverage**: builds an amino acid consensus and returns its coverage
+* **call**: contains tools for identifying variants between a NGS dataset a fasta reference sequence 
 	* **ntvar**: call nucleotide variants from a BAM file
 	* **aavar**: call amino acid variants from a BAM file
 	* **codonvar**: call codon variants from a BAM file
