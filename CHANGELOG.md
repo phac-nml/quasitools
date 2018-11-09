@@ -2,6 +2,18 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.5.1 ##
+
+### Added ###
+
+- Use MkDocs for documentation
+
+### Changed ###  
+
+- Make VCF dependency optional in aavar and add optional VCF dependency in codonvar
+- Fix hydra consensus output: exclude header line if there are no sequence lines
+- Remove a deprecated regular expression sequence in reference_parser.py
+
 ## 0.5.0 ##
 
 2018-09-25
