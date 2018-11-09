@@ -2,6 +2,20 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.5.0 ##
+
+2018-09-25
+
+### Added ###
+
+Commands:
+
+- complexity: measures the complexity of a quasispecies
+
+### Changed ###
+
+- Improved read parsing, pileup generation, and related interal data structures.
+
 ## 0.4.2 ##
 
 2018-07-25

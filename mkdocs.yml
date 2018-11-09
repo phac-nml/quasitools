@@ -1,0 +1,23 @@
+site_name: quasitools
+
+theme: 'readthedocs'
+copyright: "Copyright Government of Canada 2017-2018"
+
+site_dir: 'public'
+
+nav:
+    - Home: index.md
+    - Requirements: requirements.md
+    - Installation: installation.md
+    - Tools:
+        - aacoverage: aacoverage.md
+        - call: call.md
+        - complexity: complexity.md
+        - consensus: consensus.md
+        - distance: distance.md
+        - dnds: dnds.md
+        - drmutations: drmutations.md
+        - hydra: hydra.md
+        - quality: quality.md
+    - Contact: contact.md
+    - Legal: legal.md
