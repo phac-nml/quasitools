@@ -112,15 +112,24 @@ def parse_pileup_from_bam(references, bam_location):
     for reference in references:
 
         coverage = samfile.count_coverage(
-            contig=reference.name, start=0, stop=len(reference.seq))
+            contig=reference.name, start=0, stop=len(reference.seq),
+            quality_threshold=0)
 
         for column in range(len(coverage[0])):
 
-            dictionary = {
-                "A": coverage[A][column],
-                "C": coverage[C][column],
-                "G": coverage[G][column],
-                "T": coverage[T][column]}
+            dictionary = {}
+
+            if coverage[A][column] > 0:
+                dictionary["A"] = coverage[A][column]
+
+            if coverage[C][column] > 0:
+                dictionary["C"] = coverage[C][column]
+
+            if coverage[G][column] > 0:
+                dictionary["G"] = coverage[G][column]
+
+            if coverage[T][column] > 0:
+                dictionary["T"] = coverage[T][column]
 
             pileup.append(dictionary)
 
