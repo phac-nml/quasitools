@@ -100,23 +100,36 @@ def parse_pileup_from_bam(references, bam_location):
 
     """
 
+    # PySam bases:
+    A = 0
+    C = 1
+    G = 2
+    T = 3
+
     pileup = []
     samfile = pysam.AlignmentFile(bam_location, "rb")
 
     for reference in references:
 
-        for column in samfile.pileup(reference=reference.name):
+        coverage = samfile.count_coverage(
+            contig=reference.name, start=0, stop=len(reference.seq),
+            quality_threshold=0)
+
+        for column in range(len(coverage[0])):
 
             dictionary = {}
 
-            for read in column.pileups:
+            if coverage[A][column] > 0:
+                dictionary["A"] = coverage[A][column]
 
-                if not read.is_del and not read.is_refskip:
-                    # query position is None if is_del or is_refskip is set.
+            if coverage[C][column] > 0:
+                dictionary["C"] = coverage[C][column]
 
-                    base = read.alignment.query_sequence[read.query_position]
+            if coverage[G][column] > 0:
+                dictionary["G"] = coverage[G][column]
 
-                    dictionary[base] = dictionary.get(base, 0) + 1
+            if coverage[T][column] > 0:
+                dictionary["T"] = coverage[T][column]
 
             pileup.append(dictionary)
 
