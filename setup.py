@@ -17,7 +17,7 @@ specific language governing permissions and limitations under the License.
 
 from setuptools import find_packages, setup
 
-dependencies = ['biopython', 'click', 'numpy', 'pysam', 'scipy']
+dependencies = ['biopython', 'click', 'numpy', 'pysam', 'scipy', 'PyAAVF']
 
 setup(
     name='quasitools',

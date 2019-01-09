@@ -1,8 +1,8 @@
 # HyDRA
 
-Identify HIV drug resistance in a next generation sequencing dataset.  
+Identify HIV drug resistance in a next generation sequencing dataset.
 
-## Basic Usage  
+## Basic Usage
 
 ```
 quasitools hydra [OPTIONS] <FORWARD READS> [REVERSE READS]
@@ -46,7 +46,7 @@ Generate a mixed base consensus sequence.
 -cp, --consensus_pct INTEGER
 ```
 
-The minimum percentage a base needs to be incorporated into the consensus sequence. This must be used with the `-gc/--generate_consensus` flag turned on.  
+The minimum percentage a base needs to be incorporated into the consensus sequence. This must be used with the `-gc/--generate_consensus` flag turned on.
 
 ### Quiet
 
@@ -172,6 +172,6 @@ The output directory location will default to the current directory and will be 
 * dr_report.csv
 * filtered.fastq
 * hydra.vcf
-* mutation_report.hmcf
+* mutation_report.aavf
 * stats.txt
 

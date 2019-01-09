@@ -139,7 +139,7 @@ class TestPatientAnalyzer:
         assert os.path.isfile("%s/coverage_file.csv" % OUTPUT_DIR)
         assert os.path.isfile("%s/dr_report.csv" % OUTPUT_DIR)
         assert os.path.isfile("%s/hydra.vcf" % OUTPUT_DIR)
-        assert os.path.isfile("%s/mutation_report.hmcf" % OUTPUT_DIR)
+        assert os.path.isfile("%s/mutation_report.aavf" % OUTPUT_DIR)
         assert os.path.isfile("%s/stats.txt" % OUTPUT_DIR)
 
         assert not os.path.isfile("%s/tmp.bam" % OUTPUT_DIR)

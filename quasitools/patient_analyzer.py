@@ -18,6 +18,7 @@ specific language governing permissions and limitations under the License.
 
 import os
 import subprocess
+import PyAAVF.parser as parser
 from quasitools.parsers.genes_file_parser import parse_genes_file
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
@@ -160,7 +161,7 @@ class PatientAnalyzer():
         if not self.quiet:
             print("# Finding amino acid mutations...")
 
-        # Create AAVar collection and print the hmcf file
+        # Create AAVar collection and print the aavf file
         aa_vars = AAVariantCollection.from_aacensus(aa_census)
 
         # Filter for mutant frequency
@@ -172,9 +173,20 @@ class PatientAnalyzer():
             mutation_db = MutationDB(self.mutation_db, self.genes)
             aa_vars.apply_mutation_db(mutation_db)
 
-        mut_report = open("%s/mutation_report.hmcf" % self.output_dir, "w+")
-        mut_report.write(aa_vars.to_hmcf_file(CONFIDENT))
+        aavf_obj = aa_vars.to_aavf_obj("hydra",
+                                       os.path.basename(self.reference),
+                                       CONFIDENT)
+        records = list(aavf_obj)
+
+        mut_report = open("%s/mutation_report.aavf" % self.output_dir, "w+")
+
+        writer = parser.Writer(mut_report, aavf_obj)
+
+        for record in records:
+            writer.write_record(record)
+
         mut_report.close()
+        writer.close()
 
         # cmd_drmutations
         if not self.quiet:

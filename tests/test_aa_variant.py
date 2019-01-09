@@ -19,6 +19,7 @@ import pytest
 import os
 import re
 import string
+import PyAAVF.parser as parser
 from quasitools.aa_census import AACensus, CONFIDENT
 from quasitools.aa_variant import AAVariantCollection
 from quasitools.nt_variant import NTVariantCollection
@@ -31,7 +32,7 @@ from quasitools.parsers.nt_variant_file_parser \
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 VARIANTS_FILE = TEST_PATH + "/data/output/nt_variants.vcf"
-VALID_AA_VARIANTS_HMCF = TEST_PATH + "/data/output/mutation_report.hmcf"
+VALID_AA_VARIANTS_AAVF = TEST_PATH + "/data/output/mutation_report.aavf"
 VALID_DR_MUTATIONS_CSV = TEST_PATH + "/data/output/dr_report.csv"
 
 
@@ -39,13 +40,13 @@ class TestAAVariant:
 
     @classmethod
     def setup(self):
-        reference = TEST_PATH + "/data/hxb2_pol.fas"
+        self.reference = TEST_PATH + "/data/hxb2_pol.fas"
         bam = TEST_PATH + "/data/align.bam"
         genes_file = TEST_PATH + "/data/hxb2_pol.bed"
         mutation_db = TEST_PATH + "/data/mutation_db.tsv"
         min_freq = 0.01
 
-        rs = parse_references_from_fasta(reference)
+        rs = parse_references_from_fasta(self.reference)
 
         mapped_read_collection_arr = []
         for r in rs:
@@ -69,7 +70,7 @@ class TestAAVariant:
             frames.add(genes[gene]['frame'])
 
         # Create an AACensus object
-        aa_census = AACensus(reference, mapped_read_collection_arr, genes,
+        aa_census = AACensus(self.reference, mapped_read_collection_arr, genes,
                              frames)
 
         # Find the AA mutations
@@ -97,24 +98,37 @@ class TestAAVariant:
             assert dr_mutations == collection
 
     def test_aa_variants(self):
+        aavf_path = TEST_PATH + "/data/output/temp.aavf"
+        aavf_out = open(aavf_path, "w")
 
         # Read from file and make sure there are no empty lines
-        with open(VALID_AA_VARIANTS_HMCF, "r") as input:
+        with open(VALID_AA_VARIANTS_AAVF, "r") as input:
             valid_variants = input.read()
 
         # Sort and filter so comparison order will be fine afterwards
         valid_variants_lines = sorted(filter(None, valid_variants.split("\n")))
 
         # Apply the filter to the collection
-        self.aa_collection.filter('mf0.01', 'freq<0.01', True)
+        self.aa_collection.filter('af0.01', 'freq<0.01', True)
 
         # Do the thing with the mutation_db
         self.aa_collection.apply_mutation_db(self.mutation_db)
 
-        aa_variants = self.aa_collection.to_hmcf_file(CONFIDENT)
+        aavf_obj = self.aa_collection.to_aavf_obj("test", [os.path.basename(self.reference)], CONFIDENT)
+        records = list(aavf_obj)
+
+        writer = parser.Writer(aavf_out, aavf_obj)
+
+        for record in records:
+            writer.write_record(record)
+
+        aavf_out.close()
+
+        with open(aavf_path, "r") as input:
+            aa_variants = input.read()
 
         # Make sure it's sorted and has no empty strings
-        aa_variants_lines = sorted(aa_variants.split("\n"))
+        aa_variants_lines = sorted(filter(None, aa_variants.split("\n")))
 
         # Check the length
         assert len(valid_variants_lines) == len(aa_variants_lines)
@@ -131,14 +145,19 @@ class TestAAVariant:
                 for token in aa_variants_tokens:
                     assert token in valid_variants_tokens
 
+        writer.close()
+        # remove temp test file
+
     def test_aa_variants_nodb(self):
         # Same as previous test but for no mutation db
+        aavf_path = TEST_PATH + "/data/output/temp.aavf"
+        aavf_out = open(aavf_path, "w")
 
         # Read from file and make sure there are no empty lines
-        with open(VALID_AA_VARIANTS_HMCF, "r") as input:
+        with open(VALID_AA_VARIANTS_AAVF, "r") as input:
             valid_variants = input.read()
 
-        valid_variants_lines = list(filter(None, valid_variants.split("\n")))
+        valid_variants_lines = sorted(filter(None, valid_variants.split("\n")))
 
         # Replace category and surveillance with "."s
         # Okay because comparisons only done on non "#" lines
@@ -151,14 +170,21 @@ class TestAAVariant:
                 x = x.replace(tokens[-1], "SRVL=.", 1)
                 valid_variants_lines[i] = x
 
-        # Sort so comparison order will be fine afterwards
-        valid_variants_lines.sort()
-
         # Apply the filter to the collection
-        self.aa_collection.filter('mf0.01', 'freq<0.01', True)
+        self.aa_collection.filter('af0.01', 'freq<0.01', True)
 
-        # Grab the hmcf format
-        aa_variants = self.aa_collection.to_hmcf_file(CONFIDENT)
+        aavf_obj = self.aa_collection.to_aavf_obj("test", [os.path.basename(self.reference)], CONFIDENT)
+        records = list(aavf_obj)
+
+        writer = parser.Writer(aavf_out, aavf_obj)
+
+        for record in records:
+            writer.write_record(record)
+
+        aavf_out.close()
+
+        with open(aavf_path, "r") as input:
+            aa_variants = input.read()
 
         # Make sure it's sorted and has no empty strings
         aa_variants_lines = sorted(filter(None, aa_variants.split("\n")))

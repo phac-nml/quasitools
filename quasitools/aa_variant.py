@@ -17,7 +17,8 @@ specific language governing permissions and limitations under the License.
 """
 
 import re
-from datetime import date
+import datetime
+from PyAAVF.model import AAVF, Record, Info, Filter
 from collections import defaultdict
 from Bio.Seq import Seq
 from quasitools.aa_census import CONFIDENT, UNCONFIDENT
@@ -39,22 +40,16 @@ class AAVariant(Variant):
         self.coverage = coverage
         self.census_ind = census_ind
 
-    def __info_to_str(self):
-        """Convert info dict to info string for hmcf entry."""
-        return "WC=%s;MC=%s;MCF=%s;CAT=%s;SRVL=%s" % (
-            self.info['WC'],
-            self.info['MC'],
-            self.info['MCF'],
-            self.info['CAT'],
-            self.info['SRVL']
-        )
+    def info_to_dict(self):
+        info_dict = {}
 
-    def to_hmcf_entry(self):
-        return "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%0.4f\t%s\t%s\n" % (
-            self.chrom, self.gene, self.id,
-            self.ref, self.pos, self.alt,
-            self.filter, self.freq, self.coverage, self.__info_to_str()
-        )
+        info_dict['RC'] = self.info['RC']
+        info_dict['AC'] = self.info['AC']
+        info_dict['ACF'] = self.info['ACF']
+        info_dict['CAT'] = self.info['CAT']
+        info_dict['SRVL'] = self.info['SRVL']
+
+        return info_dict
 
 
 class AAVariantCollection(VariantCollection):
@@ -77,7 +72,6 @@ class AAVariantCollection(VariantCollection):
 
         # Build up the Collection of AAVariants from many census
         for census_ind, census in enumerate(aa_census):
-
             # For each gene in this census
             for gene_key in census.genes:
                 gene = census.genes[gene_key]
@@ -117,23 +111,24 @@ class AAVariantCollection(VariantCollection):
 
                                 chrom = gene['chrom']
 
-                                # Find MC and MCF
-                                mc = ""
-                                mcf = ""
+                                # Find AC (Allele Count) and
+                                # ACF (Allele Count Frequency)
+                                ac = ""
+                                acf = ""
 
                                 for codon in census.amino_to_codons_at(
                                         frame, ref_codon_pos, aa, confidence
                                 ):
 
-                                    mc += "%s," % codon
+                                    ac += "%s," % codon
 
-                                    freq_mcf = census\
+                                    freq_acf = census\
                                         .codon_frequency_for_amino_at(
                                             frame, ref_codon_pos,
                                             aa, confidence, codon
                                         )
 
-                                    mcf += "%0.4f," % (float(freq_mcf) /
+                                    acf += "%0.4f," % (float(freq_acf) /
                                                        coverage)
 
                                 # Create AAVariant & slap it in the
@@ -151,11 +146,11 @@ class AAVariantCollection(VariantCollection):
                                                         gene['start'] // 3
                                                      ) + 1),
                                                      info={
-                                                         'WC': ref_codon_array[
+                                                         'RC': ref_codon_array[
                                                              ref_codon_pos
                                                          ].lower(),
-                                                         'MC': mc[:-1],
-                                                         'MCF': mcf[:-1],
+                                                         'AC': ac[:-1],
+                                                         'ACF': acf[:-1],
                                                          'CAT': ".",
                                                          'SRVL': "."
                                                      })
@@ -165,58 +160,57 @@ class AAVariantCollection(VariantCollection):
 
         return var_collect
 
-    def to_hmcf_file(self, confidence):
-        """Build a string representation of our AAVariant objects
-        (i.e. a hmcf file)."""
+    def to_aavf_obj(self, source_command, reference_filename, confidence):
+        metadata = {}
+        infos = {}
+        filters = {}
+        column_headers = ["CHROM", "GENE", "POS", "REF", "ALT", "FILTER",
+                          "ALT_FREQ", "COVERAGE", "INFO"]
+        record_list = []
 
-        # Init
-        d = date.today()
+        # Build metadata
+        metadata['fileformat'] = 'AAVFv1.0'
+        metadata['fileDate'] = datetime.date.today().strftime("%Y%m%d")
+        metadata['source'] = "quasitools:%s" % source_command
+        metadata['reference'] = reference_filename
 
-        # Header
-        report = "##fileformat=HMCFv2\n"
-        report += "##fileDate=%s\n" % (d.strftime("%Y%m%d"))
-        report += "##source=quasitools\n"
+        # Build infos
+        infos["RC"] = Info("RC", "1", "String", "Reference Codon",
+                           source_command, "1.0")
+        infos["AC"] = Info("AC", ".", "String", "Alternate Codon",
+                           source_command, "1.0")
+        infos["ACF"] = Info("ACF", ".", "Float", ("Alternate Codon Frequency,"
+                                                  "for each Alternate Codon,"
+                                                  "in the same order as"
+                                                  "listed."),
+                            source_command, "1.0")
+        infos["CAT"] = Info("CAT", ".", "String", "Drug Resistance Category",
+                            source_command, "1.0")
+        infos["SRVL"] = Info("SRVL", ".", "String",
+                             "Drug Resistance Surveillance",
+                             source_command, "1.0")
 
-        # Could have many reference files (aa_census)
-        for refs in self.references:
-            report += "##reference=%s\n" % (refs.ref_file)
+        # Build filters
+        filters["af0.01"] = Filter("af0.01", "Set if True; alt_freq<0.01")
 
-        info_line = "##INFO=<ID=%s,Number=%s,Type=%s,Description=\"%s\">\n"
-
-        report += info_line % ("WC", ".", "String", "WildType Codon")
-        report += info_line % ("MC", ".", "String", "Mutation Codon")
-        report += info_line % ("MCF", ".", "String", "Mutant Codon Frequency, "
-                               "for each Mutant Codon, in the same order as "
-                               "listed.")
-        report += info_line % ("CAT", ".", "String",
-                               "Drug Resistance Category")
-        report += info_line % ("SRVL", ".", "String",
-                               "Drug Resistance Surveillance")
-
-        filter_line = "##FILTER=<ID=%s,Description=\"Set if %s; %s\">\n"
-
-        for id, filter in self.filters.items():
-            report += filter_line % (id, filter['result'],
-                                     filter['expression'])
-
-        report += "#CHROM\tGENE\tTYPE\tWILDTYPE\tPOS\t" \
-            "MUTANT\tFILTER\tMUTANT_FREQ\tCOVERAGE\tINFO\n"
-
-        # Body
+        # Build record_list from self.variants
         for chrom in self.variants:
             for ref_codon_pos in self.variants[chrom]:
                 for aa in self.variants[chrom][ref_codon_pos][confidence]:
+                    variant = (self.variants[chrom][ref_codon_pos]
+                               [confidence][aa])
 
-                    # Ignore incomplete codons (ones with a gap)
                     if aa.lower() != "x":
-                        mutation = self.variants[chrom][
-                            ref_codon_pos][confidence][aa]
+                        curr_record = Record(variant.chrom, variant.gene,
+                                             variant.pos, variant.ref,
+                                             variant.alt, variant.filter,
+                                             "%0.4f" % variant.freq,
+                                             variant.coverage,
+                                             variant.info_to_dict())
 
-                        # Add this mutation to the report!
-                        report += mutation.to_hmcf_entry()
+                        record_list.append(curr_record)
 
-        # Return string of report without nl char at the end
-        return report[:-1]
+        return AAVF(metadata, infos, filters, column_headers, record_list)
 
     def report_dr_mutations(self, mutation_db, reporting_threshold):
         """Builds a report of all drug resistant amino acid mutations present
