@@ -74,7 +74,7 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
     # Create an AACensus object
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
-    # Create AAVar collection and print the hmcf file
+    # Create AAVar collection and print the aavf file
     aa_vars = AAVariantCollection.from_aacensus(aa_census)
 
     # Filter for mutant frequency

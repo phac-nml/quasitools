@@ -17,6 +17,8 @@ specific language governing permissions and limitations under the License.
 """
 
 import click
+import os
+import sys
 from quasitools.nt_variant import NTVariantCollection
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.parsers.reference_parser import parse_references_from_fasta
@@ -27,6 +29,7 @@ from quasitools.parsers.genes_file_parser import parse_genes_file
 from quasitools.parsers.nt_variant_file_parser \
     import parse_nt_variants_from_vcf
 from quasitools.codon_variant import CodonVariantCollection
+import PyAAVF.parser as parser
 
 
 @click.group(invoke_without_command=False)
@@ -116,7 +119,7 @@ def aavar(bam, reference, genes_file, variants, mutation_db,
     # Create an AACensus object
     aa_census = AACensus(reference, mapped_read_collection_arr, genes, frames)
 
-    # Create AAVar collection and print the hmcf file
+    # Create AAVar collection and print the aavf file
     aa_vars = AAVariantCollection.from_aacensus(aa_census)
 
     # Filter for mutant frequency
@@ -127,10 +130,22 @@ def aavar(bam, reference, genes_file, variants, mutation_db,
         mutation_db = MutationDB(mutation_db, genes)
         aa_vars.apply_mutation_db(mutation_db)
 
+    aavf_obj = aa_vars.to_aavf_obj("aavar", [os.path.basename(reference)],
+                                   CONFIDENT)
+    records = list(aavf_obj)
+
     if output:
-        output.write(aa_vars.to_hmcf_file(CONFIDENT))
+        writer = parser.Writer(output, aavf_obj)
     else:
-        click.echo(aa_vars.to_hmcf_file(CONFIDENT))
+        writer = parser.Writer(sys.stdout, aavf_obj)
+
+    for record in records:
+        writer.write_record(record)
+
+    if output:
+        output.close
+
+    writer.close()
 
 
 @cli.command('codonvar', short_help='Identify the number of '
