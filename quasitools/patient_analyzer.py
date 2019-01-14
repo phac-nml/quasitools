@@ -19,7 +19,7 @@ specific language governing permissions and limitations under the License.
 import os
 import subprocess
 import PyAAVF.parser as parser
-from quasitools.parsers.genes_file_parser import parse_genes_file
+from quasitools.parsers.genes_file_parser import parse_BED4_file
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
 from quasitools.nt_variant import NTVariantCollection
@@ -43,13 +43,13 @@ MIN_FREQ = 'min_freq'
 
 class PatientAnalyzer():
     def __init__(self, id, output_dir, reads, reference,
-                 genes_file, mutation_db, quiet, consensus_pct):
+                 BED4_file, mutation_db, quiet, consensus_pct):
         self.id = id
         self.output_dir = output_dir
         self.reads = reads
         self.reference = reference
         self.mutation_db = mutation_db
-        self.genes_file = genes_file
+        self.BED4_file = BED4_file
 
         self.quiet = quiet
         self.consensus_pct = consensus_pct
@@ -58,7 +58,7 @@ class PatientAnalyzer():
         self.determine_input_size()
 
         self.references = parse_references_from_fasta(self.reference)
-        self.genes = parse_genes_file(genes_file, self.references[0].name)
+        self.genes = parse_BED4_file(BED4_file, self.references[0].name)
 
         self.quality = QualityControl()
 

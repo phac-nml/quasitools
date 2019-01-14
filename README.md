@@ -1,5 +1,4 @@
-quasitools
-==========
+# Introduction
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)  [![Anaconda-Server Badge](https://anaconda.org/bioconda/quasitools/badges/installer/conda.svg)](https://anaconda.org/bioconda/quasitools)
 
@@ -18,30 +17,29 @@ Quasitools is a collection of tools for analysing viral quasispecies data. The f
 * **hydra**: identify HIV drug resistance mutations in an NGS dataset
 * **quality**: perform quality control on FASTQ reads
 
-## Requirements and Dependencies
+# Resources
 
-The Hydra pipeline requires:
+* __Website__: https://phac-nml.github.io/quasitools/
+* __Installation__: https://phac-nml.github.io/quasitools/installation/
 
-* pysam >= 0.8.1
-* SAMTools v1.3
-* Bowtie 2 v2.2.6
+# Release
 
-## Installtion
+__quasitools 0.5.2__
 
-### With [Conda](https://conda.io/docs/)
+This release improves the documentation and fixes a bug in quasitools distance that sometimes caused the software to crash.
 
-Install ``quasitools`` from [Bioconda](https://bioconda.github.io/) with [Conda](https://conda.io/docs/) ([Conda installation instructions](https://bioconda.github.io/#install-conda)):
+# Installtion
 
-```bash
-# setup Conda channels for Bioconda and Conda-Forge (https://bioconda.github.io/#set-up-channels)
-conda config --add channels defaults
-conda config --add channels conda-forge
-conda config --add channels bioconda
-# install quasitools
-conda install quasitools
-```
+It is strongly recommended you refer to the documentation for full installation instructions. quasitools may be installed on any 64-bit Linux system from [Bioconda](https://bioconda.github.io/) with [Conda](https://conda.io/docs/) ([installation instructions](https://bioconda.github.io/#install-conda)):
 
-## Legal
+1. Install [Bioconda](https://bioconda.github.io/)
+2. Install the "quasitools" Bioconda package (conda install quasitools)
+
+# Contact
+
+**Eric Enns**: eric.enns@canada.ca  
+
+# Legal
 
 Copyright Government of Canada 2017-2018
 
@@ -58,7 +56,4 @@ under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 
-Contact
-=======
 
-**Eric Enns**: eric.enns@canada.ca  

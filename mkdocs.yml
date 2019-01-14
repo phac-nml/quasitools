@@ -21,3 +21,6 @@ nav:
         - quality: quality.md
     - Contact: contact.md
     - Legal: legal.md
+
+extra_css:
+  - 'stylesheets/extra.css'
