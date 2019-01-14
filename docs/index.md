@@ -18,7 +18,7 @@ Quasitools is a collection of tools for analysing viral quasispecies data. The f
 
 __quasitools 0.6.0__
 
-This release improves the documentation and fixes a bug in quasitools distance that sometimes caused the software to crash.
+This release improves the documentation, integrates PyAAVF, and fixes a bug in quasitools distance that sometimes caused the software to crash.
 
 # Resources
 
