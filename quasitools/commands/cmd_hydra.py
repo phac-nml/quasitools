@@ -39,7 +39,7 @@ from quasitools.patient_analyzer import MIN_FREQ
 BASE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__),
                                          os.pardir, os.pardir, "data"))
 REFERENCE = os.path.join(BASE_PATH, "hxb2_pol.fas")
-GENES_FILE = os.path.join(BASE_PATH, "hxb2_pol.bed")
+BED4_FILE = os.path.join(BASE_PATH, "hxb2_pol.bed")
 MUTATION_DB = os.path.join(BASE_PATH, "mutation_db.tsv")
 
 
@@ -170,7 +170,7 @@ def cli(ctx, output_dir, forward, reverse, mutation_db, reporting_threshold,
     patient_analyzer = PatientAnalyzer(id=REFERENCE[REFERENCE.rfind('/')+1:],
                                        output_dir=output_dir,
                                        reads=reads, reference=REFERENCE,
-                                       genes_file=GENES_FILE,
+                                       BED4_file=BED4_FILE,
                                        mutation_db=mutation_db, quiet=quiet,
                                        consensus_pct=consensus_pct)
 

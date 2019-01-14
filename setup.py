@@ -21,7 +21,7 @@ dependencies = ['biopython', 'click', 'numpy', 'pysam', 'scipy', 'PyAAVF']
 
 setup(
     name='quasitools',
-    version='0.5.1',
+    version='0.5.2',
     url='https://github.com/phac-nml/quasitools.git',
     license='Apache License, Version 2.0',
     author='Eric Enns',

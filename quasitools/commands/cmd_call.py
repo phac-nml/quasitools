@@ -25,7 +25,7 @@ from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.aa_census import AACensus, CONFIDENT
 from quasitools.aa_variant import AAVariantCollection
 from quasitools.mutations import MutationDB
-from quasitools.parsers.genes_file_parser import parse_genes_file
+from quasitools.parsers.genes_file_parser import parse_BED4_file
 from quasitools.parsers.nt_variant_file_parser \
     import parse_nt_variants_from_vcf
 from quasitools.codon_variant import CodonVariantCollection
@@ -73,7 +73,7 @@ def ntvar(bam, reference, error_rate, output):
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('reference', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('genes_file', required=True,
+@click.argument('BED4_file', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('variants', required=False,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
@@ -84,7 +84,7 @@ def ntvar(bam, reference, error_rate, output):
 @click.option('-e', '--error_rate', default=0.0021,
               help='estimated sequencing error rate.')
 @click.option('-o', '--output', type=click.File('w'))
-def aavar(bam, reference, genes_file, variants, mutation_db,
+def aavar(bam, reference, BED4_file, variants, mutation_db,
           min_freq, error_rate, output):
     rs = parse_references_from_fasta(reference)
 
@@ -108,7 +108,7 @@ def aavar(bam, reference, genes_file, variants, mutation_db,
         mrc.mask_unconfident_differences(variants_obj)
 
     # Parse the genes from the gene file
-    genes = parse_genes_file(genes_file, rs[0].name)
+    genes = parse_BED4_file(BED4_file, rs[0].name)
 
     # Determine which frames our genes are in
     frames = set()
@@ -155,14 +155,14 @@ def aavar(bam, reference, genes_file, variants, mutation_db,
 @click.argument('reference', required=True, type=click.Path(exists=True,
                 file_okay=True, dir_okay=False))
 @click.argument('offset', required=True, type=float)
-@click.argument('genes_file', required=True, type=click.Path(exists=True,
+@click.argument('BED4_file', required=True, type=click.Path(exists=True,
                 file_okay=True, dir_okay=False))
 @click.argument('variants', required=False,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-e', '--error_rate', default=0.0021,
               help='estimated sequencing error rate.')
 @click.option('-o', '--output', type=click.File('w'))
-def codonvar(bam, reference, offset, genes_file, variants, error_rate, output):
+def codonvar(bam, reference, offset, BED4_file, variants, error_rate, output):
     rs = parse_references_from_fasta(reference)
     mapped_read_collection_arr = []
 
@@ -185,7 +185,7 @@ def codonvar(bam, reference, offset, genes_file, variants, error_rate, output):
         mrc.mask_unconfident_differences(variants_obj)
 
     # Parse the genes from the gene file
-    genes = parse_genes_file(genes_file, rs[0].name)
+    genes = parse_BED4_file(BED4_file, rs[0].name)
 
     # Determine which frames our genes are in
     frames = set()

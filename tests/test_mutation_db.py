@@ -18,7 +18,7 @@ specific language governing permissions and limitations under the License.
 import pytest
 import os
 from quasitools.mutations import MutationDB
-from quasitools.parsers.genes_file_parser import parse_genes_file
+from quasitools.parsers.genes_file_parser import parse_BED4_file
 
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -26,10 +26,10 @@ TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 class TestMutationDB:
     @classmethod
     def setup_class(self):
-        genes_file = TEST_PATH + "/data/hxb2_pol.bed"
+        BED4_file = TEST_PATH + "/data/hxb2_pol.bed"
         mutation_db_file = TEST_PATH + "/data/mutation_db.tsv"
 
-        genes = parse_genes_file(genes_file, "hxb2_pol")
+        genes = parse_BED4_file(BED4_file, "hxb2_pol")
 
         self.mutation_db = MutationDB(mutation_db_file, genes)
 

@@ -2,6 +2,14 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.5.2 ##
+
+### Changed ###
+
+- Made various changes to the documentation to improve clarity.
+- Fixed quasitools distance sometimes crashing because of uneven coverage.
+- Improved the execution time of quasitools distance.
+
 ## 0.5.1 ##
 
 ### Added ###

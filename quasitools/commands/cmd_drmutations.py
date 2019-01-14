@@ -23,7 +23,7 @@ from quasitools.aa_variant import AAVariantCollection
 from quasitools.mutations import MutationDB
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
-from quasitools.parsers.genes_file_parser import parse_genes_file
+from quasitools.parsers.genes_file_parser import parse_BED4_file
 from quasitools.parsers.nt_variant_file_parser \
     import parse_nt_variants_from_vcf
 
@@ -36,7 +36,7 @@ from quasitools.parsers.nt_variant_file_parser \
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('variants', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('genes_file', required=True,
+@click.argument('BED4_file', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('mutation_db', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
@@ -47,7 +47,7 @@ from quasitools.parsers.nt_variant_file_parser \
               'resistant report.')
 @click.option('-o', '--output', type=click.File('w'))
 @pass_context
-def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
+def cli(ctx, bam, reference, variants, BED4_file, min_freq, mutation_db,
         reporting_threshold, output):
     rs = parse_references_from_fasta(reference)
 
@@ -63,7 +63,7 @@ def cli(ctx, bam, reference, variants, genes_file, min_freq, mutation_db,
         mrc.mask_unconfident_differences(variants_obj)
 
     # Parse the genes from the gene file
-    genes = parse_genes_file(genes_file, rs[0].name)
+    genes = parse_BED4_file(BED4_file, rs[0].name)
 
     # Determine which frames our genes are in
     frames = set()

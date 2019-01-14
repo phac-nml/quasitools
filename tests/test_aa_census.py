@@ -19,7 +19,7 @@ import pytest
 import os
 from quasitools.aa_census import AACensus
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
-from quasitools.parsers.genes_file_parser import parse_genes_file
+from quasitools.parsers.genes_file_parser import parse_BED4_file
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 
@@ -31,7 +31,7 @@ class TestMappedRead:
     def setup_class(self):
         reference = TEST_PATH + "/data/hxb2_pol.fas"
         bam = TEST_PATH + "/data/align.bam"
-        genes_file = TEST_PATH + "/data/hxb2_pol.bed"
+        BED4_file = TEST_PATH + "/data/hxb2_pol.bed"
 
         rs = parse_references_from_fasta(reference)
 
@@ -41,7 +41,7 @@ class TestMappedRead:
             mapped_read_collection_arr.append(
                 parse_mapped_reads_from_bam(r, bam))
 
-        genes = parse_genes_file(genes_file, rs[0].name)
+        genes = parse_BED4_file(BED4_file, rs[0].name)
 
         # Determine which frames our genes are in
         self.frames = set()

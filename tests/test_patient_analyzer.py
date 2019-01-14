@@ -29,7 +29,7 @@ READS = TEST_PATH + "/data/reads_w_K103N.fastq"
 FORWARD = TEST_PATH + "/data/forward.fastq"
 REVERSE = TEST_PATH + "/data/reverse.fastq"
 REFERENCE = TEST_PATH + "/data/hxb2_pol.fas"
-GENES_FILE = TEST_PATH + "/data/hxb2_pol.bed"
+BED4_FILE = TEST_PATH + "/data/hxb2_pol.bed"
 MUTATION_DB = TEST_PATH + "/data/mutation_db.tsv"
 OUTPUT_DIR = TEST_PATH + "/test_patient_analyzer_output"
 FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
@@ -61,7 +61,7 @@ class TestPatientAnalyzer:
         self.patient_analyzer = PatientAnalyzer(id="test",reads=READS,
                                  reference=REFERENCE,
                                  output_dir=OUTPUT_DIR,
-                                 genes_file=GENES_FILE,
+                                 BED4_file=BED4_FILE,
                                  mutation_db=MUTATION_DB,
                                  quiet=False, consensus_pct=20)
 

@@ -25,7 +25,7 @@ from quasitools.parsers.mapped_read_parser import \
     parse_mapped_reads_from_bam
 from quasitools.parsers.reference_parser import \
     parse_references_from_fasta
-from quasitools.parsers.genes_file_parser import parse_genes_file
+from quasitools.parsers.genes_file_parser import parse_BED4_file
 
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -37,7 +37,7 @@ class TestMutantTypes:
     def setup(self):
         bam = TEST_PATH + "/data/align.bam"
         reference = TEST_PATH + "/data/hxb2_pol.fas"
-        genes_file = TEST_PATH + "/data/hxb2_pol.bed"
+        BED4_file = TEST_PATH + "/data/hxb2_pol.bed"
         error_rate = 0.0038
 
         rs = parse_references_from_fasta(reference)
@@ -59,7 +59,7 @@ class TestMutantTypes:
             mrc.mask_unconfident_differences(variants)
 
         # Parse the genes from the gene file
-        genes = parse_genes_file(genes_file, rs[0].name)
+        genes = parse_BED4_file(BED4_file, rs[0].name)
 
         # Determine which frames our genes are in
         frames = set()

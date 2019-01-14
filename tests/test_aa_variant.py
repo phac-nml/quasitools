@@ -25,7 +25,7 @@ from quasitools.aa_variant import AAVariantCollection
 from quasitools.nt_variant import NTVariantCollection
 from quasitools.mutations import MutationDB
 from quasitools.parsers.mapped_read_parser import parse_mapped_reads_from_bam
-from quasitools.parsers.genes_file_parser import parse_genes_file
+from quasitools.parsers.genes_file_parser import parse_BED4_file
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.nt_variant_file_parser \
     import parse_nt_variants_from_vcf
@@ -42,7 +42,7 @@ class TestAAVariant:
     def setup(self):
         self.reference = TEST_PATH + "/data/hxb2_pol.fas"
         bam = TEST_PATH + "/data/align.bam"
-        genes_file = TEST_PATH + "/data/hxb2_pol.bed"
+        BED4_file = TEST_PATH + "/data/hxb2_pol.bed"
         mutation_db = TEST_PATH + "/data/mutation_db.tsv"
         min_freq = 0.01
 
@@ -61,7 +61,7 @@ class TestAAVariant:
             mrc.mask_unconfident_differences(variants_obj)
 
         # Parse the genes from the gene file
-        genes = parse_genes_file(genes_file, rs[0].name)
+        genes = parse_BED4_file(BED4_file, rs[0].name)
 
         # Determine which frames our genes are in
         frames = set()
