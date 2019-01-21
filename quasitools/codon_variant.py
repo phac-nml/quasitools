@@ -16,6 +16,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
 
+import re
 from collections import defaultdict
 from quasitools.aa_census import CONFIDENT
 from quasitools.variant import Variant, VariantCollection
@@ -156,13 +157,25 @@ class CodonVariantCollection(VariantCollection):
             for gene_key in census.genes:
                 gene = census.genes[gene_key]
                 frame = gene['frame']
-                gene_start = int((gene['start'] - frame) / 3)
-                gene_end = int((gene['end'] - frame - 2) / 3)
+
+                # Find reference sequence for this frame
+                ref_seq = census.mapped_read_collections[0].reference.seq
+                ref_seq = ref_seq[
+                    frame:((len(ref_seq) - frame) -
+                           (len(ref_seq) - frame) % 3 + frame)
+                ]
+
+                # Turn sequence to amino acids
+                ref_aa = Seq(ref_seq).translate()
+
+                # Used for WC in info field for each variant
+                ref_codon_array = re.findall(".{3}", ref_seq)
+
+                gene_start = gene['start'] // 3
+                gene_end = gene['end'] // 3 - 2
 
                 for nt_pos in range(gene_start, gene_end):
-                    ref_seq = census.mapped_read_collections[0].reference.seq
-                    ref_codon = ref_seq[(nt_pos*3+frame):
-                                        (nt_pos*3+frame) + 3].lower()
+                    ref_codon = ref_codon_array[nt_pos]
 
                     for aa in census.aminos_at(frame, nt_pos, CONFIDENT):
                         frequency = census.amino_frequency_at(
@@ -171,7 +184,7 @@ class CodonVariantCollection(VariantCollection):
                             for codon in census.amino_to_codons_at(
                                                           frame, nt_pos,
                                                           aa, CONFIDENT):
-                                if codon != ref_codon:
+                                if codon != ref_codon.lower():
                                     mutation = CodonVariant.from_aacensus(
                                             gene_key,
                                             aa, codon,
