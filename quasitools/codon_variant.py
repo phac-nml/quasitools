@@ -58,7 +58,7 @@ class CodonVariant(Variant):
         )
 
     @classmethod
-    def from_aacensus(cls, gene_key, aa, codon, census, nt_pos):
+    def from_aacensus(cls, gene_key, aa, codon, census, ref_codon_pos):
         codon_permutations = [
             [[0]], [[0, 1], [1, 0]],
             [
@@ -72,10 +72,10 @@ class CodonVariant(Variant):
         frame = gene['frame']
         chrom = gene['chrom']
 
-        coverage = census.coverage_at(frame, nt_pos)
+        coverage = census.coverage_at(frame, ref_codon_pos)
         ref_seq = census.mapped_read_collections[0].reference.seq
-        ref_codon = ref_seq[(nt_pos*3+frame):
-                            (nt_pos*3+frame) + 3].lower()
+        ref_codon = ref_seq[(ref_codon_pos*3+frame):
+                            (ref_codon_pos*3+frame) + 3].lower()
         ref_aa = Seq(ref_codon).translate()[0]
 
         if aa == ref_aa:
@@ -115,15 +115,15 @@ class CodonVariant(Variant):
             coverage=coverage,
             mutant_freq=census.codon_frequency_for_amino_at(
                 frame,
-                nt_pos,
+                ref_codon_pos,
                 aa,
                 CONFIDENT,
                 codon)/float(coverage)*100.0,
-            pos=(nt_pos - (gene['start'] // 3) + 1),
+            pos=(ref_codon_pos - (gene['start'] // 3) + 1),
             nt_start_gene=gene['start'],
             nt_end_gene=gene['end'],
-            nt_start=nt_pos*3 + frame,
-            nt_end=nt_pos*3 + frame+2,
+            nt_start=ref_codon_pos*3 + frame,
+            nt_end=ref_codon_pos*3 + frame+2,
             ref_codon=ref_codon,
             mutant_codon=codon,
             ref_aa=ref_aa,
@@ -174,25 +174,25 @@ class CodonVariantCollection(VariantCollection):
                 gene_start = gene['start'] // 3
                 gene_end = gene['end'] // 3 - 2
 
-                for nt_pos in range(gene_start, gene_end):
-                    ref_codon = ref_codon_array[nt_pos]
+                for ref_codon_pos in range(gene_start, gene_end):
+                    ref_codon = ref_codon_array[ref_codon_pos]
 
-                    for aa in census.aminos_at(frame, nt_pos, CONFIDENT):
+                    for aa in census.aminos_at(frame, ref_codon_pos, CONFIDENT):
                         frequency = census.amino_frequency_at(
-                            frame, nt_pos, aa, CONFIDENT)
+                            frame, ref_codon_pos, aa, CONFIDENT)
                         if frequency >= 0.01:
                             for codon in census.amino_to_codons_at(
-                                                          frame, nt_pos,
+                                                          frame, ref_codon_pos,
                                                           aa, CONFIDENT):
                                 if codon != ref_codon.lower():
                                     mutation = CodonVariant.from_aacensus(
                                             gene_key,
                                             aa, codon,
                                             census,
-                                            nt_pos)
+                                            ref_codon_pos)
 
                                     var_collect.variants[gene_key][
-                                        (nt_pos*3 + frame)][
+                                        (ref_codon_pos*3 + frame)][
                                             codon] = mutation
         return var_collect
 
