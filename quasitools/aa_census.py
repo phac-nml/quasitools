@@ -55,20 +55,23 @@ class AACensus(object):
                     # Build up a base from our reference to apply our
                     # differences to (ignore insertions)
                     for pos in mapped_read.differences:
-                        if pos >= start and pos <= end:
-                            difference = (mapped_read.differences[pos])[:1]
+                        difference = (mapped_read.differences[pos])[:1]
 
-                            # If we have a difference at this position, (the
-                            # difference isn't equal to ".") apply it.
-                            if difference != '.':
-                                # If the difference is lower case, that means it
-                                # was filtered out and as such it is unconfident.
-                                if difference != difference.upper():
-                                    confidence[((pos - start) // 3)] = UNCONFIDENT
+                        # If we are within the region of read that contains
+                        # complete codons and we have a difference at this
+                        # position, (the difference isn't equal to ".") apply
+                        # it.
+                        if pos >= start and pos <= end and difference != '.':
 
-                                read_wo_ins = read_wo_ins[:(pos - start)] + \
-                                    difference.upper() + \
-                                    read_wo_ins[(pos - start + 1):]
+                            # If the difference is lower case, that means it
+                            # was filtered out during variant calling
+                            # and as such it is unconfident.
+                            if difference != difference.upper():
+                                confidence[((pos - start) // 3)] = UNCONFIDENT
+
+                            read_wo_ins = read_wo_ins[:(pos - start)] + \
+                                difference.upper() + \
+                                read_wo_ins[(pos - start + 1):]
 
                     # Translate the read
                     read_wo_ins = \

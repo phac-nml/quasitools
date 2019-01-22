@@ -165,9 +165,6 @@ class CodonVariantCollection(VariantCollection):
                            (len(ref_seq) - frame) % 3 + frame)
                 ]
 
-                # Turn sequence to amino acids
-                ref_aa = Seq(ref_seq).translate()
-
                 # Used for WC in info field for each variant
                 ref_codon_array = re.findall(".{3}", ref_seq)
 
@@ -177,7 +174,8 @@ class CodonVariantCollection(VariantCollection):
                 for ref_codon_pos in range(gene_start, gene_end):
                     ref_codon = ref_codon_array[ref_codon_pos]
 
-                    for aa in census.aminos_at(frame, ref_codon_pos, CONFIDENT):
+                    for aa in census.aminos_at(frame, ref_codon_pos,
+                                               CONFIDENT):
                         frequency = census.amino_frequency_at(
                             frame, ref_codon_pos, aa, CONFIDENT)
                         if frequency >= 0.01:
