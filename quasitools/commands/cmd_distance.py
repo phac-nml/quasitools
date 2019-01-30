@@ -174,7 +174,7 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
     modified = modify_pileups(ctx, normalize, startpos, endpos, no_coverage,
                               pileups)
 
-    if (no_coverage is not 'keep_no_coverage') and (len(modified) == 0):
+    if (no_coverage != 'keep_no_coverage') and (len(modified) == 0):
         raise click.UsageError("Entire pileup was truncated due to " +
                                "lack of coverage. Halting program")
 
@@ -236,13 +236,13 @@ def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
 
     old_length = pileups.get_pileup_length()
 
-    if no_coverage is not 'keep_no_coverage':
-        if no_coverage is 'truncate':
+    if no_coverage != 'keep_no_coverage':
+        if no_coverage == 'truncate':
             pileups.truncate_output()
             click.echo("Truncating positions with no coverage that " +
                        "are contiguous with the start or end " +
                        "position of the pileup only.")
-        elif no_coverage is 'remove_no_coverage':
+        elif no_coverage == 'remove_no_coverage':
             pileups.remove_no_coverage()
             click.echo("Truncating all positions with no coverage.")
 

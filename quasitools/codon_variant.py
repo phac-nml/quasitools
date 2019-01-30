@@ -171,16 +171,16 @@ class CodonVariantCollection(VariantCollection):
                             for codon in census.amino_to_codons_at(
                                                           frame, nt_pos,
                                                           aa, CONFIDENT):
-                                    if codon != ref_codon:
-                                        mutation = CodonVariant.from_aacensus(
-                                                gene_key,
-                                                aa, codon,
-                                                census,
-                                                nt_pos)
+                                if codon != ref_codon:
+                                    mutation = CodonVariant.from_aacensus(
+                                            gene_key,
+                                            aa, codon,
+                                            census,
+                                            nt_pos)
 
-                                        var_collect.variants[gene_key][
-                                            (nt_pos*3 + frame)][
-                                                codon] = mutation
+                                    var_collect.variants[gene_key][
+                                        (nt_pos*3 + frame)][
+                                            codon] = mutation
         return var_collect
 
     def to_csv_file(self, offset):

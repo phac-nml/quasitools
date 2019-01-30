@@ -285,7 +285,7 @@ class PatientAnalyzer():
         """Captures process output, printing it to a log file and
            throwing an exception if an error has occured"""
         output, error = proc.communicate()
-        if proc.returncode is not 0:
+        if proc.returncode != 0:
             fd = open(log_fn, "a+")
             fd.write("Error: %s returned the following output:"
                      "\n%s" % (name, error))
