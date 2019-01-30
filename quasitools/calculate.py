@@ -469,8 +469,7 @@ def hill_number(H, P, Q):
 
             number += math.pow(P[i], Q)
 
-        number = math.pow(number, (1 / (1 - Q)))
-
+        number = math.pow(number, (1.0 /float(1.0 - Q)))
         return number
 
 

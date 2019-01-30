@@ -199,7 +199,7 @@ def calculate_distance(haplotype1, haplotype2):
 
     hamming_distance = \
         calculate.hamming_distance(haplotype1.sequence, haplotype2.sequence)
-    genetic_distance = hamming_distance / len(haplotype1.sequence)
+    genetic_distance = float(hamming_distance) / float( len(haplotype1.sequence))
 
     return genetic_distance
 
