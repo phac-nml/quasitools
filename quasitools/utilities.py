@@ -60,7 +60,7 @@ def pairwise_alignment_to_differences(pad_ref, pad_query, ref_start):
 
     index = -1
     for i, c in enumerate(pad_ref):
-        if c is '-':
+        if c == '-':
             if ref_start + index not in differences.keys():
                 differences[ref_start + index] = '.'
             differences[ref_start + index] += pad_query[i]
