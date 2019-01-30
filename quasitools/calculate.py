@@ -471,9 +471,7 @@ def hill_number(H, P, Q):
 
         number = math.pow(number, (1.0 / (1.0 - Q)))
 
-
         return number
-
 
 def FAD(H, D):
     """
