@@ -23,6 +23,7 @@ from quasitools.parsers.genes_file_parser import parse_BED4_file
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 
+
 class TestMutationDB:
     @classmethod
     def setup_class(self):

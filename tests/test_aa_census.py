@@ -26,6 +26,7 @@ from quasitools.parsers.reference_parser import parse_references_from_fasta
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 VALID_COVERAGE_CSV = TEST_PATH + "/data/output/coverage_file.csv"
 
+
 class TestMappedRead:
     @classmethod
     def setup_class(self):

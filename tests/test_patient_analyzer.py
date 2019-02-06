@@ -1,3 +1,16 @@
+from quasitools.patient_analyzer import MIN_FREQ
+from quasitools.patient_analyzer import MIN_DP
+from quasitools.patient_analyzer import MIN_AC
+from quasitools.patient_analyzer import MIN_VARIANT_QUAL
+from quasitools.patient_analyzer import ERROR_RATE
+from quasitools.quality_control import NS
+from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.quality_control import MEDIAN_CUTOFF
+from quasitools.quality_control import LENGTH_CUTOFF
+from quasitools.quality_control import MIN_READ_QUAL
+from quasitools.quality_control import MASK_CHARACTER
+from quasitools.quality_control import MASKING
+from quasitools.quality_control import TRIMMING
 """
 Copyright Government of Canada 2017 - 2018
 
@@ -34,37 +47,24 @@ MUTATION_DB = TEST_PATH + "/data/mutation_db.tsv"
 OUTPUT_DIR = TEST_PATH + "/test_patient_analyzer_output"
 FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
 
-from quasitools.quality_control import TRIMMING
 
 # used for masking
-from quasitools.quality_control import MASKING
-from quasitools.quality_control import MASK_CHARACTER
-from quasitools.quality_control import MIN_READ_QUAL
 
 # used in quality_control.passes_filters
-from quasitools.quality_control import LENGTH_CUTOFF
-from quasitools.quality_control import MEDIAN_CUTOFF
-from quasitools.quality_control import MEAN_CUTOFF
-from quasitools.quality_control import NS
 
 # used in patient_analyzer
-from quasitools.patient_analyzer import ERROR_RATE
-from quasitools.patient_analyzer import MIN_VARIANT_QUAL
-from quasitools.patient_analyzer import MIN_AC
-from quasitools.patient_analyzer import MIN_DP
-from quasitools.patient_analyzer import MIN_FREQ
+
 
 class TestPatientAnalyzer:
     @classmethod
     def setup_class(self):
         # Test defaults
-        self.patient_analyzer = PatientAnalyzer(id="test",reads=READS,
-                                 reference=REFERENCE,
-                                 output_dir=OUTPUT_DIR,
-                                 BED4_file=BED4_FILE,
-                                 mutation_db=MUTATION_DB,
-                                 quiet=False, consensus_pct=20)
-
+        self.patient_analyzer = PatientAnalyzer(id="test", reads=READS,
+                                                reference=REFERENCE,
+                                                output_dir=OUTPUT_DIR,
+                                                BED4_file=BED4_FILE,
+                                                mutation_db=MUTATION_DB,
+                                                quiet=False, consensus_pct=20)
 
     def test_combine_reads(self):
         # Combine the fwd and reverse into one file
@@ -88,7 +88,7 @@ class TestPatientAnalyzer:
 
         status = self.patient_analyzer.filter_reads(quality_filters)
 
-        assert status # assert that status is true (filtering has occured)
+        assert status  # assert that status is true (filtering has occured)
 
         seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
 

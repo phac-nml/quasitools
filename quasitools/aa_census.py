@@ -95,11 +95,11 @@ class AACensus(object):
                         if codon.find("-") == -1:
                             self.positional_freq[
                                 (frame, (start_aa + i), aa_confidence)
-                                ][aa][codon] += 1
+                            ][aa][codon] += 1
                         else:
                             self.positional_freq[
                                 (frame, (start_aa + i), UNCONFIDENT)
-                                ]['X'][codon] += 1
+                            ]['X'][codon] += 1
 
     def aminos_at(self, frame, position, confidence):
         """Returns a list of all the amino acids at the given position"""

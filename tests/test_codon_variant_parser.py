@@ -25,6 +25,7 @@ from quasitools.codon_variant import CodonVariant, CodonVariantCollection
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 
+
 class TestCodonVariantParser:
     def test_valid_csv_file(self):
         """Tests to make sure that a valid codon variant csv file is properly
@@ -38,22 +39,22 @@ class TestCodonVariantParser:
 
         for i in range(0, 30):
             variant = CodonVariant(
-                    chrom="hxb2_pol",
-                    pos=i,
-                    gene="gag",
-                    nt_start_gene=1309+i,
-                    nt_end_gene=2841+i,
-                    nt_start=2077+i,
-                    nt_end=2079+i,
-                    ref_codon="ata",
-                    mutant_codon="aAa",
-                    ref_aa="I",
-                    mutant_aa="K",
-                    coverage=563+i,
-                    mutant_freq=1.60+i,
-                    mutant_type="S",
-                    ns_count=1.0000,
-                    s_count=1.5000)
+                chrom="hxb2_pol",
+                pos=i,
+                gene="gag",
+                nt_start_gene=1309+i,
+                nt_end_gene=2841+i,
+                nt_start=2077+i,
+                nt_end=2079+i,
+                ref_codon="ata",
+                mutant_codon="aAa",
+                ref_aa="I",
+                mutant_aa="K",
+                coverage=563+i,
+                mutant_freq=1.60+i,
+                mutant_type="S",
+                ns_count=1.0000,
+                s_count=1.5000)
 
             pos = int(variant.nt_start)-int(variant.nt_start_gene)
             var_obj.variants["gag"][pos]["aAa"] = variant
@@ -62,9 +63,9 @@ class TestCodonVariantParser:
 
         with open(valid_csv, "w+") as f:
             f.write("#gene,nt position (gene),nt start position,"
-                "nt end position,ref codon,mutant codon,ref AA,mutant AA,"
-                "coverage,mutant frequency,mutant type,NS count,S count")
-            
+                    "nt end position,ref codon,mutant codon,ref AA,mutant AA,"
+                    "coverage,mutant frequency,mutant type,NS count,S count")
+
             for gene in var_obj.variants:
                 for pos in var_obj.variants[gene]:
                     for codon in var_obj.variants[gene][pos]:
@@ -76,7 +77,6 @@ class TestCodonVariantParser:
                             variant.mutant_codon, variant.ref_aa, variant.mutant_aa,
                             variant.coverage, variant.mutant_freq, variant.mutant_type,
                             variant.ns_count, variant.s_count))
-
 
         parsed_codon_variants = parse_codon_variants(valid_csv, rs)
 
@@ -102,4 +102,3 @@ class TestCodonVariantParser:
                     assert parsed_variant.s_count == variant.s_count
 
         os.remove(valid_csv)
-

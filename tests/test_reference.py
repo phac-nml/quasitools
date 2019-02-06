@@ -18,10 +18,11 @@ specific language governing permissions and limitations under the License.
 import pytest
 from quasitools.reference import Reference
 
+
 class TestReference:
     @classmethod
     def setup_class(self):
         self.reference = Reference('gattaca', 'gattaca')
 
     def test_sub_seq(self):
-        assert self.reference.sub_seq(1,5) == 'attac'
+        assert self.reference.sub_seq(1, 5) == 'attac'

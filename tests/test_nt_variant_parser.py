@@ -26,6 +26,7 @@ from quasitools.nt_variant import NTVariant, NTVariantCollection
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 
+
 class TestNtVariantParser:
     def test_valid_vcf_file(self):
         """Tests to ensure that valid vcf files are parsed properly."""
@@ -39,26 +40,27 @@ class TestNtVariantParser:
         mapped_read_collection_arr = []
         for r in rs:
             # Create a MappedReadCollection object
-            mapped_read_collection_arr.append(parse_mapped_reads_from_bam(r, bam))
+            mapped_read_collection_arr.append(
+                parse_mapped_reads_from_bam(r, bam))
 
         variants_obj = NTVariantCollection(rs)
-        
+
         for i in range(0, 20):
             variant = NTVariant(chrom="hxb2_pol",
-                                       pos=i,
-                                       id=".",
-                                       ref='a',
-                                       alt='t',
-                                       qual="50",
-                                       filter="PASS",
-                                       info={"DP": "300",
-                                             "AC": "1",
-                                             "AF": "0.0025"}
-                                       )
+                                pos=i,
+                                id=".",
+                                ref='a',
+                                alt='t',
+                                qual="50",
+                                filter="PASS",
+                                info={"DP": "300",
+                                      "AC": "1",
+                                      "AF": "0.0025"}
+                                )
 
             variants_obj.variants["hxb2_pol"][i]['t'] = variant
 
-        #Create a valid vcf file
+        # Create a valid vcf file
         valid_vcf_file = TEST_PATH + "/data/valid_vcf_file.vcf"
 
         with open(valid_vcf_file, "w+") as f:
@@ -82,7 +84,7 @@ class TestNtVariantParser:
                             variant.chrom, int(variant.pos),
                             variant.id, variant.ref,
                             variant.alt, variant.qual,
-                            variant.filter) )
+                            variant.filter))
                         f.write("\tDP=%i;AC=%i;AF=%0.4f" % (int(variant.info["DP"]),
                                                             int(variant.info["AC"]),
                                                             float(variant.info["AF"])))

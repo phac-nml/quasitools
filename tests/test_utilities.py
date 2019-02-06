@@ -20,11 +20,12 @@ from quasitools.utilities import *
 from quasitools.reference import Reference
 from pysam import AlignedSegment
 
+
 def test_sam_alignment_to_padded_alignment():
     alignment = AlignedSegment()
     alignment.reference_start = 0
     alignment.query_sequence = 'AGCTTAGCTAGCTACCTATATCTTGGTCTTGGCCG'
-    alignment.cigartuples = ((0,10), (2,1), (0,25))
+    alignment.cigartuples = ((0, 10), (2, 1), (0, 25))
     ref = Reference('test', 'AGCTTAGCTAAGCTACCTATATCTTGGTCTTGGCCG')
 
     (pad_ref, pad_match, pad_query) = sam_alignment_to_padded_alignment(alignment, ref)
@@ -33,12 +34,14 @@ def test_sam_alignment_to_padded_alignment():
     assert pad_match == '|||||||||| |||||||||||||||||||||||||'
     assert pad_query == 'AGCTTAGCTA-GCTACCTATATCTTGGTCTTGGCCG'
 
+
 def test_pairwise_alignment_to_differences():
     ref = Reference('test', 'AGCTTAGCTAAGCTACCTATATCTTGGTCTTGGCCG')
     pad_ref = 'AGCTTAGCTAAGCTACCTATATCTTGGTCTTGGCCG'
     pad_query = 'AGCTTAGCTA-GCTACCTATATCTTGGTCTTGGCCG'
     ref_start = 0
 
-    differences = pairwise_alignment_to_differences(pad_ref, pad_query, ref_start)
+    differences = pairwise_alignment_to_differences(
+        pad_ref, pad_query, ref_start)
 
     assert differences == {10: '-'}

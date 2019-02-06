@@ -169,14 +169,14 @@ class CodonVariantCollection(VariantCollection):
                             frame, nt_pos, aa, CONFIDENT)
                         if frequency >= 0.01:
                             for codon in census.amino_to_codons_at(
-                                                          frame, nt_pos,
-                                                          aa, CONFIDENT):
+                                    frame, nt_pos,
+                                    aa, CONFIDENT):
                                 if codon != ref_codon:
                                     mutation = CodonVariant.from_aacensus(
-                                            gene_key,
-                                            aa, codon,
-                                            census,
-                                            nt_pos)
+                                        gene_key,
+                                        aa, codon,
+                                        census,
+                                        nt_pos)
 
                                     var_collect.variants[gene_key][
                                         (nt_pos*3 + frame)][
@@ -206,7 +206,7 @@ class CodonVariantCollection(VariantCollection):
         # Iterate through the variants to
         # create a gene map and report on each gene
         genes = defaultdict(lambda: defaultdict(lambda:
-                            defaultdict(lambda: defaultdict(int))))
+                                                defaultdict(lambda: defaultdict(int))))
 
         for gene in self.variants:
             for pos in self.variants[gene]:
@@ -288,6 +288,6 @@ class CodonVariantCollection(VariantCollection):
                         (gene, pn, ps, pn_ncod, ps_ncod, dn/ds)
                 else:
                     report += "%s,%0.4f,%0.4f,%i,%i,N/A\n" % \
-                            (gene, pn, ps, pn_ncod, ps_ncod)
+                        (gene, pn, ps, pn_ncod, ps_ncod)
 
         return report[:-1]

@@ -1,3 +1,15 @@
+from quasitools.quality_control import FAIL_NS
+from quasitools.quality_control import FAIL_SCORE
+from quasitools.quality_control import FAIL_LENGTH
+from quasitools.quality_control import PASS
+from quasitools.quality_control import NS
+from quasitools.quality_control import MEAN_CUTOFF
+from quasitools.quality_control import MEDIAN_CUTOFF
+from quasitools.quality_control import LENGTH_CUTOFF
+from quasitools.quality_control import MIN_READ_QUAL
+from quasitools.quality_control import MASK_CHARACTER
+from quasitools.quality_control import MASKING
+from quasitools.quality_control import TRIMMING
 """
 Copyright Government of Canada 2018
 
@@ -33,24 +45,13 @@ FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
 
 # globals
 
-from quasitools.quality_control import TRIMMING
 
 # used for masking
-from quasitools.quality_control import MASKING
-from quasitools.quality_control import MASK_CHARACTER
-from quasitools.quality_control import MIN_READ_QUAL
 
 # used in quality_control.passes_filters
-from quasitools.quality_control import LENGTH_CUTOFF
-from quasitools.quality_control import MEDIAN_CUTOFF
-from quasitools.quality_control import MEAN_CUTOFF
-from quasitools.quality_control import NS
 
 # used in qaulity_control.passes_filters
-from quasitools.quality_control import PASS
-from quasitools.quality_control import FAIL_LENGTH
-from quasitools.quality_control import FAIL_SCORE
-from quasitools.quality_control import FAIL_NS
+
 
 class TestQualityControl:
     @classmethod
@@ -272,15 +273,15 @@ class TestQualityControl:
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [35, 3, 5, 7]
         key = self.quality_control.passes_filters(seq_record, filters)
-        assert key == FAIL_SCORE # did not pass filters due
-                                                 # to score
+        assert key == FAIL_SCORE  # did not pass filters due
+        # to score
 
         seq = Seq("G")
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [35]
         key = self.quality_control.passes_filters(seq_record, filters)
-        assert key == FAIL_LENGTH # did not pass filters due
-                                                  # to score
+        assert key == FAIL_LENGTH  # did not pass filters due
+        # to score
 
         # test where multiple characters are already masked due to low quality
         filters[NS] = True  # turn on filtering of ns in the sequence
@@ -289,8 +290,8 @@ class TestQualityControl:
         seq_record = SeqRecord(seq)
         seq_record.letter_annotations["phred_quality"] = [80, 20, 20, 20]
         key = self.quality_control.passes_filters(seq_record, filters)
-        assert key == FAIL_NS # did not pass filters due to
-                                              # score
+        assert key == FAIL_NS  # did not pass filters due to
+        # score
 
     def test_filter_reads_with_mean_score(self, filters):
         """
@@ -361,7 +362,7 @@ class TestQualityControl:
 
             for base_pos in range(0, len(read.seq)):
                 if (read.letter_annotations['phred_quality'][base_pos]
-                    < filters[MIN_READ_QUAL]):
+                        < filters[MIN_READ_QUAL]):
                     assert read.seq[base_pos] == MASK_CHARACTER
 
     def test_filter_reads_with_median_score(self, filters):
@@ -406,7 +407,6 @@ class TestQualityControl:
         seq_record.letter_annotations["phred_quality"] = [29, 29, 29, 29]
         seq_record_list.append(seq_record)
 
-
         Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
         self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
         seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
@@ -422,9 +422,9 @@ class TestQualityControl:
                 median_score = scores[int((length - 1) // 2)]
 
             assert self.quality_control.get_median_score(read) >= \
-                   filters.get(MEDIAN_CUTOFF)
+                filters.get(MEDIAN_CUTOFF)
 
             for base_pos in range(0, len(read.seq)):
                 if (read.letter_annotations['phred_quality'][base_pos]
-                    < filters[MIN_READ_QUAL]):
+                        < filters[MIN_READ_QUAL]):
                     assert read.seq[base_pos] == MASK_CHARACTER

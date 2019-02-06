@@ -20,13 +20,17 @@ import copy
 from quasitools.nt_variant import NTVariant, NTVariantCollection
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
+
 class TestNTVariant:
     @classmethod
     def setup_class(self):
-        self.variant = NTVariant('hxb2_pol',1,ref='g',alt='t',qual='30',filter='PASS',info={'DP':400,'AC':12,'AF':0.03})
+        self.variant = NTVariant('hxb2_pol', 1, ref='g', alt='t', qual='30', filter='PASS', info={
+                                 'DP': 400, 'AC': 12, 'AF': 0.03})
 
     def test_to_vcf_entry(self):
-        assert self.variant.to_vcf_entry() == 'hxb2_pol\t1\t.\tg\tt\t30\tPASS\tDP=400;AC=12;AF=0.0300'
+        assert self.variant.to_vcf_entry(
+        ) == 'hxb2_pol\t1\t.\tg\tt\t30\tPASS\tDP=400;AC=12;AF=0.0300'
+
 
 class TestNTVariantCollection:
     @classmethod
@@ -34,11 +38,13 @@ class TestNTVariantCollection:
         self.references = parse_references_from_fasta('tests/data/ref1.fasta')
         self.variant_collection = NTVariantCollection(self.references)
 
-        self.variant_collection.variants['ref1']['3']['t'] = NTVariant(chrom='ref1', pos=3, ref='c', alt='t', qual=30, info={'DP':400,'AC':12,'AF':0.03})
-        self.variant_collection.variants['ref1']['10']['a'] = NTVariant(chrom='ref1', pos=10, ref='a', alt='t', qual=23, info={'DP':200,'AC':7,'AF':0.035})
+        self.variant_collection.variants['ref1']['3']['t'] = NTVariant(
+            chrom='ref1', pos=3, ref='c', alt='t', qual=30, info={'DP': 400, 'AC': 12, 'AF': 0.03})
+        self.variant_collection.variants['ref1']['10']['a'] = NTVariant(
+            chrom='ref1', pos=10, ref='a', alt='t', qual=23, info={'DP': 200, 'AC': 7, 'AF': 0.035})
 
     def test_from_mapped_read_collections(self):
-        #TODO: add actual test for Variants.from_mapped_reads method
+        # TODO: add actual test for Variants.from_mapped_reads method
         assert True
 
     def test_to_vcf_file(self):
@@ -55,8 +61,10 @@ class TestNTVariantCollection:
         assert "ref1\t10\t.\ta\tt\t23\t.\tDP=200;AC=7;AF=0.0350" in vcf_file_string
 
     def test_calculate_variant_qual(self):
-        qual1 = self.variant_collection._NTVariantCollection__calculate_variant_qual(0.01, 12, 400)
-        qual2 = self.variant_collection._NTVariantCollection__calculate_variant_qual(0.01, 7, 200)
+        qual1 = self.variant_collection._NTVariantCollection__calculate_variant_qual(
+            0.01, 12, 400)
+        qual2 = self.variant_collection._NTVariantCollection__calculate_variant_qual(
+            0.01, 7, 200)
 
         assert qual1 == 30
         assert qual2 == 23

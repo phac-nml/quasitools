@@ -28,15 +28,19 @@ BAM2 = TEST_PATH + '/data/quasi2.bam'
 FORWARD = TEST_PATH + '/data/forward.fastq'
 REVERSE = TEST_PATH + '/data/reverse.fastq'
 
+
 @pytest.fixture
 def runner():
     return CliRunner()
+
 
 def test_cli(runner):
     result = runner.invoke(cli.cli)
     assert result.exit_code == 0
     assert not result.exception
-    assert result.output.split('\n', 1)[0].strip() == 'Usage: cli [OPTIONS] COMMAND [ARGS]...'
+    assert result.output.split('\n', 1)[0].strip(
+    ) == 'Usage: cli [OPTIONS] COMMAND [ARGS]...'
+
 
 def test_cli_distance(runner):
     """
@@ -54,53 +58,63 @@ def test_cli_distance(runner):
     # tests that are expected to pass
 
     result = runner.invoke(cli.cli, ['distance', REF])
-    assert result.exit_code == 2 # test expected to fail
-    assert result.exception # exception should be raised
+    assert result.exit_code == 2  # test expected to fail
+    assert result.exception  # exception should be raised
 
     result = runner.invoke(cli.cli, ['distance', REF, BAM1])
-    assert result.exit_code == 2 # test expected to fail
-    assert result.exception # exception should be raised
+    assert result.exit_code == 2  # test expected to fail
+    assert result.exception  # exception should be raised
 
     result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2])
-    assert result.exit_code == 0 # test expected to pass
-    assert not result.exception # no exception should be raised
+    assert result.exit_code == 0  # test expected to pass
+    assert not result.exception  # no exception should be raised
 
-    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize', '--output_distance', '--output', '--keep_no_coverage'])
-    assert result.exit_code == 0 # test expected to pass
-    assert not result.exception # no exception should be raised
+    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize',
+                                     '--output_distance', '--output', '--keep_no_coverage'])
+    assert result.exit_code == 0  # test expected to pass
+    assert not result.exception  # no exception should be raised
 
-    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize', '--output_distance', '-s 1', '-e 1', '--output', '--keep_no_coverage'])
-    assert result.exit_code == 0 # test expected to pass
-    assert not result.exception # no exception should be raised
+    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize',
+                                     '--output_distance', '-s 1', '-e 1', '--output', '--keep_no_coverage'])
+    assert result.exit_code == 0  # test expected to pass
+    assert not result.exception  # no exception should be raised
 
-    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize', '--output_distance', '-s 1', '-e 2844', '--output', '--keep_no_coverage'])
-    assert result.exit_code == 0 # test expected to succeed, UsageError raised
-    assert not result.exception # no exception should be raised
+    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize',
+                                     '--output_distance', '-s 1', '-e 2844', '--output', '--keep_no_coverage'])
+    assert result.exit_code == 0  # test expected to succeed, UsageError raised
+    assert not result.exception  # no exception should be raised
 
     # tests that are expected to fail
-    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize', '--output_distance', '-s 0', '-e 2844', '--output', '--keep_no_coverage'])
-    assert result.exit_code == 2 # test expected to fail, UsageError raised
-    assert result.exception # no exception should be raised
+    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize',
+                                     '--output_distance', '-s 0', '-e 2844', '--output', '--keep_no_coverage'])
+    assert result.exit_code == 2  # test expected to fail, UsageError raised
+    assert result.exception  # no exception should be raised
 
-    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize', '--output_distance', '-s -1', '-e 0', '--output', '--keep_no_coverage'])
-    assert result.exit_code == 2 # test expected to fail, UsageError raised
-    assert result.exception # no exception should be raised
+    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize',
+                                     '--output_distance', '-s -1', '-e 0', '--output', '--keep_no_coverage'])
+    assert result.exit_code == 2  # test expected to fail, UsageError raised
+    assert result.exception  # no exception should be raised
 
-    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize', '--output_distance', '-s 1', '-e 2845', '--output', '--keep_no_coverage'])
-    assert result.exit_code == 2 # test expected to fail, UsageError raised
-    assert result.exception # no exception should be raised
+    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize',
+                                     '--output_distance', '-s 1', '-e 2845', '--output', '--keep_no_coverage'])
+    assert result.exit_code == 2  # test expected to fail, UsageError raised
+    assert result.exception  # no exception should be raised
 
-    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize', '--output_distance', '-s 2845', '-e 2846', '--output', '--keep_no_coverage'])
-    assert result.exit_code == 2 # test expected to fail, UsageError raised
-    assert result.exception # no exception should be raised
+    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize',
+                                     '--output_distance', '-s 2845', '-e 2846', '--output', '--keep_no_coverage'])
+    assert result.exit_code == 2  # test expected to fail, UsageError raised
+    assert result.exception  # no exception should be raised
 
-    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize', '--output_distance', '-s 100', '-e 99', '--output', '----keep_no_coverage'])
-    assert result.exit_code == 2 # test expected to fail, UsageError raised
-    assert result.exception # no exception should be raised
+    result = runner.invoke(cli.cli, ['distance', REF, BAM1, BAM2, '--normalize',
+                                     '--output_distance', '-s 100', '-e 99', '--output', '----keep_no_coverage'])
+    assert result.exit_code == 2  # test expected to fail, UsageError raised
+    assert result.exception  # no exception should be raised
 
-    result = runner.invoke(cli.cli, ['distance', REF, '--normalize', '--output_distance', '-s 1', '-e 2844', '--output', '--keep_no_coverage'])
-    assert result.exit_code == 2 # test expected to fail, UsageError raised
-    assert result.exception # no exception should be raised
+    result = runner.invoke(cli.cli, ['distance', REF, '--normalize',
+                                     '--output_distance', '-s 1', '-e 2844', '--output', '--keep_no_coverage'])
+    assert result.exit_code == 2  # test expected to fail, UsageError raised
+    assert result.exception  # no exception should be raised
+
 
 def test_cli_quality(runner):
     """
@@ -114,21 +128,25 @@ def test_cli_quality(runner):
         [None]
     """
 
-    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality'])
-    assert result.exit_code == 0 # test expected to pass
-    assert not result.exception # exception should not be raised
+    result = runner.invoke(
+        cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality'])
+    assert result.exit_code == 0  # test expected to pass
+    assert not result.exception  # exception should not be raised
 
-    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality', '-tr', '-mr', '-me', '-sc', '30', '-lc', '100', '-rq', '30'])
-    assert result.exit_code == 0 # test expected to pass
-    assert not result.exception # exception should not be raised
+    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality',
+                                     '-tr', '-mr', '-me', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 0  # test expected to pass
+    assert not result.exception  # exception should not be raised
 
-    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality', '-tr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
-    assert result.exit_code == 0 # test expected to pass
-    assert not result.exception # exception should not be raised
+    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality',
+                                     '-tr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 0  # test expected to pass
+    assert not result.exception  # exception should not be raised
 
-    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality', '-tr', '-mr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
-    assert result.exit_code == 2 # test expected to fail, UsageError raised
-    assert result.exception # exception should be raised
+    result = runner.invoke(cli.cli, ['quality', FORWARD, REVERSE, '-o', 'test_cli_quality',
+                                     '-tr', '-mr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 2  # test expected to fail, UsageError raised
+    assert result.exception  # exception should be raised
 
 
 def test_cli_hydra(runner):
@@ -142,14 +160,17 @@ def test_cli_hydra(runner):
     POST:
         [None]
     """
-    result = runner.invoke(cli.cli, ['hydra', FORWARD, REVERSE, '-o', 'test_cli_hydra', '-tr', '-mr', '-me', '-sc', '30', '-lc', '100', '-rq', '30'])
-    assert result.exit_code == 0 # test expected to pass
-    assert not result.exception # exception should not be raised
+    result = runner.invoke(cli.cli, ['hydra', FORWARD, REVERSE, '-o', 'test_cli_hydra',
+                                     '-tr', '-mr', '-me', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 0  # test expected to pass
+    assert not result.exception  # exception should not be raised
 
-    result = runner.invoke(cli.cli, ['hydra', FORWARD, REVERSE, '-o', 'test_cli_hydra', '-tr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
-    assert result.exit_code == 0 # test expected to pass
-    assert not result.exception # exception should not be raised
+    result = runner.invoke(cli.cli, ['hydra', FORWARD, REVERSE, '-o', 'test_cli_hydra',
+                                     '-tr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 0  # test expected to pass
+    assert not result.exception  # exception should not be raised
 
-    result = runner.invoke(cli.cli, ['hydra', FORWARD, REVERSE, '-o', 'test_cli_hydra', '-tr', '-mr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
-    assert result.exit_code == 2 #  # test expected to fail, UsageError raised
-    assert result.exception # exception should be raised
+    result = runner.invoke(cli.cli, ['hydra', FORWARD, REVERSE, '-o', 'test_cli_hydra',
+                                     '-tr', '-mr', '-me', '-n', '-sc', '30', '-lc', '100', '-rq', '30'])
+    assert result.exit_code == 2  # test expected to fail, UsageError raised
+    assert result.exception  # exception should be raised

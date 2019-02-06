@@ -93,7 +93,6 @@ def cli(ctx, reference, bam, normalize, output_distance, startpos, endpos,
 
 def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
          output, no_coverage):
-
     """
     dist - Performs the main part of the program
 
@@ -197,7 +196,6 @@ def dist(ctx, reference, bam, normalize, output_distance, startpos, endpos,
 
 
 def modify_pileups(ctx, normalize, startpos, endpos, no_coverage, pileups):
-
     """
     modify_pileups - Performs normalization, truncation and/or selecting the
                      range of the pileup, if these options are enabled.

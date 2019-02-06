@@ -19,6 +19,7 @@ import pytest
 import os
 from quasitools.parsers.genes_file_parser import parse_BED4_file
 
+
 class TestGenesFileParser:
     def test_valid_BED4_file(self):
         """Tests to make sure that valid BED4+ files (bed files with at least 4
@@ -32,13 +33,14 @@ class TestGenesFileParser:
         ref_name = "ref1"
 
         genes = {"gene1": {"start": 0, "end": 100},
-                 "gene 2": {"start": 101, "end": 200},  # Spaces are allowed in the gene name
+                 # Spaces are allowed in the gene name
+                 "gene 2": {"start": 101, "end": 200},
                  "gene3": {"start": 201, "end": 300}}
 
         with open(valid_BED4_file, "w+") as f:
             for gene in genes:
                 f.write("%s\t%s\t%s\t%s\n" % (ref_name, genes[gene]["start"],
-                                            genes[gene]["end"], gene))
+                                              genes[gene]["end"], gene))
 
         parsed_genes = parse_BED4_file(valid_BED4_file, ref_name)
 

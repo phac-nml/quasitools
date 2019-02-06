@@ -31,6 +31,7 @@ from quasitools.parsers.genes_file_parser import parse_BED4_file
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 VALID_MUTANT_TYPES_CSV = TEST_PATH + "/data/output/mutant_types.csv"
 
+
 class TestMutantTypes:
 
     @classmethod
@@ -49,7 +50,7 @@ class TestMutantTypes:
                 parse_mapped_reads_from_bam(r, bam))
 
         variants = NTVariantCollection.from_mapped_read_collections(
-                        error_rate, rs, *mapped_read_collection_arr)
+            error_rate, rs, *mapped_read_collection_arr)
         variants.filter('q30', 'QUAL<30', True)
         variants.filter('ac5', 'AC<5', True)
         variants.filter('dp100', 'DP<100', True)
@@ -73,9 +74,9 @@ class TestMutantTypes:
                              frames)
 
         self.codon_variants = CodonVariantCollection.from_aacensus(
-                            aa_census)
+            aa_census)
 
-    def test_mutant_types(self): 
+    def test_mutant_types(self):
         offset = 1269
 
         # Read from file and make sure there are no empty lines
@@ -83,8 +84,8 @@ class TestMutantTypes:
             valid_mutant_types = input.read()
 
         # Sort and filter for comparison
-        valid_mutant_types_lines = sorted(filter(None, 
-            valid_mutant_types.split("\n")))
+        valid_mutant_types_lines = sorted(filter(None,
+                                                 valid_mutant_types.split("\n")))
 
         # Create the report string
         mutant_types = self.codon_variants.to_csv_file(offset)

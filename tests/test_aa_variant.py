@@ -114,7 +114,8 @@ class TestAAVariant:
         # Do the thing with the mutation_db
         self.aa_collection.apply_mutation_db(self.mutation_db)
 
-        aavf_obj = self.aa_collection.to_aavf_obj("test", [os.path.basename(self.reference)], CONFIDENT)
+        aavf_obj = self.aa_collection.to_aavf_obj(
+            "test", [os.path.basename(self.reference)], CONFIDENT)
         records = list(aavf_obj)
 
         writer = parser.Writer(aavf_out, aavf_obj)
@@ -173,7 +174,8 @@ class TestAAVariant:
         # Apply the filter to the collection
         self.aa_collection.filter('af0.01', 'freq<0.01', True)
 
-        aavf_obj = self.aa_collection.to_aavf_obj("test", [os.path.basename(self.reference)], CONFIDENT)
+        aavf_obj = self.aa_collection.to_aavf_obj(
+            "test", [os.path.basename(self.reference)], CONFIDENT)
         records = list(aavf_obj)
 
         writer = parser.Writer(aavf_out, aavf_obj)

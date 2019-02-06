@@ -110,11 +110,12 @@ def parse_pileup_from_bam(references, bam_location):
     samfile = pysam.AlignmentFile(bam_location, "rb")
 
     for reference in references:
-
+        
+        
         coverage = samfile.count_coverage(
             contig=reference.name, start=0, stop=len(reference.seq),
             quality_threshold=0)
-
+        
         for column in range(len(coverage[0])):
 
             dictionary = {}
@@ -130,7 +131,9 @@ def parse_pileup_from_bam(references, bam_location):
 
             if coverage[T][column] > 0:
                 dictionary["T"] = coverage[T][column]
-
+            print(column)
+            print(dictionary.keys())
+            print(dictionary.get("A"))
             pileup.append(dictionary)
 
     return Pileup(pileup)

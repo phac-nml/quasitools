@@ -26,6 +26,7 @@ from quasitools.parsers.codon_variant_file_parser import parse_codon_variants
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 VALID_DNDS_REPORT = TEST_PATH + "/data/output/dnds_report.csv"
 
+
 class TestDnds:
     @classmethod
     def setup(self):
@@ -38,27 +39,26 @@ class TestDnds:
 
         self.codon_variants = parse_codon_variants(csv, rs)
 
-
     def test_dnds(self):
         # Read from file and make sure there are no empty lines
         with open(VALID_DNDS_REPORT, "r") as input:
             valid_report = input.read()
 
         # Sort and filter for comparison
-        valid_dnds_values = sorted(filter(None, 
-            valid_report.split("\n")))
+        valid_dnds_values = sorted(filter(None,
+                                          valid_report.split("\n")))
 
         # Create the report string
-        test_report = self.codon_variants.report_dnds_values(self.ref_seq, self.offset)
+        test_report = self.codon_variants.report_dnds_values(
+            self.ref_seq, self.offset)
 
         # Split into lines and sort
         test_values = sorted(test_report.split("\n"))
 
         assert len(valid_dnds_values) == len(test_values)
-        
+
         # Compare each line in the test report to the valid report
         for pos in range(0, len(valid_dnds_values)):
             if valid_dnds_values[pos][0:1] != "#":
                 assert valid_dnds_values[pos] == \
                     test_values[pos]
-

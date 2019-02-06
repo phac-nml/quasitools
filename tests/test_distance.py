@@ -21,25 +21,27 @@ from quasitools.distance import DistanceMatrix
 from quasitools.pileup import Pileup_List
 from quasitools.pileup import Pileup
 
+
 class TestDistance:
 
     """
     CLASS VARIABLES
     """
 
-    pileup0 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}], #test 1
-    [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}], #test 2
-    [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}], #test 3
-    [{'A': 1}, {'T': 2}, {}, {'G': 4}, {}], #test 4
-    [{'A': 1}, {}, {'C': 3}, {'G': 4}, {'A': 5}]] #test 5
+    pileup0 = [[{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {'A': 5}],  # test 1
+               [{'A': 1}, {'T': 2}, {'C': 3}, {'G': 4}, {}],  # test 2
+               [{'A': 1}, {'T': 2}, {'C': 3}, {}, {'A': 5}],  # test 3
+               [{'A': 1}, {'T': 2}, {}, {'G': 4}, {}],  # test 4
+               [{'A': 1}, {}, {'C': 3}, {'G': 4}, {'A': 5}]]  # test 5
 
-    pileup0_files = ('test1.bam', 'test2.bam', 'test3.bam', 'test4.bam', 'test5.bam')
+    pileup0_files = ('test1.bam', 'test2.bam',
+                     'test3.bam', 'test4.bam', 'test5.bam')
 
-    pileup0_truncate_out = [[{'A': 1}], #test 1
-    [{'A': 1}], #test 2
-    [{'A': 1}], #test 3
-    [{'A': 1}], #test 4
-    [{'A': 1}]] #test 5
+    pileup0_truncate_out = [[{'A': 1}],  # test 1
+                            [{'A': 1}],  # test 2
+                            [{'A': 1}],  # test 3
+                            [{'A': 1}],  # test 4
+                            [{'A': 1}]]  # test 5
 
     pileup0_normal_out = """Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam
 test1.bam,1.00000000,1.00000000,1.00000000,1.00000000,1.00000000
@@ -72,19 +74,26 @@ test5.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000"""
     pileup0_startpos = 0
     pileup0_endpos = 0
 
-    #files for testing pileup matrix
-    pileup1 = [[{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test1
-    [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1000000}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test2
-    [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1000000, 'C': 1}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test3
-    [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1, 'C': 1}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test4
-    [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1, 'C': 1000000}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test5
-    [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1000000, 'C': 1}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test6
-    [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1000000, 'C': 1000000}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test7
-    [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1000000, 'C': 1000000}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}]] #test8
+    # files for testing pileup matrix
+    pileup1 = [[{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}],  # test1
+               [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1000000}, {'T': 12}, {
+                   'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}],  # test2
+               [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1000000, 'C': 1}, {'T': 12}, {
+                   'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}],  # test3
+               [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1, 'C': 1}, {'T': 12}, {
+                   'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}],  # test4
+               [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1, 'C': 1000000}, {'T': 12}, {
+                   'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}],  # test5
+               [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1000000, 'C': 1}, {'T': 12}, {
+                   'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}],  # test6
+               [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1000000, 'C': 1000000}, {'T': 12}, {
+                   'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}],  # test7
+               [{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1000000, 'T': 1000000, 'C': 1000000}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}]]  # test8
 
-    pileup1_files = ('test1.bam', 'test2.bam', 'test3.bam', 'test4.bam', 'test5.bam', 'test6.bam', 'test7.bam', 'test8.bam')
+    pileup1_files = ('test1.bam', 'test2.bam', 'test3.bam', 'test4.bam',
+                     'test5.bam', 'test6.bam', 'test7.bam', 'test8.bam')
 
-    #expected output files for pileup1
+    # expected output files for pileup1
 
     pileup1_normal_out = """Quasispecies,test1.bam,test2.bam,test3.bam,test4.bam,test5.bam,test6.bam,test7.bam,test8.bam
 test1.bam,1.00000000,0.96329037,0.96329037,0.96329037,0.99043043,0.99043043,0.99043043,1.00000000
@@ -126,9 +135,9 @@ test6.bam,0.97353148,0.99999865,0.49999936,0.49999936,0.66666593,0.00000000,0.66
 test7.bam,0.97353148,0.49999936,0.49999936,0.99999865,0.66666593,0.66666593,0.00000000,0.39182610
 test8.bam,0.96758440,0.60817255,0.60817255,0.60817255,0.39182610,0.39182610,0.39182610,0.00000000"""
 
-    #files for testing pileup2 matrix of ones
-    pileup2 = ([[{'A': 1, 'T': 1, 'C': 1}, {'T': 1}], #test 1
-                [{'A': 1, 'T': 1, 'C': 1}, {'T': 1}]]) # test 2
+    # files for testing pileup2 matrix of ones
+    pileup2 = ([[{'A': 1, 'T': 1, 'C': 1}, {'T': 1}],  # test 1
+                [{'A': 1, 'T': 1, 'C': 1}, {'T': 1}]])  # test 2
 
     pileup2_files = ('test1.bam', 'test2.bam')
 
@@ -158,11 +167,15 @@ test2.bam,0.00000000,0.00000000"""
         self.expected_csv_similarity = ""
 
     @pytest.fixture(scope="function", params=[(True, pileup0, pileup0_files, pileup0_normal_out, pileup0_normal_angular_distance_out, pileup0_startpos, pileup0_endpos),
-    (True, pileup1, pileup1_files, pileup1_normal_out, pileup1_normal_angular_distance_out, None, None),
-    (True, pileup2, pileup2_files, pileup2_normal_out, pileup2_normal_angular_distance_out, None, None),
-    (False, pileup0, pileup0_files, pileup0_unnormal_out, pileup0_unnormal_angular_distance_out, pileup0_startpos, pileup0_endpos),
-    (False, pileup1, pileup1_files, pileup1_unnormal_out, pileup1_unnormal_angular_distance_out, None, None),
-    (False, pileup2, pileup2_files, pileup2_unnormal_out, pileup2_unnormal_angular_distance_out, None, None)])
+                                              (True, pileup1, pileup1_files, pileup1_normal_out,
+                                               pileup1_normal_angular_distance_out, None, None),
+                                              (True, pileup2, pileup2_files, pileup2_normal_out,
+                                               pileup2_normal_angular_distance_out, None, None),
+                                              (False, pileup0, pileup0_files, pileup0_unnormal_out,
+                                               pileup0_unnormal_angular_distance_out, pileup0_startpos, pileup0_endpos),
+                                              (False, pileup1, pileup1_files, pileup1_unnormal_out,
+                                               pileup1_unnormal_angular_distance_out, None, None),
+                                              (False, pileup2, pileup2_files, pileup2_unnormal_out, pileup2_unnormal_angular_distance_out, None, None)])
     def matrix(self, request):
         """
         matrix - test fixture for test_get_similarity_matrix function
@@ -199,14 +212,15 @@ test2.bam,0.00000000,0.00000000"""
             pileups.normalize_pileups()
 
         # create matrix with pileup
-        dist = DistanceMatrix(pileups.get_pileups_as_numerical_array(), request.param[2])
+        dist = DistanceMatrix(
+            pileups.get_pileups_as_numerical_array(), request.param[2])
 
         self.expected_csv_similarity = request.param[3]
         self.expected_csv_distance = request.param[4]
 
         return dist
 
-    #end def
+    # end def
 
     def test_get_similarity_matrix(self, matrix):
         """
@@ -224,7 +238,7 @@ test2.bam,0.00000000,0.00000000"""
         """
         csv_similarity = matrix.get_similarity_matrix_as_csv()
         assert csv_similarity == self.expected_csv_similarity
-    #end def
+    # end def
 
     def test_get_distance_matrix(self, matrix):
         """
@@ -242,4 +256,4 @@ test2.bam,0.00000000,0.00000000"""
         """
         csv_distance = matrix.get_distance_matrix_as_csv()
         assert csv_distance == self.expected_csv_distance
-    #end def
+    # end def
