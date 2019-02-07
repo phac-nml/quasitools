@@ -95,4 +95,5 @@ def complexity(ctx, reference, bam):
     references = parse_references_from_fasta(reference)
     # for x in bam:
     pileup = parse_pileup_from_bam(references, bam)
+    #This will be removed just couldn't have an unused variable floating around or flake8 would get mad at me.
     pileup.count_polymorphic_sites()
