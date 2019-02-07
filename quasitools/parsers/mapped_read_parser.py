@@ -131,9 +131,9 @@ def parse_pileup_from_bam(references, bam_location):
 
             if coverage[T][column] > 0:
                 dictionary["T"] = coverage[T][column]
-            print(column)
-            print(dictionary.keys())
-            print(dictionary.get("A"))
+            # print(column)
+            # print(dictionary.keys())
+            # print(dictionary.get("A"))
             pileup.append(dictionary)
 
     return Pileup(pileup)
@@ -289,23 +289,27 @@ def parse_haplotypes_from_fasta(reads_location, consensus):
     haplotypes = {}  # (sequence, Haplotype)
 
     reads = Bio.SeqIO.parse(reads_location, "fasta")
+    print("FIRST CHECKPOINT PASSED")
 
     for read in reads:
-
+    
         sequence = str(read.seq)
+        print("Second Checkpoint passed")
 
         if sequence in haplotypes:
-
+        
             haplotype = haplotypes.get(sequence)
             haplotype.count += 1
-
+            print("Third checkpoint passed") 
         else:
 
             haplotypes[sequence] = Haplotype(sequence, consensus)
+            print("fourth checkpoint passed")
 
     haplotypes_list = list(haplotypes.values())
+    print("fifth checkpoint passed")
     haplotypes_sorted = sort_haplotypes(haplotypes_list)
-
+    print("sixth checkpoint passed")
     return haplotypes_sorted
 
 
