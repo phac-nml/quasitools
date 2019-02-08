@@ -18,13 +18,17 @@ specific language governing permissions and limitations under the License.
 __version__ = '0.1.1'
 
 import click
-
+import math
 import quasitools.calculate as calculate
 import quasitools.haplotype as haplotype
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 from quasitools.parsers.mapped_read_parser \
     import parse_pileup_from_bam, parse_haplotypes_from_fasta
+
+import sys, os
+import types
+
 
 BASES = ['A', 'C', 'T', 'G']
 GAP = '-'
@@ -37,10 +41,9 @@ GAP = '-'
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('bam', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('fasta', nargs=1,
-                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+
 @click.pass_context
-def cli(ctx, reference, bam, fasta):
+def cli(ctx, reference, bam):
     """
 
     Reports the complexity of a quasispecies using several measures outlined
@@ -55,14 +58,13 @@ def cli(ctx, reference, bam, fasta):
 
     click.echo("Using file %s as reference" % reference)
     click.echo("Reading input from file(s)  %s" % bam)
-    click.echo("Reading converted bam to fasta as %s" % fasta)
-
-    complexity(ctx, reference, bam, fasta)
+  
+    complexity(ctx, reference, bam)
 
     click.echo("\nComplete!")
 
 
-def complexity(ctx, reference, bam, fasta):
+def complexity(ctx, reference, bam):
     """
     # ========================================================================
 
@@ -99,37 +101,52 @@ def complexity(ctx, reference, bam, fasta):
    
     references = parse_references_from_fasta(reference)
     pileup = parse_pileup_from_bam(references, bam)
+    consensus = pileup.build_consensus_for_bam(4444)
 
+    #haplotypes = parse_haplotypes_from_fasta(reference, consensus)
 
-    # build a consensus
-    consensus_from_the_pileup = pileup.build_consensus
-    haplotypes = parse_haplotypes_from_fasta(fasta, consensus_from_the_pileup)
+    #distance_matrix = haplotype.build_distiance_matrix(haplotypes)
+    #counts = haplotype.build_counts(haplotypes)
+    #frequencies = haplotype.build_frequencies(haplotypes)
+    
+
 
     # Will create an array of dictionaries to hold each measurment
-    measurements = [] 
+    #measurements = [] 
     
     '''
     Set the Incidence - Entity Level
     '''
 
-    number_of_haplotypes = get_number_of_haplotypes()
-    measurements.append({'Number of haplotypes': number_of_haplotypes})
+    #number_of_haplotypes = get_number_of_haplotypes()
+    #measurements.append({'Number of haplotypes': number_of_haplotypes})
     
-    number_of_polymorphic_sites = get_number_of_polymorphic_sites(pileup)
-    measurements.append({'Number of polymorphic sites': number_of_polymorphic_sites})
+    #number_of_polymorphic_sites = get_number_of_polymorphic_sites(pileup)
+    #measurements.append({'Number of polymorphic sites': number_of_polymorphic_sites})
     
-    number_of_mutations = get_number_of_mutations(pileup)
-    measurements.append({'Number of mutation': number_of_mutations})
+   #number_of_mutations = get_number_of_mutations(pileup)
+   #measurements.append({'Number of mutation': number_of_mutations})
 
     '''
     Set the Abundance - Molecular Level
     '''
     
+    #measurements = get_shannon_entropy(haplotypes, frequencies, measurements)
+    
+    #simpson_index = get_simpson_index(frequencies)
+    #measurements.append({'Simpson Index': simpson_index})
+    
+    #gini_simpson_index = get_gini_simpson_index(frequencies)
+    #measurements.append({'Gini Simpson Index': gini_simpson_index})
+    
 
-    for x in range(len(measurements)):
-       print(measurements[x])
+    #measurements = get_hill_numbers(measurements, frequency)
 
-        
+
+    #for x in range(len(measurements)):
+        #print(measurements[x])
+
+
 def get_number_of_haplotypes(): 
    
     """""
@@ -229,3 +246,126 @@ def get_number_of_mutations(pileup):
     number_of_mutations = pileup.count_unique_mutations()
     return number_of_mutations
 
+def get_shannon_entropy(haplotypes, frequencies, measurements):
+    """""
+    #========================================================================
+    
+    GET SHANNON ENTROPY
+
+    PURPOSE
+    -------
+
+    Reports the shannon Entropy of the haplotpyes
+
+    INPUT
+    -------
+    [HAPLOTYPES] [haplotypes]
+    [FLOAT LIST] [frequencies]
+    RETURN
+    -------
+    {DICTIONARY}[shannon_entropy_numbers]
+
+    COMMENTS
+    -------
+    [N/A]
+    #========================================================================
+    """
+
+
+    Hs = calculate.shannon_entropy(frequencies)
+    H = len(haplotypes)
+    N = haplotype.calculate_total_clones(haplotypes)
+    
+    if float(math.log(N)) != 0:
+        Hsn = float (Hs) / float (math.log(N)) # entropy localized to N
+        Hsh = float (Hs) / float (math.log(H)) # entropy localized to H
+    else:
+        Hsn = 0
+        Hsh = 0
+    
+    measurements.append({'Shannon Entropy (Hs)': Hs})
+    measurements.append({'Shannon Entropy Localized to N (Hsn)': Hsn})
+    measurements.append({'Shannon Entropy Localized to H (Hsh)': Hsh})
+   
+    return measurements
+
+def get_simpson_index(frequencies):
+    """""
+    #========================================================================
+    REPORT SIMPSON INDEX
+
+    PURPOSE
+    -------
+    
+    Reports the Simpson Index
+
+    INPUT
+    -------
+    [FLOAT LIST] frequencies
+        a list of (relative) frequencies) of the haplotpyes.
+
+    RETURN
+    -------
+    [STR] [simpson_index]
+
+    COMMENTS
+    -------
+    [N/A]
+
+    #========================================================================
+    """
+
+    H = len(frequencies)
+    P = frequencies
+
+    simpson_index = calculate.simpson_index(H,P)
+    
+    return simpson_index
+
+def get_gini_simpson_index(frequencies):
+    """""
+    #========================================================================
+    
+    GET GINI SIMPSON INDEX
+    
+    PURPOSE
+    -------
+    Reports the Gini-Simpson Index
+
+    INPUT
+    -------
+
+    [FLOAT LIST] [frequencies]
+        a list of relative frequencies of the haplotypes
+
+    RETURN
+    -------
+    [INT] gini_simpson_index
+
+    COMMENTS
+    -------
+
+    #========================================================================
+    """
+
+    H = len(frequencies)
+    P =  frequencies
+    gini_simpson_index = calculate.gini_simpson_index(H,P)
+
+    return gini_simpson_index
+
+def get_hill_numbers(measurements, frequencies):
+    """""
+    #========================================================================
+    
+    GET 
+    PURPOSE
+    -------
+    INPUT
+    -------
+    RETURN
+    -------
+    COMMENTS
+    -------
+    #========================================================================
+    """
