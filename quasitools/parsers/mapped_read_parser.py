@@ -21,6 +21,8 @@ specific language governing permissions and limitations under the License.
 
 import pysam
 import Bio.SeqIO
+import os
+
 
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
@@ -67,6 +69,70 @@ def parse_mapped_reads_from_bam(reference, bam):
 
     return mrc
 
+def get_haplotypes_for_ngs(reference, bam_location,start, k):
+
+    
+    return 0
+
+
+def parse_haplotypes_from_bam(reference, bam_location, start, k):
+
+
+    """""
+    #========================================================================
+    PARSE HAPLOTYPES FROM BAM
+
+    PURPOSE
+    -------
+    
+    Get the haplotypes 
+
+    INPUT
+    -------
+    [LIST (REFERENCE] [references]
+        - a list of quasitool reference objects
+    [BAM_FILE_LOCATION] [bam_location]
+        - The aligned BAM FILE from which we'll 
+          retrieve our haplotypes.
+    [INT] [start] 
+        - the starting region
+    [INT] [k]
+        - the number of nucleotides per haplotype.
+
+    RETURN
+    -------
+    {DICTIONARY} [haplotyess]
+
+    COMMENTS
+    -------
+    - lets do it.
+
+    #========================================================================
+    """
+    
+    sequenceID = getSequenceID(reference)
+
+    
+    samfile = pysam.AlignmentFile(bam_location, "rb")
+    reads = samfile.fetch(sequenceID, start, start + k)
+    
+    for read in reads:
+        
+        read_sequence = read.get_forward_sequence()
+        haplotype_start = start - read.reference_start
+        haplotype_end = haplotype_start + k
+
+        if read.get_overlap(start, start + k) == k:
+            haplotype = read_sequence[haplotype_start : haplotype_end]
+    
+    print(haplotype)
+    return haplotype
+    
+def getSequenceID(reference):
+
+    sequenceID = str(os.popen("grep '>' hiv.fasta | sed 's,>,,g'| sed 's/\s.*$//'").read())    
+    sequenceID = sequenceID.rstrip() 
+    return sequenceID
 
 def parse_pileup_from_bam(references, bam_location):
     """

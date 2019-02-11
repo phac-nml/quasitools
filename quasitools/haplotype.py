@@ -164,7 +164,6 @@ def build_distiance_matrix(haplotypes):
 
     return matrix
 
-
 def calculate_distance(haplotype1, haplotype2):
     """
     # ========================================================================
@@ -357,3 +356,4 @@ def build_frequencies(haplotypes):
         frequencies.append(frequency)
 
     return frequencies
+

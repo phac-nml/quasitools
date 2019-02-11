@@ -20,14 +20,11 @@ __version__ = '0.1.1'
 import click
 import math
 import quasitools.calculate as calculate
-import quasitools.haplotype as haplotype
+import quasitools.haplotype as haplotypei
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 from quasitools.parsers.mapped_read_parser \
-    import parse_pileup_from_bam, parse_haplotypes_from_fasta
-
-import sys, os
-import types
+        import parse_pileup_from_bam, parse_haplotypes_from_fasta, get_haplotypes_for_ngs
 
 
 BASES = ['A', 'C', 'T', 'G']
@@ -101,7 +98,12 @@ def complexity(ctx, reference, bam):
    
     references = parse_references_from_fasta(reference)
     pileup = parse_pileup_from_bam(references, bam)
-    consensus = pileup.build_consensus_for_bam(4444)
+    #consensus = pileup.build_consensus_from_range(0,4)
+    #parse_haplotypes_from_bam(reference, bam, 50, 50)
+    haplotype = get_haplotypes_for_ngs(reference, bam, 5,50)
+     
+    #for x in haplotypes:
+     #   print(x)
 
     #haplotypes = parse_haplotypes_from_fasta(reference, consensus)
 
@@ -145,7 +147,7 @@ def complexity(ctx, reference, bam):
 
     #for x in range(len(measurements)):
         #print(measurements[x])
-
+    
 
 def get_number_of_haplotypes(): 
    
