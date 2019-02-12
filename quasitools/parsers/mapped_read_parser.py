@@ -24,6 +24,7 @@ import Bio.SeqIO
 import os
 
 
+
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
 from quasitools.mapped_read import MappedRead, MappedReadCollection
@@ -69,13 +70,7 @@ def parse_mapped_reads_from_bam(reference, bam):
 
     return mrc
 
-def get_haplotypes_for_ngs(reference, bam_location,start, k):
-
-    
-    return 0
-
-
-def parse_haplotypes_from_bam(reference, bam_location, start, k):
+def parse_haplotypes_from_bam(samfile, reference, bam_location, start, k):
 
 
     """""
@@ -112,10 +107,8 @@ def parse_haplotypes_from_bam(reference, bam_location, start, k):
     
     sequenceID = getSequenceID(reference)
 
-    
-    samfile = pysam.AlignmentFile(bam_location, "rb")
-    reads = samfile.fetch(sequenceID, start, start + k)
-    
+    haplotype = []
+    reads = samfile.fetch("AF033819.3", start, start + k)
     for read in reads:
         
         read_sequence = read.get_forward_sequence()
@@ -125,7 +118,6 @@ def parse_haplotypes_from_bam(reference, bam_location, start, k):
         if read.get_overlap(start, start + k) == k:
             haplotype = read_sequence[haplotype_start : haplotype_end]
     
-    print(haplotype)
     return haplotype
     
 def getSequenceID(reference):
@@ -133,6 +125,22 @@ def getSequenceID(reference):
     sequenceID = str(os.popen("grep '>' hiv.fasta | sed 's,>,,g'| sed 's/\s.*$//'").read())    
     sequenceID = sequenceID.rstrip() 
     return sequenceID
+
+def parse_haplotypes_called(references, ref, bam_location, start, k):
+
+    haplotypes = []
+    samfile = pysam.AlignmentFile(bam_location, "rb")
+    for reference in references:
+        coverage = samfile.count_coverage(
+            contig=reference.name, start=0, stop=len(reference.seq),
+            quality_threshold=0)
+        length = len(reference.seq)
+        print(length)
+
+    for i in range(0, length - k + 1):
+         haplotypes.append(parse_haplotypes_from_bam(samfile, ref, bam_location, i, k))
+    
+    return haplotypes
 
 def parse_pileup_from_bam(references, bam_location):
     """
@@ -200,6 +208,19 @@ def parse_pileup_from_bam(references, bam_location):
             pileup.append(dictionary)
 
     return Pileup(pileup)
+
+# def parse_haplotypes_called(references, bam_location, start, k):
+
+#     samfile = pysam.AlignmentFile(bam_location, "rb")
+#     reads = samfile.fetch(sequenceID, start, start + k)
+
+#     for reference in references:
+#         length = len(references)
+
+#     for i in range(0, length - k + 1):
+#         haplotypes[i] = getHaplotypes(samfile,references, bam_location, i, k)
+
+    
 
 
 def parse_pileup_list_from_bam(references, file_list):

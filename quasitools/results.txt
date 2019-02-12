@@ -2,5 +2,4 @@
 Starting...
 Using file hiv.fasta as reference
 Reading input from file(s)  variant.bam
-
-Complete!
+9181

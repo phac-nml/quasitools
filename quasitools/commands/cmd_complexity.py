@@ -23,8 +23,11 @@ import quasitools.calculate as calculate
 import quasitools.haplotype as haplotypei
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
+#Remove this
+import time
+
 from quasitools.parsers.mapped_read_parser \
-        import parse_pileup_from_bam, parse_haplotypes_from_fasta, get_haplotypes_for_ngs
+        import parse_pileup_from_bam, parse_haplotypes_from_fasta, parse_haplotypes_called
 
 
 BASES = ['A', 'C', 'T', 'G']
@@ -50,7 +53,7 @@ def cli(ctx, reference, bam):
     Virology 493 (2016): 227-237.
 
     """
-
+    start_time = time.time()
     click.echo("\nStarting...")
 
     click.echo("Using file %s as reference" % reference)
@@ -59,6 +62,7 @@ def cli(ctx, reference, bam):
     complexity(ctx, reference, bam)
 
     click.echo("\nComplete!")
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 
 def complexity(ctx, reference, bam):
@@ -98,12 +102,18 @@ def complexity(ctx, reference, bam):
    
     references = parse_references_from_fasta(reference)
     pileup = parse_pileup_from_bam(references, bam)
+    haplotypes = parse_haplotypes_called(references, reference, bam, 50,50)
+    
+    count = 1
+    for i in haplotypes:
+        print("This is the " + str(count) + " Haplotype: " + i)
+        count+=1
+
     #consensus = pileup.build_consensus_from_range(0,4)
     #parse_haplotypes_from_bam(reference, bam, 50, 50)
-    haplotype = get_haplotypes_for_ngs(reference, bam, 5,50)
+    #haplotype = get_haplotypes_for_ngs(reference, bam, 5,50)
      
-    #for x in haplotypes:
-     #   print(x)
+
 
     #haplotypes = parse_haplotypes_from_fasta(reference, consensus)
 
