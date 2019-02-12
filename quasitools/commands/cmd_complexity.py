@@ -20,7 +20,7 @@ __version__ = '0.1.1'
 import click
 import math
 import quasitools.calculate as calculate
-import quasitools.haplotype as haplotypei
+import quasitools.haplotype as haplotype
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 #Remove this
@@ -99,67 +99,158 @@ def complexity(ctx, reference, bam):
 
     # ========================================================================
     """
-   
+    
     references = parse_references_from_fasta(reference)
     pileup = parse_pileup_from_bam(references, bam)
-    haplotypes = parse_haplotypes_called(references, reference, bam, 50,50)
+    consensus = pileup.build_consensus_from_range(1,50)
+    haplotypes = parse_haplotypes_called(references, reference, bam, consensus,50,50)
     
     count = 1
     for i in haplotypes:
-        print("This is the " + str(count) + " Haplotype: " + i)
+        #print((len(i)))
         count+=1
 
-    #consensus = pileup.build_consensus_from_range(0,4)
-    #parse_haplotypes_from_bam(reference, bam, 50, 50)
-    #haplotype = get_haplotypes_for_ngs(reference, bam, 5,50)
+    #print(len(consensus))
+
      
 
-
-    #haplotypes = parse_haplotypes_from_fasta(reference, consensus)
-
-    #distance_matrix = haplotype.build_distiance_matrix(haplotypes)
-    #counts = haplotype.build_counts(haplotypes)
-    #frequencies = haplotype.build_frequencies(haplotypes)
+    distance_matrix = haplotype.build_distiance_matrix(haplotypes)
+    counts = haplotype.build_counts(haplotypes)
+    frequencies = haplotype.build_frequencies(haplotypes)
     
 
 
     # Will create an array of dictionaries to hold each measurment
-    #measurements = [] 
+    measurements = [] 
     
     '''
     Set the Incidence - Entity Level
     '''
 
-    #number_of_haplotypes = get_number_of_haplotypes()
-    #measurements.append({'Number of haplotypes': number_of_haplotypes})
+    number_of_haplotypes = get_number_of_haplotypes(haplotypes)
+    measurements.append({'Number of haplotypes': number_of_haplotypes})
     
-    #number_of_polymorphic_sites = get_number_of_polymorphic_sites(pileup)
-    #measurements.append({'Number of polymorphic sites': number_of_polymorphic_sites})
+    number_of_polymorphic_sites = get_number_of_polymorphic_sites(pileup)
+    measurements.append({'Number of polymorphic sites': number_of_polymorphic_sites})
     
-   #number_of_mutations = get_number_of_mutations(pileup)
-   #measurements.append({'Number of mutation': number_of_mutations})
+    number_of_mutations = get_number_of_mutations(pileup)
+    measurements.append({'Number of mutation': number_of_mutations})
 
     '''
     Set the Abundance - Molecular Level
     '''
     
-    #measurements = get_shannon_entropy(haplotypes, frequencies, measurements)
+    measurements = get_shannon_entropy(haplotypes, frequencies, measurements)
     
-    #simpson_index = get_simpson_index(frequencies)
-    #measurements.append({'Simpson Index': simpson_index})
+    simpson_index = get_simpson_index(frequencies)
+    measurements.append({'Simpson Index': simpson_index})
     
-    #gini_simpson_index = get_gini_simpson_index(frequencies)
-    #measurements.append({'Gini Simpson Index': gini_simpson_index})
+    gini_simpson_index = get_gini_simpson_index(frequencies)
+    measurements.append({'Gini Simpson Index': gini_simpson_index})
     
 
-    #measurements = get_hill_numbers(measurements, frequency)
+    measurements = get_hill_numbers(measurements, frequencies)
+    
+    '''
+    Functional,  Indidence - Entity Level
+    '''
 
+    minimum_mutation = get_minimum_mutation_frequency(pileup, haplotypes)
+    measurements.append({'Minimum mutation frequency': minimum_mutation}) 
+    
+    measurements = get_mutation_frequency(distance_matrix,measurements)
+    measurements = get_FAD(distance_matrix,measurements)
+    measurements = get_sample_nucleotide_diversity_entity(distance_matrix, frequencies, measurements)
+
+    '''
+    Functional, Abundance - Molecular Level
+    '''
+    measurements = get_maximum_mutation_frequency(counts, distance_matrix, frequencies, measurements)
+    measurements = get_population_nucleotide_diversity(distance_matrix, frequencies, measurements)
+    
+    '''
+    Other
+    '''
+    measurements = get_sample_nucleotide_diversity(distance_matrix, frequencies, haplotypes, measurements)
 
     #for x in range(len(measurements)):
         #print(measurements[x])
+    for measurement in measurements:
+        print(str(measurement).strip("{}").replace("'",""))
+
+def get_sample_nucleotide_diversity(distance_matrix,frequencies, haplotypes, measurements):
+    N = haplotype.calculate_total_clones(haplotypes)
+    H = len(frequencies)
+    P = frequencies
+    D = distance_matrix
+
+    SND = calculate.sample_nucleotide_diversity(N,H,P,D)
+    measurements.append({'Sample Nucleotide Diversity (^PI)': SND})
+
+    return measurements
+
+def get_population_nucleotide_diversity(distance_matrix, frequencies, measurements):
+    
+    H = len(frequencies)
+    P = frequencies
+    D = distance_matrix
+
+    PND = calculate.population_nucleotide_diversity(H,P,D)
+    measurements.append({'Population Nucleotide Diversity (PI)': PND})
+
+    return measurements
+def get_maximum_mutation_frequency(counts, distance_matrix, frequencies, measurements):
+    
+    H = len(counts)
+    F = frequencies
+    D = distance_matrix
+
+    maximum_mutation_frequency = calculate.maximum_mutation_frequency(H,F,D)
+    measurements.append({'Maximum mutation frequency (Mf max)': maximum_mutation_frequency})
+    
+    return measurements
+
+
+def get_sample_nucleotide_diversity_entity(distance_matrix, frequencies, measurements):
+    H = len(frequencies)
+    D = distance_matrix
+
+    PND = calculate.sample_nucleotide_diversity_entity(H,D)
+    measurements.append({'Population Nucleotide Diversity': PND})
+    
+    return measurements
+def get_FAD(distance_matrix, measurements):
+    
+    H = len(distance_matrix)
+    D = distance_matrix
+
+    FAD = calculate.FAD(H,D)
+    
+    measurements.append({'Functional attribute diversity': FAD})
+    
+    return measurements
+
+def get_mutation_frequency(distance_matrix,measurements):
+
+    H = len(distance_matrix)
+    D = distance_matrix
+    mutation_frequency = calculate.mutation_frequency(H,D)
+
+    measurements.append({'Mutation frequency': mutation_frequency})
+    return measurements
+
+def get_minimum_mutation_frequency(pileup, haplotypes):
+
+    M = pileup.count_unique_mutations()
+    N = haplotype.calculate_total_clones(haplotypes)
+    a = len(haplotypes[0].sequence)
+
+    minimum_mutation_frequency = calculate.minimum_mutation_frequency(M,N,a)
+
+    return minimum_mutation_frequency
     
 
-def get_number_of_haplotypes(): 
+def get_number_of_haplotypes(haplotypes): 
    
     """""
     #========================================================================
@@ -190,7 +281,8 @@ def get_number_of_haplotypes():
     # The number of unique haplotypes is theoretically 4^1 i.e 4
     # in the future this method will prob be modified.
     
-    haplotype_num = 4
+    haplotype_num = len(haplotypes)
+
 
     return haplotype_num
 
@@ -370,14 +462,44 @@ def get_hill_numbers(measurements, frequencies):
     """""
     #========================================================================
     
-    GET 
+    GET HILL NUMBERS
+
     PURPOSE
     -------
+    
+    Reports the 0, 1, 2, and 3 hill numbers.
+
     INPUT
     -------
+    [FLOAT LIST] [frequencies]
+        a list of relative frequencies of the haplotypes.
+
     RETURN
     -------
+    [Dictionary List] [measurements]
+
     COMMENTS
     -------
+
     #========================================================================
     """
+
+    # H = len(frequencie)
+    P = frequencies
+    H = 50
+    #print("Hill debug")
+    #print(H)
+    #print(P)
+
+    hill0 = calculate.hill_number(H,P,0)
+    hill1 = calculate.hill_number(H,P,1)
+    hill2 = calculate.hill_number(H,P,2)
+    hill3 = calculate.hill_number(H,P,3)
+    
+    measurements.append({'Hill Number 0': hill0})
+    measurements.append({'Hill Number 1': hill1})
+    measurements.append({'Hill Number 2': hill2})
+    measurements.append({'Hill Numbwe 3': hill2})
+
+    return measurements
+
