@@ -107,7 +107,7 @@ def parse_haplotypes_from_bam(samfile, reference, bam_location, start, k):
     
     sequenceID = getSequenceID(reference)
 
-    haplotype = []
+    haplotype = ""
     reads = samfile.fetch("AF033819.3", start, start + k)
     for read in reads:
         
@@ -117,7 +117,7 @@ def parse_haplotypes_from_bam(samfile, reference, bam_location, start, k):
 
         if read.get_overlap(start, start + k) == k:
             haplotype = read_sequence[haplotype_start : haplotype_end]
-    
+     
     return haplotype
     
 def getSequenceID(reference):
@@ -126,21 +126,24 @@ def getSequenceID(reference):
     sequenceID = sequenceID.rstrip() 
     return sequenceID
 
-def parse_haplotypes_called(references, ref, bam_location, start, k):
+def parse_haplotypes_called(references, ref, bam_location, consensus,  start, k):
 
-    haplotypes = []
+    haplotypes = {} 
     samfile = pysam.AlignmentFile(bam_location, "rb")
     for reference in references:
-        coverage = samfile.count_coverage(
-            contig=reference.name, start=0, stop=len(reference.seq),
-            quality_threshold=0)
         length = len(reference.seq)
-        print(length)
+        #  print(length)
 
-    for i in range(0, length - k + 1):
-         haplotypes.append(parse_haplotypes_from_bam(samfile, ref, bam_location, i, k))
-    
-    return haplotypes
+    for i in range(0, 100 - k + 1):
+        
+        
+        sequence = (parse_haplotypes_from_bam(samfile, ref, bam_location, i, k))
+        if len(sequence) == k:
+            haplotypes[i] = Haplotype(sequence, consensus)
+
+    haplotypes_list = list(haplotypes.values())
+    haplotypes_sorted = sort_haplotypes(haplotypes_list)
+    return haplotypes_sorted
 
 def parse_pileup_from_bam(references, bam_location):
     """
@@ -377,8 +380,6 @@ def parse_haplotypes_from_fasta(reads_location, consensus):
     for read in reads:
 
         sequence = str(read.seq)
-        print(len(sequence))
-        print(len(consensus))
         if sequence in haplotypes:
 
             haplotype = haplotypes.get(sequence)

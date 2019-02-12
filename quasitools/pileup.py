@@ -499,8 +499,6 @@ class Pileup(object):
                 consensus.append(base)
             count+=1
 
-        for i in consensus:
-            print(i)
         return consensus
                     
     def count_unique_mutations(self):
