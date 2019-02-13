@@ -98,9 +98,18 @@ def complexity(ctx, reference, bam):
 
     references = parse_references_from_fasta(reference)
     pileup = parse_pileup_from_bam(references, bam)
-    consensus = pileup.build_consensus_from_range(1, 50)
-    haplotypes = parse_haplotypes_called(
+    # obtains consensus of entire file.
+    consensus = pileup.build_consensus()
+
+    # returns an array containing a haplotype list.
+    haplotype_list = parse_haplotypes_called(
         references, reference, bam, consensus, 50, 50)
+
+    haplotypes = []
+
+    for i in range(0, 50):
+        for x in haplotype_list[i]:
+            haplotypes.append(x)
 
     distance_matrix = haplotype.build_distiance_matrix(haplotypes)
     counts = haplotype.build_counts(haplotypes)
