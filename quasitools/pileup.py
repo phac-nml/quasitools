@@ -1,7 +1,8 @@
 """
-Copyright Government of Canada 2018
+Copyright Government of Canada 2019
 
-Written by: Matthew Fogel, Public Health Agency of Canada
+Written by: Matthew Fogel
+Updated by Ahmed Kidwai Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this work except in compliance with the License. You may obtain a copy of the
@@ -454,21 +455,22 @@ class Pileup(object):
 
         return consensus
 
-    def  build_consensus_from_range(self, start_position, end_position):
+    def build_consensus_from_range(self, start_position, end_position):
         """""
         #========================================================================
-        
+
         BUILD CONSENSUS FOR BAM
-        
+        Written by: Ahmed Kidwai
+
         PURPOSE
         -------
-            
+
         Builds a consensus sequence from a range in the pileup.
-        
+
         INPUT
         -------
         [INT] [start_position]
-        [INT] [end_position] 
+        [INT] [end_position]
 
         RETURN
         -------
@@ -480,27 +482,29 @@ class Pileup(object):
         #========================================================================
         """
 
-        consensus = [] 
+        consensus = []
         count = 0
 
         while start_position > end_position:
-            click.echo("The start position is greater than the end position, please re-enter start and end position")
+            click.echo("The start position is greater than the end position, \
+                 please re-enter start and end position")
             start_position = input("Please re-enter the start position")
             end_position = input("Please re-enter the end position")
-        
+
         for position in self.pileup:
 
             sorted_position = sorted(position, key=position.get, reverse=True)
-            if sorted_position and count >= start_position and count <= end_position:
+            if (sorted_position and count >= start_position and count <=
+                    end_position):
                 base = sorted_position[0]
                 consensus.append(base)
-            elif count>= start_position and count <= end_position:
+            elif count >= start_position and count <= end_position:
                 base = "-"
                 consensus.append(base)
-            count+=1
+            count += 1
 
         return consensus
-                    
+
     def count_unique_mutations(self):
         """
         # ====================================================================
