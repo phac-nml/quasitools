@@ -450,8 +450,9 @@ class Pileup(object):
         for position in self.pileup:
 
             sorted_position = sorted(position, key=position.get, reverse=True)
-            base = sorted_position[0]
-            consensus.append(base)
+            if sorted_position:
+                base = sorted_position[0]
+                consensus.append(base)
 
         return consensus
 
