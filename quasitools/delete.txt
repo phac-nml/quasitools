@@ -1,0 +1,5146 @@
+
+Starting...
+Using file hiv.fasta as reference
+Reading input from file(s)  variant.bam
+This is a sequence:
+ACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCT
+This is a sequence:
+CTCTCTGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGG
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTA
+This is a sequence:
+TCTCTGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGA
+This is a sequence:
+TCTCTGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGA
+This is a sequence:
+CTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAG
+This is a sequence:
+CTCTGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAG
+This is a sequence:
+CTCTGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAA
+This is a sequence:
+TACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGT
+This is a sequence:
+TCTGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGC
+This is a sequence:
+TCTGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAAC
+This is a sequence:
+ACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+AAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTT
+This is a sequence:
+CTGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCC
+This is a sequence:
+CTGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACC
+This is a sequence:
+CTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCT
+This is a sequence:
+ACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGG
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+AGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTA
+This is a sequence:
+TGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCC
+This is a sequence:
+TGGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCC
+This is a sequence:
+TTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTA
+This is a sequence:
+CACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAG
+This is a sequence:
+GGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCA
+This is a sequence:
+GGTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCA
+This is a sequence:
+TGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAG
+This is a sequence:
+ACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGC
+This is a sequence:
+GTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCAC
+This is a sequence:
+GTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCAC
+This is a sequence:
+GAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGT
+This is a sequence:
+CTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTC
+This is a sequence:
+GTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCAC
+This is a sequence:
+GTTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCAC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+ACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCC
+This is a sequence:
+TTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACT
+This is a sequence:
+TTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACT
+This is a sequence:
+AAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTT
+This is a sequence:
+TACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCC
+This is a sequence:
+TTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACT
+This is a sequence:
+TTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACT
+This is a sequence:
+TTAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACT
+This is a sequence:
+GCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAG
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCA
+This is a sequence:
+TAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTG
+This is a sequence:
+TAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTG
+This is a sequence:
+AGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTA
+This is a sequence:
+ACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCC
+This is a sequence:
+TAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTG
+This is a sequence:
+TAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTG
+This is a sequence:
+TAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTG
+This is a sequence:
+CAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGT
+This is a sequence:
+TAGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTG
+This is a sequence:
+GGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAG
+This is a sequence:
+AGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGC
+This is a sequence:
+AGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGC
+This is a sequence:
+GCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAG
+This is a sequence:
+CTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCT
+This is a sequence:
+AGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGC
+This is a sequence:
+AGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGC
+This is a sequence:
+AGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGC
+This is a sequence:
+AAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTG
+This is a sequence:
+AGACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGC
+This is a sequence:
+GCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAG
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGA
+This is a sequence:
+GACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCT
+This is a sequence:
+GACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCT
+This is a sequence:
+CACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGC
+This is a sequence:
+TTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTA
+This is a sequence:
+GACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCT
+This is a sequence:
+GACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCT
+This is a sequence:
+GACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCT
+This is a sequence:
+AACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGG
+This is a sequence:
+GACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCT
+This is a sequence:
+CAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+AAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAG
+This is a sequence:
+ACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTT
+This is a sequence:
+ACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTT
+This is a sequence:
+ACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCC
+This is a sequence:
+TGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAG
+This is a sequence:
+ACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTT
+This is a sequence:
+ACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTT
+This is a sequence:
+ACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTT
+This is a sequence:
+ACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGG
+This is a sequence:
+ACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTT
+This is a sequence:
+AAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTG
+This is a sequence:
+ACCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+AGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGA
+This is a sequence:
+CCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTA
+This is a sequence:
+CCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTA
+This is a sequence:
+CTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCA
+This is a sequence:
+GAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGT
+This is a sequence:
+CCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTA
+This is a sequence:
+CCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTA
+This is a sequence:
+CCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTA
+This is a sequence:
+CACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGT
+This is a sequence:
+CCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTA
+This is a sequence:
+AACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGG
+This is a sequence:
+CCAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAG
+This is a sequence:
+CAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAA
+This is a sequence:
+CAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAA
+This is a sequence:
+TCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAG
+This is a sequence:
+AAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTT
+This is a sequence:
+CAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAA
+This is a sequence:
+CAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAA
+This is a sequence:
+CAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAA
+This is a sequence:
+ACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTT
+This is a sequence:
+CAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAA
+This is a sequence:
+ACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGG
+This is a sequence:
+CAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAA
+This is a sequence:
+CAGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGC
+This is a sequence:
+AGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAG
+This is a sequence:
+AGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAG
+This is a sequence:
+CAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGA
+This is a sequence:
+AGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTA
+This is a sequence:
+AGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAG
+This is a sequence:
+AGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAG
+This is a sequence:
+AGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAG
+This is a sequence:
+CTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTC
+This is a sequence:
+AGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAG
+This is a sequence:
+CACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGT
+This is a sequence:
+AGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAG
+This is a sequence:
+AGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAG
+This is a sequence:
+AGATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAG
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCT
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGC
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGC
+This is a sequence:
+AAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAG
+This is a sequence:
+GCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAG
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGC
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGC
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGC
+This is a sequence:
+TACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCC
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGC
+This is a sequence:
+ACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTT
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGC
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGC
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGC
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGC
+This is a sequence:
+GATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+AAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+AGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGA
+This is a sequence:
+CACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+ACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+CTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+ATCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+AGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCC
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCT
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+GGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAG
+This is a sequence:
+ACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCC
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+CTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCT
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+TACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCC
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCC
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTC
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+GCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGC
+This is a sequence:
+CTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCA
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+TTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTA
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+ACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCC
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCA
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCA
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+CAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCT
+This is a sequence:
+TCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAG
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+TGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAG
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+CTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCT
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+TGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCA
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTG
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTG
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTG
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAG
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAA
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+AAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTC
+This is a sequence:
+CAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGA
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+GAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGT
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+TTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTA
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+GAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAA
+This is a sequence:
+ACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGA
+This is a sequence:
+ACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGA
+This is a sequence:
+ACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGG
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAAT
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+AGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCC
+This is a sequence:
+AAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAG
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+AAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTT
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+TGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAG
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+CAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAG
+This is a sequence:
+CAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAG
+This is a sequence:
+CAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAG
+This is a sequence:
+AGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAAT
+This is a sequence:
+CACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTAT
+This is a sequence:
+CACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTAT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGC
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATA
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+GCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCC
+This is a sequence:
+AGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGA
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+AGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTA
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+GAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGT
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+AACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGG
+This is a sequence:
+AACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGG
+This is a sequence:
+AACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGG
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+ACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATT
+This is a sequence:
+ACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATT
+This is a sequence:
+GCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+ATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCT
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCA
+This is a sequence:
+GGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAG
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+GCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAG
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+AAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTT
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+ACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGC
+This is a sequence:
+ACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGC
+This is a sequence:
+ACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGC
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTG
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTG
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+CCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAA
+This is a sequence:
+GTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTC
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+TTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAG
+This is a sequence:
+GCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGC
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGC
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+AGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCT
+This is a sequence:
+CAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCT
+This is a sequence:
+CAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCT
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+ACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGA
+This is a sequence:
+ACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+CTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAA
+This is a sequence:
+TCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTA
+This is a sequence:
+AGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCA
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGG
+This is a sequence:
+CAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCT
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+ACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCC
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+GCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+AGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTT
+This is a sequence:
+AGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTT
+This is a sequence:
+AGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTT
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+CAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAG
+This is a sequence:
+CAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+CACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTAT
+This is a sequence:
+GTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTT
+This is a sequence:
+TGGGAGCTCTCTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+TGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAG
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAG
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+TATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGC
+This is a sequence:
+AAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+CTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCA
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+CACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTA
+This is a sequence:
+GACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTA
+This is a sequence:
+GACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTT
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+AACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGG
+This is a sequence:
+AACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGG
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+ACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATT
+This is a sequence:
+TCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTA
+This is a sequence:
+GGGAGCTCTCTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+GGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+AGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGA
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+ATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCT
+This is a sequence:
+AGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCC
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+TCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAG
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+ACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCC
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+ACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAA
+This is a sequence:
+ACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAA
+This is a sequence:
+ACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTA
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+ACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGC
+This is a sequence:
+ACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGC
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTG
+This is a sequence:
+CACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTAT
+This is a sequence:
+GGAGCTCTCTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+GGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+This is a sequence:
+CAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAG
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGAT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+TTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTC
+This is a sequence:
+GCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCC
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+CAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGA
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+CTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCA
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+CGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAG
+This is a sequence:
+CGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAG
+This is a sequence:
+CGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAG
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+CAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCT
+This is a sequence:
+CAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+ACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGA
+This is a sequence:
+ACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATT
+This is a sequence:
+GAGCTCTCTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+GAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTT
+This is a sequence:
+AGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATC
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+TGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCA
+This is a sequence:
+CTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCA
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+TCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+GGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGC
+This is a sequence:
+GGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGC
+This is a sequence:
+GGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGC
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTT
+This is a sequence:
+AGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTT
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+CAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAG
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTG
+This is a sequence:
+AGCTCTCTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+AGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTG
+This is a sequence:
+GAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCT
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAG
+This is a sequence:
+TTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAG
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+AGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGA
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+CAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGA
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCA
+This is a sequence:
+GGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCA
+This is a sequence:
+GGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCA
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTA
+This is a sequence:
+GACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTA
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+AACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGG
+This is a sequence:
+ACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGA
+This is a sequence:
+GCTCTCTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+AGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTT
+This is a sequence:
+GCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGC
+This is a sequence:
+TACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGC
+This is a sequence:
+TACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTG
+This is a sequence:
+CTCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+AGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGA
+This is a sequence:
+TTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGG
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+GGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAG
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+AAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAG
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+GCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAG
+This is a sequence:
+GCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAG
+This is a sequence:
+GCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAG
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+ACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAA
+This is a sequence:
+ACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAA
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+ACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGC
+This is a sequence:
+CAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAG
+This is a sequence:
+CTCTCTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+GTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTT
+This is a sequence:
+CTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCC
+This is a sequence:
+ACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCA
+This is a sequence:
+ACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGG
+This is a sequence:
+TCTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+GGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGAT
+This is a sequence:
+TATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGC
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+GCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGC
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+AGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGA
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+CAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGT
+This is a sequence:
+CAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGT
+This is a sequence:
+CAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+CGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAG
+This is a sequence:
+CGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAG
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+CAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCT
+This is a sequence:
+AACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGG
+This is a sequence:
+TCTCTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+TCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTA
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+CCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAA
+This is a sequence:
+CCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAA
+This is a sequence:
+TCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+AAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGT
+This is a sequence:
+CTCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+GCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATC
+This is a sequence:
+ATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+GGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAG
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+AAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTG
+This is a sequence:
+AAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTG
+This is a sequence:
+AAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTG
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+GGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGC
+This is a sequence:
+GGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGC
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+AGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTT
+This is a sequence:
+ACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGC
+This is a sequence:
+CTCTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTAT
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAG
+This is a sequence:
+CAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAG
+This is a sequence:
+CTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+CTCTGGCTAACTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTT
+This is a sequence:
+AGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+AGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTC
+This is a sequence:
+TCTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+CTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCT
+This is a sequence:
+TTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTC
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+AAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTC
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+GCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGC
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+AACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGG
+This is a sequence:
+AACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGG
+This is a sequence:
+AACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+GGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCA
+This is a sequence:
+GGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCA
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+GACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTA
+This is a sequence:
+CAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCT
+This is a sequence:
+TCTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+ACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATT
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+AGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGC
+This is a sequence:
+AGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGC
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TCTGGCTAACTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+GTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAG
+This is a sequence:
+TCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTG
+This is a sequence:
+TAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCT
+This is a sequence:
+CTGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+TTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTG
+This is a sequence:
+TGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+AGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCC
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCT
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+ACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGG
+This is a sequence:
+ACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGG
+This is a sequence:
+ACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGG
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+GCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAG
+This is a sequence:
+GCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAG
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+ACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAA
+This is a sequence:
+AGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTT
+This is a sequence:
+CTGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTG
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+GAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCT
+This is a sequence:
+GAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCT
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTGGCTAACTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+TTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGC
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+AGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAA
+This is a sequence:
+CTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGA
+This is a sequence:
+CTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTA
+This is a sequence:
+TGGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGG
+This is a sequence:
+GAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+GCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCC
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+AAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTC
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+CACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGT
+This is a sequence:
+CACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGT
+This is a sequence:
+CACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGT
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+CAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGT
+This is a sequence:
+CAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGT
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+CGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAG
+This is a sequence:
+GACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTA
+This is a sequence:
+TGGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+ACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGA
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+AGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTT
+This is a sequence:
+AGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTT
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TGGCTAACTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCC
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+GTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAG
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCA
+This is a sequence:
+TGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAG
+This is a sequence:
+TCTAGTCACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+AGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAA
+This is a sequence:
+GGCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+AAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGT
+This is a sequence:
+AGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGA
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+CTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCA
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+AGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCC
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+ACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTT
+This is a sequence:
+ACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTT
+This is a sequence:
+ACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+AAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTG
+This is a sequence:
+AAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTG
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGC
+This is a sequence:
+ACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAA
+This is a sequence:
+GGGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+CAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAG
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTT
+This is a sequence:
+GTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTT
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+GGCTAACTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+ACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCA
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+TTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGG
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+AGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAA
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+CTAGTCACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTC
+This is a sequence:
+GGCTAACTAGGGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAAC
+This is a sequence:
+GCTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+AGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTC
+This is a sequence:
+GGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGAT
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+TTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCC
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+CTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTC
+This is a sequence:
+CTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTC
+This is a sequence:
+CTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTTC
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+AACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGG
+This is a sequence:
+AACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCA
+This is a sequence:
+CGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAG
+This is a sequence:
+GGTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+AACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+TCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTA
+This is a sequence:
+TCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTA
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GCTAACTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+CCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCAA
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+TACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGC
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+GTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAG
+This is a sequence:
+GCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+TAGTCACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCA
+This is a sequence:
+GCTAACTAGGGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGTG
+This is a sequence:
+TCTCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACC
+This is a sequence:
+CTAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+GCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCT
+This is a sequence:
+GCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+TTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGG
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCA
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+TACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCC
+This is a sequence:
+TACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCC
+This is a sequence:
+TACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTTCC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+ACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGG
+This is a sequence:
+ACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGG
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+GCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAG
+This is a sequence:
+GGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGC
+This is a sequence:
+GTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+ACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTAT
+This is a sequence:
+CACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTAT
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTAACTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCAAG
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+ACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCA
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+TTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGG
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+AGTCACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAA
+This is a sequence:
+CTAACTAGGGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGTGC
+This is a sequence:
+CTCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCAC
+This is a sequence:
+CTAACTAGGGAACCCACTGCTTAAGCCTCATTAAAGCTTGCCTTGAGTGC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCA
+This is a sequence:
+TAACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+CAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTA
+This is a sequence:
+CTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCA
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGC
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAG
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+ACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCC
+This is a sequence:
+ACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCC
+This is a sequence:
+ACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTTCCC
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+CACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGT
+This is a sequence:
+CACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+CAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGT
+This is a sequence:
+GGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCA
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+CAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+ACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATT
+This is a sequence:
+ACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATT
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TAACTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+AGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCAAGC
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+CCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAA
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGC
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+GTCACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAG
+This is a sequence:
+TAACTAGGGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+TCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACA
+This is a sequence:
+TAACTAGGGAACCCACTGCTTAAGCCTCATTAAAGCTTGCCTTGAGTGCT
+This is a sequence:
+GATCTCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAG
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCAG
+This is a sequence:
+AACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAA
+This is a sequence:
+TTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTG
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCAT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+ATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+TTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGG
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+CTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCT
+This is a sequence:
+CTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCT
+This is a sequence:
+CTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTTCCCT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+ACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTT
+This is a sequence:
+ACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTG
+This is a sequence:
+GCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAG
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTG
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTG
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+AACTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+GAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCAAGCT
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+CAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAG
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+ACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCA
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+TCACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGG
+This is a sequence:
+AACTAGGGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+CTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACAC
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCATTAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+ATCTCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGC
+This is a sequence:
+AACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+GTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCAGA
+This is a sequence:
+ACTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+GTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAAC
+This is a sequence:
+TAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGG
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCATC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+TTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+TATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+TTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTA
+This is a sequence:
+TTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTA
+This is a sequence:
+TTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTTCCCTA
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTG
+This is a sequence:
+CTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTC
+This is a sequence:
+CTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+AACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGG
+This is a sequence:
+CAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGT
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+GACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTA
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGA
+This is a sequence:
+ACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGA
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+AGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCAAGCTT
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+AGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGC
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+CCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAA
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+CACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGC
+This is a sequence:
+ACTAGGGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+TAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACACA
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCATTAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+TCTCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCA
+This is a sequence:
+ACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTC
+This is a sequence:
+ACTACGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGGGTGCTTC
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCAGAG
+This is a sequence:
+CTAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+TGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACC
+This is a sequence:
+AAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGT
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCATCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+TGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+ATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCT
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+TGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAG
+This is a sequence:
+TGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAG
+This is a sequence:
+TGAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTTCCCTAG
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTGA
+This is a sequence:
+TACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCC
+This is a sequence:
+TACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCC
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+ACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGG
+This is a sequence:
+AAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTG
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+ACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAG
+This is a sequence:
+CAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAG
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+GTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCAAGCTTT
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+GAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCT
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAG
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+ACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCA
+This is a sequence:
+CTAGGGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+AGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACACAA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCATTAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCAA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+CTACGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGGGTGCTTCA
+This is a sequence:
+CTAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+TCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCAGAGA
+This is a sequence:
+TAGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+GGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCA
+This is a sequence:
+AGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTC
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCATCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+GAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAG
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TTGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTC
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+GAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGT
+This is a sequence:
+GAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGT
+This is a sequence:
+GAAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTTCCCTAGT
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTGAA
+This is a sequence:
+ACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCC
+This is a sequence:
+ACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCC
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+CACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGT
+This is a sequence:
+AACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGG
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+CGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAG
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+AACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGG
+This is a sequence:
+AACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGG
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCAAGCTTTA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+AGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTT
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+AGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGC
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+CCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAA
+This is a sequence:
+TAGGGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+GTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACACAAG
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCATTAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCAAT
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TACGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGGGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAA
+This is a sequence:
+TAGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCCA
+This is a sequence:
+GAGGGATCTCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCAGAGAG
+This is a sequence:
+AGGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+GGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCAG
+This is a sequence:
+GCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCT
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCATCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGA
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+TGAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCA
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTT
+This is a sequence:
+AAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTT
+This is a sequence:
+AAGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTTCCCTAGTT
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTGAAG
+This is a sequence:
+CTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCT
+This is a sequence:
+CTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCT
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+ACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTT
+This is a sequence:
+ACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+GGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGC
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+ACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGC
+This is a sequence:
+ACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGC
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+CACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCAAGCTTTAC
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+GTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTT
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+GAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCT
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+CAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAG
+This is a sequence:
+AGGGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+TTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACACAAGG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCATTAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+CTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCAATC
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+ACGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGGGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCCAG
+This is a sequence:
+AGGGATCTCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTG
+This is a sequence:
+AGGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAG
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCAGAGAGA
+This is a sequence:
+GGGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCAGA
+This is a sequence:
+CAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTA
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCATCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGAT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GAGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAG
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+AGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTA
+This is a sequence:
+AGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTA
+This is a sequence:
+AGCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTTCCCTAGTTA
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTGAAGT
+This is a sequence:
+TTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTA
+This is a sequence:
+TTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTA
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+CTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTC
+This is a sequence:
+CACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGA
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCA
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+CAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCT
+This is a sequence:
+CAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GTGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+ACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCAAGCTTTACT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+TCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTA
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+AGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+AGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGC
+This is a sequence:
+GGGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+TACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACACAAGGC
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCATTAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+TAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCAATCA
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+CGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGGGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCCAGT
+This is a sequence:
+GGGATCTCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGA
+This is a sequence:
+GGGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGT
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+CTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCAGAGAGAC
+This is a sequence:
+GGAGCCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+TTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAACCAGAG
+This is a sequence:
+AGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATCTGGTCTAA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCATCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGATT
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+AGGCTTAAGCAGTGGGTTCCCTAGTTAGCCAGAGAGCTCCCAGGCTCAGA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTG
+This is a sequence:
+GCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAG
+This is a sequence:
+GCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAGTTAG
+This is a sequence:
+GCACTCAAGGCAAGCTTTATTGAGGCTTTAGCAGTGGGTTCCCTAGTTAG
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTGAAGTA
+This is a sequence:
+TGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAG
+This is a sequence:
+TGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCCCTAG
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+TACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTTCC
+This is a sequence:
+ACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAGTGGGTT
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGAA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTC
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTTAAGCAG
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+AGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTT
+This is a sequence:
+AGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTATTGAGGCTT
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAAGCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+TGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+CACAACAGACGGGCAAACACTACTTGAAGCACTCAAGCCAAGCTTTACTG
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+CACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTTAT
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCTTT
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GAGTCACACAACAGACGGGCAAACACTACTTGAAGCACTCAAGGCAAGCT
+This is a sequence:
+GGAACCCACTGCGTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+ACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCACACAAGGCA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCATTAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+AGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAAGCAATCAA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGGGTGCTTCAAGTT
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCCAGTA
+This is a sequence:
+GGATCTCTAGTTACCAGAGTCACACAACAGACGGGCAAACACTACTTGAA
+This is a sequence:
+GGAACCCACTGCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTA
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+This is a sequence:
+
+Complete!
+
+Time to run--- 0.1032538414 seconds ---

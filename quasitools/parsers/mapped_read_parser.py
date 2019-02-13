@@ -68,6 +68,8 @@ def parse_mapped_reads_from_bam(reference, bam):
 
     return mrc
 
+def build_haplotypes(sequence):
+
 
 def parse_haplotypes_from_bam(
         samfile,
@@ -102,7 +104,7 @@ def parse_haplotypes_from_bam(
     -------
     [STRING] [haplotyess]
 
-    COMMENTS
+    COMMENTS)
     -------
     - lets do it.
 
@@ -116,19 +118,28 @@ def parse_haplotypes_from_bam(
     for read in reads:
 
         read_sequence = read.get_forward_sequence()
-        haplotype_start = start + 1 - read.reference_start
+        haplotype_start = start  - read.reference_start
         haplotype_end = haplotype_start + k
 
-        if read.get_overlap(start, start + k) == k:
-            # gets the sequence
-            sequence = str(read_sequence[haplotype_start: haplotype_end])
+        #print("This is the start: " + str(start))
+        #print("This is reference_start: " +str(read.reference_start))
 
+        if read.get_overlap(start, start + k) == k:
+        
+         #   print("This is the haplotype start: " + str(haplotype_start))
+          #  print("This is haplotype end: " + str(haplotype_end))
+           
+            sequence = str(read_sequence[haplotype_start: haplotype_end])
+         #   print("This is the sequence" + sequence)
+        
+            print("This is the consensus: " + consensus)
+            print("This is the sequence: " + sequence)
             if sequence in haplotypes:
                 haplotype = haplotypes.get(sequence)
                 haplotype.count += 1
             else:
-                if len(sequence) == k:
-                    haplotypes[sequence] = Haplotype(sequence, consensus)
+                #print("This is the sequence: " + sequence))
+                haplotypes[sequence] = Haplotype(sequence, consensus)
 
     haplotypes_list = list(haplotypes.values())
     haplotypes_sorted = sort_haplotypes(haplotypes_list)
@@ -194,23 +205,24 @@ def parse_haplotypes_called(
     samfile = pysam.AlignmentFile(bam_location, "rb")
     ranged_consensus = ""
     for reference in references:
-        length = 100
-        #  len(reference.seq)
+        length = len(reference.seq)
         #  placeholder to pass CI test
 
-    for i in range(1, length - k + 1):
+        for i in range(0, length - k + 1):
+
+            print(i)
 
         # returns a list of haplotype objects
-        ranged_consensus = consensus[i:(i + k)]
+            ranged_consensus = consensus[i:(i + k)]
+            print("This is the ranged consensus length" + str(len(ranged_consensus)))
+            haplotype_list = (
+                parse_haplotypes_from_bam(
+                    samfile,
+                    reference,
+                    bam_location,
+                    i, k, ranged_consensus, length))
 
-        haplotype_list = (
-            parse_haplotypes_from_bam(
-                samfile,
-                reference,
-                bam_location,
-                i, k, ranged_consensus, length))
-
-        haplotypes.append(haplotype_list)
+            haplotypes.append(haplotype_list)
 
     return haplotypes
 

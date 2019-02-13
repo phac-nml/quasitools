@@ -450,11 +450,19 @@ class Pileup(object):
         for position in self.pileup:
 
             sorted_position = sorted(position, key=position.get, reverse=True)
+            
             if sorted_position:
                 base = sorted_position[0]
                 consensus.append(base)
+            else:
+                # TODO is this correct terminology?
+                base = GAP
+                consensus.append(base)
 
-        return consensus
+        # TODO naming of variable
+        result = ''.join(consensus)
+
+        return result
 
     def build_consensus_from_range(self, start_position, end_position):
         """""
