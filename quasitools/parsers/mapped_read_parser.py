@@ -22,8 +22,6 @@ specific language governing permissions and limitations under the License.
 
 import pysam
 import Bio.SeqIO
-import os
-
 
 from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
@@ -71,7 +69,14 @@ def parse_mapped_reads_from_bam(reference, bam):
     return mrc
 
 
-def parse_haplotypes_from_bam(samfile, reference, bam_location, start, k):
+def parse_haplotypes_from_bam(
+        samfile,
+        reference,
+        bam_location,
+        start,
+        k,
+        consensus,
+        length):
     """""
     #========================================================================
     PARSE HAPLOTYPES FROM BAM
@@ -104,55 +109,31 @@ def parse_haplotypes_from_bam(samfile, reference, bam_location, start, k):
     #========================================================================
     """
 
-    sequenceID = parse_sequence_id(reference)
+    haplotypes = {}
 
-    haplotype = ""
-    reads = samfile.fetch(sequenceID, start, start + k)
+    reads = samfile.fetch("AF033819.3", start, start + k)
+
     for read in reads:
 
         read_sequence = read.get_forward_sequence()
-        haplotype_start = start - read.reference_start
+        haplotype_start = start + 1 - read.reference_start
         haplotype_end = haplotype_start + k
 
         if read.get_overlap(start, start + k) == k:
-            haplotype = read_sequence[haplotype_start: haplotype_end]
+            # gets the sequence
+            sequence = str(read_sequence[haplotype_start: haplotype_end])
 
-    return haplotype
+            if sequence in haplotypes:
+                haplotype = haplotypes.get(sequence)
+                haplotype.count += 1
+            else:
+                if len(sequence) == k:
+                    haplotypes[sequence] = Haplotype(sequence, consensus)
 
+    haplotypes_list = list(haplotypes.values())
+    haplotypes_sorted = sort_haplotypes(haplotypes_list)
 
-def parse_sequence_id(reference):
-    """""
-    #========================================================================
-    PARSE SEQUENCE_ID
-
-    PURPOSE
-    -------
-
-    Parses a reference file to obtain the sequence ID
-
-    INPUT
-    -------
-
-    [REFEFERENCE_FILE_LOCACTION] [referece]
-        - The reference fiel
-
-    RETURN
-    -------
-    [STRING] [sequenceID]
-
-    COMMENTS
-    -------
-    First removes everything after the first line
-    Then removes everything after the first space
-    Finally removes the ">" sign at the begining of the string
-    #========================================================================
-    """
-
-    sep = " "
-    sequenceID = str(os.popen("head -1 hiv.fasta").read())
-    sequenceID = sequenceID.split(sep, 1)[0]
-    sequenceID = sequenceID.replace(">", "")
-    return sequenceID
+    return haplotypes_sorted
 
 
 def parse_haplotypes_called(
@@ -209,28 +190,29 @@ def parse_haplotypes_called(
     #========================================================================
     """
 
-    haplotypes = {}
+    haplotypes = []
     samfile = pysam.AlignmentFile(bam_location, "rb")
+    ranged_consensus = ""
     for reference in references:
-        #  length = len(reference.seq)
+        length = 100
+        #  len(reference.seq)
         #  placeholder to pass CI test
-        print("")
-    for i in range(0, 100 - k + 1):
 
-        sequence = (
+    for i in range(1, length - k + 1):
+
+        # returns a list of haplotype objects
+        ranged_consensus = consensus[i:(i + k)]
+
+        haplotype_list = (
             parse_haplotypes_from_bam(
                 samfile,
                 reference,
                 bam_location,
-                i,
-                k))
-        # First haplotype was always empty, rest were proper length.
-        if len(sequence) == k:
-            haplotypes[i] = Haplotype(sequence, consensus)
+                i, k, ranged_consensus, length))
 
-    haplotypes_list = list(haplotypes.values())
-    haplotypes_sorted = sort_haplotypes(haplotypes_list)
-    return haplotypes_sorted
+        haplotypes.append(haplotype_list)
+
+    return haplotypes
 
 
 def parse_pileup_from_bam(references, bam_location):
