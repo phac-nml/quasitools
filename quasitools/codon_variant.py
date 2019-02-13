@@ -49,8 +49,8 @@ class CodonVariant(Variant):
 
     def to_csv_entry(self, offset):
         return "%s,%i-%i,%i,%i,%s,%s,%s,%s,%i,%.2f,%s,%0.4f,%0.4f\n" % (
-            self.gene, self.nt_start_gene+offset, self.nt_end_gene+offset,
-            self.nt_start+offset, self.nt_end+offset, self.ref_codon,
+            self.gene, self.nt_start_gene + offset, self.nt_end_gene + offset,
+            self.nt_start + offset, self.nt_end + offset, self.ref_codon,
             self.mutant_codon, self.ref_aa, self.mutant_aa,
             self.coverage, self.mutant_freq, self.mutant_type,
             self.ns_count, self.s_count
@@ -73,8 +73,8 @@ class CodonVariant(Variant):
 
         coverage = census.coverage_at(frame, nt_pos)
         ref_seq = census.mapped_read_collections[0].reference.seq
-        ref_codon = ref_seq[(nt_pos*3+frame):
-                            (nt_pos*3+frame) + 3].lower()
+        ref_codon = ref_seq[(nt_pos * 3 + frame):
+                            (nt_pos * 3 + frame) + 3].lower()
         ref_aa = Seq(ref_codon).translate()[0]
 
         if aa == ref_aa:
@@ -87,20 +87,20 @@ class CodonVariant(Variant):
 
         for codon_pos in range(0, 3):
             nucleotide = codon[
-                codon_pos:codon_pos+1]
+                codon_pos:codon_pos + 1]
             if nucleotide.upper() == nucleotide:
                 base_change_pos.append(codon_pos)
 
         ns_count = 0
         s_count = 0
 
-        for codon_permutation in codon_permutations[nt_change_count-1]:
+        for codon_permutation in codon_permutations[nt_change_count - 1]:
             codon_pathway = ref_codon
             for base_pos in codon_permutation:
                 mutant_pos = base_change_pos[base_pos]
-                mutant_nt = codon[mutant_pos:mutant_pos+1]
+                mutant_nt = codon[mutant_pos:mutant_pos + 1]
                 codon_pathway = codon_pathway[:mutant_pos] + \
-                    mutant_nt + codon_pathway[mutant_pos+1:]
+                    mutant_nt + codon_pathway[mutant_pos + 1:]
 
                 if Seq(codon_pathway).translate()[0] == ref_aa:
                     s_count += 1.0
@@ -117,19 +117,19 @@ class CodonVariant(Variant):
                 nt_pos,
                 aa,
                 CONFIDENT,
-                codon)/float(coverage)*100.0,
+                codon) / float(coverage) * 100.0,
             pos=(nt_pos - (gene['start'] // 3) + 1),
             nt_start_gene=gene['start'],
             nt_end_gene=gene['end'],
-            nt_start=nt_pos*3 + frame,
-            nt_end=nt_pos*3 + frame+2,
+            nt_start=nt_pos * 3 + frame,
+            nt_end=nt_pos * 3 + frame + 2,
             ref_codon=ref_codon,
             mutant_codon=codon,
             ref_aa=ref_aa,
             mutant_aa=aa,
             mutant_type=mutation_type,
-            ns_count=ns_count/len(codon_permutations[nt_change_count-1]),
-            s_count=s_count/len(codon_permutations[nt_change_count-1]))
+            ns_count=ns_count / len(codon_permutations[nt_change_count - 1]),
+            s_count=s_count / len(codon_permutations[nt_change_count - 1]))
 
 
 class CodonVariantCollection(VariantCollection):
@@ -161,8 +161,8 @@ class CodonVariantCollection(VariantCollection):
 
                 for nt_pos in range(gene_start, gene_end):
                     ref_seq = census.mapped_read_collections[0].reference.seq
-                    ref_codon = ref_seq[(nt_pos*3+frame):
-                                        (nt_pos*3+frame) + 3].lower()
+                    ref_codon = ref_seq[(nt_pos * 3 + frame):
+                                        (nt_pos * 3 + frame) + 3].lower()
 
                     for aa in census.aminos_at(frame, nt_pos, CONFIDENT):
                         frequency = census.amino_frequency_at(
@@ -179,7 +179,7 @@ class CodonVariantCollection(VariantCollection):
                                         nt_pos)
 
                                     var_collect.variants[gene_key][
-                                        (nt_pos*3 + frame)][
+                                        (nt_pos * 3 + frame)][
                                             codon] = mutation
         return var_collect
 
@@ -205,8 +205,10 @@ class CodonVariantCollection(VariantCollection):
 
         # Iterate through the variants to
         # create a gene map and report on each gene
-        genes = defaultdict(lambda: defaultdict(lambda:
-                                                defaultdict(lambda: defaultdict(int))))
+        genes = defaultdict(
+            lambda: defaultdict(
+                lambda: defaultdict(
+                    lambda: defaultdict(int))))
 
         for gene in self.variants:
             for pos in self.variants[gene]:
@@ -218,10 +220,10 @@ class CodonVariantCollection(VariantCollection):
 
                     if variant.ns_count > 0:
                         genes[gene][pos]['NS'][variant.ns_count] += (
-                            variant.mutant_freq/100.0)
+                            variant.mutant_freq / 100.0)
                     if variant.s_count > 0:
                         genes[gene][pos]['S'][variant.s_count] += (
-                            variant.mutant_freq/100.0)
+                            variant.mutant_freq / 100.0)
 
         for gene in genes:
             s_sites = 0
@@ -238,26 +240,26 @@ class CodonVariantCollection(VariantCollection):
             pn_ncod = 0
             ps_ncod = 0
 
-            for i in range(0, len(gene_seq)-1, 3):
-                codon = gene_seq[i:i+3]
+            for i in range(0, len(gene_seq) - 1, 3):
+                codon = gene_seq[i:i + 3]
                 aa = Seq(codon).translate()[0]
                 non_syn = 0
 
                 # synonymous sites only occur at 1st and 3rd pos in a codon
                 for j in range(0, 3):
                     for nt in ('a', 'c', 'g', 't'):
-                        if nt.lower() != codon[j:j+1].lower():
-                            mod_codon = codon[:j] + nt + codon[j+1:]
+                        if nt.lower() != codon[j:j + 1].lower():
+                            mod_codon = codon[:j] + nt + codon[j + 1:]
                             mod_aa = Seq(mod_codon).translate()[0]
                             if mod_aa.upper() != aa.upper():
-                                non_syn += 1/3.0
+                                non_syn += 1 / 3.0
 
                 ns_sites += non_syn
-                s_sites += 3-non_syn
+                s_sites += 3 - non_syn
 
                 if non_syn > 0:
                     ns_ncod += 1
-                if 3-non_syn > 0:
+                if 3 - non_syn > 0:
                     s_ncod += 1
 
                 pni = 0
@@ -266,26 +268,26 @@ class CodonVariantCollection(VariantCollection):
                 if 'NS' in genes[gene][i]:
                     for count in genes[gene][i]['NS']:
                         pni += genes[gene][i]['NS'][count] * (
-                            count/non_syn)
+                            count / non_syn)
                     pn += pni
                     pn_ncod += 1
 
                 if 'S' in genes[gene][i]:
                     for count in genes[gene][i]['S']:
                         psi += genes[gene][i]['S'][count] * (
-                            count/(3-non_syn))
+                            count / (3 - non_syn))
                     ps += psi
                     ps_ncod += 1
 
             if pn_ncod > 0 and ps_ncod > 0:
-                pn = pn/pn_ncod
-                ps = ps/ps_ncod
+                pn = pn / pn_ncod
+                ps = ps / ps_ncod
 
-                if (1-(4*pn/3.0) > 0) and (1-(4*ps/3.0) > 0):
-                    dn = -(3/4.0)*log(1-(4*pn/3.0))
-                    ds = -(3/4.0)*log(1-(4*ps/3.0))
+                if (1 - (4 * pn / 3.0) > 0) and (1 - (4 * ps / 3.0) > 0):
+                    dn = -(3 / 4.0) * log(1 - (4 * pn / 3.0))
+                    ds = -(3 / 4.0) * log(1 - (4 * ps / 3.0))
                     report += "%s,%0.4f,%0.4f,%i,%i,%0.4f\n" % \
-                        (gene, pn, ps, pn_ncod, ps_ncod, dn/ds)
+                        (gene, pn, ps, pn_ncod, ps_ncod, dn / ds)
                 else:
                     report += "%s,%0.4f,%0.4f,%i,%i,N/A\n" % \
                         (gene, pn, ps, pn_ncod, ps_ncod)
