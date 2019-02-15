@@ -27,7 +27,7 @@ from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
 from quasitools.mapped_read import MappedRead, MappedReadCollection
 from quasitools.pileup import Pileup, Pileup_List
-from quasitools.haplotype import Haplotype, sort_haplotypes
+from quasitools.haplotype import Haplotype, build_consensus_from_haplotypes
 
 REVERSE_COMPLEMENTED = 16
 FORWARD = '+'
@@ -68,7 +68,6 @@ def parse_mapped_reads_from_bam(reference, bam):
 
     return mrc
 
-def build_haplotypes(sequence):
 
 
 def parse_haplotypes_from_bam(
@@ -130,21 +129,19 @@ def parse_haplotypes_from_bam(
           #  print("This is haplotype end: " + str(haplotype_end))
            
             sequence = str(read_sequence[haplotype_start: haplotype_end])
-         #   print("This is the sequence" + sequence)
-        
-            print("This is the consensus: " + consensus)
-            print("This is the sequence: " + sequence)
+
             if sequence in haplotypes:
                 haplotype = haplotypes.get(sequence)
                 haplotype.count += 1
             else:
                 #print("This is the sequence: " + sequence))
-                haplotypes[sequence] = Haplotype(sequence, consensus)
+                haplotypes[sequence] = Haplotype(sequence)
 
     haplotypes_list = list(haplotypes.values())
-    haplotypes_sorted = sort_haplotypes(haplotypes_list)
+    haplotype_test = build_consensus_from_haplotypes(haplotypes_list)
+    #haplotypes_sorted = sort_haplotypes(haplotypes_list)
 
-    return haplotypes_sorted
+    return 0
 
 
 def parse_haplotypes_called(
@@ -208,7 +205,7 @@ def parse_haplotypes_called(
         length = len(reference.seq)
         #  placeholder to pass CI test
 
-        for i in range(0, length - k + 1):
+        for i in range(0, 100 - k + 1):
 
             print(i)
 

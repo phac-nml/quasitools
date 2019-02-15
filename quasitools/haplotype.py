@@ -28,6 +28,8 @@ from operator import attrgetter
 
 import numpy
 
+from collections import Counter
+
 import quasitools.calculate as calculate
 
 
@@ -40,7 +42,7 @@ class Haplotype:
     # ========================================================================
     """
 
-    def __init__(self, sequence, consensus, count=1):
+    def __init__(self, sequence, consensus="", count=1):
         """
         # ====================================================================
 
@@ -51,7 +53,8 @@ class Haplotype:
 
         self.sequence = sequence
         self.count = count
-        self.mutations = calculate.hamming_distance(sequence, consensus)
+        
+        self.mutations = 0
 
     def __eq__(self, other):
         """
@@ -85,41 +88,57 @@ class Haplotype:
         return False
 
 
-def sort_haplotypes(haplotypes):
-    """
-    # ========================================================================
+# def sort_haplotypes(haplotypes):
+#     """
+#     # ========================================================================
 
-    SORT HAPLOTYPES
-
-
-    PURPOSE
-    -------
-
-    Sorts a list of haplotypes according their number of mutations from the
-    consensus sequence.
+#     SORT HAPLOTYPES
 
 
-    INPUT
-    -----
+#     PURPOSE
+#     -------
 
-    [HAPLOTYPE LIST] [haplotypes]
-        The list of haplotypes to sort.
+#     Sorts a list of haplotypes according their number of mutations from the
+#     consensus sequence.
 
 
-    RETURN
-    ------
+#     INPUT
+#     -----
 
-    [HAPLOTYPE LIST]
-        A list of sorted haplotypes, according to their number of mutations
-        from the consensus sequence of all the sequences.
+#     [HAPLOTYPE LIST] [haplotypes]
+#         The list of haplotypes to sort.
 
-    # ========================================================================
-    """
 
-    sorted_haplotypes = \
-        sorted(haplotypes, key=attrgetter('mutations'), reverse=False)
+#     RETURN
+#     ------
 
-    return sorted_haplotypes
+#     [HAPLOTYPE LIST]
+#         A list of sorted haplotypes, according to their number of mutations
+#         from the consensus sequence of all the sequences.
+
+#     # ========================================================================
+#     """
+
+#     sorted_haplotypes = \
+#         sorted(haplotypes, key=attrgetter('mutations'), reverse=False)
+
+#     return sorted_haplotypes
+
+
+def build_consensus_from_haplotypes(haplotypes):
+    
+
+    nucleotides_in_column = []
+    result = {}
+    length = 0
+    number_of_haplotypes = len(haplotypes)
+
+    for haplotype in haplotypes:
+        
+        length = len(haplotype.sequence)
+    
+    print(length)
+    print(number_of_haplotypes)
 
 
 def build_distiance_matrix(haplotypes):
