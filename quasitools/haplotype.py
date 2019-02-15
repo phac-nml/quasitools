@@ -31,7 +31,7 @@ import numpy
 from collections import Counter
 
 import quasitools.calculate as calculate
-
+from quasitools.pileup import Pileup
 
 class Haplotype:
     """
@@ -127,19 +127,39 @@ class Haplotype:
 
 def build_consensus_from_haplotypes(haplotypes):
     
+    pileup = []
+    consensus = ''
 
-    nucleotides_in_column = []
-    result = {}
-    length = 0
-    number_of_haplotypes = len(haplotypes)
-
-    for haplotype in haplotypes:
-        
-        length = len(haplotype.sequence)
+    if haplotypes:
     
-    print(length)
-    print(number_of_haplotypes)
+        length = len(haplotypes[0].sequence)
 
+        for i in range(0,length):
+            pileup.append({})
+    
+        for haplotype in haplotypes:
+        
+            for i in range(0,length):
+            
+                base = haplotype.sequence[i]
+
+                if pileup[i].get(base):
+                    pileup[i][base] += 1
+                else:
+                    pileup[i][base] = 1
+    
+    # No checks for gaps because we shouldn't have any as the reads overlap.
+
+        pileup = Pileup(pileup)
+
+        consensus = pileup.build_consensus()
+    print("This is the consensus")
+    print(consensus)
+    return consensus
+
+
+
+            
 
 def build_distiance_matrix(haplotypes):
     """

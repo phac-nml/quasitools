@@ -111,8 +111,9 @@ def parse_haplotypes_from_bam(
     """
 
     haplotypes = {}
-
+    sequences = []
     reads = samfile.fetch("AF033819.3", start, start + k)
+    sequLength = 0
 
     for read in reads:
 
@@ -133,11 +134,14 @@ def parse_haplotypes_from_bam(
             if sequence in haplotypes:
                 haplotype = haplotypes.get(sequence)
                 haplotype.count += 1
+    
             else:
-                #print("This is the sequence: " + sequence))
-                haplotypes[sequence] = Haplotype(sequence)
 
-    haplotypes_list = list(haplotypes.values())
+                haplotypes[sequence] = Haplotype(sequence) 
+        
+
+    haplotypes_list = list(haplotypes.values())  
+
     haplotype_test = build_consensus_from_haplotypes(haplotypes_list)
     #haplotypes_sorted = sort_haplotypes(haplotypes_list)
 
@@ -207,11 +211,11 @@ def parse_haplotypes_called(
 
         for i in range(0, 100 - k + 1):
 
-            print(i)
+           # print(i)
 
         # returns a list of haplotype objects
             ranged_consensus = consensus[i:(i + k)]
-            print("This is the ranged consensus length" + str(len(ranged_consensus)))
+            #print("This is the ranged consensus length" + str(len(ranged_consensus)))
             haplotype_list = (
                 parse_haplotypes_from_bam(
                     samfile,
