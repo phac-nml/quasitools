@@ -27,7 +27,8 @@ from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
 from quasitools.mapped_read import MappedRead, MappedReadCollection
 from quasitools.pileup import Pileup, Pileup_List
-from quasitools.haplotype import Haplotype, build_consensus_from_haplotypes
+from quasitools.haplotype import Haplotype, \
+        build_consensus_from_haplotypes, sort_haplotypes
 
 REVERSE_COMPLEMENTED = 16
 FORWARD = '+'
@@ -67,7 +68,6 @@ def parse_mapped_reads_from_bam(reference, bam):
         mrc.mapped_reads[read_id] = mapped_read
 
     return mrc
-
 
 
 def parse_haplotypes_from_bam(
@@ -111,41 +111,34 @@ def parse_haplotypes_from_bam(
     """
 
     haplotypes = {}
-    sequences = []
+    # TODO parse reference to get the sequenceID (should be a method already).
     reads = samfile.fetch("AF033819.3", start, start + k)
-    sequLength = 0
 
     for read in reads:
 
         read_sequence = read.get_forward_sequence()
-        haplotype_start = start  - read.reference_start
+        haplotype_start = start - read.reference_start
         haplotype_end = haplotype_start + k
 
-        #print("This is the start: " + str(start))
-        #print("This is reference_start: " +str(read.reference_start))
-
         if read.get_overlap(start, start + k) == k:
-        
-         #   print("This is the haplotype start: " + str(haplotype_start))
-          #  print("This is haplotype end: " + str(haplotype_end))
-           
+
             sequence = str(read_sequence[haplotype_start: haplotype_end])
 
             if sequence in haplotypes:
                 haplotype = haplotypes.get(sequence)
                 haplotype.count += 1
-    
+
             else:
 
-                haplotypes[sequence] = Haplotype(sequence) 
-        
+                haplotypes[sequence] = Haplotype(sequence)
 
-    haplotypes_list = list(haplotypes.values())  
+    haplotypes_list = list(haplotypes.values())
 
-    haplotype_test = build_consensus_from_haplotypes(haplotypes_list)
-    #haplotypes_sorted = sort_haplotypes(haplotypes_list)
+    # TODO move the following two function calls  to complexity.
+    haplotype_consensus = build_consensus_from_haplotypes(haplotypes_list)
+    haplotypes_sorted = sort_haplotypes(haplotypes_list, haplotype_consensus)
 
-    return 0
+    return haplotypes_sorted
 
 
 def parse_haplotypes_called(
@@ -211,11 +204,8 @@ def parse_haplotypes_called(
 
         for i in range(0, 100 - k + 1):
 
-           # print(i)
-
-        # returns a list of haplotype objects
             ranged_consensus = consensus[i:(i + k)]
-            #print("This is the ranged consensus length" + str(len(ranged_consensus)))
+
             haplotype_list = (
                 parse_haplotypes_from_bam(
                     samfile,

@@ -105,62 +105,62 @@ def complexity(ctx, reference, bam):
     haplotype_list = parse_haplotypes_called(
         references, reference, bam, consensus, 50, 50)
 
-    # haplotypes = []
+    haplotypes = []
 
-    # for i in range(0, 50):
-    #     for x in haplotype_list[i]:
-    #         haplotypes.append(x)
+    for i in range(0, 13):
+        for x in haplotype_list[i]:
+            haplotypes.append(x)
 
-    # distance_matrix = haplotype.build_distiance_matrix(haplotypes)
-    # counts = haplotype.build_counts(haplotypes)
-    # frequencies = haplotype.build_frequencies(haplotypes)
+    distance_matrix = haplotype.build_distiance_matrix(haplotypes)
+    counts = haplotype.build_counts(haplotypes)
+    frequencies = haplotype.build_frequencies(haplotypes)
 
-    # measurements = []
+    measurements = []
 
-    # '''
-    # Set the Incidence - Entity Level
-    # '''
-    # measurements = get_number_of_haplotypes(haplotypes, measurements)
-    # measurements = get_number_of_polymorphic_sites(measurements, pileup)
-    # measurements = get_number_of_mutations(measurements, pileup)
+    '''
+    Set the Incidence - Entity Level
+    '''
+    measurements = get_number_of_haplotypes(haplotypes, measurements)
+    measurements = get_number_of_polymorphic_sites(measurements, pileup)
+    measurements = get_number_of_mutations(measurements, pileup)
 
-    # '''
-    # Set the Abundance - Molecular Level
-    # '''
-    # measurements = measurements = get_shannon_entropy(
-    #     haplotypes, frequencies, measurements)
-    # measurements = get_simpson_index(frequencies, measurements)
-    # measurements = get_gini_simpson_index(frequencies, measurements)
-    # measurements = get_hill_numbers(measurements, frequencies)
+    '''
+    Set the Abundance - Molecular Level
+    '''
+    measurements = measurements = get_shannon_entropy(
+        haplotypes, frequencies, measurements)
+    measurements = get_simpson_index(frequencies, measurements)
+    measurements = get_gini_simpson_index(frequencies, measurements)
+    measurements = get_hill_numbers(measurements, frequencies)
 
-    # '''
-    # Functional,  Indidence - Entity Level
-    # '''
-    # measurements = get_minimum_mutation_frequency(
-    #     haplotypes, measurements, pileup)
-    # measurements = get_mutation_frequency(distance_matrix, measurements)
-    # measurements = get_FAD(distance_matrix, measurements)
-    # measurements = get_sample_nucleotide_diversity_entity(
-    #     distance_matrix, frequencies, measurements)
-    # '''
+    '''
+    Functional,  Indidence - Entity Level
+    '''
+    measurements = get_minimum_mutation_frequency(
+        haplotypes, measurements, pileup)
+    measurements = get_mutation_frequency(distance_matrix, measurements)
+    measurements = get_FAD(distance_matrix, measurements)
+    measurements = get_sample_nucleotide_diversity_entity(
+        distance_matrix, frequencies, measurements)
+    '''
 
-    # Functional, Abundance - Molecular Level
-    # '''
-    # measurements = get_maximum_mutation_frequency(
-    #     counts, distance_matrix, frequencies, measurements)
-    # measurements = get_population_nucleotide_diversity(
-    #     distance_matrix, frequencies, measurements)
-    # '''
+    Functional, Abundance - Molecular Level
+    '''
+    measurements = get_maximum_mutation_frequency(
+        counts, distance_matrix, frequencies, measurements)
+    measurements = get_population_nucleotide_diversity(
+        distance_matrix, frequencies, measurements)
+    '''
 
-    # Other
-    # '''
-    # measurements = get_sample_nucleotide_diversity(
-    #     distance_matrix, frequencies, haplotypes, measurements)
+    Other
+    '''
+    measurements = get_sample_nucleotide_diversity(
+        distance_matrix, frequencies, haplotypes, measurements)
 
-    # '''
-    # Measurement Summary
-    # '''
-    # measurmentSummary(measurements)
+    '''
+    Measurement Summary
+    '''
+    measurmentSummary(measurements)
 
 
 def get_sample_nucleotide_diversity(
