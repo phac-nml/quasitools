@@ -178,7 +178,6 @@ def complexity(ctx, reference, bam):
         '''
         measurement_to_csv(measurements)
 
-
 def get_sample_nucleotide_diversity(
         distance_matrix,
         frequencies,
@@ -850,3 +849,11 @@ def measurmentSummary(measurements):
             click.echo(str(measurement).strip("{}").replace("'", ""))
         else:
             click.echo(str(measurement).strip("{}").replace("'", ""))
+
+def measurement_to_csv(measurements):
+    
+    with open('complexity_outputs.csv', 'w', newline = '') as f:
+        writer = csv.writer(f)
+        writer.writer(f)
+        writer.writerows(someiritable)
+      
