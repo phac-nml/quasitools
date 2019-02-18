@@ -852,8 +852,14 @@ def measurmentSummary(measurements):
 
 def measurement_to_csv(measurements):
     
+    measurements_row_titles = []
+    measurements_values = []
+
+    for key, value  in measurements.items():
+        measurements_row_titles.append(key)
+        measurements_values.append(value)
+    
     with open('complexity_outputs.csv', 'w', newline = '') as f:
+
         writer = csv.writer(f)
-        writer.writer(f)
-        writer.writerows(someiritable)
       
