@@ -21,15 +21,18 @@ __version__ = '0.1.1'
 import click
 import math
 import quasitools.calculate as calculate
-import quasitools.haplotype as haplotype
+import quasitools.haplotype as haplotype 
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 # Remove this
 import time
 
+import csv
+
 from quasitools.parsers.mapped_read_parser \
     import parse_pileup_from_bam, parse_haplotypes_called
 
+UNDEFINED = ""
 
 @click.command(
     'complexity', short_help='Calculates various quasispecies complexity \
@@ -95,72 +98,85 @@ def complexity(ctx, reference, bam):
 
     # ========================================================================
     """
+    # TODO ask user for k
+    k = 50
 
     references = parse_references_from_fasta(reference)
-    pileup = parse_pileup_from_bam(references, bam)
+    # pileup = parse_pileup_from_bam(references, bam)
     # obtains consensus of entire file.
-    consensus = pileup.build_consensus()
+
+    # consensus = pileup.build_consensus()
 
     # returns an array containing a haplotype list.
     haplotype_list = parse_haplotypes_called(
-        references, reference, bam, consensus, 50, 50)
+        references, reference, bam, 50, 50)
 
-    haplotypes = []
 
-    for i in range(0, 13):
-        for x in haplotype_list[i]:
-            haplotypes.append(x)
+   # for i in range(len(haplotype_list)-k+1):
+    for i in range(10):     
+        haplotypes = haplotype_list[i]
+        
+        if not haplotypes:
+            continue 
+        pileup = haplotype.build_pileup_from_haplotypes(haplotypes) 
 
-    distance_matrix = haplotype.build_distiance_matrix(haplotypes)
-    counts = haplotype.build_counts(haplotypes)
-    frequencies = haplotype.build_frequencies(haplotypes)
+        distance_matrix = haplotype.build_distiance_matrix(haplotypes)
+        counts = haplotype.build_counts(haplotypes)
+        frequencies = haplotype.build_frequencies(haplotypes)
 
-    measurements = []
+        measurements = []
 
-    '''
-    Set the Incidence - Entity Level
-    '''
-    measurements = get_number_of_haplotypes(haplotypes, measurements)
-    measurements = get_number_of_polymorphic_sites(measurements, pileup)
-    measurements = get_number_of_mutations(measurements, pileup)
+        '''
+        Set the Incidence - Entity Level
+        '''
+        measurements = get_number_of_haplotypes(haplotypes, measurements)
+        measurements = get_number_of_polymorphic_sites(measurements, pileup)
+        measurements = get_number_of_mutations(measurements, pileup)
 
-    '''
-    Set the Abundance - Molecular Level
-    '''
-    measurements = measurements = get_shannon_entropy(
-        haplotypes, frequencies, measurements)
-    measurements = get_simpson_index(frequencies, measurements)
-    measurements = get_gini_simpson_index(frequencies, measurements)
-    measurements = get_hill_numbers(measurements, frequencies)
+        '''
+        Set the Abundance - Molecular Level
+        '''
+        measurements = measurements = get_shannon_entropy(
+            haplotypes, frequencies, measurements)
+        measurements = get_simpson_index(frequencies, measurements)
+        measurements = get_gini_simpson_index(frequencies, measurements)
 
-    '''
-    Functional,  Indidence - Entity Level
-    '''
-    measurements = get_minimum_mutation_frequency(
-        haplotypes, measurements, pileup)
-    measurements = get_mutation_frequency(distance_matrix, measurements)
-    measurements = get_FAD(distance_matrix, measurements)
-    measurements = get_sample_nucleotide_diversity_entity(
-        distance_matrix, frequencies, measurements)
-    '''
+        
+        measurements = get_hill_numbers(measurements, frequencies)
 
-    Functional, Abundance - Molecular Level
-    '''
-    measurements = get_maximum_mutation_frequency(
-        counts, distance_matrix, frequencies, measurements)
-    measurements = get_population_nucleotide_diversity(
-        distance_matrix, frequencies, measurements)
-    '''
+        '''
+        Functional,  Indidence - Entity Level
+        '''
+        measurements = get_minimum_mutation_frequency(
+            haplotypes, measurements, pileup)
+        measurements = get_mutation_frequency(distance_matrix, measurements)
+        measurements = get_FAD(distance_matrix, measurements)
+        measurements = get_sample_nucleotide_diversity_entity(
+            distance_matrix, frequencies, measurements)
+        '''
 
-    Other
-    '''
-    measurements = get_sample_nucleotide_diversity(
-        distance_matrix, frequencies, haplotypes, measurements)
+        Functional, Abundance - Molecular Level
+        '''
+        measurements = get_maximum_mutation_frequency(
+            counts, distance_matrix, frequencies, measurements)
+        measurements = get_population_nucleotide_diversity(
+            distance_matrix, frequencies, measurements)
+        '''
 
-    '''
-    Measurement Summary
-    '''
-    measurmentSummary(measurements)
+        Other
+        '''
+        measurements = get_sample_nucleotide_diversity(
+            distance_matrix, frequencies, haplotypes, measurements)
+
+        '''
+        Measurement Summary
+        '''
+        measurmentSummary(measurements)
+
+        '''
+        Measurement to CSV
+        '''
+        measurement_to_csv(measurements)
 
 
 def get_sample_nucleotide_diversity(
@@ -206,7 +222,10 @@ def get_sample_nucleotide_diversity(
     P = frequencies
     D = distance_matrix
 
-    SND = calculate.sample_nucleotide_diversity(N, H, P, D)
+    if N > 1:
+        SND = calculate.sample_nucleotide_diversity(N, H, P, D)
+    else:
+        SND = UNDEFINED
     measurements.append({'Sample Nucleotide Diversity (^PI)': SND})
 
     return measurements
@@ -340,10 +359,14 @@ def get_sample_nucleotide_diversity_entity(
 
     H = len(frequencies)
     D = distance_matrix
+    
+    if H > 1:
+        PND = calculate.sample_nucleotide_diversity_entity(H, D)
+    else:
+        PND = UNDEFINED
 
-    PND = calculate.sample_nucleotide_diversity_entity(H, D)
     measurements.append({'Population Nucleotide Diversity': PND})
-
+    
     return measurements
 
 
@@ -740,12 +763,18 @@ def get_hill_numbers(measurements, frequencies):
     """
 
     P = frequencies
-    H = 50
+    H = len(frequencies)
+    
+    hill0 = hill1 =  hill2 =hill3 = UNDEFINED
 
-    hill0 = calculate.hill_number(H, P, 0)
-    hill1 = calculate.hill_number(H, P, 1)
-    hill2 = calculate.hill_number(H, P, 2)
-    hill3 = calculate.hill_number(H, P, 3)
+    if len(P) >= 1:
+        hill0 = calculate.hill_number(H, P, 0)
+    if len(P) >= 2: 
+        hill1 = calculate.hill_number(H, P, 1)
+    if len(P) >= 3:
+        hill2 = calculate.hill_number(H, P, 2)
+    if len(P) >= 4:
+        hill3 = calculate.hill_number(H, P, 3)
 
     measurements.append({'Hill Number 0': hill0})
     measurements.append({'Hill Number 1': hill1})

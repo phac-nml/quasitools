@@ -175,15 +175,24 @@ def sort_haplotypes(haplotypes, consensus):
 
 def build_consensus_from_haplotypes(haplotypes):
 
-    pileup = []
-    consensus = ''
+   
+
+    pileup = build_pileup_from_haplotypes(haplotypes)
+
+    consensus = pileup.build_consensus()
+
+    return consensus
+
+def build_pileup_from_haplotypes(haplotypes):
+
+    pileup_list = []
 
     if haplotypes:
 
         length = len(haplotypes[0].sequence)
 
         for i in range(0, length):
-            pileup.append({})
+            pileup_list.append({})
 
         for haplotype in haplotypes:
 
@@ -191,18 +200,17 @@ def build_consensus_from_haplotypes(haplotypes):
 
                 base = haplotype.sequence[i]
 
-                if pileup[i].get(base):
-                    pileup[i][base] += 1
+                if pileup_list[i].get(base):
+                    pileup_list[i][base] += 1
                 else:
-                    pileup[i][base] = 1
+                    pileup_list[i][base] = 1
 
     # No checks for gaps because we shouldn't have any as the reads overlap.
 
-        pileup = Pileup(pileup)
+    pileup = Pileup(pileup_list)
 
-        consensus = pileup.build_consensus()
 
-    return consensus
+    return pileup
 
 
 def build_distiance_matrix(haplotypes):

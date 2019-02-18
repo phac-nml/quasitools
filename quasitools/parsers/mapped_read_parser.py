@@ -76,7 +76,6 @@ def parse_haplotypes_from_bam(
         bam_location,
         start,
         k,
-        consensus,
         length):
     """""
     #========================================================================
@@ -145,7 +144,6 @@ def parse_haplotypes_called(
         references,
         reference,
         bam_location,
-        consensus,
         start,
         k):
     """""
@@ -202,16 +200,14 @@ def parse_haplotypes_called(
         length = len(reference.seq)
         #  placeholder to pass CI test
 
-        for i in range(0, 100 - k + 1):
-
-            ranged_consensus = consensus[i:(i + k)]
+        for i in range(0, length - k + 1):
 
             haplotype_list = (
                 parse_haplotypes_from_bam(
                     samfile,
                     reference,
                     bam_location,
-                    i, k, ranged_consensus, length))
+                    i, k, length))
 
             haplotypes.append(haplotype_list)
 
