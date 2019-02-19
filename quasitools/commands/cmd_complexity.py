@@ -173,6 +173,8 @@ def complexity(ctx, reference, bam):
         Measurement Summary
         '''
         measurmentSummary(measurements)
+        print("")
+        print("")
 
         '''
         Measurement to CSV
@@ -868,7 +870,7 @@ def measurement_to_csv(measurements):
             measurements_values.append(value)
             
             # inserts the starting position of the read region 
-            measurements_values.insert(0, count)
+            # measurements_values.insert(0, count)
             
             # TODO update the count.
 
