@@ -33,6 +33,7 @@ from quasitools.parsers.mapped_read_parser \
     import parse_pileup_from_bam, parse_haplotypes_called
 
 UNDEFINED = ""
+count = 0
 
 @click.command(
     'complexity', short_help='Calculates various quasispecies complexity \
@@ -857,12 +858,13 @@ def measurement_to_csv(measurements):
     measurements_col_titles = ["Position"]
     # stores the values in each row (values)
     measurements_values = []
-    count = 0
+    global count
 
     for measurement in measurements:
         firstCol = 'Position'
         for key, value  in measurement.items():
-            measurements_col_titles.append(key)
+            if count == 0:
+                measurements_col_titles.append(key)
             measurements_values.append(value)
             
             # inserts the starting position of the read region 
@@ -872,13 +874,15 @@ def measurement_to_csv(measurements):
 
         # print(measurements_col_titles)
         # print(measurements_values)
-        with open('complexity_outputs.csv', 'a', newline = '') as complexity_data:
-        
-            writer = csv.writer(complexity_data)
-            writer.writerow(measurements_col_titles)
-            writer.writerow(measurements_values)
+    with open('complexity_outputs.csv', 'a') as complexity_data:
 
-        complexity_data.close()
+        measurements_values.insert(0, count) 
+        writer = csv.writer(complexity_data)
+        if count == 0:
+            writer.writerow(measurements_col_titles)
+        writer.writerow(measurements_values)
+
+    complexity_data.close()
 
     count += 1
     measurements_values.pop(0)
