@@ -852,14 +852,34 @@ def measurmentSummary(measurements):
 
 def measurement_to_csv(measurements):
     
-    measurements_row_titles = []
-    measurements_values = []
-
-    for key, value  in measurements.items():
-        measurements_row_titles.append(key)
-        measurements_values.append(value)
     
-    with open('complexity_outputs.csv', 'w', newline = '') as f:
+    # stores the column titles (keys)
+    measurements_col_titles = ["Position"]
+    # stores the values in each row (values)
+    measurements_values = []
+    count = 0
 
-        writer = csv.writer(f)
-      
+    for measurement in measurements:
+        firstCol = 'Position'
+        for key, value  in measurement.items():
+            measurements_col_titles.append(key)
+            measurements_values.append(value)
+            
+            # inserts the starting position of the read region 
+            measurements_values.insert(0, count)
+            
+            # TODO update the count.
+
+        # print(measurements_col_titles)
+        # print(measurements_values)
+        with open('complexity_outputs.csv', 'a', newline = '') as complexity_data:
+        
+            writer = csv.writer(complexity_data)
+            writer.writerow(measurements_col_titles)
+            writer.writerow(measurements_values)
+
+        complexity_data.close()
+
+    count += 1
+    measurements_values.pop(0)
+                
