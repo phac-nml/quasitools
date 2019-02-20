@@ -175,13 +175,12 @@ def sort_haplotypes(haplotypes, consensus):
 
 def build_consensus_from_haplotypes(haplotypes):
 
-   
-
     pileup = build_pileup_from_haplotypes(haplotypes)
 
     consensus = pileup.build_consensus()
 
     return consensus
+
 
 def build_pileup_from_haplotypes(haplotypes):
 
@@ -208,7 +207,6 @@ def build_pileup_from_haplotypes(haplotypes):
     # No checks for gaps because we shouldn't have any as the reads overlap.
 
     pileup = Pileup(pileup_list)
-
 
     return pileup
 

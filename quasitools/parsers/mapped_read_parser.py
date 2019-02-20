@@ -126,7 +126,6 @@ def parse_haplotypes_from_bam(
             if sequence in haplotypes:
                 haplotype = haplotypes.get(sequence)
                 haplotype.count += 1
-
             else:
 
                 haplotypes[sequence] = Haplotype(sequence)
@@ -144,7 +143,6 @@ def parse_haplotypes_called(
         references,
         reference,
         bam_location,
-        start,
         k):
     """""
     #========================================================================
@@ -195,7 +193,6 @@ def parse_haplotypes_called(
 
     haplotypes = []
     samfile = pysam.AlignmentFile(bam_location, "rb")
-    ranged_consensus = ""
     for reference in references:
         length = len(reference.seq)
         #  placeholder to pass CI test

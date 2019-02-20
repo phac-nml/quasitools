@@ -21,7 +21,7 @@ __version__ = '0.1.1'
 import click
 import math
 import quasitools.calculate as calculate
-import quasitools.haplotype as haplotype 
+import quasitools.haplotype as haplotype
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
 # Remove this
@@ -29,11 +29,10 @@ import time
 
 import csv
 
-from quasitools.parsers.mapped_read_parser \
-    import parse_pileup_from_bam, parse_haplotypes_called
+from quasitools.parsers.mapped_read_parser import parse_haplotypes_called
 
 UNDEFINED = ""
-count = 0
+
 
 @click.command(
     'complexity', short_help='Calculates various quasispecies complexity \
@@ -42,8 +41,10 @@ count = 0
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('bam', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
+# TODO is their a better name than k?
+@click.argument('k')
 @click.pass_context
-def cli(ctx, reference, bam):
+def cli(ctx, reference, bam, k):
     """
 
     Reports the complexity of a quasispecies sequenced through next
@@ -59,13 +60,16 @@ def cli(ctx, reference, bam):
 
     click.echo("Using file %s as reference" % reference)
     click.echo("Reading input from file(s)  %s" % bam)
-    complexity(ctx, reference, bam)
+    click.echo("Checking for overlaps at every position in reference \
+            at %s intervals" % k)
+
+    complexity(ctx, reference, bam, int(k))
 
     click.echo("\nComplete!")
     print("\nTime to run--- %s seconds ---" % (time.time() - start_time))
 
 
-def complexity(ctx, reference, bam):
+def complexity(ctx, reference, bam, k):
     """
     # ========================================================================
 
@@ -100,7 +104,7 @@ def complexity(ctx, reference, bam):
     # ========================================================================
     """
     # TODO ask user for k
-    k = 50
+    # k = 50
 
     references = parse_references_from_fasta(reference)
     # pileup = parse_pileup_from_bam(references, bam)
@@ -110,16 +114,15 @@ def complexity(ctx, reference, bam):
 
     # returns an array containing a haplotype list.
     haplotype_list = parse_haplotypes_called(
-        references, reference, bam, 50, 50)
+        references, reference, bam, k)
 
-
-   # for i in range(len(haplotype_list)-k+1):
-    for i in range(10):     
+    # for i in range(len(haplotype_list)-k+1):
+    for i in range(10):
         haplotypes = haplotype_list[i]
-        
+
         if not haplotypes:
-            continue 
-        pileup = haplotype.build_pileup_from_haplotypes(haplotypes) 
+            continue
+        pileup = haplotype.build_pileup_from_haplotypes(haplotypes)
 
         distance_matrix = haplotype.build_distiance_matrix(haplotypes)
         counts = haplotype.build_counts(haplotypes)
@@ -142,7 +145,6 @@ def complexity(ctx, reference, bam):
         measurements = get_simpson_index(frequencies, measurements)
         measurements = get_gini_simpson_index(frequencies, measurements)
 
-        
         measurements = get_hill_numbers(measurements, frequencies)
 
         '''
@@ -179,7 +181,8 @@ def complexity(ctx, reference, bam):
         '''
         Measurement to CSV
         '''
-        measurement_to_csv(measurements)
+        measurement_to_csv(measurements, i)
+
 
 def get_sample_nucleotide_diversity(
         distance_matrix,
@@ -361,14 +364,14 @@ def get_sample_nucleotide_diversity_entity(
 
     H = len(frequencies)
     D = distance_matrix
-    
+
     if H > 1:
         PND = calculate.sample_nucleotide_diversity_entity(H, D)
     else:
         PND = UNDEFINED
 
     measurements.append({'Population Nucleotide Diversity': PND})
-    
+
     return measurements
 
 
@@ -766,12 +769,12 @@ def get_hill_numbers(measurements, frequencies):
 
     P = frequencies
     H = len(frequencies)
-    
-    hill0 = hill1 =  hill2 =hill3 = UNDEFINED
+
+    hill0 = hill1 = hill2 = hill3 = UNDEFINED
 
     if len(P) >= 1:
         hill0 = calculate.hill_number(H, P, 0)
-    if len(P) >= 2: 
+    if len(P) >= 2:
         hill1 = calculate.hill_number(H, P, 1)
     if len(P) >= 3:
         hill2 = calculate.hill_number(H, P, 2)
@@ -853,39 +856,38 @@ def measurmentSummary(measurements):
         else:
             click.echo(str(measurement).strip("{}").replace("'", ""))
 
-def measurement_to_csv(measurements):
-    
-    
+
+def measurement_to_csv(measurements, count):
+
     # stores the column titles (keys)
     measurements_col_titles = ["Position"]
     # stores the values in each row (values)
     measurements_values = []
-    global count
 
     for measurement in measurements:
-        firstCol = 'Position'
-        for key, value  in measurement.items():
-            if count == 0:
-                measurements_col_titles.append(key)
+
+        for key, value in measurement.items():
+
+            measurements_col_titles.append(key)
             measurements_values.append(value)
-            
-            # inserts the starting position of the read region 
+
+            # inserts the starting position of the read region
             # measurements_values.insert(0, count)
-            
+
             # TODO update the count.
 
         # print(measurements_col_titles)
         # print(measurements_values)
     with open('complexity_outputs.csv', 'a') as complexity_data:
 
-        measurements_values.insert(0, count) 
+        measurements_values.insert(0, count)
         writer = csv.writer(complexity_data)
-        if count == 0:
+        # TODO there will be times where haplotypes aren't present
+        #     at 1 or any arbitrary starting position. Need to
+        #     write a better fix.
+        if count == 1:
             writer.writerow(measurements_col_titles)
         writer.writerow(measurements_values)
 
     complexity_data.close()
-
-    count += 1
     measurements_values.pop(0)
-                
