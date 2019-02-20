@@ -17,7 +17,7 @@ specific language governing permissions and limitations under the License.
 
 __version__ = '0.1.1'
 
-# import
+import os
 import click
 import math
 import quasitools.calculate as calculate
@@ -103,20 +103,14 @@ def complexity(ctx, reference, bam, k):
 
     # ========================================================================
     """
-    # TODO ask user for k
-    # k = 50
 
     references = parse_references_from_fasta(reference)
-    # pileup = parse_pileup_from_bam(references, bam)
-    # obtains consensus of entire file.
-
-    # consensus = pileup.build_consensus()
-
-    # returns an array containing a haplotype list.
     haplotype_list = parse_haplotypes_called(
         references, reference, bam, k)
 
     # for i in range(len(haplotype_list)-k+1):
+    # TODO The 10 is only for testing purpose replace with code above for
+    # production.
     for i in range(10):
         haplotypes = haplotype_list[i]
 
@@ -175,8 +169,9 @@ def complexity(ctx, reference, bam, k):
         Measurement Summary
         '''
         measurmentSummary(measurements)
-        print("")
-        print("")
+
+        # creates two line break
+        click.echo('\n' * 2)
 
         '''
         Measurement to CSV
@@ -858,35 +853,87 @@ def measurmentSummary(measurements):
 
 
 def measurement_to_csv(measurements, count):
+    '''
+    What's going on:
 
+        Passed an list of dictionaries (measurements) and the
+        haplotype position (count). My goal is to print the CSV file.
+
+    Expected output:
+        The first row contains column titles and subsequent rows
+        contain values of each measurement.
+
+    Approach:
+        Storing my measurments in a dictionary paid off here.
+        I can extract the keys and store them in one list
+        I can extract the values and store them in a second list
+
+        Each time measure to csv is called I can append the list
+        with the values list.
+
+    Problem:
+
+        I only want to add column titles once. and then only append values.
+        Because haplotypes could start at any position from 0 to length
+        I have to be careful of where I start.
+
+    Fix:
+        Since column titles is the first row, the file should be empty
+        adding it. If it's empty it shouldn't exist yet therefore have size of
+        0. if a file is empty we can add the column titles, if it's not
+        empty we have already added column titles and can skip to
+        adding values.
+
+    Problem:
+        If file exists in directory already (i.e it was run before) then
+        we will just append to the old file. This could confuse people.
+
+    Possible Fixes:
+        - Warn user to remove old file if already created
+          (not very user friendly)
+        - Give user option to name file, and warn not to use
+          same file name... can't trust user though.
+        - Force a re-write everytime the program runs
+            - what if user is testing multiple data sets.
+        - Give user option to name the file and overwrite old files(?)
+   '''
     # stores the column titles (keys)
     measurements_col_titles = ["Position"]
     # stores the values in each row (values)
     measurements_values = []
 
+    file_name = "complexity_outputs.csv"
+
+    # Goes through every measurment dictionary in the list.
     for measurement in measurements:
 
+        # Extracts the key and value from each item.
+        ''' A key is part of the column titles and get appended to
+            measurements_col_titles. '''
+        # A value is part of the subsequent rows and get aooebded to
+        # measurements_values
         for key, value in measurement.items():
 
             measurements_col_titles.append(key)
             measurements_values.append(value)
 
-            # inserts the starting position of the read region
-            # measurements_values.insert(0, count)
+    # We have two lists, we will append both or one (just values if column
+    # titles exist).
+    with open(file_name, 'a') as complexity_data:
 
-            # TODO update the count.
-
-        # print(measurements_col_titles)
-        # print(measurements_values)
-    with open('complexity_outputs.csv', 'a') as complexity_data:
-
+        '''
+        TODO maybe move the insert value outside of the file  writer
+        within outer forloop.
+        '''
         measurements_values.insert(0, count)
+
+        # call the instance method that returns the delimited string,
         writer = csv.writer(complexity_data)
-        # TODO there will be times where haplotypes aren't present
-        #     at 1 or any arbitrary starting position. Need to
-        #     write a better fix.
-        if count == 1:
+
+        # if file empty add the column titles (will be first row)
+        if os.stat(file_name).st_size == 0:
             writer.writerow(measurements_col_titles)
+        # will always add the measurements values
         writer.writerow(measurements_values)
 
     complexity_data.close()
