@@ -24,15 +24,70 @@ import quasitools.calculate as calculate
 import quasitools.haplotype as haplotype
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 
+# use numpy for quick access to 2 d list to see if it's filled properly.
+import numpy as np
+
+
 # Remove this
 import time
-
+import copy
 import csv
 
 from quasitools.parsers.mapped_read_parser import parse_haplotypes_called
 
 UNDEFINED = ""
 
+# Measurement Positions
+NUMBER_OF_HAPLOTYPES = 0
+NUMBER_OF_POLYMORPHIC_SITES = 1
+NUMBER_OF_MUTATIONS = 2
+SHANNON_ENTROPY_NUMBER = 3
+SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N = 4
+SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H = 5
+SIMPSON_INDEX = 6
+GINI_SIMPSON_INDEX = 7
+# HILL_NUMBER_0 = 7
+# HILL_NUMBER_1 = 8
+# HILL_NUMBER_2 = 9
+# HILL_NUMBER_3 = 10
+MINIMUM_MUTATION_FREQUENCY = 8
+MUTATION_FREQUENCY_FREQUENCY = 9
+FUNCTIONAL_ATTRIBUTE_DIVERSITY = 10
+SAMPLE_NUCLEOTIDE_DIVERSITY_Entity = 11
+MAXIMUM_MUTATION_FREQUENCY = 12
+POPULATION_NUCLEOTIDE_DIVERSITY = 13
+SAMPLE_NUCLEOTIDE_DIVERSITY = 14
+
+
+
+# Dictionary of Names
+MEASUREMENTS_NAMES = {
+    'NUMBER_OF_HAPLOTYPES' : "Number of Haplotypes",
+    'NUMBER_OF_POLYMORPHIC_SITES' : "Number of Polymorphic Sites",
+    'NUMBER_OF_MUTATIONS' : "Number of Mutations",
+    'SHANNON_ENTROPY_NUMBER' : "Shannon Entropy",
+    'SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N' : "Shannon Entropy Localized to N",
+    'SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H' : "Shannon Entropy Localized to H",
+    'SIMPSON_INDEX' : 'Simpson Index',
+    'GINI_SIMPSON_INDEX' : "Gini Simpson Index",
+    # HILL_NUMBER_0 = "Hill Number #0",
+    # HILL_NUMBER_1 = "HIll Number #1",
+    # HILL_NUMBER_2 = "Hill Number #2",
+    # HILL_NUMBER_3 = "Hill Number #3",
+    'MINIMUM_MUTATION_FREQUENCY' : "Minimum Mutation Frequency",
+    'MUTATION_FREQUENCY_FREQUENCY' :"Mutation Frequency",
+    'FUNCTIONAL_ATTRIBUTE_DIVERSITY' : "Functional Attribute Diversity",
+    'SAMPLE_NUCLEOTIDE_DIVERSITY_Entity' : "Sample Nucleotide Diversity Entity",
+    'MAXIMUM_MUTATION_FREQUENCY' : "Maximum Mutation Frequency",
+    'POPULATION_NUCLEOTIDE_DIVERSITY' : "Population Nucleotide Diversity",
+    'SAMPLE_NUCLEOTIDE_DIVERSITY' : "Sample Nucleotide Diversity",
+}
+
+
+# Sort MEASUREMENT_NAMES dictionary by keys (0, 1, 2...)
+
+# Turn values into list
+# This list is the column names for the CSV writing (missing position)
 
 @click.command(
     'complexity', short_help='Calculates various quasispecies complexity \
@@ -108,6 +163,11 @@ def complexity(ctx, reference, bam, k):
     haplotype_list = parse_haplotypes_called(
         references, reference, bam, k)
 
+
+    # measurements_list = [ [] for x in range(len(haplotype_list)-k+1)]
+    measurements_list = [ [] for x in range(10)]
+    measurements = [0 for x in range(len(MEASUREMENTS_NAMES))]
+
     # for i in range(len(haplotype_list)-k+1):
     # TODO The 10 is only for testing purpose replace with code above for
     # production.
@@ -122,68 +182,82 @@ def complexity(ctx, reference, bam, k):
         counts = haplotype.build_counts(haplotypes)
         frequencies = haplotype.build_frequencies(haplotypes)
 
-        measurements = []
-
         '''
         Set the Incidence - Entity Level
         '''
-        measurements = get_number_of_haplotypes(haplotypes, measurements)
-        measurements = get_number_of_polymorphic_sites(measurements, pileup)
-        measurements = get_number_of_mutations(measurements, pileup)
+        measurements[NUMBER_OF_HAPLOTYPES] = get_number_of_haplotypes(haplotypes)
+        measurements[NUMBER_OF_POLYMORPHIC_SITES] = get_number_of_polymorphic_sites(pileup)
+        measurements[NUMBER_OF_MUTATIONS] = get_number_of_mutations(pileup)
 
         '''
         Set the Abundance - Molecular Level
         '''
-        measurements = measurements = get_shannon_entropy(
-            haplotypes, frequencies, measurements)
-        measurements = get_simpson_index(frequencies, measurements)
-        measurements = get_gini_simpson_index(frequencies, measurements)
+        measurements[SHANNON_ENTROPY_NUMBER] =  get_shannon_entropy(
+            haplotypes, frequencies)
 
-        measurements = get_hill_numbers(measurements, frequencies)
+        measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N] =  get_shannon_entropy(
+            haplotypes, frequencies)
+        
+        measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H] =  get_shannon_entropy(
+            haplotypes, frequencies)
+
+        measurements[SIMPSON_INDEX] = get_simpson_index(frequencies)
+        
+        measurements[GINI_SIMPSON_INDEX] = get_gini_simpson_index(frequencies)
+
+        #measurements = get_hill_numbers(frequencies)
 
         '''
         Functional,  Indidence - Entity Level
         '''
-        measurements = get_minimum_mutation_frequency(
-            haplotypes, measurements, pileup)
-        measurements = get_mutation_frequency(distance_matrix, measurements)
-        measurements = get_FAD(distance_matrix, measurements)
-        measurements = get_sample_nucleotide_diversity_entity(
-            distance_matrix, frequencies, measurements)
+        measurements[MINIMUM_MUTATION_FREQUENCY] = get_minimum_mutation_frequency(
+            haplotypes, pileup)
+        measurements[MINIMUM_MUTATION_FREQUENCY] = get_mutation_frequency(distance_matrix)
+        measurements[FUNCTIONAL_ATTRIBUTE_DIVERSITY] = get_FAD(distance_matrix)
+        measurements[SAMPLE_NUCLEOTIDE_DIVERSITY_Entity] = get_sample_nucleotide_diversity_entity(
+            distance_matrix, frequencies)
         '''
 
         Functional, Abundance - Molecular Level
         '''
-        measurements = get_maximum_mutation_frequency(
-            counts, distance_matrix, frequencies, measurements)
-        measurements = get_population_nucleotide_diversity(
-            distance_matrix, frequencies, measurements)
+        measurements[MAXIMUM_MUTATION_FREQUENCY] = get_maximum_mutation_frequency(
+            counts, distance_matrix, frequencies)
+        measurements[POPULATION_NUCLEOTIDE_DIVERSITY] = get_population_nucleotide_diversity(
+            distance_matrix, frequencies)
         '''
 
         Other
         '''
-        measurements = get_sample_nucleotide_diversity(
-            distance_matrix, frequencies, haplotypes, measurements)
+        measurements[SAMPLE_NUCLEOTIDE_DIVERSITY] = get_sample_nucleotide_diversity(
+            distance_matrix, frequencies, haplotypes)
+        
+
+        measurements_list[i] = copy.deepcopy(measurements)
 
         '''
         Measurement Summary
         '''
-        measurmentSummary(measurements)
+        #measurmentSummary(measurements)
 
         # creates two line break
         click.echo('\n' * 2)
+        
 
-        '''
-        Measurement to CSV
-        '''
-        measurement_to_csv(measurements, i)
+    for position in measurements_list:
+        print(position)
+
+    
+    '''
+    Measurement to CSV
+    '''
+    # TODO: Report measurements after all calculated
+    #measurement_to_csv(measurements) # TODO: measurements name might be different
 
 
 def get_sample_nucleotide_diversity(
         distance_matrix,
         frequencies,
-        haplotypes,
-        measurements):
+        haplotypes):
     """"
     #========================================================================
 
@@ -226,13 +300,12 @@ def get_sample_nucleotide_diversity(
         SND = calculate.sample_nucleotide_diversity(N, H, P, D)
     else:
         SND = UNDEFINED
-    measurements.append({'Sample Nucleotide Diversity (^PI)': SND})
 
-    return measurements
+    return SND
 
 
 def get_population_nucleotide_diversity(
-        distance_matrix, frequencies, measurements):
+        distance_matrix, frequencies):
     """
     # ========================================================================
     REPORT POPULATION NUCLEOTIDE DIVERSITY
@@ -267,16 +340,14 @@ def get_population_nucleotide_diversity(
     D = distance_matrix
 
     PND = calculate.population_nucleotide_diversity(H, P, D)
-    measurements.append({'Population Nucleotide Diversity (PI)': PND})
-
-    return measurements
+    
+    return PND
 
 
 def get_maximum_mutation_frequency(
         counts,
         distance_matrix,
-        frequencies,
-        measurements):
+        frequencies):
     """
     # ========================================================================
 
@@ -317,14 +388,12 @@ def get_maximum_mutation_frequency(
     D = distance_matrix
 
     maximum_mutation_frequency = calculate.maximum_mutation_frequency(H, F, D)
-    measurements.append(
-        {'Maximum mutation frequency (Mf max)': maximum_mutation_frequency})
 
-    return measurements
+    return maximum_mutation_frequency
 
 
 def get_sample_nucleotide_diversity_entity(
-        distance_matrix, frequencies, measurements):
+        distance_matrix, frequencies):
     """
     # ========================================================================
 
@@ -365,12 +434,10 @@ def get_sample_nucleotide_diversity_entity(
     else:
         PND = UNDEFINED
 
-    measurements.append({'Population Nucleotide Diversity': PND})
-
-    return measurements
+    return PND
 
 
-def get_FAD(distance_matrix, measurements):
+def get_FAD(distance_matrix):
     """
     # ========================================================================
 
@@ -405,12 +472,10 @@ def get_FAD(distance_matrix, measurements):
 
     FAD = calculate.FAD(H, D)
 
-    measurements.append({'Functional attribute diversity': FAD})
-
-    return measurements
+    return FAD
 
 
-def get_mutation_frequency(distance_matrix, measurements):
+def get_mutation_frequency(distance_matrix):
     """
     # ========================================================================
 
@@ -442,11 +507,10 @@ def get_mutation_frequency(distance_matrix, measurements):
     D = distance_matrix
     mutation_frequency = calculate.mutation_frequency(H, D)
 
-    measurements.append({'Mutation frequency': mutation_frequency})
-    return measurements
+    return mutation_frequency
 
 
-def get_minimum_mutation_frequency(haplotypes, measurements, pileup):
+def get_minimum_mutation_frequency(haplotypes, pileup):
     """
     # ========================================================================
 
@@ -481,13 +545,10 @@ def get_minimum_mutation_frequency(haplotypes, measurements, pileup):
 
     minimum_mutation_frequency = calculate.minimum_mutation_frequency(M, N, a)
 
-    measurements.append(
-        {'Minimum mutation frequency': minimum_mutation_frequency})
-
-    return measurements
+    return minimum_mutation_frequency
 
 
-def get_number_of_haplotypes(haplotypes, measurements):
+def get_number_of_haplotypes(haplotypes):
     """""
     #========================================================================
 
@@ -516,14 +577,10 @@ def get_number_of_haplotypes(haplotypes, measurements):
     # ========================================================================
     """
 
-    haplotype_num = len(haplotypes)
-
-    measurements.append({'Number of haplotypes': haplotype_num})
-
-    return measurements
+    return len(haplotypes)
 
 
-def get_number_of_polymorphic_sites(measurements, pileup):
+def get_number_of_polymorphic_sites(pileup):
     """""
     #========================================================================
 
@@ -556,14 +613,10 @@ def get_number_of_polymorphic_sites(measurements, pileup):
 
     #========================================================================
     """
-    number_of_polymorphic_sites = pileup.count_polymorphic_sites()
-    measurements.append(
-        {'Number of polymorphic sites': number_of_polymorphic_sites})
+    
+    return  pileup.count_polymorphic_sites()
 
-    return measurements
-
-
-def get_number_of_mutations(measurements, pileup):
+def get_number_of_mutations(pileup):
     """""
     #========================================================================
 
@@ -595,13 +648,94 @@ def get_number_of_mutations(measurements, pileup):
     #========================================================================
     """
 
-    number_of_mutations = pileup.count_unique_mutations()
-    measurements.append({'Number of mutation': number_of_mutations})
-
-    return measurements
+    return  pileup.count_unique_mutations()
 
 
-def get_shannon_entropy(haplotypes, frequencies, measurements):
+def get_shannon_entropy(haplotypes, frequencies):
+    """""
+    #========================================================================
+
+    GET SHANNON ENTROPY
+
+    PURPOSE
+    -------
+
+    Reports the shannon Entropy of the haplotpyes
+
+    INPUT
+    -------
+
+    [FLOAT LIST] [frequencies]
+        - A list of (relative) frequencies) of the haplotpyes.
+
+    [HAPLOTYPES] [haplotypes]
+        - A list of the haplotypes
+
+    [DICTIONARY LIST] [measurements]
+        - The current state of measurements.
+
+    RETURN
+    -------
+    [DICTIONARY LIST] [measurements]
+        - The appended list of measurements now with shannon entropy.
+
+    COMMENTS
+    -------
+    [N/A]
+
+    #========================================================================
+    """
+
+    Hs = calculate.shannon_entropy(frequencies)
+
+    return Hs
+
+def get_shannon_entropy_normalized_to_n(haplotypes, frequencies):
+    """""
+    #========================================================================
+
+    GET SHANNON ENTROPY
+
+    PURPOSE
+    -------
+
+    Reports the shannon Entropy of the haplotpyes
+
+    INPUT
+    -------
+
+    [FLOAT LIST] [frequencies]
+        - A list of (relative) frequencies) of the haplotpyes.
+
+    [HAPLOTYPES] [haplotypes]
+        - A list of the haplotypes
+
+    [DICTIONARY LIST] [measurements]
+        - The current state of measurements.
+
+    RETURN
+    -------
+    [DICTIONARY LIST] [measurements]
+        - The appended list of measurements now with shannon entropy.
+
+    COMMENTS
+    -------
+    [N/A]
+
+    #========================================================================
+    """
+
+    Hs = calculate.shannon_entropy(frequencies)
+    N = haplotype.calculate_total_clones(haplotypes)
+
+    if float(math.log(N)) != 0:
+        Hsn = float(Hs) / float(math.log(N))  # entropy localized to N
+    else:
+        Hsn = 0
+
+    return Hsn
+
+def get_shannon_entropy_normalized_to_h(haplotypes, frequencies):
     """""
     #========================================================================
 
@@ -638,23 +772,16 @@ def get_shannon_entropy(haplotypes, frequencies, measurements):
 
     Hs = calculate.shannon_entropy(frequencies)
     H = len(haplotypes)
-    N = haplotype.calculate_total_clones(haplotypes)
 
     if float(math.log(N)) != 0:
-        Hsn = float(Hs) / float(math.log(N))  # entropy localized to N
         Hsh = float(Hs) / float(math.log(H))  # entropy localized to H
     else:
-        Hsn = 0
         Hsh = 0
 
-    measurements.append({'Shannon Entropy (Hs)': Hs})
-    measurements.append({'Shannon Entropy Localized to N (Hsn)': Hsn})
-    measurements.append({'Shannon Entropy Localized to H (Hsh)': Hsh})
-
-    return measurements
+    return Hsh
 
 
-def get_simpson_index(frequencies, measurements):
+def get_simpson_index(frequencies):
     """""
     #========================================================================
 
@@ -690,12 +817,11 @@ def get_simpson_index(frequencies, measurements):
     P = frequencies
 
     simpson_index = calculate.simpson_index(H, P)
-    measurements.append({'Simpson Index': simpson_index})
 
-    return measurements
+    return simpson_index
 
 
-def get_gini_simpson_index(frequencies, measurements):
+def get_gini_simpson_index(frequencies):
     """""
     #========================================================================
 
@@ -727,61 +853,62 @@ def get_gini_simpson_index(frequencies, measurements):
     H = len(frequencies)
     P = frequencies
     gini_simpson_index = calculate.gini_simpson_index(H, P)
-    measurements.append({'Gini Simpson Index': gini_simpson_index})
 
-    return measurements
+    return gini_simpson_index
 
 
-def get_hill_numbers(measurements, frequencies):
-    """""
-    #========================================================================
+# def get_hill_numbers(measurements, frequencies):
+#     """""
+#     #========================================================================
 
-    GET HILL NUMBERS
+#     GET HILL NUMBERS
 
-    PURPOSE
-    -------
+#     PURPOSE
+#     -------
 
-    Reports the 0, 1, 2, and 3 hill numbers.
+#     Reports the 0, 1, 2, and 3 hill numbers.
 
-    INPUT
-    -------
+#     INPUT
+#     -------
 
-    [FLOAT LIST] [frequencies]
-        a list of relative frequencies of the haplotypes.
-    [DICTIONARY LIST] [measurements]
+#     [FLOAT LIST] [frequencies]
+#         a list of relative frequencies of the haplotypes.
+#     [DICTIONARY LIST] [measurements]
 
-    RETURN
-    -------
+#     RETURN
+#     -------
 
-    [DICTIONARY LIST] [measurements]
-        - The appended list of measurements now with the hill numbers.
+#     [DICTIONARY LIST] [measurements]
+#         - The appended list of measurements now with the hill numbers.
 
-    COMMENTS
-    -------
+#     COMMENTS
+#     -------
 
-    #========================================================================
-    """
+#     #========================================================================
+#     """
 
-    P = frequencies
-    H = len(frequencies)
+#     P = frequencies
+#     H = len(frequencies)
 
-    hill0 = hill1 = hill2 = hill3 = UNDEFINED
+#     hill0 = hill1 = hill2 = hill3 = UNDEFINED
+    
+#     hill_numbers = []
 
-    if len(P) >= 1:
-        hill0 = calculate.hill_number(H, P, 0)
-    if len(P) >= 2:
-        hill1 = calculate.hill_number(H, P, 1)
-    if len(P) >= 3:
-        hill2 = calculate.hill_number(H, P, 2)
-    if len(P) >= 4:
-        hill3 = calculate.hill_number(H, P, 3)
+#     if len(P) >= 1:
+#         hill0 = calculate.hill_number(H, P, 0)
+#     if len(P) >= 2:
+#         hill1 = calculate.hill_number(H, P, 1)
+#     if len(P) >= 3:
+#         hill2 = calculate.hill_number(H, P, 2)
+#     if len(P) >= 4:
+#         hill3 = calculate.hill_number(H, P, 3)
 
-    measurements.append({'Hill Number 0': hill0})
-    measurements.append({'Hill Number 1': hill1})
-    measurements.append({'Hill Number 2': hill2})
-    measurements.append({'Hill Numbwe 3': hill3})
+#     measurements.append({'Hill Number 0': hill0})
+#     measurements.append({'Hill Number 1': hill1})
+#     measurements.append({'Hill Number 2': hill2})
+#     measurements.append({'Hill Numbwe 3': hill3})
 
-    return measurements
+#     return measurements
 
 
 def measurmentSummary(measurements):
@@ -852,89 +979,95 @@ def measurmentSummary(measurements):
             click.echo(str(measurement).strip("{}").replace("'", ""))
 
 
-def measurement_to_csv(measurements, count):
-    '''
-    What's going on:
+# def measurement_to_csv(measurements, position):
+#     '''
+#     What's going on:
 
-        Passed an list of dictionaries (measurements) and the
-        haplotype position (count). My goal is to print the CSV file.
+#         Passed an list of dictionaries (measurements) and the
+#         haplotype position (count). My goal is to print the CSV file.
 
-    Expected output:
-        The first row contains column titles and subsequent rows
-        contain values of each measurement.
+#     Expected output:
+#         The first row contains column titles and subsequent rows
+#         contain values of each measurement.
 
-    Approach:
-        Storing my measurments in a dictionary paid off here.
-        I can extract the keys and store them in one list
-        I can extract the values and store them in a second list
+#     Approach:
+#         Storing my measurments in a dictionary paid off here.
+#         I can extract the keys and store them in one list
+#         I can extract the values and store them in a second list
 
-        Each time measure to csv is called I can append the list
-        with the values list.
+#         Each time measure to csv is called I can append the list
+#         with the values list.
 
-    Problem:
+#     Problem:
 
-        I only want to add column titles once. and then only append values.
-        Because haplotypes could start at any position from 0 to length
-        I have to be careful of where I start.
+#         I only want to add column titles once. and then only append values.
+#         Because haplotypes could start at any position from 0 to length
+#         I have to be careful of where I start.
 
-    Fix:
-        Since column titles is the first row, the file should be empty
-        adding it. If it's empty it shouldn't exist yet therefore have size of
-        0. if a file is empty we can add the column titles, if it's not
-        empty we have already added column titles and can skip to
-        adding values.
+#     Fix:
+#         Since column titles is the first row, the file should be empty
+#         adding it. If it's empty it shouldn't exist yet therefore have size of
+#         0. if a file is empty we can add the column titles, if it's not
+#         empty we have already added column titles and can skip to
+#         adding values.
 
-    Problem:
-        If file exists in directory already (i.e it was run before) then
-        we will just append to the old file. This could confuse people.
+#     Problem:
+#         If file exists in directory already (i.e it was run before) then
+#         we will just append to the old file. This could confuse people.
 
-    Possible Fixes:
-        - Warn user to remove old file if already created
-          (not very user friendly)
-        - Give user option to name file, and warn not to use
-          same file name... can't trust user though.
-        - Force a re-write everytime the program runs
-            - what if user is testing multiple data sets.
-        - Give user option to name the file and overwrite old files(?)
-   '''
-    # stores the column titles (keys)
-    measurements_col_titles = ["Position"]
-    # stores the values in each row (values)
-    measurements_values = []
+#     Possible Fixes:
+#         - Warn user to remove old file if already created
+#           (not very user friendly)
+#         - Give user option to name file, and warn not to use
+#           same file name... can't trust user though.
+#         - Force a re-write everytime the program runs
+#             - what if user is testing multiple data sets.
+#         - Give user option to name the file and overwrite old files(?)
+#    '''
+#     # stores the column titles (keys)
+#     # TODO: Build column titles outside of loop using MEASUREMENT_NAMES
+#     measurements_col_titles = ["Position"]
+#     # stores the values in each row (values)
+#     measurements_values = []
 
-    file_name = "complexity_outputs.csv"
+#     file_name = "complexity_outputs.csv"
 
-    # Goes through every measurment dictionary in the list.
-    for measurement in measurements:
+#     for i in range(measurements_list):
 
-        # Extracts the key and value from each item.
-        ''' A key is part of the column titles and get appended to
-            measurements_col_titles. '''
-        # A value is part of the subsequent rows and get aooebded to
-        # measurements_values
-        for key, value in measurement.items():
+#         measurements = measurements_list[i]
 
-            measurements_col_titles.append(key)
-            measurements_values.append(value)
+#         # Goes through every measurment dictionary in the list.
+#         for measurement in measurements:
 
-    # We have two lists, we will append both or one (just values if column
-    # titles exist).
-    with open(file_name, 'a') as complexity_data:
+#             # Extracts the key and value from each item.
+            
+#             ''' A key is part of the column titles and get appended to
+#                 measurements_col_titles. '''
+#             # A value is part of the subsequent rows and get aooebded to
+#             # measurements_values
+#             for key, value in measurement.items():
 
-        '''
-        TODO maybe move the insert value outside of the file  writer
-        within outer forloop.
-        '''
-        measurements_values.insert(0, count)
+#                 measurements_col_titles.append(key)
+#                 measurements_values.append(value)
 
-        # call the instance method that returns the delimited string,
-        writer = csv.writer(complexity_data)
+#         # We have two lists, we will append both or one (just values if column
+#         # titles exist).
+#         with open(file_name, 'a') as complexity_data:
 
-        # if file empty add the column titles (will be first row)
-        if os.stat(file_name).st_size == 0:
-            writer.writerow(measurements_col_titles)
-        # will always add the measurements values
-        writer.writerow(measurements_values)
+#             '''
+#             TODO maybe move the insert value outside of the file  writer
+#             within outer forloop.
+#             '''
+#             #measurements_values.insert(0, position)
 
-    complexity_data.close()
-    measurements_values.pop(0)
+#             # call the instance method that returns the delimited string,
+#             writer = csv.writer(complexity_data)
+
+#             # if file empty add the column titles (will be first row)
+#             if os.stat(file_name).st_size == 0:
+#                 writer.writerow( measurements_col_titles)
+#             # will always add the measurements values
+#             writer.writerow([positions] + measurements)
+
+#     complexity_data.close()
+#     measurements_values.pop(0)
