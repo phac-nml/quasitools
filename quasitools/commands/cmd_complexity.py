@@ -39,17 +39,17 @@ SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N = 4
 SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H = 5
 SIMPSON_INDEX = 6
 GINI_SIMPSON_INDEX = 7
-#HILL_NUMBER_0 = 8
-#HILL_NUMBER_1 = 9
-#HILL_NUMBER_2 = 10
-#HILL_NUMBER_3 = 11
-MINIMUM_MUTATION_FREQUENCY = 8 #12
-MUTATION_FREQUENCY_FREQUENCY = 9 #13
-FUNCTIONAL_ATTRIBUTE_DIVERSITY = 10 #14
-SAMPLE_NUCLEOTIDE_DIVERSITY_Entity = 11#15
-MAXIMUM_MUTATION_FREQUENCY = 12#16
-POPULATION_NUCLEOTIDE_DIVERSITY =13 #17
-SAMPLE_NUCLEOTIDE_DIVERSITY = 14#18
+# HILL_NUMBER_0 = 8
+# HILL_NUMBER_1 = 9
+# HILL_NUMBER_2 = 10
+# HILL_NUMBER_3 = 11
+MINIMUM_MUTATION_FREQUENCY = 8  # 12
+MUTATION_FREQUENCY_FREQUENCY = 9  # 13
+FUNCTIONAL_ATTRIBUTE_DIVERSITY = 10  # 14
+SAMPLE_NUCLEOTIDE_DIVERSITY_Entity = 11  # 15
+MAXIMUM_MUTATION_FREQUENCY = 12  # 16
+POPULATION_NUCLEOTIDE_DIVERSITY = 13  # 17
+SAMPLE_NUCLEOTIDE_DIVERSITY = 14  # 18
 
 
 # Dictionary of Names
@@ -62,10 +62,10 @@ MEASUREMENTS_NAMES = {
     'SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H': "Shannon Entropy Localized to H",
     'SIMPSON_INDEX': 'Simpson Index',
     'GINI_SIMPSON_INDEX': "Gini Simpson Index",
-    #'HILL_NUMBER_0': "Hill Number #0",
-    #'HILL_NUMBER_1': "HIll Number #1",
-    #'HILL_NUMBER_2': "Hill Number #2",
-    #'HILL_NUMBER_3': "Hill Number #3",
+    # 'HILL_NUMBER_0': "Hill Number #0",
+    # 'HILL_NUMBER_1': "HIll Number #1",
+    # 'HILL_NUMBER_2': "Hill Number #2",
+    # 'HILL_NUMBER_3': "Hill Number #3",
     'MINIMUM_MUTATION_FREQUENCY': "Minimum Mutation Frequency",
     'MUTATION_FREQUENCY_FREQUENCY': "Mutation Frequency",
     'FUNCTIONAL_ATTRIBUTE_DIVERSITY': "Functional Attribute Diversity",
@@ -172,11 +172,11 @@ def complexity(reference, bam, k):
         '''
         Set the Incidence - Entity Level
         '''
-        measurements[NUMBER_OF_HAPLOTYPES] = get_number_of_haplotypes(
-            haplotypes)
+        measurements[NUMBER_OF_HAPLOTYPES] = \
+            get_number_of_haplotypes(haplotypes)
 
-        measurements[NUMBER_OF_POLYMORPHIC_SITES] = get_number_of_polymorphic_sites(
-            pileup)
+        measurements[NUMBER_OF_POLYMORPHIC_SITES] = \
+            get_number_of_polymorphic_sites(pileup)
 
         measurements[NUMBER_OF_MUTATIONS] = get_number_of_mutations(pileup)
 
@@ -187,69 +187,66 @@ def complexity(reference, bam, k):
         shannon_entropy = get_shannon_entropy(haplotypes, frequencies)
 
         measurements[SHANNON_ENTROPY_NUMBER] = shannon_entropy
-        
+
         measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N] = \
             get_shannon_entropy_localized_to_n(haplotypes, shannon_entropy)
-        
+
         measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H] = \
-                get_shannon_entropy_localized_to_h(
+            get_shannon_entropy_localized_to_h(
             haplotypes, shannon_entropy)
 
         measurements[SIMPSON_INDEX] = \
-                get_simpson_index(frequencies)
+            get_simpson_index(frequencies)
 
         measurements[GINI_SIMPSON_INDEX] = \
-                get_gini_simpson_index(frequencies)
-        
-        # returns a list of hill numbers
-       # hill_numbers =  get_hill_numbers(frequencies)
-        
-       # for i in range (len(hill_numbers)):
-        #    for hill_number_pos in range (HILL_NUMBER_0, HILL_NUMBER_3):
-         #       measurements[hill_number_pos] = hill_numbers[i]
+            get_gini_simpson_index(frequencies)
 
+        # returns a list of hill numbers
+        # hill_numbers =  get_hill_numbers(frequencies)
+
+        # for i in range (len(hill_numbers)):
+        #    for hill_number_pos in range (HILL_NUMBER_0, HILL_NUMBER_3):
+        #       measurements[hill_number_pos] = hill_numbers[i]
 
         '''
         Functional,  Indidence - Entity Level
         '''
         measurements[MINIMUM_MUTATION_FREQUENCY] = \
-                get_minimum_mutation_frequency(
+            get_minimum_mutation_frequency(
             haplotypes, pileup)
 
         measurements[MINIMUM_MUTATION_FREQUENCY] = get_mutation_frequency(
             distance_matrix)
 
         measurements[FUNCTIONAL_ATTRIBUTE_DIVERSITY] = \
-                get_FAD(distance_matrix)
+            get_FAD(distance_matrix)
 
         measurements[SAMPLE_NUCLEOTIDE_DIVERSITY_Entity] = \
-                get_sample_nucleotide_diversity_entity(
+            get_sample_nucleotide_diversity_entity(
             distance_matrix, frequencies)
         '''
 
         Functional, Abundance - Molecular Level
         '''
         measurements[MAXIMUM_MUTATION_FREQUENCY] = \
-                get_maximum_mutation_frequency(
+            get_maximum_mutation_frequency(
             counts, distance_matrix, frequencies)
-        
+
         measurements[POPULATION_NUCLEOTIDE_DIVERSITY] = \
-                get_population_nucleotide_diversity(
+            get_population_nucleotide_diversity(
             distance_matrix, frequencies)
         '''
 
         Other
         '''
         measurements[SAMPLE_NUCLEOTIDE_DIVERSITY] = \
-                get_sample_nucleotide_diversity(
+            get_sample_nucleotide_diversity(
             distance_matrix, frequencies, haplotypes)
-        
-        measurements_list[i] = copy.deepcopy(measurements)
 
+        measurements_list[i] = copy.deepcopy(measurements)
 
     for measurements in measurements_list:
         print(measurements)
-        
 
     '''
     Measurement to CSV
@@ -895,23 +892,23 @@ def get_hill_numbers(frequencies):
     H = len(frequencies)
 
     NUMBER_OF_HILL_NUMBERS = 3
-    
+
     # initialize list of hill numbers from 0 to 3
     list_of_hill_numbers = [0 for x in range(NUMBER_OF_HILL_NUMBERS)]
-    
 
     for hill_number_pos in range(NUMBER_OF_HILL_NUMBERS):
-        if len(P) >= hill_number_pos+1:
-            list_of_hill_numbers[hill_number_pos] = calculate.hill_number(H, P, hill_number_pos)
+        if len(P) >= hill_number_pos + 1:
+            list_of_hill_numbers[hill_number_pos] = calculate.hill_number(
+                H, P, hill_number_pos)
 
-   # if len(P) >= 1:
-   #     hill0 = calculate.hill_number(H, P, 0)
-   # if len(P) >= 2:
-   #     hill1 = calculate.hill_number(H, P, 1)
-   # if len(P) >= 3:
-   #     hill2 = calculate.hill_number(H, P, 2)
-   # if len(P) >= 4:
-   #     hill3 = calculate.hill_number(H, P, 3)
+    # if len(P) >= 1:
+    #     hill0 = calculate.hill_number(H, P, 0)
+    # if len(P) >= 2:
+    #     hill1 = calculate.hill_number(H, P, 1)
+    # if len(P) >= 3:
+    #     hill2 = calculate.hill_number(H, P, 2)
+    # if len(P) >= 4:
+    #     hill3 = calculate.hill_number(H, P, 3)
 
     return list_of_hill_numbers
 
@@ -986,32 +983,31 @@ def measurmentSummary(measurements):
 
 def measurement_to_csv(measurements_list):
 
-    
     measurements_col_titles = ["Position"]
-    
+
     # Itterates length of the dictionary 0 to 14
-    for i in range(len(MEASUREMENTS_NAMES)): 
+    for i in range(len(MEASUREMENTS_NAMES)):
         for key, value in MEASUREMENTS_NAMES.items():
             if eval(key) == i:
                 measurements_col_titles.append(value)
-    
-    print(measurements_col_titles)
 
+    print(measurements_col_titles)
 
     file_name = "complexity_outputs.csv"
 
     for position in range(len(measurements_list)):
 
-        measurements = [UNDEFINED for x in range(1000)]  # if measurement list at position i is not empty
+        # if measurement list at position i is not empty
+        measurements = [UNDEFINED for x in range(1000)]
         if measurements_list[position]:
             measurements = copy.deepcopy(measurements_list[position])
 
         with open(file_name, 'a') as complexity_data:
-            
+
             writer = csv.writer(complexity_data)
-             # if file empty add the column titles (will be first row)
+            # if file empty add the column titles (will be first row)
             if os.stat(file_name).st_size == 0:
                 writer.writerow(measurements_col_titles)
-             # will always add the measurements values
+                # will always add the measurements values
             writer.writerow([position] + measurements)
         complexity_data.close()
