@@ -29,6 +29,7 @@ import numpy
 
 import quasitools.calculate as calculate
 from quasitools.pileup import Pileup
+GAP = '-'
 
 
 class Haplotype:
@@ -177,7 +178,7 @@ def build_consensus_from_haplotypes(haplotypes):
     return consensus
 
 
-def build_pileup_from_haplotypes(haplotypes):
+def build_pileup_from_haplotypes(haplotypes, gaps=False):
     """
     # ========================================================================
 
@@ -195,6 +196,9 @@ def build_pileup_from_haplotypes(haplotypes):
 
     [HAPLOTYPE LIST] [haplotypes]
         A list of haplotypes
+    [BOOLEAN] [gaps]
+        a paramter to indicate if their are gaps in any of the haplotypes in
+        the list.
 
     RETURN
     ------
@@ -225,6 +229,11 @@ def build_pileup_from_haplotypes(haplotypes):
                     pileup_list[i][base] = 1
 
     # No checks for gaps because we shouldn't have any as the reads overlap.
+    if not gaps:
+
+        for position in pileup_list:
+
+            position.pop(GAP, None)
 
     pileup = Pileup(pileup_list)
 
@@ -398,7 +407,6 @@ def build_counts(haplotypes):
     # ========================================================================
     """
 
-    # haplotypes = sort_haplotypes(haplotypes)
     counts = []
 
     for haplotype in haplotypes:
