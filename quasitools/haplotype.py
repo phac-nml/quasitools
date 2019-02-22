@@ -1,7 +1,7 @@
 """
 # =============================================================================
 
-Copyright Government of Canada 2018
+Copyright Government of Canada 2019
 
 Written by: Eric Marinier, Public Health Agency of Canada,
     National Microbiology Laboratory
@@ -40,7 +40,7 @@ class Haplotype:
     # ========================================================================
     """
 
-    def __init__(self, sequence, consensus="", count=1):
+    def __init__(self, sequence, count=1):
         """
         # ====================================================================
 
@@ -84,42 +84,6 @@ class Haplotype:
         return False
 
 
-# def sort_haplotypes(haplotypes):
-#     """
-#     # ==================================================================
-
-#     SORT HAPLOTYPES
-
-
-#     PURPOSE
-#     -------
-
-#     Sorts a list of haplotypes according their number of mutations from the
-#     consensus sequence.
-
-
-#     INPUT
-#     -----
-
-#     [HAPLOTYPE LIST] [haplotypes]
-#         The list of haplotypes to sort.
-
-
-#     RETURN
-#     ------
-
-#     [HAPLOTYPE LIST]
-#         A list of sorted haplotypes, according to their number of mutations
-#         from the consensus sequence of all the sequences.
-
-#     # ==================================================================
-#     """
-
-#     sorted_haplotypes = \
-#         sorted(haplotypes, key=attrgetter('mutations'), reverse=False)
-
-#     return sorted_haplotypes
-
 def sort_haplotypes(haplotypes, consensus):
     """
     # ========================================================================
@@ -139,6 +103,8 @@ def sort_haplotypes(haplotypes, consensus):
 
     [HAPLOTYPE LIST] [haplotypes]
         The list of haplotypes to sort.
+
+    [String] consensus
 
 
     RETURN
@@ -240,7 +206,6 @@ def build_distiance_matrix(haplotypes):
     # ========================================================================
     """
 
-    # haplotypes = sort_haplotypes(haplotypes)
     x = len(haplotypes)
 
     matrix = numpy.zeros(shape=(x, x))

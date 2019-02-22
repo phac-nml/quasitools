@@ -20,7 +20,6 @@ __version__ = '0.1.1'
 import os
 import click
 import math
-import time
 import copy
 import csv
 import quasitools.calculate as calculate
@@ -28,7 +27,7 @@ import quasitools.haplotype as haplotype
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import parse_haplotypes_called
 
-UNDEFINED = "-"
+UNDEFINED = ""
 
 # Measurement Positions
 NUMBER_OF_HAPLOTYPES = 0
@@ -39,17 +38,17 @@ SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N = 4
 SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H = 5
 SIMPSON_INDEX = 6
 GINI_SIMPSON_INDEX = 7
-# HILL_NUMBER_0 = 8
-# HILL_NUMBER_1 = 9
-# HILL_NUMBER_2 = 10
-# HILL_NUMBER_3 = 11
-MINIMUM_MUTATION_FREQUENCY = 8  # 12
-MUTATION_FREQUENCY_FREQUENCY = 9  # 13
-FUNCTIONAL_ATTRIBUTE_DIVERSITY = 10  # 14
-SAMPLE_NUCLEOTIDE_DIVERSITY_Entity = 11  # 15
-MAXIMUM_MUTATION_FREQUENCY = 12  # 16
-POPULATION_NUCLEOTIDE_DIVERSITY = 13  # 17
-SAMPLE_NUCLEOTIDE_DIVERSITY = 14  # 18
+HILL_NUMBER_0 = 8
+HILL_NUMBER_1 = 9
+HILL_NUMBER_2 = 10
+HILL_NUMBER_3 = 11
+MINIMUM_MUTATION_FREQUENCY = 12
+MUTATION_FREQUENCY_FREQUENCY = 13
+FUNCTIONAL_ATTRIBUTE_DIVERSITY = 14
+SAMPLE_NUCLEOTIDE_DIVERSITY_Entity = 15
+MAXIMUM_MUTATION_FREQUENCY = 16
+POPULATION_NUCLEOTIDE_DIVERSITY = 17
+SAMPLE_NUCLEOTIDE_DIVERSITY = 18
 
 
 # Dictionary of Names
@@ -62,10 +61,10 @@ MEASUREMENTS_NAMES = {
     'SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H': "Shannon Entropy Localized to H",
     'SIMPSON_INDEX': 'Simpson Index',
     'GINI_SIMPSON_INDEX': "Gini Simpson Index",
-    # 'HILL_NUMBER_0': "Hill Number #0",
-    # 'HILL_NUMBER_1': "HIll Number #1",
-    # 'HILL_NUMBER_2': "Hill Number #2",
-    # 'HILL_NUMBER_3': "Hill Number #3",
+    'HILL_NUMBER_0': "Hill Number #0",
+    'HILL_NUMBER_1': "HIll Number #1",
+    'HILL_NUMBER_2': "Hill Number #2",
+    'HILL_NUMBER_3': "Hill Number #3",
     'MINIMUM_MUTATION_FREQUENCY': "Minimum Mutation Frequency",
     'MUTATION_FREQUENCY_FREQUENCY': "Mutation Frequency",
     'FUNCTIONAL_ATTRIBUTE_DIVERSITY': "Functional Attribute Diversity",
@@ -76,7 +75,7 @@ MEASUREMENTS_NAMES = {
 }
 
 # Creates an empty list.
-EMPTY_LIST = ["-" for x in range(len(MEASUREMENTS_NAMES))]
+EMPTY_LIST = [UNDEFINED for x in range(len(MEASUREMENTS_NAMES))]
 
 
 @click.command(
@@ -98,8 +97,6 @@ def cli(reference, bam, k):
     Virology 493 (2016): 227-237.
 
     """
-    start_time = time.time()
-    click.echo("\nStarting...")
 
     click.echo("Using file %s as reference" % reference)
     click.echo("Reading input from file(s)  %s" % bam)
@@ -107,9 +104,6 @@ def cli(reference, bam, k):
                " at %s intervals" % k)
 
     complexity(reference, bam, int(k))
-
-    click.echo("\nComplete!")
-    print("\nTime to run--- %s seconds ---" % (time.time() - start_time))
 
 
 def complexity(reference, bam, k):
@@ -128,9 +122,14 @@ def complexity(reference, bam, k):
     INPUT
     -----
 
-    [(FASTA) FILE LOCATION] [fasta]
-        The file location of an aligned FASTA file for which to calculate the
-        complexity measures.
+    [(BAM) FILE LOCATION] [bam]
+        The file location of a bam file
+
+    [(REFERENCE) FILE LOCATION] [refernece]
+        the file location of the reference file
+    [INT] k
+        provides the sequence length for our reads from a given starting
+        position
 
 
     RETURN
@@ -142,7 +141,7 @@ def complexity(reference, bam, k):
     ----
 
     The complexity computation and reporting will be completed once
-    this method has run.
+    this method has run its course and be stored in CSV file.
 
     # ========================================================================
     """
@@ -151,14 +150,10 @@ def complexity(reference, bam, k):
     haplotype_list = parse_haplotypes_called(
         references, reference, bam, k)
 
-    # measurements_list = [ [] for x in range(len(haplotype_list)-k+1)]
-    measurements_list = [[] for x in range(10)]
+    measurements_list = [[] for x in range(len(haplotype_list) - k + 1)]
     measurements = [0 for x in range(len(MEASUREMENTS_NAMES))]
 
-    # for i in range(len(haplotype_list)-k+1):
-    # TODO The 10 is only for testing purpose replace with code above for
-    # production.
-    for i in range(10):
+    for i in range((len(haplotype_list) - k + 1)):
         haplotypes = haplotype_list[i]
 
         if not haplotypes:
@@ -201,12 +196,16 @@ def complexity(reference, bam, k):
         measurements[GINI_SIMPSON_INDEX] = \
             get_gini_simpson_index(frequencies)
 
-        # returns a list of hill numbers
-        # hill_numbers =  get_hill_numbers(frequencies)
+        hill_numbers_list = get_hill_numbers(frequencies)
 
-        # for i in range (len(hill_numbers)):
-        #    for hill_number_pos in range (HILL_NUMBER_0, HILL_NUMBER_3):
-        #       measurements[hill_number_pos] = hill_numbers[i]
+        '''
+        loops through all positions in the hills_numbers_list then adds
+        the subsequent position of hill number to the index of the
+        measurements list in charge of holding the specific hill number.
+
+        '''
+        for k in range(len(hill_numbers_list)):
+            measurements[HILL_NUMBER_0 + k] = (hill_numbers_list[k])
 
         '''
         Functional,  Indidence - Entity Level
@@ -245,9 +244,6 @@ def complexity(reference, bam, k):
 
         measurements_list[i] = copy.deepcopy(measurements)
 
-    for measurements in measurements_list:
-        print(measurements)
-
     '''
     Measurement to CSV
     '''
@@ -258,38 +254,43 @@ def get_sample_nucleotide_diversity(
         distance_matrix,
         frequencies,
         haplotypes):
-    """"
-    #========================================================================
-
-    GET SAMPLE NUCLEOTIDE DIVERSITY
-
-
-    PURPOSE
-    -------
-
-    Reports the diversity of nucleotides
-
-
-    INPUT
-    -------
-
-    [2D ARRAY] [distance_matrix]
-        A two dimensional array, representing the distance matrix of distances
-        between the haplotypes.
-    [FLOAT LIST] [frequencies]
-        A list of (relative) frequencies of the Haplotypes.
-    [HAPLOTYPE LIST] [haplotypes]
-        A list of Haplotype objects.
-    [DICTIONARY LIST] [measurements]
-        Current Stateof measurements
-
-    RETURN
-    -------
-
-    [DICTIONARY LIST] [measurements]
-
-    # ========================================================================
     """
+   # ========================================================================
+
+   REPORT SAMPLE NUCLEOTIDE DIVERSITY
+
+
+   PURPOSE
+   -------
+
+   Reports the sample nucleotide diversity.
+
+
+   INPUT
+   -----
+
+   [HAPLOTYPE LIST] [haplotypes]
+       A list of Haplotype objects.
+
+   [FLOAT LIST] [frequencies]
+       A list of (relative) frequencies of the Haplotypes.
+
+   [2D ARRAY] [distance_matrix]
+       A two dimensional array, representing the distance matrix of distances
+       between the haplotypes.
+
+       This is expected to be calculated in a similar manner as:
+           haplotype.build_distiance_matrix(haplotypes)
+
+
+   RETURN
+   ------
+
+   [INT] [SND]
+       the sample nucleotide diversity.
+
+   # ========================================================================
+   """
 
     N = haplotype.calculate_total_clones(haplotypes)
     H = len(frequencies)
@@ -308,11 +309,11 @@ def get_population_nucleotide_diversity(
         distance_matrix, frequencies):
     """
     # ========================================================================
-    REPORT POPULATION NUCLEOTIDE DIVERSITY
+    GET POPULATION NUCLEOTIDE DIVERSITY
 
     PURPOSE
     -------
-    Reports the population nucleotide diversity.
+    Returns the population nucleotide diversity.
 
     INPUT
     -----
@@ -326,12 +327,9 @@ def get_population_nucleotide_diversity(
     RETURN
     ------
 
-    [NONE]
+    [INT] PND
+        The population nucleotide diversity
 
-    Comments
-    ----
-
-    The population sample nucleotide diversity will be reported to output.
     # ========================================================================
     """
 
@@ -353,10 +351,12 @@ def get_maximum_mutation_frequency(
 
     GET MAXMIMUM MUTATION FREQUENCY
 
+
     PURPOSE
     -------
 
-    gets the maximum mutation frequency of the haplotypes.
+    Returns the maximum mutation frequency of the haplotypes.
+
 
     INPUT
     -----
@@ -364,22 +364,23 @@ def get_maximum_mutation_frequency(
     [INT LIST] [counts]
         A sorted list of haplotype counts, from the counts of the most
         abundant to the counts of the least abundant haplotype.
+
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
     [2D ARRAY] [distance_matrix]
         A two dimensional array, representing the distance matrix of distances
         between the haplotypes.
-    [FLOAT LIST] [frequencies]
-        A list of (relative) frequencies of the Haplotypes.
-    [DICTIONARY LIST] [measurements]
+
+        This is expected to be calculated in a similar manner as:
+            haplotype.build_distiance_matrix(haplotypes)
 
     RETURN
     ------
 
-    [DICTIONARY LIST] [measurements]
+    [INT] maximum_mutation_frequency
+        The maximum mutation frequency
 
-
-    POST
-    ----
-    The maximum mutation frequency will be reported to output.
     # ========================================================================
     """
 
@@ -397,31 +398,34 @@ def get_sample_nucleotide_diversity_entity(
     """
     # ========================================================================
 
-    GET SAMPLE NUCLEOTIDE DIVERSITY (ENTITY LEVEL)
+    REPORT SAMPLE NUCLEOTIDE DIVERSITY (ENTITY LEVEL)
+
 
     PURPOSE
     -------
 
-    gets the entity-level sample nucleotide diversity.
+    Returns the entity-level sample nucleotide diversity.
+
 
     INPUT
     -----
 
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
     [2D ARRAY] [distance_matrix]
         A two dimensional array, representing the distance matrix of distances
         between the haplotypes.
+
         This is expected to be calculated in a similar manner as:
             haplotype.build_distiance_matrix(haplotypes)
-    [FLOAT LIST] [frequencies]
-        A list of (relative) frequencies of the Haplotypes.
-    DICTIONARY LIST] [measurements]
 
 
     RETURN
     ------
 
-    [DICTIONARY LIST] [measurements]
-
+    [INT] SNDE
+        sample nucleotide diversity entity
 
     # ========================================================================
     """
@@ -430,11 +434,11 @@ def get_sample_nucleotide_diversity_entity(
     D = distance_matrix
 
     if H > 1:
-        PND = calculate.sample_nucleotide_diversity_entity(H, D)
+        SNDE = calculate.sample_nucleotide_diversity_entity(H, D)
     else:
-        PND = UNDEFINED
+        SNDE = UNDEFINED
 
-    return PND
+    return SNDE
 
 
 def get_FAD(distance_matrix):
@@ -443,10 +447,12 @@ def get_FAD(distance_matrix):
 
     REPORT FUNCTIONAL ATTRIBUTE DIVERSITY
 
+
     PURPOSE
     -------
 
     Reports the functional attribute diversity.
+
 
     INPUT
     -----
@@ -454,15 +460,16 @@ def get_FAD(distance_matrix):
     [2D ARRAY] [distance_matrix]
         A two dimensional array, representing the distance matrix of distances
         between the haplotypes.
+
         This is expected to be calculated in a similar manner as:
             haplotype.build_distiance_matrix(haplotypes)
-    [DICTIONARY LIST] [measurements]
+
 
     RETURN
     ------
 
-    [DICTIONARY LIST] [measurements]
-
+    [INT] FAD
+        the functional attribute diversity
 
     # ========================================================================
     """
@@ -481,10 +488,12 @@ def get_mutation_frequency(distance_matrix):
 
     REPORT MUTATION FREQUENCY
 
+
     PURPOSE
     -------
 
     Reports the mutation frequency of the haplotypes.
+
 
     INPUT
     -----
@@ -492,13 +501,16 @@ def get_mutation_frequency(distance_matrix):
     [2D ARRAY] [distance_matrix]
         A two dimensional array, representing the distance matrix of distances
         between the haplotypes.
-    [DICTIONARY LIST] [measurements]
+
+        This is expected to be calculated in a similar manner as:
+            haplotype.build_distiance_matrix(haplotypes)
+
 
     RETURN
     ------
 
-    [DICTIONARY LIST] [measurements]
-
+    [INT] mutation_frequency
+        the mutation frequency
 
     # ========================================================================
     """
@@ -516,25 +528,28 @@ def get_minimum_mutation_frequency(haplotypes, pileup):
 
     REPORT MINIMUM MUTATION FREQUENCY
 
+
     PURPOSE
     -------
-    Reports the minimum mutation frequency of the haplotypes.
+
+    Returns the minimum mutation frequency of the haplotypes.
+
 
     INPUT
     -----
 
     [PILEUP] [pileup]
         A Pileup object, which represents the pileup of aligned reads.
+
     [HAPLOTYPE LIST] [haplotypes]
         A list of Haplotype objects.
-    [DICTIONARY LIST] [measurements]
 
 
     RETURN
     ------
 
-    [DICTIONARY LIST] [measurements]
-
+    [INT][minimum_mutation_frequency]
+        the minimum mutation frequency
 
     # ========================================================================
     """
@@ -549,30 +564,30 @@ def get_minimum_mutation_frequency(haplotypes, pileup):
 
 
 def get_number_of_haplotypes(haplotypes):
-    """""
-    #========================================================================
+    """
+    # ========================================================================
 
-    GET NUMBER OF HAPLOTYPES
+    Returns NUMBER OF HAPLOTYPES
 
 
     PURPOSE
     -------
 
-    Reports the number of unique haplotypes
+    Reports the number of (unique) haplotypes.
 
 
     INPUT
-    -------
+    -----
 
-    [DICTIONARY LIST] [measurements]
-
-    [NONE]
+    [HAPLOTYPE LIST] [haplotypes]
+        A list of Haplotype objects.
 
 
     RETURN
-    -------
+    ------
 
-    [DICTIONARY LIST] [measurements]
+    [INT] [len(haplotypes)]
+        unique number of haplotypes
 
     # ========================================================================
     """
@@ -581,8 +596,8 @@ def get_number_of_haplotypes(haplotypes):
 
 
 def get_number_of_polymorphic_sites(pileup):
-    """""
-    #========================================================================
+    """
+    # ========================================================================
 
     GET NUMBER OF POLYMORPHIC SITES
 
@@ -590,101 +605,96 @@ def get_number_of_polymorphic_sites(pileup):
     PURPOSE
     -------
 
-    Reports the number of polymorphic sites
+    RETURN the number of polymorphic sites.
+
 
     INPUT
-    -------
-
-    [DICTIONARY LIST] [measurements]
-        Current measurements.
+    -----
 
     [PILEUP] [pileup]
-        A pileup object that represents the pileup of aligned reads
+        A Pileup object, which represents the pileup of aligned reads.
+
 
     RETURN
-    -------
+    ------
 
-    [DICTIONARY LIST] [measurements]
-        -Appended measurements after polymorphic sites added
+    [INT] (pileup.count_polymorphic_sites())
+        number of polymorphic sites in pileup
 
-    COMMENTS
-    -------
-    [N/A]
-
-    #========================================================================
+    # ========================================================================
     """
 
     return pileup.count_polymorphic_sites()
 
 
 def get_number_of_mutations(pileup):
-    """""
-    #========================================================================
+    """
+    # ========================================================================
 
-    GET NUMBER OF MUTATIONS
+    REPORT NUMBER OF MUTATIONS
+
 
     PURPOSE
     -------
 
-    Gets the number of polymorphic sites
+    Reports the number of mutations.
+
 
     INPUT
-    -------
+    -----
 
-    [DICTIONARY LIST] [measurements]
-        The current state of measurements.
     [PILEUP] [pileup]
-        A pileup object that represents the pileup of aligned reads
+        A Pileup object, which represents the pileup of aligned reads.
+
 
     RETURN
-    -------
+    ------
 
-    [DICTIONARY LIST] [measurements]
-        The appended list of measurements now with number of mutations.
+    [INT] pileup.count_unique_mutations()
+        the number of mutations
 
-    COMMENTS
-    -------
-    [N/A]
-
-    #========================================================================
+    # ========================================================================
     """
 
     return pileup.count_unique_mutations()
 
 
 def get_shannon_entropy(haplotypes, frequencies):
-    """""
-    #========================================================================
+    """
+    # ========================================================================
 
     GET SHANNON ENTROPY
+
 
     PURPOSE
     -------
 
-    Reports the shannon Entropy of the haplotpyes
+    Returns the Shannon entropy of the haplotypes.
+
 
     INPUT
-    -------
+    -----
+
+    [HAPLOTYPE LIST] [haplotypes]
+        A list of Haplotype objects, for which to report the Shannon entropy.
 
     [FLOAT LIST] [frequencies]
-        - A list of (relative) frequencies) of the haplotpyes.
+        A list of (relative) frequencies of the Haplotypes.
 
-    [HAPLOTYPES] [haplotypes]
-        - A list of the haplotypes
-
-    [DICTIONARY LIST] [measurements]
-        - The current state of measurements.
 
     RETURN
-    -------
-    [DICTIONARY LIST] [measurements]
-        - The appended list of measurements now with shannon entropy.
+    ------
 
-    COMMENTS
-    -------
-    [N/A]
+    [INT] [hs]
+        shannon entropy
 
-    #========================================================================
+
+    POST
+    ----
+
+    The Shannon entropy
+
+    # ========================================================================
     """
 
     Hs = calculate.shannon_entropy(frequencies)
@@ -693,38 +703,35 @@ def get_shannon_entropy(haplotypes, frequencies):
 
 
 def get_shannon_entropy_localized_to_n(haplotypes, Hs):
-    """""
-    #========================================================================
+    """
+    # ========================================================================
 
-    GET SHANNON ENTROPY
+    GET SHANNON ENTROPY LOCALIZED TO N
+
 
     PURPOSE
     -------
 
-    Reports the shannon Entropy of the haplotpyes
+    Return the Shannon entropy of the haplotypes localized to N.
+
 
     INPUT
-    -------
+    -----
+
+    [HAPLOTYPE LIST] [haplotypes]
+        A list of Haplotype objects, for which to report the Shannon entropy.
 
     [FLOAT LIST] [frequencies]
-        - A list of (relative) frequencies) of the haplotpyes.
+        A list of (relative) frequencies of the Haplotypes.
 
-    [HAPLOTYPES] [haplotypes]
-        - A list of the haplotypes
-
-    [DICTIONARY LIST] [measurements]
-        - The current state of measurements.
 
     RETURN
-    -------
-    [DICTIONARY LIST] [measurements]
-        - The appended list of measurements now with shannon entropy.
+    ------
 
-    COMMENTS
-    -------
-    [N/A]
+    [INT] [hsn]
+        shannon entropy localized to n
 
-    #========================================================================
+    # ========================================================================
     """
 
     N = haplotype.calculate_total_clones(haplotypes)
@@ -738,39 +745,36 @@ def get_shannon_entropy_localized_to_n(haplotypes, Hs):
 
 
 def get_shannon_entropy_localized_to_h(haplotypes, Hs):
-    """""
-    #========================================================================
-
-    GET SHANNON ENTROPY
-
-    PURPOSE
-    -------
-
-    Reports the shannon Entropy of the haplotpyes
-
-    INPUT
-    -------
-
-    [FLOAT LIST] [frequencies]
-        - A list of (relative) frequencies) of the haplotpyes.
-
-    [HAPLOTYPES] [haplotypes]
-        - A list of the haplotypes
-
-    [DICTIONARY LIST] [measurements]
-        - The current state of measurements.
-
-    RETURN
-    -------
-    [DICTIONARY LIST] [measurements]
-        - The appended list of measurements now with shannon entropy.
-
-    COMMENTS
-    -------
-    [N/A]
-
-    #========================================================================
     """
+     # ========================================================================
+
+     GET SHANNON ENTROPY LOCALIZED TO H
+
+
+     PURPOSE
+     -------
+
+     Return the Shannon entropy of the haplotypes localized to N.
+
+
+     INPUT
+     -----
+
+     [HAPLOTYPE LIST] [haplotypes]
+         A list of Haplotype objects, for which to report the Shannon entropy.
+
+     [FLOAT LIST] [frequencies]
+         A list of (relative) frequencies of the Haplotypes.
+
+
+     RETURN
+     ------
+
+     [INT] [hsn]
+         shannon entropy localized to h
+
+     # ========================================================================
+     """
 
     H = len(haplotypes)
 
@@ -783,35 +787,31 @@ def get_shannon_entropy_localized_to_h(haplotypes, Hs):
 
 
 def get_simpson_index(frequencies):
-    """""
-    #========================================================================
+    """
+    # ========================================================================
 
-    REPORT SIMPSON INDEX
+    GET SIMPSON INDEX
+
 
     PURPOSE
     -------
 
-    Reports the Simpson Index
+    Returns the simpson index.
+
 
     INPUT
-    -------
-    [FLOAT LIST] frequencies
-        A list of (relative) frequencies) of the haplotpyes.
+    -----
 
-    [DICTIONARY LIST] [measurements]
-        The current state of measurements.
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
 
     RETURN
-    -------
+    ------
 
-    [DICTIONARY LIST] [measurements]
-        The appended list of measurements now with number of mutations.
+    [INT] [simpson_index]
 
-    COMMENTS
-    -------
-    [N/A]
-
-    #========================================================================
+    # ========================================================================
     """
 
     H = len(frequencies)
@@ -823,32 +823,31 @@ def get_simpson_index(frequencies):
 
 
 def get_gini_simpson_index(frequencies):
-    """""
-    #========================================================================
+    """
+    # ========================================================================
 
-    GET GINI SIMPSON INDEX
+    GET GINI-SIMPSON INDEX
+
 
     PURPOSE
     -------
-    Reports the Gini-Simpson Index
+
+    Returns the Gini-Simpson index.
+
 
     INPUT
-    -------
+    -----
 
     [FLOAT LIST] [frequencies]
-        a list of relative frequencies of the haplotypes
-    [DICTIONARY LIST] [measurements]
+        A list of (relative) frequencies of the Haplotypes.
+
 
     RETURN
-    -------
+    ------
 
-    [DICTIONARY LIST] [measurements]
-        - The appended list of measurements now with the gini simpson index.
+    [INT] [gini_simpson_index]
 
-    COMMENTS
-    -------
-
-    #========================================================================
+    # ========================================================================
     """
 
     H = len(frequencies)
@@ -859,126 +858,52 @@ def get_gini_simpson_index(frequencies):
 
 
 def get_hill_numbers(frequencies):
-    """""
-    #========================================================================
+    """
+    # ========================================================================
 
     GET HILL NUMBERS
+
 
     PURPOSE
     -------
 
-    Reports the 0, 1, 2, and 3 hill numbers.
+    RETURN the 0, 1, 2, and 3 Hill numbers.
+
 
     INPUT
-    -------
+    -----
 
     [FLOAT LIST] [frequencies]
-        a list of relative frequencies of the haplotypes.
-    [DICTIONARY LIST] [measurements]
+        A list of (relative) frequencies of the Haplotypes.
+
 
     RETURN
-    -------
+    ------
 
-    [DICTIONARY LIST] [measurements]
-        - The appended list of measurements now with the hill numbers.
+    [FLOAT LIST] [list_of_hill_numbers]
 
-    COMMENTS
-    -------
 
-    #========================================================================
+    POST
+    ----
+
+    The 0, 1, 2, and 3 Hill numbers will be reported to output.
+
+    # ========================================================================
     """
 
     P = frequencies
     H = len(frequencies)
 
-    NUMBER_OF_HILL_NUMBERS = 3
+    NUMBER_OF_HILL_NUMBERS = 4
 
-    # initialize list of hill numbers from 0 to 3
-    list_of_hill_numbers = [0 for x in range(NUMBER_OF_HILL_NUMBERS)]
+    list_of_hill_numbers = []
 
     for hill_number_pos in range(NUMBER_OF_HILL_NUMBERS):
         if len(P) >= hill_number_pos + 1:
-            list_of_hill_numbers[hill_number_pos] = calculate.hill_number(
-                H, P, hill_number_pos)
-
-    # if len(P) >= 1:
-    #     hill0 = calculate.hill_number(H, P, 0)
-    # if len(P) >= 2:
-    #     hill1 = calculate.hill_number(H, P, 1)
-    # if len(P) >= 3:
-    #     hill2 = calculate.hill_number(H, P, 2)
-    # if len(P) >= 4:
-    #     hill3 = calculate.hill_number(H, P, 3)
+            list_of_hill_numbers.append(calculate.hill_number(
+                H, P, hill_number_pos))
 
     return list_of_hill_numbers
-
-
-def measurmentSummary(measurements):
-    """""
-    #========================================================================
-
-    Measurement Summary
-
-    PURPOSE
-    -------
-
-    Print all measurements.
-
-    INPUT
-    -------
-
-    [DICTIONARY LIST] [measurements]
-
-    RETURN
-    -------
-
-    [N/A]
-
-    COMMENTS
-    -------
-    Checks keys, if key belongs to new measurement header we'll print
-    the line break, and a the title of the header. Else just print the
-    measurment.
-    Accessing the measurement values in a for loop resulted in the each
-    value being stored around '' within a {}.
-    I stripped those out for a neater print.
-    #========================================================================
-    """
-
-    for measurement in measurements:
-        key = str(measurement.keys())
-        if key == "dict_keys(['Number of haplotypes'])":
-            click.echo("")
-            click.echo("-----------------------------------------")
-            click.echo("Incidence - Entity Level")
-            click.echo("-----------------------------------------")
-            click.echo(str(measurement).strip("{}").replace("'", ""))
-        elif key == "dict_keys(['Shannon Entropy (Hs)'])":
-            click.echo("")
-            click.echo("-----------------------------------------")
-            click.echo("Abundance - Molecular Level")
-            click.echo("-----------------------------------------")
-            click.echo(str(measurement).strip("{}").replace("'", ""))
-        elif key == "dict_keys(['Minimum mutation frequency'])":
-            click.echo("")
-            click.echo("-----------------------------------------")
-            click.echo("Functional, Indidence - Entity Level")
-            click.echo("-----------------------------------------")
-            click.echo(str(measurement).strip("{}").replace("'", ""))
-        elif key == "dict_keys(['Maximum mutation frequency (Mf max)'])":
-            click.echo("")
-            click.echo("-----------------------------------------")
-            click.echo("Functional, Abundance - Molecular Level")
-            click.echo("-----------------------------------------")
-            click.echo(str(measurement).strip("{}").replace("'", ""))
-        elif key == "dict_keys(['Sample Nucleotide Diversity (^PI)'])":
-            click.echo("")
-            click.echo("-----------------------------------------")
-            click.echo("Miscellaneous")
-            click.echo("-----------------------------------------")
-            click.echo(str(measurement).strip("{}").replace("'", ""))
-        else:
-            click.echo(str(measurement).strip("{}").replace("'", ""))
 
 
 def measurement_to_csv(measurements_list):
@@ -991,14 +916,12 @@ def measurement_to_csv(measurements_list):
             if eval(key) == i:
                 measurements_col_titles.append(value)
 
-    print(measurements_col_titles)
-
     file_name = "complexity_outputs.csv"
 
     for position in range(len(measurements_list)):
 
         # if measurement list at position i is not empty
-        measurements = [UNDEFINED for x in range(1000)]
+        measurements = EMPTY_LIST
         if measurements_list[position]:
             measurements = copy.deepcopy(measurements_list[position])
 
