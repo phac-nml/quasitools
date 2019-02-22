@@ -158,17 +158,23 @@ def complexity(reference, bam, k):
 
         if not haplotypes:
             continue
-        pileup = haplotype.build_pileup_from_haplotypes(haplotypes)
 
-        distance_matrix = haplotype.build_distiance_matrix(haplotypes)
-        counts = haplotype.build_counts(haplotypes)
-        frequencies = haplotype.build_frequencies(haplotypes)
+        haplotype_consensus = haplotype.build_consensus_from_haplotypes(
+            haplotypes)
+        sorted_haplotypes = haplotype.sort_haplotypes(
+            haplotypes, haplotype_consensus)
+
+        pileup = haplotype.build_pileup_from_haplotypes(sorted_haplotypes)
+
+        distance_matrix = haplotype.build_distiance_matrix(sorted_haplotypes)
+        counts = haplotype.build_counts(sorted_haplotypes)
+        frequencies = haplotype.build_frequencies(sorted_haplotypes)
 
         '''
         Set the Incidence - Entity Level
         '''
         measurements[NUMBER_OF_HAPLOTYPES] = \
-            get_number_of_haplotypes(haplotypes)
+            get_number_of_haplotypes(sorted_haplotypes)
 
         measurements[NUMBER_OF_POLYMORPHIC_SITES] = \
             get_number_of_polymorphic_sites(pileup)
@@ -179,16 +185,17 @@ def complexity(reference, bam, k):
         Set the Abundance - Molecular Level
         '''
 
-        shannon_entropy = get_shannon_entropy(haplotypes, frequencies)
+        shannon_entropy = get_shannon_entropy(sorted_haplotypes, frequencies)
 
         measurements[SHANNON_ENTROPY_NUMBER] = shannon_entropy
 
         measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N] = \
-            get_shannon_entropy_localized_to_n(haplotypes, shannon_entropy)
+            get_shannon_entropy_localized_to_n(
+            sorted_haplotypes, shannon_entropy)
 
         measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H] = \
             get_shannon_entropy_localized_to_h(
-            haplotypes, shannon_entropy)
+            sorted_haplotypes, shannon_entropy)
 
         measurements[SIMPSON_INDEX] = \
             get_simpson_index(frequencies)
@@ -212,7 +219,7 @@ def complexity(reference, bam, k):
         '''
         measurements[MINIMUM_MUTATION_FREQUENCY] = \
             get_minimum_mutation_frequency(
-            haplotypes, pileup)
+            sorted_haplotypes, pileup)
 
         measurements[MINIMUM_MUTATION_FREQUENCY] = get_mutation_frequency(
             distance_matrix)
@@ -240,7 +247,7 @@ def complexity(reference, bam, k):
         '''
         measurements[SAMPLE_NUCLEOTIDE_DIVERSITY] = \
             get_sample_nucleotide_diversity(
-            distance_matrix, frequencies, haplotypes)
+            distance_matrix, frequencies, sorted_haplotypes)
 
         measurements_list[i] = copy.deepcopy(measurements)
 

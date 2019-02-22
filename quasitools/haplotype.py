@@ -140,6 +140,35 @@ def sort_haplotypes(haplotypes, consensus):
 
 
 def build_consensus_from_haplotypes(haplotypes):
+    """
+    # ========================================================================
+
+    BUILD CONSENSUS FROM HAPLOTYPES
+
+
+    PURPOSE
+    -------
+
+    Builds a consensus from a pileup of haplotypes.
+
+
+    INPUT
+    -----
+
+    [HAPLOTYPE LIST] [haplotypes]
+        The list of haplotypes
+
+
+
+
+    RETURN
+    ------
+
+    [String] consensus
+       the consensus sequence.
+
+    # ========================================================================
+    """
 
     pileup = build_pileup_from_haplotypes(haplotypes)
 
@@ -149,7 +178,32 @@ def build_consensus_from_haplotypes(haplotypes):
 
 
 def build_pileup_from_haplotypes(haplotypes):
+    """
+    # ========================================================================
 
+    BUILD PILEUP FROM HAPLOTYPES
+
+
+    PURPOSE
+    -------
+
+    Creates a pileup from a list of haplotypes
+
+
+    INPUT
+    -----
+
+    [HAPLOTYPE LIST] [haplotypes]
+        A list of haplotypes
+
+    RETURN
+    ------
+
+    [PILEUP] [pileup]
+        A pilup object that we can build a consensus of haplotypes from
+
+    # ========================================================================
+    """
     pileup_list = []
 
     if haplotypes:
