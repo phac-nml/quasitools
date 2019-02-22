@@ -255,42 +255,42 @@ def get_sample_nucleotide_diversity(
         frequencies,
         haplotypes):
     """
-   # ========================================================================
+    # ========================================================================
 
-   REPORT SAMPLE NUCLEOTIDE DIVERSITY
-
-
-   PURPOSE
-   -------
-
-   Reports the sample nucleotide diversity.
+    GETSAMPLE NUCLEOTIDE DIVERSITY
 
 
-   INPUT
-   -----
+    PURPOSE
+    -------
 
-   [HAPLOTYPE LIST] [haplotypes]
-       A list of Haplotype objects.
-
-   [FLOAT LIST] [frequencies]
-       A list of (relative) frequencies of the Haplotypes.
-
-   [2D ARRAY] [distance_matrix]
-       A two dimensional array, representing the distance matrix of distances
-       between the haplotypes.
-
-       This is expected to be calculated in a similar manner as:
-           haplotype.build_distiance_matrix(haplotypes)
+    Reports the sample nucleotide diversity.
 
 
-   RETURN
-   ------
+    INPUT
+    -----
 
-   [INT] [SND]
-       the sample nucleotide diversity.
+    [HAPLOTYPE LIST] [haplotypes]
+        A list of Haplotype objects.
 
-   # ========================================================================
-   """
+    [FLOAT LIST] [frequencies]
+        A list of (relative) frequencies of the Haplotypes.
+
+    [2D ARRAY] [distance_matrix]
+        A two dimensional array, representing the distance matrix of distances
+        between the haplotypes.
+
+        This is expected to be calculated in a similar manner as:
+            haplotype.build_distiance_matrix(haplotypes)
+
+
+    RETURN
+    ------
+
+    [INT] [snd]
+        the sample nucleotide diversity.
+
+    # ========================================================================
+    """
 
     N = haplotype.calculate_total_clones(haplotypes)
     H = len(frequencies)
@@ -298,11 +298,11 @@ def get_sample_nucleotide_diversity(
     D = distance_matrix
 
     if N > 1:
-        SND = calculate.sample_nucleotide_diversity(N, H, P, D)
+        snd = calculate.sample_nucleotide_diversity(N, H, P, D)
     else:
-        SND = UNDEFINED
+        snd = UNDEFINED
 
-    return SND
+    return snd
 
 
 def get_population_nucleotide_diversity(
@@ -327,7 +327,7 @@ def get_population_nucleotide_diversity(
     RETURN
     ------
 
-    [INT] PND
+    [INT] [pnd]
         The population nucleotide diversity
 
     # ========================================================================
@@ -337,9 +337,9 @@ def get_population_nucleotide_diversity(
     P = frequencies
     D = distance_matrix
 
-    PND = calculate.population_nucleotide_diversity(H, P, D)
+    pnd = calculate.population_nucleotide_diversity(H, P, D)
 
-    return PND
+    return pnd
 
 
 def get_maximum_mutation_frequency(
@@ -378,7 +378,7 @@ def get_maximum_mutation_frequency(
     RETURN
     ------
 
-    [INT] maximum_mutation_frequency
+    [INT] [maximum_mutation_frequency]
         The maximum mutation frequency
 
     # ========================================================================
@@ -398,7 +398,7 @@ def get_sample_nucleotide_diversity_entity(
     """
     # ========================================================================
 
-    REPORT SAMPLE NUCLEOTIDE DIVERSITY (ENTITY LEVEL)
+    GET SAMPLE NUCLEOTIDE DIVERSITY (ENTITY LEVEL)
 
 
     PURPOSE
@@ -424,7 +424,7 @@ def get_sample_nucleotide_diversity_entity(
     RETURN
     ------
 
-    [INT] SNDE
+    [INT] snde
         sample nucleotide diversity entity
 
     # ========================================================================
@@ -434,11 +434,11 @@ def get_sample_nucleotide_diversity_entity(
     D = distance_matrix
 
     if H > 1:
-        SNDE = calculate.sample_nucleotide_diversity_entity(H, D)
+        snde = calculate.sample_nucleotide_diversity_entity(H, D)
     else:
-        SNDE = UNDEFINED
+        snde = UNDEFINED
 
-    return SNDE
+    return snde
 
 
 def get_FAD(distance_matrix):
@@ -468,7 +468,7 @@ def get_FAD(distance_matrix):
     RETURN
     ------
 
-    [INT] FAD
+    [INT] [fad]
         the functional attribute diversity
 
     # ========================================================================
@@ -477,16 +477,16 @@ def get_FAD(distance_matrix):
     H = len(distance_matrix)
     D = distance_matrix
 
-    FAD = calculate.FAD(H, D)
+    fad = calculate.FAD(H, D)
 
-    return FAD
+    return fad
 
 
 def get_mutation_frequency(distance_matrix):
     """
     # ========================================================================
 
-    REPORT MUTATION FREQUENCY
+    GET MUTATION FREQUENCY
 
 
     PURPOSE
@@ -509,7 +509,7 @@ def get_mutation_frequency(distance_matrix):
     RETURN
     ------
 
-    [INT] mutation_frequency
+    [INT] [mutation_frequency]
         the mutation frequency
 
     # ========================================================================
@@ -526,7 +526,7 @@ def get_minimum_mutation_frequency(haplotypes, pileup):
     """
     # ========================================================================
 
-    REPORT MINIMUM MUTATION FREQUENCY
+    Get MINIMUM MUTATION FREQUENCY
 
 
     PURPOSE
@@ -567,13 +567,13 @@ def get_number_of_haplotypes(haplotypes):
     """
     # ========================================================================
 
-    Returns NUMBER OF HAPLOTYPES
+    GET NUMBER OF HAPLOTYPES
 
 
     PURPOSE
     -------
 
-    Reports the number of (unique) haplotypes.
+    Returns the number of (unique) haplotypes.
 
 
     INPUT
@@ -605,7 +605,7 @@ def get_number_of_polymorphic_sites(pileup):
     PURPOSE
     -------
 
-    RETURN the number of polymorphic sites.
+    Returns the number of polymorphic sites.
 
 
     INPUT
@@ -631,13 +631,13 @@ def get_number_of_mutations(pileup):
     """
     # ========================================================================
 
-    REPORT NUMBER OF MUTATIONS
+    GET NUMBER OF MUTATIONS
 
 
     PURPOSE
     -------
 
-    Reports the number of mutations.
+    Returns the number of mutations.
 
 
     INPUT
@@ -712,7 +712,7 @@ def get_shannon_entropy_localized_to_n(haplotypes, Hs):
     PURPOSE
     -------
 
-    Return the Shannon entropy of the haplotypes localized to N.
+    Returns the Shannon entropy of the haplotypes localized to N.
 
 
     INPUT
@@ -754,7 +754,7 @@ def get_shannon_entropy_localized_to_h(haplotypes, Hs):
      PURPOSE
      -------
 
-     Return the Shannon entropy of the haplotypes localized to N.
+     Returns the Shannon entropy of the haplotypes localized to N.
 
 
      INPUT
@@ -882,12 +882,6 @@ def get_hill_numbers(frequencies):
 
     [FLOAT LIST] [list_of_hill_numbers]
 
-
-    POST
-    ----
-
-    The 0, 1, 2, and 3 Hill numbers will be reported to output.
-
     # ========================================================================
     """
 
@@ -910,18 +904,26 @@ def measurement_to_csv(measurements_list):
 
     measurements_col_titles = ["Position"]
 
-    # Itterates length of the dictionary 0 to 14
+    # if measurement list at position i is empty we will add
+    # an empty list to our row.
+    measurements = EMPTY_LIST
+
+    # Outter loop itterates from 0 to the length of MEASUREMENTS_NAMES
     for i in range(len(MEASUREMENTS_NAMES)):
+        # Innter loop extracts the key and values from MEASUREMNTS_NAMES
         for key, value in MEASUREMENTS_NAMES.items():
+            # Evaluate the string with the presumption it matches a variable
             if eval(key) == i:
+                # Essentially from 0 to len(MEASUREMENT_NAMES) we are
+                # adding the values of the dictionary in the order they
+                # are stored in a list within measurements_list (which is a 2d
+                # list)
                 measurements_col_titles.append(value)
 
     file_name = "complexity_outputs.csv"
 
     for position in range(len(measurements_list)):
 
-        # if measurement list at position i is not empty
-        measurements = EMPTY_LIST
         if measurements_list[position]:
             measurements = copy.deepcopy(measurements_list[position])
 
