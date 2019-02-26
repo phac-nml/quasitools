@@ -21,23 +21,45 @@ import quasitools.haplotype as haplotype
 
 
 class TestComplexity():
+
+    # Create a list of haplotypes.
+    haplotype_list_01= [haplotype.Haplotype("AAAAAAA"), 
+            haplotype.Haplotype("AAAAAAA"),  
+            haplotype.Haplotype("AAAAAAA")]
+    haplotype_list_02 = [haplotype.Haplotype(""), haplotype.Haplotype("")]
+    haplotype_list_03 = [haplotype.Haplotype("TAG")]
+
+    # What i expect the output to be based on how we define a consensus sequence.
+    expected_consensus_01 = "AAAAAAA" 
+    expected_consensus_02 = ""
+    expected_consensus_03 = "TAG"
+
+
+   
     
     @classmethod
     def setup_class(self):
-       
-       #Create a list of haplotypes.?!?jedi=0, ?!?             (*_*sequence*_*, count=1) ?!?jedi?!?
-       self.haplotype_list = [haplotype.Haplotype("AAAAAAA"), haplotype.Haplotype("AAAAAAA"),  haplotype.Haplotype("AAAAAAA")]
-       # What i expect the output to be based on how we define a consensus sequence.
-       self.expected = "AAAAAAA"  
+        self.expected_consensus = ""
+        self.haplotype_list = ""
     
-    # TODO: Paramaterize to run a few test cases.
-    def test_build_consensus(self):
+    
+    # TODO see if we can do this another way without a return.
+    @pytest.fixture(scope="function", params=[
+        (haplotype_list_01, expected_consensus_01), 
+        (haplotype_list_02, expected_consensus_02),
+        (haplotype_list_03, expected_consensus_03)])
+    def consensus(self,request):
         
+        self.haplotype_list = request.param[0]
+        self.expected_consensus = request.param[1]
+
+        return self.expected_consensus
+    
+    def test_build_consensus(self,consensus):
+    
         result = haplotype.build_consensus_from_haplotypes(self.haplotype_list)
-
-        assert result == self.expected, "Fail, The actual consensus is: " + self.expected + " The method returned: " + result
-
+        assert result == consensus
 
 
-
+        
 
