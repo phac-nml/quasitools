@@ -43,7 +43,7 @@ HILL_NUMBER_1 = 9
 HILL_NUMBER_2 = 10
 HILL_NUMBER_3 = 11
 MINIMUM_MUTATION_FREQUENCY = 12
-MUTATION_FREQUENCY_FREQUENCY = 13
+MUTATION_FREQUENCY = 13
 FUNCTIONAL_ATTRIBUTE_DIVERSITY = 14
 SAMPLE_NUCLEOTIDE_DIVERSITY_Entity = 15
 MAXIMUM_MUTATION_FREQUENCY = 16
@@ -66,7 +66,7 @@ MEASUREMENTS_NAMES = {
     HILL_NUMBER_2: "Hill Number #2",
     HILL_NUMBER_3: "Hill Number #3",
     MINIMUM_MUTATION_FREQUENCY: "Minimum Mutation Frequency",
-    MUTATION_FREQUENCY_FREQUENCY: "Mutation Frequency",
+    MUTATION_FREQUENCY: "Mutation Frequency",
     FUNCTIONAL_ATTRIBUTE_DIVERSITY: "Functional Attribute Diversity",
     SAMPLE_NUCLEOTIDE_DIVERSITY_Entity: "Sample Nucleotide Diversity Entity",
     MAXIMUM_MUTATION_FREQUENCY: "Maximum Mutation Frequency",
@@ -74,7 +74,7 @@ MEASUREMENTS_NAMES = {
     SAMPLE_NUCLEOTIDE_DIVERSITY: "Sample Nucleotide Diversity",
 }
 
-HILL_NUMBER = 4
+HILL_NUMBER_LENGTH = 4
 
 
 @click.command(
@@ -204,7 +204,7 @@ def complexity(reference, bam, k):
         measurements[GINI_SIMPSON_INDEX] = \
             get_gini_simpson_index(frequencies)
 
-        hill_numbers_list = get_hill_numbers(frequencies)
+        hill_numbers_list = get_hill_numbers(frequencies, HILL_NUMBER_LENGTH)
 
         '''
         loops through all positions in the hills_numbers_list then adds
@@ -222,7 +222,7 @@ def complexity(reference, bam, k):
             get_minimum_mutation_frequency(
             sorted_haplotypes, pileup)
 
-        measurements[MINIMUM_MUTATION_FREQUENCY] = get_mutation_frequency(
+        measurements[MUTATION_FREQUENCY] = get_mutation_frequency(
             distance_matrix)
 
         measurements[FUNCTIONAL_ATTRIBUTE_DIVERSITY] = \
@@ -292,7 +292,7 @@ def get_sample_nucleotide_diversity(
     RETURN
     ------
 
-    [INT] [snd]
+    [FLOAT] [snd]
         the sample nucleotide diversity.
 
     # ========================================================================
@@ -333,7 +333,7 @@ def get_population_nucleotide_diversity(
     RETURN
     ------
 
-    [INT] [pnd]
+    [FLOAT] [pnd]
         The population nucleotide diversity
 
     # ========================================================================
@@ -384,7 +384,7 @@ def get_maximum_mutation_frequency(
     RETURN
     ------
 
-    [INT] [maximum_mutation_frequency]
+    [FLOAT] [maximum_mutation_frequency]
         The maximum mutation frequency
 
     # ========================================================================
@@ -430,7 +430,7 @@ def get_sample_nucleotide_diversity_entity(
     RETURN
     ------
 
-    [INT] snde
+    [FLOAT] snde
         sample nucleotide diversity entity
 
     # ========================================================================
@@ -474,7 +474,7 @@ def get_FAD(distance_matrix):
     RETURN
     ------
 
-    [INT] [fad]
+    [FLOAT] [fad]
         the functional attribute diversity
 
     # ========================================================================
@@ -515,7 +515,7 @@ def get_mutation_frequency(distance_matrix):
     RETURN
     ------
 
-    [INT] [mutation_frequency]
+    [FLOAT] [mutation_frequency]
         the mutation frequency
 
     # ========================================================================
@@ -554,7 +554,7 @@ def get_minimum_mutation_frequency(haplotypes, pileup):
     RETURN
     ------
 
-    [INT][minimum_mutation_frequency]
+    [FLOAT][minimum_mutation_frequency]
         the minimum mutation frequency
 
     # ========================================================================
@@ -691,7 +691,7 @@ def get_shannon_entropy(haplotypes, frequencies):
     RETURN
     ------
 
-    [INT] [hs]
+    [FLOAT] [hs]
         shannon entropy
 
 
@@ -734,7 +734,7 @@ def get_shannon_entropy_localized_to_n(haplotypes, Hs):
     RETURN
     ------
 
-    [INT] [hsn]
+    [FLOAT] [hsn]
         shannon entropy localized to n
 
     # ========================================================================
@@ -776,7 +776,7 @@ def get_shannon_entropy_localized_to_h(haplotypes, Hs):
      RETURN
      ------
 
-     [INT] [hsn]
+     [FLOAT] [hsn]
          shannon entropy localized to h
 
      # ========================================================================
@@ -815,7 +815,7 @@ def get_simpson_index(frequencies):
     RETURN
     ------
 
-    [INT] [simpson_index]
+    [FLOAT] [simpson_index]
 
     # ========================================================================
     """
@@ -851,7 +851,7 @@ def get_gini_simpson_index(frequencies):
     RETURN
     ------
 
-    [INT] [gini_simpson_index]
+    [FLOAT] [gini_simpson_index]
 
     # ========================================================================
     """
@@ -863,7 +863,7 @@ def get_gini_simpson_index(frequencies):
     return gini_simpson_index
 
 
-def get_hill_numbers(frequencies):
+def get_hill_numbers(frequencies, end, start=0):
     """
     # ========================================================================
 
@@ -894,12 +894,13 @@ def get_hill_numbers(frequencies):
     P = frequencies
     H = len(frequencies)
 
-    NUMBER_OF_HILL_NUMBERS = 4
-
     list_of_hill_numbers = []
 
-    for hill_number_pos in range(NUMBER_OF_HILL_NUMBERS):
-        if len(P) >= hill_number_pos + 1:
+    # Get an index pos between start to end(the range of hill numbers we want)
+    for hill_number_pos in range(start, end):
+        # Make sure a hill number is valid at that index
+        # Hill num valid if len of frequency >= than the index pos+1.
+        if H >= hill_number_pos + 1:
             list_of_hill_numbers.append(calculate.hill_number(
                 H, P, hill_number_pos))
 
