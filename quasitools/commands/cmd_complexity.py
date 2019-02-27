@@ -27,7 +27,9 @@ import quasitools.calculate as calculate
 import quasitools.haplotype as haplotype
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import \
-        parse_haplotypes_called, parse_pileup_from_fasta, parse_haplotypes_from_fasta
+    parse_haplotypes_called,\
+    parse_pileup_from_fasta, \
+    parse_haplotypes_from_fasta
 
 UNDEFINED = ""
 
@@ -79,17 +81,30 @@ MEASUREMENTS_NAMES = {
 HILL_NUMBER_LENGTH = 4
 
 
-value = click.prompt("Please type 0 if you are working with an aligned fasta file or 1 if you are working with short reads stored in a bam and reference file", type = int)
+value = click.prompt(
+    "Please type 0 if you are working with an aligned fasta file or 1 if you \
+            are working with short reads stored in a bam and reference file",
+    type=int)
 
 if value == 1:
     @click.command(
         'complexity', short_help='Calculates various quasispecies complexity \
         measures.')
-
-    @click.argument('reference', nargs=1, required=True,
-                    type=click.Path(exists=True, file_okay=True, dir_okay=False))
-    @click.argument('bam', nargs=1,
-                    type=click.Path(exists=True, file_okay=True, dir_okay=False))
+    @click.argument(
+        'reference',
+        nargs=1,
+        required=True,
+        type=click.Path(
+            exists=True,
+            file_okay=True,
+            dir_okay=False))
+    @click.argument(
+        'bam',
+        nargs=1,
+        type=click.Path(
+            exists=True,
+            file_okay=True,
+            dir_okay=False))
     @click.argument('k')
     def cli(reference, bam, k):
         """
@@ -105,21 +120,26 @@ if value == 1:
 
         click.echo("\nStarting...")
         complexity_for_short_reads(reference, bam, int(k))
-        click.echo("\nComplete!")       
+        click.echo("\nComplete!")
 
 elif value == 0:
 
     @click.command(
         'complexity', short_help='Calculates various quasispecies complexity \
         measures.')
-    @click.argument('fasta', nargs=1,
-                   type=click.Path(exists=True, file_okay=True, dir_okay=False))
+    @click.argument(
+        'fasta',
+        nargs=1,
+        type=click.Path(
+            exists=True,
+            file_okay=True,
+            dir_okay=False))
     @click.pass_context
-
     def cli(ctx, fasta):
         """
 
-        Reports the complexity of a quasispecies using several measures outlined
+        Reports the complexity of a quasispecies \
+                using several measures outlined
         in the following work:
 
         Gregori, Josep, et al. "Viral quasispecies complexity measures."
@@ -141,15 +161,13 @@ def complexity_for_long_reads(fasta):
     pileup = parse_pileup_from_fasta(fasta)
     consensus = pileup.build_consensus()
     haplotypes = parse_haplotypes_from_fasta(fasta, consensus)
-    
+
     # Needs to be a 2d list to pass to csv making method
     measurements_list = []
-    
+
     measurements = conduct_measurements(haplotypes)
 
     measurements_list.append(measurements)
-
-
 
 
 def complexity_for_short_reads(reference, bam, k):
@@ -195,7 +213,6 @@ def complexity_for_short_reads(reference, bam, k):
     references = parse_references_from_fasta(reference)
     haplotype_list = parse_haplotypes_called(
         references, reference, bam, k)
-    
 
     measurements_list = []
 
@@ -203,7 +220,6 @@ def complexity_for_short_reads(reference, bam, k):
         haplotypes = haplotype_list[i]
         measurements = conduct_measurements(haplotypes)
         measurements_list.append(measurements)
-
 
     '''
     Measurement to CSV
@@ -216,12 +232,12 @@ def conduct_measurements(haplotypes):
     measurements = [UNDEFINED for x in range(len(MEASUREMENTS_NAMES))]
 
     if not haplotypes:
-            return measurements
+        return measurements
 
     haplotype_consensus = haplotype.build_consensus_from_haplotypes(
-            haplotypes)
+        haplotypes)
     sorted_haplotypes = haplotype.sort_haplotypes(
-            haplotypes, haplotype_consensus)
+        haplotypes, haplotype_consensus)
 
     pileup = haplotype.build_pileup_from_haplotypes(sorted_haplotypes)
 
@@ -237,7 +253,7 @@ def conduct_measurements(haplotypes):
 
     measurements[NUMBER_OF_POLYMORPHIC_SITES] = \
         get_number_of_polymorphic_sites(pileup)
-        
+
     measurements[NUMBER_OF_MUTATIONS] = get_number_of_mutations(pileup)
 
     '''
@@ -287,7 +303,7 @@ def conduct_measurements(haplotypes):
         get_FAD(distance_matrix)
 
     measurements[SAMPLE_NUCLEOTIDE_DIVERSITY_Entity] = \
-         get_sample_nucleotide_diversity_entity(
+        get_sample_nucleotide_diversity_entity(
         distance_matrix, frequencies)
     '''
 
@@ -300,7 +316,7 @@ def conduct_measurements(haplotypes):
     measurements[POPULATION_NUCLEOTIDE_DIVERSITY] = \
         get_population_nucleotide_diversity(
         distance_matrix, frequencies)
-        
+
     '''
     Other
     '''
@@ -308,10 +324,7 @@ def conduct_measurements(haplotypes):
         get_sample_nucleotide_diversity(
         distance_matrix, frequencies, sorted_haplotypes)
 
-
     return measurements
-
-
 
 
 def get_sample_nucleotide_diversity(
