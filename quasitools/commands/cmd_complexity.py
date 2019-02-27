@@ -22,10 +22,12 @@ import click
 import math
 import copy
 import csv
+# from quasitools.constants.con_complexity import *
 import quasitools.calculate as calculate
 import quasitools.haplotype as haplotype
 from quasitools.parsers.reference_parser import parse_references_from_fasta
-from quasitools.parsers.mapped_read_parser import parse_haplotypes_called
+from quasitools.parsers.mapped_read_parser import \
+        parse_haplotypes_called, parse_pileup_from_fasta, parse_haplotypes_from_fasta
 
 UNDEFINED = ""
 
@@ -77,35 +79,80 @@ MEASUREMENTS_NAMES = {
 HILL_NUMBER_LENGTH = 4
 
 
-@click.command(
-    'complexity', short_help='Calculates various quasispecies complexity \
-    measures.')
-@click.argument('reference', nargs=1, required=True,
-                type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('bam', nargs=1,
-                type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('k')
-def cli(reference, bam, k):
-    """
+value = click.prompt("Please type 0 if you are working with an aligned fasta file or 1 if you are working with short reads stored in a bam and reference file", type = int)
 
-    Reports the complexity of a quasispecies sequenced through next
-    generation sequencing using several measures
-    outlined in the following work:
+if value == 1:
+    @click.command(
+        'complexity', short_help='Calculates various quasispecies complexity \
+        measures.')
 
-    Gregori, Josep, et al. "Viral quasispecies complexity measures."
-    Virology 493 (2016): 227-237.
+    @click.argument('reference', nargs=1, required=True,
+                    type=click.Path(exists=True, file_okay=True, dir_okay=False))
+    @click.argument('bam', nargs=1,
+                    type=click.Path(exists=True, file_okay=True, dir_okay=False))
+    @click.argument('k')
+    def cli(reference, bam, k):
+        """
 
-    """
+        Reports the complexity of a quasispecies sequenced through next
+        generation sequencing using several measures
+        outlined in the following work:
 
-    click.echo("Using file %s as reference" % reference)
-    click.echo("Reading input from file(s)  %s" % bam)
-    click.echo("Checking for overlaps at every position in reference" +
-               " at %s intervals" % k)
+        Gregori, Josep, et al. "Viral quasispecies complexity measures."
+        Virology 493 (2016): 227-237.
 
-    complexity(reference, bam, int(k))
+        """
+
+        click.echo("\nStarting...")
+        complexity_for_short_reads(reference, bam, int(k))
+        click.echo("\nComplete!")       
+
+elif value == 0:
+
+    @click.command(
+        'complexity', short_help='Calculates various quasispecies complexity \
+        measures.')
+    @click.argument('fasta', nargs=1,
+                   type=click.Path(exists=True, file_okay=True, dir_okay=False))
+    @click.pass_context
+
+    def cli(ctx, fasta):
+        """
+
+        Reports the complexity of a quasispecies using several measures outlined
+        in the following work:
+
+        Gregori, Josep, et al. "Viral quasispecies complexity measures."
+        Virology 493 (2016): 227-237.
+
+        """
+
+        click.echo("\nStarting...")
+        complexity_for_long_reads(fasta)
+        click.echo("\nComplete!")
 
 
-def complexity(reference, bam, k):
+else:
+    click.echo("Invalid input please try again")
+
+
+def complexity_for_long_reads(fasta):
+
+    pileup = parse_pileup_from_fasta(fasta)
+    consensus = pileup.build_consensus()
+    haplotypes = parse_haplotypes_from_fasta(fasta, consensus)
+    
+    # Needs to be a 2d list to pass to csv making method
+    measurements_list = []
+    
+    measurements = conduct_measurements(haplotypes)
+
+    measurements_list.append(measurements)
+
+
+
+
+def complexity_for_short_reads(reference, bam, k):
     """
     # ========================================================================
 
@@ -148,112 +195,123 @@ def complexity(reference, bam, k):
     references = parse_references_from_fasta(reference)
     haplotype_list = parse_haplotypes_called(
         references, reference, bam, k)
+    
 
     measurements_list = []
 
     for i in range((len(haplotype_list) - k + 1)):
         haplotypes = haplotype_list[i]
-
-        measurements = [UNDEFINED for x in range(len(MEASUREMENTS_NAMES))]
+        measurements = conduct_measurements(haplotypes)
         measurements_list.append(measurements)
 
-        if not haplotypes:
-            continue
-
-        haplotype_consensus = haplotype.build_consensus_from_haplotypes(
-            haplotypes)
-        sorted_haplotypes = haplotype.sort_haplotypes(
-            haplotypes, haplotype_consensus)
-
-        pileup = haplotype.build_pileup_from_haplotypes(sorted_haplotypes)
-
-        distance_matrix = haplotype.build_distiance_matrix(sorted_haplotypes)
-        counts = haplotype.build_counts(sorted_haplotypes)
-        frequencies = haplotype.build_frequencies(sorted_haplotypes)
-
-        '''
-        Set the Incidence - Entity Level
-        '''
-        measurements[NUMBER_OF_HAPLOTYPES] = \
-            get_number_of_haplotypes(sorted_haplotypes)
-
-        measurements[NUMBER_OF_POLYMORPHIC_SITES] = \
-            get_number_of_polymorphic_sites(pileup)
-
-        measurements[NUMBER_OF_MUTATIONS] = get_number_of_mutations(pileup)
-
-        '''
-        Set the Abundance - Molecular Level
-        '''
-
-        shannon_entropy = get_shannon_entropy(sorted_haplotypes, frequencies)
-
-        measurements[SHANNON_ENTROPY_NUMBER] = shannon_entropy
-
-        measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N] = \
-            get_shannon_entropy_localized_to_n(
-            sorted_haplotypes, shannon_entropy)
-
-        measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H] = \
-            get_shannon_entropy_localized_to_h(
-            sorted_haplotypes, shannon_entropy)
-
-        measurements[SIMPSON_INDEX] = \
-            get_simpson_index(frequencies)
-
-        measurements[GINI_SIMPSON_INDEX] = \
-            get_gini_simpson_index(frequencies)
-
-        hill_numbers_list = get_hill_numbers(frequencies, HILL_NUMBER_LENGTH)
-
-        '''
-        loops through all positions in the hills_numbers_list then adds
-        the subsequent position of hill number to the index of the
-        measurements list in charge of holding the specific hill number.
-
-        '''
-        for k in range(len(hill_numbers_list)):
-            measurements[HILL_NUMBER_0 + k] = (hill_numbers_list[k])
-
-        '''
-        Functional,  Indidence - Entity Level
-        '''
-        measurements[MINIMUM_MUTATION_FREQUENCY] = \
-            get_minimum_mutation_frequency(
-            sorted_haplotypes, pileup)
-
-        measurements[MUTATION_FREQUENCY] = get_mutation_frequency(
-            distance_matrix)
-
-        measurements[FUNCTIONAL_ATTRIBUTE_DIVERSITY] = \
-            get_FAD(distance_matrix)
-
-        measurements[SAMPLE_NUCLEOTIDE_DIVERSITY_Entity] = \
-            get_sample_nucleotide_diversity_entity(
-            distance_matrix, frequencies)
-        '''
-
-        Functional, Abundance - Molecular Level
-        '''
-        measurements[MAXIMUM_MUTATION_FREQUENCY] = \
-            get_maximum_mutation_frequency(
-            counts, distance_matrix, frequencies)
-
-        measurements[POPULATION_NUCLEOTIDE_DIVERSITY] = \
-            get_population_nucleotide_diversity(
-            distance_matrix, frequencies)
-        '''
-
-        Other
-        '''
-        measurements[SAMPLE_NUCLEOTIDE_DIVERSITY] = \
-            get_sample_nucleotide_diversity(
-            distance_matrix, frequencies, sorted_haplotypes)
 
     '''
     Measurement to CSV
     '''
     measurement_to_csv(measurements_list)
+
+
+def conduct_measurements(haplotypes):
+
+    measurements = [UNDEFINED for x in range(len(MEASUREMENTS_NAMES))]
+
+    if not haplotypes:
+            return measurements
+
+    haplotype_consensus = haplotype.build_consensus_from_haplotypes(
+            haplotypes)
+    sorted_haplotypes = haplotype.sort_haplotypes(
+            haplotypes, haplotype_consensus)
+
+    pileup = haplotype.build_pileup_from_haplotypes(sorted_haplotypes)
+
+    distance_matrix = haplotype.build_distiance_matrix(sorted_haplotypes)
+    counts = haplotype.build_counts(sorted_haplotypes)
+    frequencies = haplotype.build_frequencies(sorted_haplotypes)
+
+    '''
+    Set the Incidence - Entity Level
+    '''
+    measurements[NUMBER_OF_HAPLOTYPES] = \
+        get_number_of_haplotypes(sorted_haplotypes)
+
+    measurements[NUMBER_OF_POLYMORPHIC_SITES] = \
+        get_number_of_polymorphic_sites(pileup)
+        
+    measurements[NUMBER_OF_MUTATIONS] = get_number_of_mutations(pileup)
+
+    '''
+    Set the Abundance - Molecular Level
+    '''
+
+    shannon_entropy = get_shannon_entropy(sorted_haplotypes, frequencies)
+
+    measurements[SHANNON_ENTROPY_NUMBER] = shannon_entropy
+
+    measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N] = \
+        get_shannon_entropy_localized_to_n(
+        sorted_haplotypes, shannon_entropy)
+
+    measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H] = \
+        get_shannon_entropy_localized_to_h(
+        sorted_haplotypes, shannon_entropy)
+
+    measurements[SIMPSON_INDEX] = \
+        get_simpson_index(frequencies)
+
+    measurements[GINI_SIMPSON_INDEX] = \
+        get_gini_simpson_index(frequencies)
+
+    hill_numbers_list = get_hill_numbers(frequencies, HILL_NUMBER_LENGTH)
+
+    '''
+    loops through all positions in the hills_numbers_list then adds
+    the subsequent position of hill number to the index of the
+    measurements list in charge of holding the specific hill number.
+
+    '''
+    for k in range(len(hill_numbers_list)):
+        measurements[HILL_NUMBER_0 + k] = (hill_numbers_list[k])
+
+    '''
+    Functional,  Indidence - Entity Level
+    '''
+    measurements[MINIMUM_MUTATION_FREQUENCY] = \
+        get_minimum_mutation_frequency(
+        sorted_haplotypes, pileup)
+
+    measurements[MUTATION_FREQUENCY] = get_mutation_frequency(
+        distance_matrix)
+
+    measurements[FUNCTIONAL_ATTRIBUTE_DIVERSITY] = \
+        get_FAD(distance_matrix)
+
+    measurements[SAMPLE_NUCLEOTIDE_DIVERSITY_Entity] = \
+         get_sample_nucleotide_diversity_entity(
+        distance_matrix, frequencies)
+    '''
+
+    Functional, Abundance - Molecular Level
+    '''
+    measurements[MAXIMUM_MUTATION_FREQUENCY] = \
+        get_maximum_mutation_frequency(
+        counts, distance_matrix, frequencies)
+
+    measurements[POPULATION_NUCLEOTIDE_DIVERSITY] = \
+        get_population_nucleotide_diversity(
+        distance_matrix, frequencies)
+        
+    '''
+    Other
+    '''
+    measurements[SAMPLE_NUCLEOTIDE_DIVERSITY] = \
+        get_sample_nucleotide_diversity(
+        distance_matrix, frequencies, sorted_haplotypes)
+
+
+    return measurements
+
+
 
 
 def get_sample_nucleotide_diversity(
