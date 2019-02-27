@@ -1,11 +1,11 @@
 """
-Copyright Government of Canada 2015-2018
+Copyright Government of Canada 2015-2019
 
 Written by: Eric Enns, National Microbiology Laboratory,
             Public Health Agency of Canada
 
-Modified by: Matthew Fogel and Eric Marinier, National Microbiology Laboratory,
-            Public Health Agency of Canada
+Modified by: Ahmed Kidwai, Matthew Fogel and Eric Marinier,
+            National Microbiology Laboratory, Public Health Agency of Canada
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this work except in compliance with the License. You may obtain a copy of the
@@ -27,6 +27,7 @@ from quasitools.utilities import sam_alignment_to_padded_alignment, \
 from quasitools.mapped_read import MappedRead, MappedReadCollection
 from quasitools.pileup import Pileup, Pileup_List
 from quasitools.haplotype import Haplotype, sort_haplotypes
+
 
 REVERSE_COMPLEMENTED = 16
 FORWARD = '+'
@@ -54,10 +55,10 @@ def parse_mapped_reads_from_bam(reference, bam):
 
         mapped_read = MappedRead(alignment.query_name,
                                  alignment.query_alignment_start,
-                                 alignment.query_alignment_end-1,
+                                 alignment.query_alignment_end - 1,
                                  differences,
                                  alignment.reference_start,
-                                 alignment.reference_end-1,
+                                 alignment.reference_end - 1,
                                  direct)
         # generate read_id, such that pair end data does not have the same key
         # in the hash, by adding a 1 for forward read and 2 for reverse read
@@ -66,6 +67,127 @@ def parse_mapped_reads_from_bam(reference, bam):
         mrc.mapped_reads[read_id] = mapped_read
 
     return mrc
+
+
+def parse_haplotypes_called(
+        references,
+        reference,
+        bam_location,
+        k):
+    """""
+    #========================================================================
+
+    PARSE HAPLOTYPES CALLED
+
+    PURPOSE
+    -------
+
+    Caller method for the haplotype parser.
+
+    INPUT
+    -------
+    [LIST (REFERENCE] [references]
+        - a list of quasitool reference objects
+    [REFERENCE_LOCATION][reference]
+        - The location of the reference file
+    [BAM_FILE_LOCATION] [bam_location]
+        - The aligned BAM FILE from which we'll
+          retrieve our haplotypes.
+    [INT] [start]
+        - the starting region
+    [INT] [k]
+        - the length we want our starting position take
+            reads from.
+
+    RETURN
+    -------
+    [DICTIONARY of HAPLOTYPES] [haplotyess]
+        An 2d list of that at each position contains a list of unsorted
+        haplotypes.
+
+    #========================================================================
+    """
+
+    haplotypes = []
+    samfile = pysam.AlignmentFile(bam_location, "rb")
+
+    for reference in references:
+
+        length = len(reference.seq)
+        for i in range(0, length - k + 1):
+
+            haplotype_list = (
+                parse_haplotypes_from_bam(
+                    samfile,
+                    reference,
+                    bam_location,
+                    i, k, length))
+
+            haplotypes.append(haplotype_list)
+
+    return haplotypes
+
+
+def parse_haplotypes_from_bam(
+        samfile,
+        reference,
+        bam_location,
+        start,
+        k,
+        length):
+    """""
+    #========================================================================
+    PARSE HAPLOTYPES FROM BAM
+
+    PURPOSE
+    -------
+
+    Get the haplotypes
+
+    INPUT
+    -------
+    [LIST (REFERENCE] [references]
+        - a list of quasitool reference objects
+    [BAM_FILE_LOCATION] [bam_location]
+        - The aligned BAM FILE from which we'll
+          retrieve our haplotypes.
+    [INT] [start]
+        - the starting region
+    [INT] [k]
+        - the length we want our starting position take
+            reads from.
+    RETURN
+    -------
+    [LIST] [haplotyess]
+        - unsorted list of haplotypes
+
+    #========================================================================
+    """
+
+    haplotypes = {}
+
+    reads = samfile.fetch(reference.name, start, start + k)
+
+    for read in reads:
+
+        read_sequence = read.get_forward_sequence()
+        haplotype_start = start - read.reference_start
+        haplotype_end = haplotype_start + k
+
+        if read.get_overlap(start, start + k) == k:
+
+            sequence = str(read_sequence[haplotype_start: haplotype_end])
+
+            if sequence in haplotypes:
+                haplotype = haplotypes.get(sequence)
+                haplotype.count += 1
+            else:
+
+                haplotypes[sequence] = Haplotype(sequence)
+
+    haplotypes_list = list(haplotypes.values())
+
+    return haplotypes_list
 
 
 def parse_pileup_from_bam(references, bam_location):
@@ -290,7 +412,6 @@ def parse_haplotypes_from_fasta(reads_location, consensus):
     for read in reads:
 
         sequence = str(read.seq)
-
         if sequence in haplotypes:
 
             haplotype = haplotypes.get(sequence)
@@ -301,7 +422,7 @@ def parse_haplotypes_from_fasta(reads_location, consensus):
             haplotypes[sequence] = Haplotype(sequence, consensus)
 
     haplotypes_list = list(haplotypes.values())
-    haplotypes_sorted = sort_haplotypes(haplotypes_list)
+    haplotypes_sorted = sort_haplotypes(haplotypes_list, consensus)
 
     return haplotypes_sorted
 
