@@ -29,7 +29,7 @@ from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import \
     parse_haplotypes_called,\
     parse_pileup_from_fasta, \
-    parse_haplotypes_from_fasta
+    parse_haplotypes_from_fasta_revised
 
 UNDEFINED = ""
 
@@ -159,8 +159,8 @@ else:
 def complexity_for_long_reads(fasta):
 
     pileup = parse_pileup_from_fasta(fasta)
-    consensus = pileup.build_consensus()
-    haplotypes = parse_haplotypes_from_fasta(fasta, consensus)
+    haplotypes = parse_haplotypes_from_fasta_revised(fasta)
+
 
     # Needs to be a 2d list to pass to csv making method
     measurements_list = []
@@ -169,6 +169,7 @@ def complexity_for_long_reads(fasta):
 
     measurements_list.append(measurements)
 
+    measurement_to_csv(measurements_list)
 
 def complexity_for_short_reads(reference, bam, k):
     """
@@ -257,7 +258,7 @@ def conduct_measurements(haplotypes):
     measurements[NUMBER_OF_MUTATIONS] = get_number_of_mutations(pileup)
 
     '''
-    Set the Abundance - Molecular Level
+    Set the Abundance - Molecular Level:
     '''
 
     shannon_entropy = get_shannon_entropy(sorted_haplotypes, frequencies)
