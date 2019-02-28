@@ -26,7 +26,8 @@ from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
 from quasitools.mapped_read import MappedRead, MappedReadCollection
 from quasitools.pileup import Pileup, Pileup_List
-from quasitools.haplotype import Haplotype, sort_haplotypes
+# TODO Ensure I can remove the import of sort_haplotypes.
+from quasitools.haplotype import Haplotype  # sort_haplotypes
 
 
 REVERSE_COMPLEMENTED = 16
@@ -424,8 +425,8 @@ def parse_haplotypes_from_fasta_revised(reads_location):
 
     haplotypes_list = list(haplotypes.values())
 
-
     return haplotypes_list
+
 
 '''
 def parse_haplotypes_from_fasta(reads_location, consensus):
