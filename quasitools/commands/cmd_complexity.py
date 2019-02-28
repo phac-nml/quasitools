@@ -22,70 +22,19 @@ import click
 import math
 import copy
 import csv
-# from quasitools.constants.con_complexity import *
+
+
 import quasitools.calculate as calculate
 import quasitools.haplotype as haplotype
+import quasitools.constants.con_complexity as constant
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import \
     parse_haplotypes_called,\
     parse_haplotypes_from_fasta_revised
 
-UNDEFINED = ""
+value = "0"
 
-# Measurement Positions
-NUMBER_OF_HAPLOTYPES = 0
-NUMBER_OF_POLYMORPHIC_SITES = 1
-NUMBER_OF_MUTATIONS = 2
-SHANNON_ENTROPY_NUMBER = 3
-SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N = 4
-SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H = 5
-SIMPSON_INDEX = 6
-GINI_SIMPSON_INDEX = 7
-HILL_NUMBER_0 = 8
-HILL_NUMBER_1 = 9
-HILL_NUMBER_2 = 10
-HILL_NUMBER_3 = 11
-MINIMUM_MUTATION_FREQUENCY = 12
-MUTATION_FREQUENCY = 13
-FUNCTIONAL_ATTRIBUTE_DIVERSITY = 14
-SAMPLE_NUCLEOTIDE_DIVERSITY_Entity = 15
-MAXIMUM_MUTATION_FREQUENCY = 16
-POPULATION_NUCLEOTIDE_DIVERSITY = 17
-SAMPLE_NUCLEOTIDE_DIVERSITY = 18
-
-
-# Dictionary of Names
-MEASUREMENTS_NAMES = {
-    NUMBER_OF_HAPLOTYPES: "Number of Haplotypes",
-    NUMBER_OF_POLYMORPHIC_SITES: "Number of Polymorphic Sites",
-    NUMBER_OF_MUTATIONS: "Number of Mutations",
-    SHANNON_ENTROPY_NUMBER: "Shannon Entropy",
-    SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N: "Shannon Entropy Localized to N",
-    SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H: "Shannon Entropy Localized to H",
-    SIMPSON_INDEX: 'Simpson Index',
-    GINI_SIMPSON_INDEX: "Gini Simpson Index",
-    HILL_NUMBER_0: "Hill Number #0",
-    HILL_NUMBER_1: "HIll Number #1",
-    HILL_NUMBER_2: "Hill Number #2",
-    HILL_NUMBER_3: "Hill Number #3",
-    MINIMUM_MUTATION_FREQUENCY: "Minimum Mutation Frequency",
-    MUTATION_FREQUENCY: "Mutation Frequency",
-    FUNCTIONAL_ATTRIBUTE_DIVERSITY: "Functional Attribute Diversity",
-    SAMPLE_NUCLEOTIDE_DIVERSITY_Entity: "Sample Nucleotide Diversity Entity",
-    MAXIMUM_MUTATION_FREQUENCY: "Maximum Mutation Frequency",
-    POPULATION_NUCLEOTIDE_DIVERSITY: "Population Nucleotide Diversity",
-    SAMPLE_NUCLEOTIDE_DIVERSITY: "Sample Nucleotide Diversity",
-}
-
-HILL_NUMBER_LENGTH = 4
-
-
-value = click.prompt(
-    "Please type 0 if you are working with an aligned fasta file or 1 if you \
-            are working with short reads stored in a bam and reference file",
-    type=int)
-
-if value == 1:
+if value == "1":
     @click.command(
         'complexity', short_help='Calculates various quasispecies complexity \
         measures.')
@@ -121,7 +70,7 @@ if value == 1:
         complexity_for_short_reads(reference, bam, int(k))
         click.echo("\nComplete!")
 
-elif value == 0:
+elif value == "0":
 
     @click.command(
         'complexity', short_help='Calculates various quasispecies complexity \
@@ -134,7 +83,7 @@ elif value == 0:
             file_okay=True,
             dir_okay=False))
     @click.pass_context
-    def cli(ctx, fasta):
+    def cli(ctx,fasta):
         """
 
         Reports the complexity of a quasispecies \
@@ -149,7 +98,6 @@ elif value == 0:
         click.echo("\nStarting...")
         complexity_for_long_reads(fasta)
         click.echo("\nComplete!")
-
 
 else:
     click.echo("Invalid input please try again")
@@ -228,7 +176,8 @@ def complexity_for_short_reads(reference, bam, k):
 
 def conduct_measurements(haplotypes):
 
-    measurements = [UNDEFINED for x in range(len(MEASUREMENTS_NAMES))]
+    measurements = [constant.UNDEFINED for x in range(
+        len(constant.MEASUREMENTS_NAMES))]
 
     if not haplotypes:
         return measurements
@@ -247,13 +196,14 @@ def conduct_measurements(haplotypes):
     '''
     Set the Incidence - Entity Level
     '''
-    measurements[NUMBER_OF_HAPLOTYPES] = \
+    measurements[constant.NUMBER_OF_HAPLOTYPES] = \
         get_number_of_haplotypes(sorted_haplotypes)
 
-    measurements[NUMBER_OF_POLYMORPHIC_SITES] = \
+    measurements[constant.NUMBER_OF_POLYMORPHIC_SITES] = \
         get_number_of_polymorphic_sites(pileup)
 
-    measurements[NUMBER_OF_MUTATIONS] = get_number_of_mutations(pileup)
+    measurements[constant.NUMBER_OF_MUTATIONS] = get_number_of_mutations(
+        pileup)
 
     '''
     Set the Abundance - Molecular Level:
@@ -261,23 +211,24 @@ def conduct_measurements(haplotypes):
 
     shannon_entropy = get_shannon_entropy(sorted_haplotypes, frequencies)
 
-    measurements[SHANNON_ENTROPY_NUMBER] = shannon_entropy
+    measurements[constant.SHANNON_ENTROPY_NUMBER] = shannon_entropy
 
-    measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N] = \
+    measurements[constant.SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N] = \
         get_shannon_entropy_localized_to_n(
         sorted_haplotypes, shannon_entropy)
 
-    measurements[SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H] = \
+    measurements[constant.SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H] = \
         get_shannon_entropy_localized_to_h(
         sorted_haplotypes, shannon_entropy)
 
-    measurements[SIMPSON_INDEX] = \
+    measurements[constant.SIMPSON_INDEX] = \
         get_simpson_index(frequencies)
 
-    measurements[GINI_SIMPSON_INDEX] = \
+    measurements[constant.GINI_SIMPSON_INDEX] = \
         get_gini_simpson_index(frequencies)
 
-    hill_numbers_list = get_hill_numbers(frequencies, HILL_NUMBER_LENGTH)
+    hill_numbers_list = get_hill_numbers(
+        frequencies, constant.HILL_NUMBER_LENGTH)
 
     '''
     loops through all positions in the hills_numbers_list then adds
@@ -286,40 +237,40 @@ def conduct_measurements(haplotypes):
 
     '''
     for k in range(len(hill_numbers_list)):
-        measurements[HILL_NUMBER_0 + k] = (hill_numbers_list[k])
+        measurements[constant.HILL_NUMBER_0 + k] = (hill_numbers_list[k])
 
     '''
     Functional,  Indidence - Entity Level
     '''
-    measurements[MINIMUM_MUTATION_FREQUENCY] = \
+    measurements[constant.MINIMUM_MUTATION_FREQUENCY] = \
         get_minimum_mutation_frequency(
         sorted_haplotypes, pileup)
 
-    measurements[MUTATION_FREQUENCY] = get_mutation_frequency(
+    measurements[constant.MUTATION_FREQUENCY] = get_mutation_frequency(
         distance_matrix)
 
-    measurements[FUNCTIONAL_ATTRIBUTE_DIVERSITY] = \
+    measurements[constant.FUNCTIONAL_ATTRIBUTE_DIVERSITY] = \
         get_FAD(distance_matrix)
 
-    measurements[SAMPLE_NUCLEOTIDE_DIVERSITY_Entity] = \
+    measurements[constant.SAMPLE_NUCLEOTIDE_DIVERSITY_Entity] = \
         get_sample_nucleotide_diversity_entity(
         distance_matrix, frequencies)
     '''
 
     Functional, Abundance - Molecular Level
     '''
-    measurements[MAXIMUM_MUTATION_FREQUENCY] = \
+    measurements[constant.MAXIMUM_MUTATION_FREQUENCY] = \
         get_maximum_mutation_frequency(
         counts, distance_matrix, frequencies)
 
-    measurements[POPULATION_NUCLEOTIDE_DIVERSITY] = \
+    measurements[constant.POPULATION_NUCLEOTIDE_DIVERSITY] = \
         get_population_nucleotide_diversity(
         distance_matrix, frequencies)
 
     '''
     Other
     '''
-    measurements[SAMPLE_NUCLEOTIDE_DIVERSITY] = \
+    measurements[constant.SAMPLE_NUCLEOTIDE_DIVERSITY] = \
         get_sample_nucleotide_diversity(
         distance_matrix, frequencies, sorted_haplotypes)
 
@@ -376,7 +327,7 @@ def get_sample_nucleotide_diversity(
     if N > 1:
         snd = calculate.sample_nucleotide_diversity(N, H, P, D)
     else:
-        snd = UNDEFINED
+        snd = constant.UNDEFINED
 
     return snd
 
@@ -512,7 +463,7 @@ def get_sample_nucleotide_diversity_entity(
     if H > 1:
         snde = calculate.sample_nucleotide_diversity_entity(H, D)
     else:
-        snde = UNDEFINED
+        snde = constant.UNDEFINED
 
     return snde
 
@@ -981,8 +932,8 @@ def measurement_to_csv(measurements_list):
 
     measurements_col_titles = ["Position"]
 
-    for i in range(len(MEASUREMENTS_NAMES)):
-        measurements_col_titles.append(MEASUREMENTS_NAMES[i])
+    for i in range(len(constant.MEASUREMENTS_NAMES)):
+        measurements_col_titles.append(constant.MEASUREMENTS_NAMES[i])
 
     file_name = "complexity_outputs.csv"
 
