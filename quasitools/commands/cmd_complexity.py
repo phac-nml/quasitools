@@ -30,65 +30,24 @@ import quasitools.constants.con_complexity as constant
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import \
     parse_haplotypes_called,\
-    parse_haplotypes_from_fasta_revised
+    parse_haplotypes_from_fasta
 
 
-@click.command(
-    'complexity', short_help='Calculates various quasispecies complexity \
-    measures.')
-@click.argument(
-    'fasta',
-    nargs=1,
-    required=True,
-    type=click.Path(
-        exists=True,
-        file_okay=True,
-        dir_okay=False))
-@click.option('-bl', '--bam_location', required=False,
-              type=click.Path(exists=False, file_okay=True, dir_okay=False))
-@click.option('-k', '--k')
-@click.option('-BAM', '--short_reads', is_flag=True)
-@click.option('-FASTA', '--long_reads', is_flag=True)
-def cli(fasta, bam_location, k, short_reads, long_reads):
-    """
-
-    Reports the complexity of a quasispecies sequenced through next
-    generation sequencing using several measures
-    outlined in the following work:
-
-    Gregori, Josep, et al. "Viral quasispecies complexity measures."
-    Virology 493 (2016): 227-237.
-
-    """
-    k = int(k)
-
-    click.echo("\nStarting...")
-
-    # Short reads.
-    if short_reads:
-        # first check to see  if bam_location is given/appropriate type.
-        if isinstance(bam_location, str):
-            # second check to see if k is given and appropriate type
-            if isinstance(k, int):
-                complexity_for_short_reads(fasta, bam_location, int(k))
-            else:
-                click.echo("Missing or invalid k value")
-        else:
-            click.echo("Missing or invalid bam file")
-    # Long Reads
-    elif long_reads:
-        complexity_for_long_reads(fasta)
-    # No read type selected:
-    else:
-        click.echo("No flag selected, please try again")
-    click.echo("\nComplete!")
+@click.group(invoke_without_command=False)
+@click.pass_context
+def cli(ctx):
+    pass
 
 
-def complexity_for_long_reads(fasta):
+# Multiple Aligned FASTA.
+@cli.command(
+    'fasta', short_help='Calculates various quasispecies complexity ' +
+    'measures on a multiple aligned FASTA file.')
+@click.argument('fasta_location', nargs=1,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+def fasta(fasta_location):
 
-    haplotypes = parse_haplotypes_from_fasta_revised(fasta)
-
-    # Needs to be a 2d list to pass to csv making method
+    haplotypes = parse_haplotypes_from_fasta(fasta_location)
     measurements_list = []
 
     measurements = conduct_measurements(haplotypes)
@@ -98,7 +57,17 @@ def complexity_for_long_reads(fasta):
     measurement_to_csv(measurements_list)
 
 
-def complexity_for_short_reads(reference, bam, k):
+# NGS Data from BAM and its corresponding reference file
+@cli.command(
+    'bam', short_help="Calculates various quasispecies complexity " +
+    "measures on next generation sequenced data from a BAM file " +
+    "and it's corresponding reference file.")
+@click.argument('reference', nargs=1, required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('bam', nargs=1,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('k')
+def bam(reference, bam, k):
     """
     # ========================================================================
 
@@ -137,7 +106,7 @@ def complexity_for_short_reads(reference, bam, k):
 
     # ========================================================================
     """
-
+    k = int(k)
     references = parse_references_from_fasta(reference)
     haplotype_list = parse_haplotypes_called(
         references, reference, bam, k)

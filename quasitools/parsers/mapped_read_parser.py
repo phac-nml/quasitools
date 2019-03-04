@@ -374,8 +374,7 @@ def parse_pileup_from_fasta(reads_location, gaps=False):
     return Pileup(pileup)
 
 
-# TODO Change name of method once clearance is given to remove old method
-def parse_haplotypes_from_fasta_revised(reads_location):
+def parse_haplotypes_from_fasta(reads_location):
     """
     # ========================================================================
 
@@ -426,62 +425,6 @@ def parse_haplotypes_from_fasta_revised(reads_location):
     haplotypes_list = list(haplotypes.values())
 
     return haplotypes_list
-
-
-'''
-def parse_haplotypes_from_fasta(reads_location, consensus):
-    """
-    # ========================================================================
-
-    PARSE HAPLOTYPES FROM READS
-
-
-    PURPOSE
-    -------
-
-    Builds a list of Haplotype objects from aligned FASTA reads.
-
-
-    INPUT
-    -----
-
-    [FILE LOCATION] [reads_location]
-        The location of the aligned FASTA reads.
-
-    [STRING] [consensus]
-        The consensus sequence of the pileup.
-
-
-    RETURN
-    ------
-
-    [HAPLOTYPE LIST]
-        A list of Haplotype objects, defined by the aligned FASTA reads.
-
-    # ========================================================================
-    """
-
-    haplotypes = {}  # (sequence, Haplotype)
-
-    reads = Bio.SeqIO.parse(reads_location, "fasta")
-
-    for read in reads:
-
-        sequence = str(read.seq)
-        if sequence in haplotypes:
-
-            haplotype = haplotypes.get(sequence)
-            haplotype.count += 1
-
-        else:
-
-            haplotypes[sequence] = Haplotype(sequence, consensus)
-
-    haplotypes_list = list(haplotypes.values())
-    haplotypes_sorted = sort_haplotypes(haplotypes_list, consensus)
-
-    return haplotypes_sorted
-'''
 
 
 if __name__ == '__main__':
