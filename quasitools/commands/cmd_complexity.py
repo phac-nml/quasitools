@@ -32,75 +32,56 @@ from quasitools.parsers.mapped_read_parser import \
     parse_haplotypes_called,\
     parse_haplotypes_from_fasta_revised
 
-value = "0"
 
-if value == "1":
-    @click.command(
-        'complexity', short_help='Calculates various quasispecies complexity \
-        measures.')
-    @click.argument(
-        'reference',
-        nargs=1,
-        required=True,
-        type=click.Path(
-            exists=True,
-            file_okay=True,
-            dir_okay=False))
-    @click.argument(
-        'bam',
-        nargs=1,
-        type=click.Path(
-            exists=True,
-            file_okay=True,
-            dir_okay=False))
-    @click.argument('k')
-    def cli(reference, bam, k):
-        """
+@click.command(
+    'complexity', short_help='Calculates various quasispecies complexity \
+    measures.')
+@click.argument(
+    'fasta',
+    nargs=1,
+    required=True,
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False))
+@click.option('-bl', '--bam_location', required=False,
+              type=click.Path(exists=False, file_okay=True, dir_okay=False))
+@click.option('-k', '--k')
+@click.option('-BAM', '--short_reads', is_flag=True)
+@click.option('-FASTA', '--long_reads', is_flag=True)
+def cli(fasta, bam_location, k, short_reads, long_reads):
+    """
 
-        Reports the complexity of a quasispecies sequenced through next
-        generation sequencing using several measures
-        outlined in the following work:
+    Reports the complexity of a quasispecies sequenced through next
+    generation sequencing using several measures
+    outlined in the following work:
 
-        Gregori, Josep, et al. "Viral quasispecies complexity measures."
-        Virology 493 (2016): 227-237.
+    Gregori, Josep, et al. "Viral quasispecies complexity measures."
+    Virology 493 (2016): 227-237.
 
-        """
+    """
+    k = int(k)
 
-        click.echo("\nStarting...")
-        complexity_for_short_reads(reference, bam, int(k))
-        click.echo("\nComplete!")
+    click.echo("\nStarting...")
 
-elif value == "0":
-
-    @click.command(
-        'complexity', short_help='Calculates various quasispecies complexity \
-        measures.')
-    @click.argument(
-        'fasta',
-        nargs=1,
-        type=click.Path(
-            exists=True,
-            file_okay=True,
-            dir_okay=False))
-    @click.pass_context
-    def cli(ctx,fasta):
-        """
-
-        Reports the complexity of a quasispecies \
-                using several measures outlined
-        in the following work:
-
-        Gregori, Josep, et al. "Viral quasispecies complexity measures."
-        Virology 493 (2016): 227-237.
-
-        """
-
-        click.echo("\nStarting...")
+    # Short reads.
+    if short_reads:
+        # first check to see  if bam_location is given/appropriate type.
+        if isinstance(bam_location, str):
+            # second check to see if k is given and appropriate type
+            if isinstance(k, int):
+                complexity_for_short_reads(fasta, bam_location, int(k))
+            else:
+                click.echo("Missing or invalid k value")
+        else:
+            click.echo("Missing or invalid bam file")
+    # Long Reads
+    elif long_reads:
         complexity_for_long_reads(fasta)
-        click.echo("\nComplete!")
-
-else:
-    click.echo("Invalid input please try again")
+    # No read type selected:
+    else:
+        click.echo("No flag selected, please try again")
+    click.echo("\nComplete!")
 
 
 def complexity_for_long_reads(fasta):
