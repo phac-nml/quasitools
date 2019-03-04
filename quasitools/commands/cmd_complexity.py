@@ -339,7 +339,7 @@ def get_maximum_mutation_frequency(
     -----
 
     [INT LIST] [counts]
-        A sorted list of haplotype counts, from the counts of the most
+        A haplotype counts, from the counts of the most
         abundant to the counts of the least abundant haplotype.
 
     [FLOAT LIST] [frequencies]
@@ -347,7 +347,7 @@ def get_maximum_mutation_frequency(
 
     [2D ARRAY] [distance_matrix]
         A two dimensional array, representing the distance matrix of distances
-        between the haplotypes.
+        between the sorted haplotypes.
 
         This is expected to be calculated in a similar manner as:
             haplotype.build_distiance_matrix(haplotypes)
@@ -392,7 +392,7 @@ def get_sample_nucleotide_diversity_entity(
 
     [2D ARRAY] [distance_matrix]
         A two dimensional array, representing the distance matrix of distances
-        between the haplotypes.
+        between the sorted haplotypes.
 
         This is expected to be calculated in a similar manner as:
             haplotype.build_distiance_matrix(haplotypes)
@@ -436,7 +436,7 @@ def get_FAD(distance_matrix):
 
     [2D ARRAY] [distance_matrix]
         A two dimensional array, representing the distance matrix of distances
-        between the haplotypes.
+        between the sorted haplotypes.
 
         This is expected to be calculated in a similar manner as:
             haplotype.build_distiance_matrix(haplotypes)
@@ -477,7 +477,7 @@ def get_mutation_frequency(distance_matrix):
 
     [2D ARRAY] [distance_matrix]
         A two dimensional array, representing the distance matrix of distances
-        between the haplotypes.
+        between the sorted haplotypes.
 
         This is expected to be calculated in a similar manner as:
             haplotype.build_distiance_matrix(haplotypes)
@@ -509,7 +509,7 @@ def get_minimum_mutation_frequency(haplotypes, pileup):
     PURPOSE
     -------
 
-    Returns the minimum mutation frequency of the haplotypes.
+    Returns the minimum mutation frequency of the sorted haplotypes.
 
 
     INPUT
@@ -519,7 +519,7 @@ def get_minimum_mutation_frequency(haplotypes, pileup):
         A Pileup object, which represents the pileup of aligned reads.
 
     [HAPLOTYPE LIST] [haplotypes]
-        A list of Haplotype objects.
+        A list of sorted Haplotype objects.
 
 
     RETURN
@@ -557,7 +557,7 @@ def get_number_of_haplotypes(haplotypes):
     -----
 
     [HAPLOTYPE LIST] [haplotypes]
-        A list of Haplotype objects.
+        A list of sorted Haplotype objects.
 
 
     RETURN
@@ -653,7 +653,8 @@ def get_shannon_entropy(haplotypes, frequencies):
     -----
 
     [HAPLOTYPE LIST] [haplotypes]
-        A list of Haplotype objects, for which to report the Shannon entropy.
+        A list of sorted Haplotype objects, for which to
+        report the Shannon entropy.
 
     [FLOAT LIST] [frequencies]
         A list of (relative) frequencies of the Haplotypes.
@@ -696,7 +697,8 @@ def get_shannon_entropy_localized_to_n(haplotypes, Hs):
     -----
 
     [HAPLOTYPE LIST] [haplotypes]
-        A list of Haplotype objects, for which to report the Shannon entropy.
+        A list of sorted Haplotype objects, for which to
+        report the Shannon entropy.
 
     [FLOAT LIST] [frequencies]
         A list of (relative) frequencies of the Haplotypes.
@@ -738,7 +740,8 @@ def get_shannon_entropy_localized_to_h(haplotypes, Hs):
      -----
 
      [HAPLOTYPE LIST] [haplotypes]
-         A list of Haplotype objects, for which to report the Shannon entropy.
+         A list of sorted Haplotype objects, for which to
+         report the Shannon entropy.
 
      [FLOAT LIST] [frequencies]
          A list of (relative) frequencies of the Haplotypes.
