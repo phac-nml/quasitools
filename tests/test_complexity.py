@@ -21,24 +21,51 @@ import quasitools.haplotype as haplotype
 
 
 class TestComplexity():
+    
+    
+    '''''''''''''''''''''''''''
+    Test for building consensus
+    '''''''''''''''''''''''''''
 
-    # Create a list of haplotypes.
+    # Create a list of haplotypes. Will be used to test consensus:
     haplotype_list_01= [haplotype.Haplotype("AAAAAAA"), 
             haplotype.Haplotype("AAAAAAA"),  
             haplotype.Haplotype("AAAAAAA")]
     haplotype_list_02 = [haplotype.Haplotype(""), haplotype.Haplotype("")]
     haplotype_list_03 = [haplotype.Haplotype("TAG")]
 
-    # What i expect the output to be based on how we define a consensus sequence.
+    # expect the output to be based on how we define a consensus sequence.
     expected_consensus_01 = "AAAAAAA" 
     expected_consensus_02 = ""
     expected_consensus_03 = "TAG"
     
+    
+    '''''''''''''''''''''''''''
+    test for sorting haplotypes
+    '''''''''''''''''''''''''''
+    # create a list of haplotypes that will be used to test sort:
+    haplotype_list_04 = [haplotype.Haplotype("AGATGC"),
+            haplotype.Haplotype("ATATAT"),
+            haplotype.Haplotype("TCGATT")]
+    # our consensus:
+    consensus_ = "ATATAT"
+
+    # expected sorted list of haplotypes based:
+    expected_sorted_haplotypes_04 = [haplotype.Haplotype("ATATAT"), 
+            haplotype.Haplotype("AGATGC"),
+            haplotype.Haplotype("TCGATT")]
+    
+
+
+    
     @classmethod
     def setup_class(self):
         self.expected_consensus = ""
+        self.expected_sorted_haplotypes= ""
         self.haplotype_list = ""
+        self.consensus_for_sort = ""
     
+    # Test to see if we are building consensus properly:
     @pytest.fixture(scope="function", params=[
         (haplotype_list_01, expected_consensus_01), 
         (haplotype_list_02, expected_consensus_02),
@@ -56,5 +83,21 @@ class TestComplexity():
         result = ''.join(result_list)
         assert result == consensus
 
+    
+    # Test to see if we are sorting haplotypes correctly:
+    @pytest.fixture(scope="function", params=[
+        (haplotype_list_04, consensus_, expected_sorted_haplotypes_04)])
+    def sorted_haplotypes(self,request):
+        
+        self.haplotype_list = request.param[0]
+        self.consensus_for_sort = request.param[1]
+        self.expected_sorted_haplotypes = request.param[2]
+
+        return self.expected_sorted_haplotypes
+    
+    def test_sort_haplotypes(self,sorted_haplotypes):
+    
+        result_list = haplotype.sort_haplotypes(self.haplotype_list,self.consensus_for_sort)
+        assert result_list == sorted_haplotypes
 
 
