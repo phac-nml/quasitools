@@ -166,7 +166,7 @@ chromosome1    900    1199    gene2
 chromosome2    300    599     gene3
 ```
 
-Observe that the all names in the first column of the mutation database (```gene1```, ```gene2```, ```gene3```) appear in the last column of the BED4 file. However, not every named coding sequence in the BED4 (```gene3```) has to appear in the mutation database ```coding sequence``` column.
+Observe that the all names in the first column of the mutation database (```gene1```, ```gene2```) appear in the last column of the BED4 file. However, not every named coding sequence in the BED4 (```gene3```) has to appear in the mutation database ```coding sequence``` column.
 
 ## Codon Variants CSV
 

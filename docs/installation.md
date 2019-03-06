@@ -18,7 +18,7 @@ Installing quasitools with Conda:
 conda install quasitools
 ```
 
-If everything was successful, you should be able to verify your installation by running ```quasitools --help``` and see a quasitool's help message.
+If everything was successful, you should be able to verify your installation by running ```quasitools --help``` and see quasitool's help message.
 
 ## Galaxy
 
