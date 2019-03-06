@@ -6,9 +6,18 @@ The software represents quasispecies pileup data as vectors and measures the cos
 
 ## Basic Usage
 
-```
+```bash
 quasitools distance [options] <reference> (<BAM inputs>)+
 ```
+## Arguments
+
+### BAM File
+
+A [BAM](https://samtools.github.io/hts-specs/SAMv1.pdf) file (.bam) of sequences aligned to a related reference. This tool requires at least two BAM files. However, there is no uppoer limit. A BAM index file (.bai) is also required for each BAM input and each BAM index file should be named the same as its corresponding BAM file, with the extension instead changed from ".bam" to ".bai". Each BAM file must be aligned to the same reference genome.
+
+### Reference File
+
+A reference file related to all of the aligned BAM sequence files. The provided reference file must be the same reference file used when producing all of the BAM and BAM index files.
 
 ## Options
 
@@ -50,7 +59,7 @@ Sets the end base position of the reference to use in the distance or similarity
 -o, --output FILENAME
 ```
 
-The file output location of the quasispecies distance or similarity matrix in CSV format.
+The file output location to write the quasispecies distance or similarity matrix in CSV format.
 
 ### Truncate
 
@@ -92,3 +101,47 @@ A distance matrix with the distances between all pairs of quasispecies pileups w
 ## Applications
 
 * Generating a distance matrix between inputs for the purpose of clustering.
+
+## Example
+
+### Data
+
+The following example data may be used to run the tool:
+
+* [hiv.fasta](data/hiv.fasta)
+* [variant.bam](data/variant.bam)
+* [variant.bai](data/variant.bai)
+* [variant2.bam](data/variant2.bam)
+* [variant2.bai](data/variant2.bai)
+* [variant3.bam](data/variant3.bam)
+* [variant3.bai](data/variant3.bai)
+
+### Command
+
+```bash
+quasitools distance hiv.fasta variant.bam variant2.bam variant3.bam
+```
+
+### Output
+
+```text
+Using file hiv.fasta as reference
+Reading input from file(s)  variant.bam
+Reading input from file(s)  variant2.bam
+Reading input from file(s)  variant3.bam
+Constructed pileup from reference.
+The pileup covers 9181 positions before modifications.
+The start position is 1.
+The end position is 9181.
+The pileup covers 9181 positions after selecting range between original pileup positions 1 and 9181.
+Truncating all positions with no coverage.
+1 positions were truncated on the left.
+1 positions were truncated on the right.
+2 positions were removed in total from the pileup.
+Outputting an angular cosine distance matrix.
+Quasispecies,variant.bam,variant2.bam,variant3.bam
+variant.bam,0.00000000,0.06414799,0.07023195
+variant2.bam,0.06414799,0.00000000,0.07760542
+variant3.bam,0.07023195,0.07760542,0.00000000
+Complete!
+```

@@ -1,0 +1,7 @@
+Chromosome,Gene,Category,Surveillance,Wildtype,Position,Mutation,Mutation Frequency,Coverage
+AF033819.3,gag,major,Yes,A,3,P,100.00,140
+AF033819.3,gag,minor,No,Y,441,S,100.00,109
+AF033819.3,pol,major,Yes,G,96,E,100.00,128
+AF033819.3,pol,minor,No,Q,246,H,100.00,139
+AF033819.3,vpu,major,Yes,L,34,I,100.00,118
+AF033819.3,env,minor,No,N,67,T,100.00,116

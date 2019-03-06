@@ -1,0 +1,7 @@
+#Genetic Region	Wildtype	Position	Mutation	Category	Surveillance	Comment
+gag	A	3	P	major	Yes	very important
+gag	Y	441	S	minor	No	not important
+pol	G	96	E	major	Yes	somewhat important
+pol	Q	246	H	minor	No	not important
+env	N	67	T	minor	No	not important
+vpu	L	34	I	major	Yes	very important

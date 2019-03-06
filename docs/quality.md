@@ -4,9 +4,19 @@ Performs quality control measures of FASTQ reads and outputs filtered FASTQ read
 
 ## Basic Usage
 
-```
+```bash
 quasitools quality [options] <FASTQ forward> [<FASTQ reverse>] -o <output directory>
 ```
+
+## Arguments
+
+### FASTQ Forward
+
+The forward or single-end FASTQ-format reads to be correted.
+
+### FASTQ Reverse
+
+The reverse reads, associated with paired-end data, to be corrected. This argument is not used if the tool is provided with only single-end reads.
 
 ## Options
 
@@ -92,3 +102,40 @@ The filtered reads will be writen to the output directory.
 ## Applications
 
 * Read quality control before other performing other analyses.
+
+## Example
+
+This example masks all positions with quality scores less than 30 as Ns.
+
+### Data
+
+* [reads.fastq](data/reads.fastq)
+
+### Command
+
+```bash
+quasitools quality -mr -rq 30 reads.fastq -o output
+```
+
+### Output
+
+```text
+@AF033819.3-1820
+AACAAACTTGGCNATGAAAGCAACACTTTTTACAATANCAATTGGTACAAGCAGTNTTAGGCNGACNTCCTNGNTGCTTNNAGGGCTCTAGTCTAGNANC
++
+CCCFFAFFHHHF)IGCFIFJIJIJIJJIIE@HBJGIJ(IIHCJHIBIJIJIBHDA/CJGI@H=DFE3EDE@'G;DCA?D0:AADDCDDCADDEDDC9E+D
+@AF033819.3-1819
+TAATAAGACGNTCAATGNAACAGGACCATGTACAAANGTNAGCACAGTANAATGTACACATGGNATTAGGCCAGTAGTANCANCTCNNCTNCTGTTAANN
++
+?@CFFFBBHF2DDIJJG<JJJIJJEJJIGFJHIIJB=@G)GGBIJ@G?C6JJHJHIHC@JFJC-DC@EDDDHIEDDFFF:HE(DDD>>DB(BABCDDD>(
+@AF033819.3-1818
+TAATNCNGACGCTCTCGGANCCATCTCNCTCCTTCTNGCCNNCGCNAGTCAAAATTTTTGNCGTACTCACNAGTNNCCNCCNCTCGCCTCTTGCCGTGNG
++
+@C?F1B;DHGGHGGJIIGI<JJIBGIG<JIJCGJIG3JJJ;<GHG*JJDFJJAG?GJGHI8CJE@HJADF2DFD(;CH9EA9DCDEEDCCBCDBDEFD>C
+@AF033819.3-1817
+CNGCCATTGTCANTATGTATTGTTTTTANTGGCCATNNTCCNGCTAATTTTAAAAGAAAATATGCTGTTTCCNNCCCTNTTTNTGCTGNAATNACTTCTN
++
+C=?FDFDDHDHB0@JJIEJICDIHJDIF1IFJIGJJ):?IE>IFCHDIIJ@J@JCJJJ?JDEIJIFIHGJCJ95B?CD,@D?2DFBDE;DEC>DCEBBD3
+
+(output truncated)
+```

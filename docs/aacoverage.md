@@ -8,11 +8,11 @@ Builds an amino acid census and returns its coverage.
 quasitools aacoverage [options] <BAM file> <reference file> <bed file>  
 ```
 
-## Options
+## Arguments
 
 ### BAM File
 
-A [BAM file](https://samtools.github.io/hts-specs/SAMv1.pdf) (.bam) of sequences aligned to a related reference. A BAM index file (.bai) is also required and should be named the same as the BAM file, with the extension instead changed from ".bam" to ".bai".
+A [BAM](https://samtools.github.io/hts-specs/SAMv1.pdf) file (.bam) of sequences aligned to a related reference. A BAM index file (.bai) is also required and should be named the same as the BAM file, with the extension instead changed from ".bam" to ".bai".
 
 ### Reference File
 
@@ -21,6 +21,8 @@ A reference file related to the aligned BAM sequences. The provided reference fi
 ### BED File
 
 A [BED file](https://bedtools.readthedocs.io/en/latest/content/general-usage.html) that specifies the coordinates of genes, with repsect to the provided reference. This BED file must be a BED4+ file. That is, the BED file must contain at least the first 4 BED file columns.
+
+## Options
 
 ### Output
 
@@ -32,7 +34,11 @@ The file output location of the amino acid coverage.
 
 ## Output  
 
-The amino acid coverage will be output in CSV format. The output will have one entry per line, with the amino acid position and the coverage at that position. By default, this will be printed to standard output. The user may direct the output to a file by specifying a file name with the `-o/--output` option. 
+The amino acid coverage will be output in CSV format. The output will have one entry per line, with the amino acid position and the coverage at that position. By default, this will be printed to standard output. The user may direct the output to a file by specifying a file name with the `-o/--output` option.
+
+## Applications
+
+* Generating a report of the amino acid coverage, with respect to a referemce, from a BAM alignment file.
 
 ## Example
 
@@ -58,27 +64,27 @@ frame: 0
 1,0
 2,4
 3,5
-4,7
+4,9
 5,11
-6,12
-7,16
+6,13
+7,15
 8,17
-9,23
-10,27
-11,33
-12,36
-13,40
-14,46
-15,49
-16,52
-17,56
-18,57
-19,60
-20,61
-21,63
-22,66
-23,68
+9,21
+10,22
+11,26
+12,26
+13,28
+14,32
+15,33
+16,37
+17,38
+18,43
+19,44
+20,45
+21,50
+22,54
+23,57
 
-...
+(output truncated)
 ```
 
