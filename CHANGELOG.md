@@ -10,6 +10,7 @@ All notable changes to Quasitools will be documented in this file.
 - Made various changes to the documentation to improve clarity.
 - Fixed quasitools distance sometimes crashing because of uneven coverage.
 - Improved the execution time of quasitools distance.
+- Fixed the Hamming distance calculation using integers instead of floats, depending on the Python version.
 
 ## 0.5.1 ##
 
