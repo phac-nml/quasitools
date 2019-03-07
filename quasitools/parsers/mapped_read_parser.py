@@ -70,7 +70,7 @@ def parse_mapped_reads_from_bam(reference, bam):
     return mrc
 
 
-def parse_haplotypes_called(
+def parse_haplotypes_from_bam(
         references,
         reference,
         bam_location,
@@ -78,33 +78,32 @@ def parse_haplotypes_called(
     """""
     #========================================================================
 
-    PARSE HAPLOTYPES CALLED
+    PARSE HAPLOTYPES FROM BAM
 
     PURPOSE
     -------
 
-    Caller method for the haplotype parser.
+    This is the function to call to generate a list of haplotypes of length k,
+    across the reference, when input is BAM files.
 
     INPUT
     -------
     [LIST (REFERENCE] [references]
-        - a list of quasitool reference objects
+        - A list of quasitool Reference objects.
     [REFERENCE_LOCATION][reference]
-        - The location of the reference file
+        - The location of the reference file.
     [BAM_FILE_LOCATION] [bam_location]
-        - The aligned BAM FILE from which we'll
+        - The aligned BAM file from which we'll
           retrieve our haplotypes.
-    [INT] [start]
-        - the starting region
     [INT] [k]
         - the length we want our starting position take
-            reads from.
+          reads from.
 
     RETURN
     -------
-    [DICTIONARY of HAPLOTYPES] [haplotyess]
-        An 2d list of that at each position contains a list of unsorted
-        haplotypes.
+    [LIST of HAPLOTYPES] [haplotypes]
+        An 2D list  containing a list of unsorted haplotypes. For Each
+        position in the reference sequenence until, reference length - k+1.
 
     #========================================================================
     """
@@ -118,24 +117,23 @@ def parse_haplotypes_called(
         for i in range(0, length - k + 1):
 
             haplotype_list = (
-                parse_haplotypes_from_bam(
+                parse_haplotypes_from_bam_range(
                     samfile,
                     reference,
                     bam_location,
-                    i, k, length))
+                    i, k))
 
             haplotypes.append(haplotype_list)
 
     return haplotypes
 
 
-def parse_haplotypes_from_bam(
+def parse_haplotypes_from_bam_range(
         samfile,
         reference,
         bam_location,
         start,
-        k,
-        length):
+        k):
     """""
     #========================================================================
     PARSE HAPLOTYPES FROM BAM
@@ -143,24 +141,26 @@ def parse_haplotypes_from_bam(
     PURPOSE
     -------
 
-    Get the haplotypes
+    builds and returns an unsorted list of Haplotype objects
+    from start to start+k.
+
 
     INPUT
     -------
     [LIST (REFERENCE] [references]
-        - a list of quasitool reference objects
-    [BAM_FILE_LOCATION] [bam_location]
+        - A list of Reference objects associated with the provided BAM
+          file location.
+    [BAM file location] [bam_location]
         - The aligned BAM FILE from which we'll
           retrieve our haplotypes.
     [INT] [start]
-        - the starting region
+        - the starting 0-based reference postion.
     [INT] [k]
-        - the length we want our starting position take
-            reads from.
+        - the length of the haplotypes to generate.
     RETURN
     -------
     [LIST] [haplotyess]
-        - unsorted list of haplotypes
+        - unsorted list of Haplotype objects from start to start+k.
 
     #========================================================================
     """
@@ -175,6 +175,7 @@ def parse_haplotypes_from_bam(
         haplotype_start = start - read.reference_start
         haplotype_end = haplotype_start + k
 
+        # Checking the read covers the entire region:
         if read.get_overlap(start, start + k) == k:
 
             sequence = str(read_sequence[haplotype_start: haplotype_end])

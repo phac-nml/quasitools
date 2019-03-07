@@ -20,77 +20,62 @@ __version__ = '0.1.1'
 import os
 import click
 import math
-import copy
 import csv
 
 
 import quasitools.calculate as calculate
 import quasitools.haplotype as haplotype
-import quasitools.constants.con_complexity as constant
+import quasitools.constants.complexity_constants as constant
 from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import \
-    parse_haplotypes_called,\
+    parse_haplotypes_from_bam, \
     parse_haplotypes_from_fasta
 
-
+# Click not directly involved. Used to define which subcommand
+# to call (fasta or bam)
 @click.group(invoke_without_command=False)
 @click.pass_context
 def cli(ctx):
     pass
+    ''''
+    Reports the per-amplicon (fasta)  or per-reference-nucleotide
+    complexity (bam and reference) of a quasispecies using
+    several measures outlined in the following work:
+
+    Gregori, Josep, et al. "Viral quasispecies complexity measures."
+    Virology 493 (2016): 227-237.
+    '''''
+
+# Subcommand for when a multi-alligned fasta file is provided
+# When the fasta subcommand is called we will obtain complexity
+# report of per-amplicon complexity.
 
 
-# Multiple Aligned FASTA.
 @cli.command(
     'fasta', short_help='Calculates various quasispecies complexity ' +
     'measures on a multiple aligned FASTA file.')
 @click.argument('fasta_location', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 def fasta(fasta_location):
-
-    haplotypes = parse_haplotypes_from_fasta(fasta_location)
-    measurements_list = []
-
-    measurements = conduct_measurements(haplotypes)
-
-    measurements_list.append(measurements)
-
-    measurement_to_csv(measurements_list)
-
-
-# NGS Data from BAM and its corresponding reference file
-@cli.command(
-    'bam', short_help="Calculates various quasispecies complexity " +
-    "measures on next generation sequenced data from a BAM file " +
-    "and it's corresponding reference file.")
-@click.argument('reference', nargs=1, required=True,
-                type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('bam', nargs=1,
-                type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('k')
-def bam(reference, bam, k):
     """
     # ========================================================================
 
-    COMPLEXITY
+    FASTA COMPLEXITY
 
 
     PURPOSE
     -------
 
-    Computes various complexity measures for the quasispecies.
+
+    Creates a report of per-reference nucleotide complexity.
 
 
     INPUT
     -----
 
-    [(BAM) FILE LOCATION] [bam]
-        The file location of a bam file
-
-    [(REFERENCE) FILE LOCATION] [refernece]
-        the file location of the reference file
-    [INT] k
-        provides the sequence length for our reads from a given starting
-        position
+    [(FASTA) FILE LOCATION] [fasta_location]
+        The file location of an aligned FASTA file for which to calculate the
+        complexity measures.
 
 
     RETURN
@@ -98,37 +83,98 @@ def bam(reference, bam, k):
 
     [NONE]
 
-    Comments
+
+    POST
     ----
 
-    The complexity computation and reporting will be completed once
-    this method has run its course and be stored in CSV file.
+    The complexity computation will be completed and the results will be
+    stored in CSV file.
+
+    # ========================================================================
+    """
+
+    haplotypes = parse_haplotypes_from_fasta(fasta_location)
+
+    measurements = measure_complexity(haplotypes)
+
+    measurement_to_csv([measurements])
+
+
+# NGS Data from BAM and its corresponding reference file.
+# When the bam subcommand is called we will produce a report of
+# per-reference-nucleotide complexity
+@cli.command(
+    'bam', short_help="Calculates various quasispecies complexity " +
+    "measures on next generation sequenced data from a BAM file " +
+    "and it's corresponding reference file.")
+@click.argument('reference_location', nargs=1, required=True,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('bam_location', nargs=1,
+                type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.argument('k')
+def bam(reference_location, bam_location, k):
+    """
+    # ========================================================================
+
+    BAM COMPLEXITY
+
+
+    PURPOSE
+    -------
+
+    Creates a report of per-reference nucleotide complexity.
+
+    INPUT
+    -----
+
+    [(BAM) FILE LOCATION] [bam_location]
+        The file location of a bam file.
+
+    [(REFERENCE) FILE LOCATION] [reference_location]
+        the file location of the reference file.
+    [INT] k
+        provides the sequence length for our reads from a given starting
+        position.
+
+
+    RETURN
+    ------
+
+    [NONE]
+
+    POST
+    ----
+
+    The complexity computation will be completed and the results will be stored
+    in CSV file.
 
     # ========================================================================
     """
     k = int(k)
-    references = parse_references_from_fasta(reference)
-    haplotype_list = parse_haplotypes_called(
-        references, reference, bam, k)
+    references = parse_references_from_fasta(reference_location)
+    # A list where each position contains a list of haplotypes of length k,
+    # starting at that position in the reference.
+    haplotype_list = parse_haplotypes_from_bam(
+        references, reference_location, bam_location, k)
 
     measurements_list = []
 
     for i in range((len(haplotype_list) - k + 1)):
         haplotypes = haplotype_list[i]
-        measurements = conduct_measurements(haplotypes)
+        measurements = measure_complexity(haplotypes)
         measurements_list.append(measurements)
 
-    '''
-    Measurement to CSV
-    '''
+    # Measurements to CSV:
     measurement_to_csv(measurements_list)
 
 
-def conduct_measurements(haplotypes):
-
+def measure_complexity(haplotypes):
+    # Initialize measurments list to length of the measurements name
+    # dictionary.
     measurements = [constant.UNDEFINED for x in range(
         len(constant.MEASUREMENTS_NAMES))]
 
+    # If no haplotypes we will return measurements as its initialized state.
     if not haplotypes:
         return measurements
 
@@ -143,9 +189,8 @@ def conduct_measurements(haplotypes):
     counts = haplotype.build_counts(sorted_haplotypes)
     frequencies = haplotype.build_frequencies(sorted_haplotypes)
 
-    '''
-    Set the Incidence - Entity Level
-    '''
+    # Set the Incidence - Entity Level #
+
     measurements[constant.NUMBER_OF_HAPLOTYPES] = \
         get_number_of_haplotypes(sorted_haplotypes)
 
@@ -155,20 +200,18 @@ def conduct_measurements(haplotypes):
     measurements[constant.NUMBER_OF_MUTATIONS] = get_number_of_mutations(
         pileup)
 
-    '''
-    Set the Abundance - Molecular Level:
-    '''
+    # Set the Abundance - Molecular Level: #
 
     shannon_entropy = get_shannon_entropy(sorted_haplotypes, frequencies)
 
     measurements[constant.SHANNON_ENTROPY_NUMBER] = shannon_entropy
 
-    measurements[constant.SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_N] = \
-        get_shannon_entropy_localized_to_n(
+    measurements[constant.SHANNON_ENTROPY_NUMBER_NORMALIZED_TO_N] = \
+        get_shannon_entropy_normalized_to_n(
         sorted_haplotypes, shannon_entropy)
 
-    measurements[constant.SHANNON_ENTROPY_NUMBER_LOCALIZED_TO_H] = \
-        get_shannon_entropy_localized_to_h(
+    measurements[constant.SHANNON_ENTROPY_NUMBER_NORMALIZED_TO_H] = \
+        get_shannon_entropy_normalized_to_h(
         sorted_haplotypes, shannon_entropy)
 
     measurements[constant.SIMPSON_INDEX] = \
@@ -181,17 +224,17 @@ def conduct_measurements(haplotypes):
         frequencies, constant.HILL_NUMBER_LENGTH)
 
     '''
-    loops through all positions in the hills_numbers_list then adds
-    the subsequent position of hill number to the index of the
-    measurements list in charge of holding the specific hill number.
+     We iterate through the number of elements in the Hill number list
+     at each iteration we place the Hill number at element i into measurements
+     at element HILL_NUMBER_0+i
+
 
     '''
-    for k in range(len(hill_numbers_list)):
-        measurements[constant.HILL_NUMBER_0 + k] = (hill_numbers_list[k])
+    for i in range(len(hill_numbers_list)):
+        measurements[constant.HILL_NUMBER_0 + i] = (hill_numbers_list[i])
 
-    '''
-    Functional,  Indidence - Entity Level
-    '''
+    # Functional,  Incidence - Entity Level #
+
     measurements[constant.MINIMUM_MUTATION_FREQUENCY] = \
         get_minimum_mutation_frequency(
         sorted_haplotypes, pileup)
@@ -202,13 +245,12 @@ def conduct_measurements(haplotypes):
     measurements[constant.FUNCTIONAL_ATTRIBUTE_DIVERSITY] = \
         get_FAD(distance_matrix)
 
-    measurements[constant.SAMPLE_NUCLEOTIDE_DIVERSITY_Entity] = \
+    measurements[constant.SAMPLE_NUCLEOTIDE_DIVERSITY_ENTITY] = \
         get_sample_nucleotide_diversity_entity(
         distance_matrix, frequencies)
-    '''
 
-    Functional, Abundance - Molecular Level
-    '''
+    # Functional, Abundance - Molecular Level #
+
     measurements[constant.MAXIMUM_MUTATION_FREQUENCY] = \
         get_maximum_mutation_frequency(
         counts, distance_matrix, frequencies)
@@ -217,9 +259,8 @@ def conduct_measurements(haplotypes):
         get_population_nucleotide_diversity(
         distance_matrix, frequencies)
 
-    '''
-    Other
-    '''
+    # Other #
+
     measurements[constant.SAMPLE_NUCLEOTIDE_DIVERSITY] = \
         get_sample_nucleotide_diversity(
         distance_matrix, frequencies, sorted_haplotypes)
@@ -234,7 +275,7 @@ def get_sample_nucleotide_diversity(
     """
     # ========================================================================
 
-    GETSAMPLE NUCLEOTIDE DIVERSITY
+    GET SAMPLE NUCLEOTIDE DIVERSITY
 
 
     PURPOSE
@@ -264,7 +305,7 @@ def get_sample_nucleotide_diversity(
     ------
 
     [FLOAT] [snd]
-        the sample nucleotide diversity.
+        The sample nucleotide diversity.
 
     # ========================================================================
     """
@@ -446,7 +487,7 @@ def get_FAD(distance_matrix):
     ------
 
     [FLOAT] [fad]
-        the functional attribute diversity
+        the functional attribute diversity.
 
     # ========================================================================
     """
@@ -487,7 +528,7 @@ def get_mutation_frequency(distance_matrix):
     ------
 
     [FLOAT] [mutation_frequency]
-        the mutation frequency
+        the mutation frequency.
 
     # ========================================================================
     """
@@ -503,7 +544,7 @@ def get_minimum_mutation_frequency(haplotypes, pileup):
     """
     # ========================================================================
 
-    Get MINIMUM MUTATION FREQUENCY
+    GET  MINIMUM MUTATION FREQUENCY
 
 
     PURPOSE
@@ -526,7 +567,7 @@ def get_minimum_mutation_frequency(haplotypes, pileup):
     ------
 
     [FLOAT][minimum_mutation_frequency]
-        the minimum mutation frequency
+        the minimum mutation frequency.
 
     # ========================================================================
     """
@@ -564,7 +605,7 @@ def get_number_of_haplotypes(haplotypes):
     ------
 
     [INT] [len(haplotypes)]
-        unique number of haplotypes
+        The unique number of haplotypes.
 
     # ========================================================================
     """
@@ -596,7 +637,7 @@ def get_number_of_polymorphic_sites(pileup):
     ------
 
     [INT] (pileup.count_polymorphic_sites())
-        number of polymorphic sites in pileup
+        The number of polymorphic sites in pileuip.
 
     # ========================================================================
     """
@@ -628,7 +669,7 @@ def get_number_of_mutations(pileup):
     ------
 
     [INT] pileup.count_unique_mutations()
-        the number of mutations
+        The number of mutations.
 
     # ========================================================================
     """
@@ -664,13 +705,8 @@ def get_shannon_entropy(haplotypes, frequencies):
     ------
 
     [FLOAT] [hs]
-        shannon entropy
-
-
-    POST
-    ----
-
-    The Shannon entropy
+        The Shannon Entropy of the haplotypes, determined from their
+        frequencies.
 
     # ========================================================================
     """
@@ -680,7 +716,7 @@ def get_shannon_entropy(haplotypes, frequencies):
     return Hs
 
 
-def get_shannon_entropy_localized_to_n(haplotypes, Hs):
+def get_shannon_entropy_normalized_to_n(haplotypes, Hs):
     """
     # ========================================================================
 
@@ -690,7 +726,7 @@ def get_shannon_entropy_localized_to_n(haplotypes, Hs):
     PURPOSE
     -------
 
-    Returns the Shannon entropy of the haplotypes localized to N.
+    Returns the Shannon entropy of the haplotypes normalized to N.
 
 
     INPUT
@@ -708,7 +744,9 @@ def get_shannon_entropy_localized_to_n(haplotypes, Hs):
     ------
 
     [FLOAT] [hsn]
-        shannon entropy localized to n
+        The Shannon entropy, normalized to the number of clones.
+        This is the sum of all counts of each haplotype.
+
 
     # ========================================================================
     """
@@ -716,24 +754,24 @@ def get_shannon_entropy_localized_to_n(haplotypes, Hs):
     N = haplotype.calculate_total_clones(haplotypes)
 
     if float(math.log(N)) != 0:
-        Hsn = float(Hs) / float(math.log(N))  # entropy localized to N
+        Hsn = float(Hs) / float(math.log(N))  # entropy normalized to N
     else:
         Hsn = 0
 
     return Hsn
 
 
-def get_shannon_entropy_localized_to_h(haplotypes, Hs):
+def get_shannon_entropy_normalized_to_h(haplotypes, Hs):
     """
      # ========================================================================
 
-     GET SHANNON ENTROPY LOCALIZED TO H
+     GET SHANNON ENTROPY NORMALIZED TO H
 
 
      PURPOSE
      -------
 
-     Returns the Shannon entropy of the haplotypes localized to N.
+     Returns the Shannon entropy of the haplotypes NORMALIZED to N.
 
 
      INPUT
@@ -751,7 +789,9 @@ def get_shannon_entropy_localized_to_h(haplotypes, Hs):
      ------
 
      [FLOAT] [hsn]
-         shannon entropy localized to h
+        The Shannon entropy, normalized to the number of haplotypes.
+        This is the length of the haplotypes list.
+
 
      # ========================================================================
      """
@@ -759,7 +799,7 @@ def get_shannon_entropy_localized_to_h(haplotypes, Hs):
     H = len(haplotypes)
 
     if float(math.log(H)) != 0:
-        Hsh = float(Hs) / float(math.log(H))  # entropy localized to H
+        Hsh = float(Hs) / float(math.log(H))  # entropy normalized to H
     else:
         Hsh = 0
 
@@ -776,7 +816,7 @@ def get_simpson_index(frequencies):
     PURPOSE
     -------
 
-    Returns the simpson index.
+    Returns the Simpson Index.
 
 
     INPUT
@@ -790,6 +830,7 @@ def get_simpson_index(frequencies):
     ------
 
     [FLOAT] [simpson_index]
+        The Simpson Index.
 
     # ========================================================================
     """
@@ -826,6 +867,7 @@ def get_gini_simpson_index(frequencies):
     ------
 
     [FLOAT] [gini_simpson_index]
+        The Gini-Simpson index.
 
     # ========================================================================
     """
@@ -856,11 +898,18 @@ def get_hill_numbers(frequencies, end, start=0):
     [FLOAT LIST] [frequencies]
         A list of (relative) frequencies of the Haplotypes.
 
+    [INT] [start]
+        An integer value to designate the starting position of our
+        Hill numbers list.
+    [INT] [end]
+        An integer value to designate the end position of our
+        Hill numbers list.
 
     RETURN
     ------
 
     [FLOAT LIST] [list_of_hill_numbers]
+        A list of Hill numbers.
 
     # ========================================================================
     """
@@ -870,36 +919,64 @@ def get_hill_numbers(frequencies, end, start=0):
 
     list_of_hill_numbers = []
 
-    # Get an index pos between start to end(the range of hill numbers we want)
+    # Iterate over the range of hill numbers.
     for hill_number_pos in range(start, end):
         # Make sure a hill number is valid at that index
-        # Hill num valid if len of frequency >= than the index pos+1.
+        # A Hill number (Hn) can be calculate if we have at least Hn + 1
+        # haplotypes. That is, the length the haplotype frequencies list (H)
+        # must be at least (Hn + 1).
         if H >= hill_number_pos + 1:
             list_of_hill_numbers.append(calculate.hill_number(
                 H, P, hill_number_pos))
+        else:
+            break
 
     return list_of_hill_numbers
 
 
 def measurement_to_csv(measurements_list):
+    """
+    # ========================================================================
+
+    MEASUREMENTS TO CSV
+
+    PURPOSE
+    -------
+
+    Report a number of complexity measurements.
+
+
+    INPUT
+    -----
+
+    [[List]] [measurements_list]
+        A two dimensional list that contains a number of complexity
+        measurements each position contains haplotypes of length position+k.
+
+
+    POST
+    ------
+        A CSV file that reports a number of complexity measurements for a
+        starting postion to k (BAM) or per amplicon (FASTA).
+
+    # ========================================================================
+    """
 
     measurements_col_titles = ["Position"]
+    file_name = "complexity_outputs.csv"
 
     for i in range(len(constant.MEASUREMENTS_NAMES)):
         measurements_col_titles.append(constant.MEASUREMENTS_NAMES[i])
 
-    file_name = "complexity_outputs.csv"
+    with open(file_name, 'w') as complexity_data:
+        writer = csv.writer(complexity_data)
+        # if file empty add the column titles (will be first row)
+        if os.stat(file_name).st_size == 0:
+            writer.writerow(measurements_col_titles)
 
-    for position in range(len(measurements_list)):
+        for position in range(len(measurements_list)):
 
-        measurements = copy.deepcopy(measurements_list[position])
-
-        with open(file_name, 'a') as complexity_data:
-
-            writer = csv.writer(complexity_data)
-            # if file empty add the column titles (will be first row)
-            if os.stat(file_name).st_size == 0:
-                writer.writerow(measurements_col_titles)
-                # will always add the measurements values
+            measurements = measurements_list[position]
             writer.writerow([position] + measurements)
-        complexity_data.close()
+
+    complexity_data.close()

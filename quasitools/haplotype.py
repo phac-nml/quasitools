@@ -95,7 +95,7 @@ def sort_haplotypes(haplotypes, consensus):
     PURPOSE
     -------
 
-    Sorts a list of haplotypes according their hamming distance from the
+    Sorts a list of haplotypes according their Hamming distance from the
     consensus sequence.
 
 
@@ -106,6 +106,7 @@ def sort_haplotypes(haplotypes, consensus):
         The list of haplotypes to sort.
 
     [String] consensus
+        The consensus sequence for the list of haplotypes.
 
 
     RETURN
@@ -119,22 +120,25 @@ def sort_haplotypes(haplotypes, consensus):
     """
 
     sorted_haplotypes = []
-    hap_list = []
+
+    # a list of (Haplotype, Hamming distance) tuples
+    tuple_list = []
     for haplotype in haplotypes:
 
         # creates a list of tuples that contains the haplotype and its hamming
         # distance
-        hap_list.append(
+        tuple_list.append(
             (haplotype,
              calculate.hamming_distance(
                  haplotype.sequence,
                  consensus)))
 
-    # Sort list in ascending order based on tuple position 1.
+    # Sort list in ascending order based on the Hamming distance
     sorted_list = \
-        sorted(hap_list, key=lambda items: items[1], reverse=False)
+        sorted(tuple_list, key=lambda items: items[1], reverse=False)
 
-    # Pull first tuple item (the haplotype) from each item in list
+    # Iterates through sorted list placing the haplotype in
+    # sorted haplotypes.
     sorted_haplotypes = [x[0] for x in sorted_list]
 
     return sorted_haplotypes
@@ -150,23 +154,21 @@ def build_consensus_from_haplotypes(haplotypes):
     PURPOSE
     -------
 
-    Builds a consensus from a pileup of haplotypes.
+    Builds a consensus from a list of Haplotype objects.
 
 
     INPUT
     -----
 
     [HAPLOTYPE LIST] [haplotypes]
-        The list of haplotypes
-
-
+        The list of haplotypes.
 
 
     RETURN
     ------
 
     [String] consensus
-       the consensus sequence.
+       The consensus sequence.
 
     # ========================================================================
     """
@@ -188,7 +190,7 @@ def build_pileup_from_haplotypes(haplotypes, gaps=False):
     PURPOSE
     -------
 
-    Creates a pileup from a list of haplotypes
+    Creates a pileup from a list of haplotypes.
 
 
     INPUT
@@ -197,28 +199,28 @@ def build_pileup_from_haplotypes(haplotypes, gaps=False):
     [HAPLOTYPE LIST] [haplotypes]
         A list of haplotypes
     [BOOLEAN] [gaps]
-        a paramter to indicate if their are gaps in any of the haplotypes in
-        the list.
+        Indicate whether or not there are gaps in our haplotype sequences
 
     RETURN
     ------
 
     [PILEUP] [pileup]
-        A pilup object that we can build a consensus of haplotypes from
+        A pilup object.
 
     # ========================================================================
     """
+
     pileup_list = []
 
     if haplotypes:
 
         length = len(haplotypes[0].sequence)
 
+        # Initialize empty dictionaries
         for i in range(0, length):
             pileup_list.append({})
 
         for haplotype in haplotypes:
-
             for i in range(0, length):
 
                 base = haplotype.sequence[i]
