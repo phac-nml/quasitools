@@ -1,0 +1,30 @@
+##sequence-region AF033819.3 1 9181
+##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=11676
+AF033819.3	Genbank	region	1	9181	.	+	.	ID=AF033819.3:1..9181;Dbxref=taxon:11676;gb-acronym=HIV-1;gbkey=Src;genome=genomic;mol_type=genomic RNA;note=strain for reference annotation;old-name=Human immunodeficiency virus type 1
+AF033819.3	Genbank	region	1	96	.	+	.	ID=id-AF033819.3:1..96;Note=repeat%3B positions of RNA transcription initialization and polyadenylation;gbkey=Region
+AF033819.3	Genbank	polyA_signal_sequence	73	78	.	+	.	ID=id-AF033819.3:73..78;gbkey=regulatory;regulatory_class=polyA_signal_sequence
+AF033819.3	Genbank	five_prime_UTR	97	181	.	+	.	ID=id-AF033819.3:97..181;gbkey=5'UTR
+AF033819.3	Genbank	primer_binding_site	182	199	.	+	.	ID=id-AF033819.3:182..199;gbkey=primer_bind
+AF033819.3	Genbank	gene	336	1838	.	+	.	ID=gene-gag;Name=gag;gbkey=Gene;gene=gag;gene_biotype=protein_coding
+AF033819.3	Genbank	CDS	336	1838	.	+	0	ID=cds-AAC82593.1;Parent=gene-gag;Dbxref=NCBI_GP:AAC82593.1;Name=AAC82593.1;gbkey=CDS;gene=gag;product=Gag;protein_id=AAC82593.1
+AF033819.3	Genbank	gene	1631	4642	.	+	.	ID=gene-pol;Name=pol;gbkey=Gene;gene=pol;gene_biotype=protein_coding;partial=true;start_range=.,1631
+AF033819.3	Genbank	CDS	1631	4642	.	+	0	ID=cds-AAC82598.2;Parent=gene-pol;Dbxref=NCBI_GP:AAC82598.2;Name=AAC82598.2;gbkey=CDS;gene=pol;partial=true;product=Pol;protein_id=AAC82598.2;start_range=.,1631
+AF033819.3	Genbank	gene	4587	5165	.	+	.	ID=gene-vif;Name=vif;gbkey=Gene;gene=vif;gene_biotype=protein_coding
+AF033819.3	Genbank	CDS	4587	5165	.	+	0	ID=cds-AAC82594.1;Parent=gene-vif;Dbxref=NCBI_GP:AAC82594.1;Name=AAC82594.1;gbkey=CDS;gene=vif;product=Vif;protein_id=AAC82594.1
+AF033819.3	Genbank	gene	5105	5341	.	+	.	ID=gene-vpr;Name=vpr;gbkey=Gene;gene=vpr;gene_biotype=protein_coding
+AF033819.3	Genbank	CDS	5105	5341	.	+	0	ID=cds-AAC82595.1;Parent=gene-vpr;Dbxref=NCBI_GP:AAC82595.1;Name=AAC82595.1;gbkey=CDS;gene=vpr;product=Vpr;protein_id=AAC82595.1
+AF033819.3	Genbank	gene	5377	7970	.	+	.	ID=gene-tat;Name=tat;gbkey=Gene;gene=tat;gene_biotype=protein_coding
+AF033819.3	Genbank	CDS	5377	5591	.	+	0	ID=cds-AAC82591.1;Parent=gene-tat;Dbxref=NCBI_GP:AAC82591.1;Name=AAC82591.1;gbkey=CDS;gene=tat;product=Tat;protein_id=AAC82591.1
+AF033819.3	Genbank	CDS	7925	7970	.	+	1	ID=cds-AAC82591.1;Parent=gene-tat;Dbxref=NCBI_GP:AAC82591.1;Name=AAC82591.1;gbkey=CDS;gene=tat;product=Tat;protein_id=AAC82591.1
+AF033819.3	Genbank	gene	5516	8199	.	+	.	ID=gene-rev;Name=rev;gbkey=Gene;gene=rev;gene_biotype=protein_coding
+AF033819.3	Genbank	CDS	5516	5591	.	+	0	ID=cds-AAC82592.1;Parent=gene-rev;Dbxref=NCBI_GP:AAC82592.1;Name=AAC82592.1;gbkey=CDS;gene=rev;product=Rev;protein_id=AAC82592.1
+AF033819.3	Genbank	CDS	7925	8199	.	+	2	ID=cds-AAC82592.1;Parent=gene-rev;Dbxref=NCBI_GP:AAC82592.1;Name=AAC82592.1;gbkey=CDS;gene=rev;product=Rev;protein_id=AAC82592.1
+AF033819.3	Genbank	gene	5608	5856	.	+	.	ID=gene-vpu;Name=vpu;gbkey=Gene;gene=vpu;gene_biotype=protein_coding
+AF033819.3	Genbank	CDS	5608	5856	.	+	0	ID=cds-AAD20388.1;Parent=gene-vpu;Dbxref=NCBI_GP:AAD20388.1;Name=AAD20388.1;Note=5608;gbkey=CDS;gene=vpu;product=Vpu;protein_id=AAD20388.1
+AF033819.3	Genbank	gene	5771	8341	.	+	.	ID=gene-env;Name=env;gbkey=Gene;gene=env;gene_biotype=protein_coding
+AF033819.3	Genbank	CDS	5771	8341	.	+	0	ID=cds-AAC82596.1;Parent=gene-env;Dbxref=NCBI_GP:AAC82596.1;Name=AAC82596.1;gbkey=CDS;gene=env;product=Env;protein_id=AAC82596.1
+AF033819.3	Genbank	gene	8343	8714	.	+	.	ID=gene-nef;Name=nef;gbkey=Gene;gene=nef;gene_biotype=protein_coding
+AF033819.3	Genbank	CDS	8343	8714	.	+	0	ID=cds-AAC82597.1;Parent=gene-nef;Dbxref=NCBI_GP:AAC82597.1;Name=AAC82597.1;gbkey=CDS;gene=nef;product=Nef;protein_id=AAC82597.1
+AF033819.3	Genbank	three_prime_UTR	8631	9085	.	+	.	ID=id-AF033819.3:8631..9085;gbkey=3'UTR
+AF033819.3	Genbank	region	9086	9181	.	+	.	ID=id-AF033819.3:9086..9181;Note=repeat%3B positions of RNA transcription initialization and polyadenylation;gbkey=Region
+

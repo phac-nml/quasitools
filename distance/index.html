@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>distance - quasitools</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="../stylesheets/extra.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "distance";
+    var mkdocs_page_input_path = "distance.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> quasitools</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../requirements/">Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../installation/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../formats/">Data Formats</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Tools</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../aacoverage/">aacoverage</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../aavar/">call aavr</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../codonvar/">call codonvar</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../ntvar/">call ntvar</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../complexity/">complexity</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../consensus/">consensus</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">distance</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#distance">Distance</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#basic-usage">Basic Usage</a></li>
+        
+            <li><a class="toctree-l4" href="#arguments">Arguments</a></li>
+        
+            <li><a class="toctree-l4" href="#options">Options</a></li>
+        
+            <li><a class="toctree-l4" href="#output_1">Output</a></li>
+        
+            <li><a class="toctree-l4" href="#applications">Applications</a></li>
+        
+            <li><a class="toctree-l4" href="#example">Example</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../dnds/">dnds</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../drmutations/">drmutations</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../hydra/">hydra</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../quality/">quality</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../contact/">Contact</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../legal/">Legal</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">quasitools</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Tools &raquo;</li>
+        
+      
+    
+    <li>distance</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="distance">Distance</h1>
+<p>Measures and reports the distance between multiple read pileups from multiple quasispecies samples, aligned to the same genomic region. This tool determines the cosine relatedness between viral quasispecies, reporting either angular cosine distance or cosine similarity as measures of relatedness. These measures of relatedness should be understood as approximations for evolutionary distance.</p>
+<p>The software represents quasispecies pileup data as vectors and measures the cosine angle between every pair of vectors. This has the benefit of comparing the relative composition of the quasispecies and is robust against widely varying degrees of coverage. This method does not reduce the quasipecies data into a consensus vector and therefore can capture more nuanced differences between two quasispecies pileups. The software can also normalize the pileup vectors to prevent bias of relative coverage within a single pileup.</p>
+<h2 id="basic-usage">Basic Usage</h2>
+<pre><code class="bash">quasitools distance [options] &lt;reference&gt; (&lt;BAM inputs&gt;)+
+</code></pre>
+
+<h2 id="arguments">Arguments</h2>
+<h3 id="bam-file">BAM File</h3>
+<p>A <a href="https://samtools.github.io/hts-specs/SAMv1.pdf">BAM</a> file (.bam) of sequences aligned to a related reference. This tool requires at least two BAM files. However, there is no uppoer limit. A BAM index file (.bai) is also required for each BAM input and each BAM index file should be named the same as its corresponding BAM file, with the extension instead changed from ".bam" to ".bai". Each BAM file must be aligned to the same reference genome.</p>
+<h3 id="reference-file">Reference File</h3>
+<p>A reference file related to all of the aligned BAM sequence files. The provided reference file must be the same reference file used when producing all of the BAM and BAM index files.</p>
+<h2 id="options">Options</h2>
+<h3 id="normalize">Normalize</h3>
+<pre><code class="text">-n, --normalize / -dn, --dont_normalize
+</code></pre>
+
+<p>Whether or not to normalize read count data so that counts at each position sum to one. This is useful if one region of the reference has more coverage depth than another region. Normalization will ensure each base position will contribute equally to the distance measurement. Normalization is done by dividing base read counts (A, C, T, G) inside every 4-tuple by the sum of the read counts inside the same tuple.</p>
+<h3 id="output-distance">Output Distance</h3>
+<pre><code class="text">-od, --output_distance / -os, --output_similarity
+</code></pre>
+
+<p>Either output an angular distance matrix (by default) or output a cosine similarity matrix. Please be aware that cosine similarity is not a metric.</p>
+<h3 id="start-position">Start Position</h3>
+<pre><code class="text">-s, --startpos INTEGER
+</code></pre>
+
+<p>Sets the start base position of the reference to use in the distance or similarity calculation. The start position is one-indexed [1, n].</p>
+<h3 id="end-position">End Position</h3>
+<pre><code class="text">-e, --endpos INTEGER
+</code></pre>
+
+<p>Sets the end base position of the reference to use in the distance or similarity calculation. The end position is one-indexed [1, n].</p>
+<h3 id="output">Output</h3>
+<pre><code class="text">-o, --output FILENAME
+</code></pre>
+
+<p>The file output location to write the quasispecies distance or similarity matrix in CSV format.</p>
+<h3 id="truncate">Truncate</h3>
+<pre><code class="text">-t, --truncate
+</code></pre>
+
+<p>Ignores congiguous start and end pileup regions with no coverage.</p>
+<h3 id="remove-no-coverage">Remove No Coverage</h3>
+<pre><code class="text">-r, --remove_no_coverage
+</code></pre>
+
+<p>Remove all regions of the pileup with no coverage from the distance calculations.</p>
+<h3 id="keep-no-coverage">Keep No Coverage</h3>
+<pre><code class="text">-k, --keep_no_coverage
+</code></pre>
+
+<p>Do not remove regions of the pileup with no coverage from the distance calculations.</p>
+<h3 id="help">Help</h3>
+<pre><code class="text">--help
+</code></pre>
+
+<p>Show a help message and exit.</p>
+<h2 id="output_1">Output</h2>
+<p>A distance matrix with the distances between all pairs of quasispecies pileups will be written to standard output. The user may also have the matrix written to a file by specifying the location with the <code>-o</code> command.</p>
+<h2 id="applications">Applications</h2>
+<ul>
+<li>Generating a distance matrix between inputs for the purpose of clustering.</li>
+</ul>
+<h2 id="example">Example</h2>
+<h3 id="data">Data</h3>
+<p>The following example data may be used to run the tool:</p>
+<ul>
+<li><a href="../data/hiv.fasta">hiv.fasta</a></li>
+<li><a href="../data/variant.bam">variant.bam</a></li>
+<li><a href="../data/variant.bai">variant.bai</a></li>
+<li><a href="../data/variant2.bam">variant2.bam</a></li>
+<li><a href="../data/variant2.bai">variant2.bai</a></li>
+<li><a href="../data/variant3.bam">variant3.bam</a></li>
+<li><a href="../data/variant3.bai">variant3.bai</a></li>
+</ul>
+<h3 id="command">Command</h3>
+<pre><code class="bash">quasitools distance hiv.fasta variant.bam variant2.bam variant3.bam
+</code></pre>
+
+<h3 id="output_2">Output</h3>
+<pre><code class="text">Using file hiv.fasta as reference
+Reading input from file(s)  variant.bam
+Reading input from file(s)  variant2.bam
+Reading input from file(s)  variant3.bam
+Constructed pileup from reference.
+The pileup covers 9181 positions before modifications.
+The start position is 1.
+The end position is 9181.
+The pileup covers 9181 positions after selecting range between original pileup positions 1 and 9181.
+Truncating all positions with no coverage.
+1 positions were truncated on the left.
+1 positions were truncated on the right.
+2 positions were removed in total from the pileup.
+Outputting an angular cosine distance matrix.
+Quasispecies,variant.bam,variant2.bam,variant3.bam
+variant.bam,0.00000000,0.06414799,0.07023195
+variant2.bam,0.06414799,0.00000000,0.07760542
+variant3.bam,0.07023195,0.07760542,0.00000000
+Complete!
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../dnds/" class="btn btn-neutral float-right" title="dnds">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../consensus/" class="btn btn-neutral" title="consensus"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Copyright Government of Canada 2017-2018</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../consensus/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../dnds/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+Input Size: 8000
+Number of reads filtered due to length: 0
+Number of reads filtered due to average quality score: 0
+Number of reads filtered due to presence of Ns: 0
+Number of reads filtered due to excess coverage: 0
+Number of reads filtered due to poor mapping: 5485
+Percentage of reads filtered: 68.56

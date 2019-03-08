@@ -1,0 +1,25 @@
+##reference=h
+##reference=x
+##reference=b
+##reference=2
+##reference=_
+##reference=p
+##reference=o
+##reference=l
+##reference=.
+##reference=f
+##reference=a
+##reference=s
+##source=quasitools:hydra
+##fileformat=AAVFv1.0
+##fileDate=20190215
+##INFO=<ID=SRVL,Number=.,Type=String,Description="Drug Resistance Surveillance">
+##INFO=<ID=AC,Number=.,Type=String,Description="Alternate Codon">
+##INFO=<ID=CAT,Number=.,Type=String,Description="Drug Resistance Category">
+##INFO=<ID=ACF,Number=.,Type=Float,Description="Alternate Codon Frequency,for each Alternate Codon,in the same order aslisted.">
+##INFO=<ID=RC,Number=1,Type=String,Description="Reference Codon">
+##FILTER=<ID=af0.01,Description="Set if True; alt_freq<0.01">
+#CHROM	GENE	POS	REF	ALT	FILTER	ALT_FREQ	COVERAGE	INFO
+hxb2_pol	PR	85	I	S	PASS	1.0000	144	SRVL=.;AC=aGt;CAT=.;ACF=1.0000;RC=att
+hxb2_pol	RT	91	Q	H	PASS	1.0000	131	SRVL=.;AC=caT;CAT=.;ACF=1.0000;RC=caa
+hxb2_pol	PR	40	G	E	PASS	1.0000	122	SRVL=.;AC=gAa;CAT=.;ACF=1.0000;RC=gga

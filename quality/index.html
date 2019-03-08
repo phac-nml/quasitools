@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>quality - quasitools</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="../stylesheets/extra.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "quality";
+    var mkdocs_page_input_path = "quality.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> quasitools</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../requirements/">Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../installation/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../formats/">Data Formats</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Tools</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../aacoverage/">aacoverage</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../aavar/">call aavr</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../codonvar/">call codonvar</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../ntvar/">call ntvar</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../complexity/">complexity</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../consensus/">consensus</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../distance/">distance</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../dnds/">dnds</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../drmutations/">drmutations</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../hydra/">hydra</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">quality</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#quality">Quality</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#basic-usage">Basic Usage</a></li>
+        
+            <li><a class="toctree-l4" href="#arguments">Arguments</a></li>
+        
+            <li><a class="toctree-l4" href="#options">Options</a></li>
+        
+            <li><a class="toctree-l4" href="#output">Output</a></li>
+        
+            <li><a class="toctree-l4" href="#applications">Applications</a></li>
+        
+            <li><a class="toctree-l4" href="#example">Example</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../contact/">Contact</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../legal/">Legal</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">quasitools</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Tools &raquo;</li>
+        
+      
+    
+    <li>quality</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="quality">Quality</h1>
+<p>Performs quality control measures of FASTQ reads and outputs filtered FASTQ reads. The tool may filter reads based on average quality score, median quality score, mask low quality bases, perform iterative read trimming, and filter based on read length.</p>
+<h2 id="basic-usage">Basic Usage</h2>
+<pre><code class="bash">quasitools quality [options] &lt;FASTQ forward&gt; [&lt;FASTQ reverse&gt;] -o &lt;output directory&gt;
+</code></pre>
+
+<h2 id="arguments">Arguments</h2>
+<h3 id="fastq-forward">FASTQ Forward</h3>
+<p>The forward or single-end FASTQ-format reads to be correted.</p>
+<h3 id="fastq-reverse">FASTQ Reverse</h3>
+<p>The reverse reads, associated with paired-end data, to be corrected. This argument is not used if the tool is provided with only single-end reads.</p>
+<h2 id="options">Options</h2>
+<h3 id="output-directory">Output Directory</h3>
+<pre><code class="text">-o, --output_dir DIRECTORY
+</code></pre>
+
+<p>The location of the output directory.</p>
+<h3 id="trim-reads">Trim Reads</h3>
+<pre><code class="text">-tr, --trim_reads
+</code></pre>
+
+<p>If enabled, the software will iteratively trim the ends of reads until they either meet filter values or become to short. If trimmed reads become too short, they will be discarded.</p>
+<p>If this option is disabled, the software will instead discard reads that do not meet filter values.</p>
+<h3 id="mask-reads">Mask Reads</h3>
+<pre><code class="text">-mr, --mask_reads
+</code></pre>
+
+<p>This option will mask low quality regions with "N" if they are below the minimum read quality threshold. This option and N-filtering (--ns) cannot be enabled simultaneously.</p>
+<h3 id="minimum-read-quality">Minimum Read Quality</h3>
+<pre><code class="text">-rq, --min_read_qual INTEGER
+</code></pre>
+
+<p>Applies when read masking is enabled. The minimum quality for positions in the read before becoming masked with an "N".</p>
+<h3 id="length-cutoff">Length Cutoff</h3>
+<pre><code class="text">-lc, --length_cutoff INTEGER
+</code></pre>
+
+<p>Filters out any reads shorter than this length.</p>
+<h3 id="score-cutoff">Score Cutoff</h3>
+<pre><code class="text">-sc, --score_cutoff INTEGER
+</code></pre>
+
+<p>This software will filter out reads that have a median (default) or mean score less than this value.</p>
+<h3 id="median-or-mean-score-filtering">Median or Mean Score Filtering</h3>
+<pre><code class="text">-me, --median / -mn, --mean
+</code></pre>
+
+<p>This determines whether the software will use median (default) or mean score as a cutoff for read filtering.</p>
+<h3 id="filtering-ns">Filtering Ns</h3>
+<pre><code class="text">-n, --ns
+</code></pre>
+
+<p>If enabled, the software will discard any reads that contain N characters.</p>
+<h3 id="help">Help</h3>
+<pre><code class="text">--help
+</code></pre>
+
+<p>Displays the help message and exits.</p>
+<h2 id="output">Output</h2>
+<p>The filtered reads will be writen to the output directory.</p>
+<h2 id="applications">Applications</h2>
+<ul>
+<li>Read quality control before other performing other analyses.</li>
+</ul>
+<h2 id="example">Example</h2>
+<p>This example masks all positions with quality scores less than 30 as Ns.</p>
+<h3 id="data">Data</h3>
+<ul>
+<li><a href="../data/reads.fastq">reads.fastq</a></li>
+</ul>
+<h3 id="command">Command</h3>
+<pre><code class="bash">quasitools quality -mr -rq 30 reads.fastq -o output
+</code></pre>
+
+<h3 id="output_1">Output</h3>
+<pre><code class="text">@AF033819.3-1820
+AACAAACTTGGCNATGAAAGCAACACTTTTTACAATANCAATTGGTACAAGCAGTNTTAGGCNGACNTCCTNGNTGCTTNNAGGGCTCTAGTCTAGNANC
++
+CCCFFAFFHHHF)IGCFIFJIJIJIJJIIE@HBJGIJ(IIHCJHIBIJIJIBHDA/CJGI@H=DFE3EDE@'G;DCA?D0:AADDCDDCADDEDDC9E+D
+@AF033819.3-1819
+TAATAAGACGNTCAATGNAACAGGACCATGTACAAANGTNAGCACAGTANAATGTACACATGGNATTAGGCCAGTAGTANCANCTCNNCTNCTGTTAANN
++
+?@CFFFBBHF2DDIJJG&lt;JJJIJJEJJIGFJHIIJB=@G)GGBIJ@G?C6JJHJHIHC@JFJC-DC@EDDDHIEDDFFF:HE(DDD&gt;&gt;DB(BABCDDD&gt;(
+@AF033819.3-1818
+TAATNCNGACGCTCTCGGANCCATCTCNCTCCTTCTNGCCNNCGCNAGTCAAAATTTTTGNCGTACTCACNAGTNNCCNCCNCTCGCCTCTTGCCGTGNG
++
+@C?F1B;DHGGHGGJIIGI&lt;JJIBGIG&lt;JIJCGJIG3JJJ;&lt;GHG*JJDFJJAG?GJGHI8CJE@HJADF2DFD(;CH9EA9DCDEEDCCBCDBDEFD&gt;C
+@AF033819.3-1817
+CNGCCATTGTCANTATGTATTGTTTTTANTGGCCATNNTCCNGCTAATTTTAAAAGAAAATATGCTGTTTCCNNCCCTNTTTNTGCTGNAATNACTTCTN
++
+C=?FDFDDHDHB0@JJIEJICDIHJDIF1IFJIGJJ):?IE&gt;IFCHDIIJ@J@JCJJJ?JDEIJIFIHGJCJ95B?CD,@D?2DFBDE;DEC&gt;DCEBBD3
+
+(output truncated)
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../contact/" class="btn btn-neutral float-right" title="Contact">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../hydra/" class="btn btn-neutral" title="hydra"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Copyright Government of Canada 2017-2018</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../hydra/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../contact/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>call ntvar - quasitools</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="../stylesheets/extra.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "call ntvar";
+    var mkdocs_page_input_path = "ntvar.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> quasitools</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../requirements/">Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../installation/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../formats/">Data Formats</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Tools</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../aacoverage/">aacoverage</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../aavar/">call aavr</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../codonvar/">call codonvar</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">call ntvar</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#ntvar">ntvar</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#basic-usage">Basic Usage</a></li>
+        
+            <li><a class="toctree-l4" href="#arguments">Arguments</a></li>
+        
+            <li><a class="toctree-l4" href="#options">Options</a></li>
+        
+            <li><a class="toctree-l4" href="#output_1">Output</a></li>
+        
+            <li><a class="toctree-l4" href="#example">Example</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../complexity/">complexity</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../consensus/">consensus</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../distance/">distance</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../dnds/">dnds</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../drmutations/">drmutations</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../hydra/">hydra</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../quality/">quality</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../contact/">Contact</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../legal/">Legal</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">quasitools</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Tools &raquo;</li>
+        
+      
+    
+    <li>call ntvar</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="ntvar">ntvar</h1>
+<p>Calls nucleotide variants observed witin an aligned BAM file when compared against a supplied reference file.</p>
+<h2 id="basic-usage">Basic Usage</h2>
+<pre><code class="bash">quasitools ntvar [options] &lt;BAM file&gt; &lt;reference file&gt;
+</code></pre>
+
+<h2 id="arguments">Arguments</h2>
+<h3 id="bam-file">BAM File</h3>
+<p>A <a href="https://samtools.github.io/hts-specs/SAMv1.pdf">BAM</a> file (.bam) of sequences aligned to a related reference. A BAM index file (.bai) is also required and should be named the same as the BAM file, with the extension instead changed from ".bam" to ".bai".</p>
+<h3 id="reference-file">Reference File</h3>
+<p>A reference file related to the aligned BAM sequences. The provided reference file must be the same reference file used when producing the BAM and BAM index files.</p>
+<h2 id="options">Options</h2>
+<h3 id="error-rate">Error Rate</h3>
+<pre><code class="text">-e, --error_rate FLOAT
+</code></pre>
+
+<p>This is the expected substitution sequencing error rate. The default value is 0.0021 substitutions per sequenced base.</p>
+<h3 id="output">Output</h3>
+<pre><code class="text">-o, --output FILENAME
+</code></pre>
+
+<p>The file output location to write the identified nucleotide variants in VCF format. Otherwise, the results are printed to standard output.</p>
+<h2 id="output_1">Output</h2>
+<p>The output of the tool is a list of the variants observed witin the aligned BAM file when compared against the supplied reference file. The output is in VCF format and the quasitools provides the following additional information in the <code>FILTER</code> and <code>INFO</code> columns of the VCF file.</p>
+<p>Please see <a href="../formats">Data Formats</a> for more information about the custom fields used by quasitools. However, a short description is provided below.</p>
+<h3 id="filter">FILTER</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dp100</td>
+<td>This variant was filtered because the coverage depth was less than 100.</td>
+</tr>
+<tr>
+<td>q30</td>
+<td>This variant was filtered because the quality of the variant was less than 30.</td>
+</tr>
+<tr>
+<td>ac5</td>
+<td>This variant was filtered because the variant was observed less than 5 times.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="info">INFO</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DP</td>
+<td>The total coverage depth of the pileup at this position.</td>
+</tr>
+<tr>
+<td>AC</td>
+<td>The number of times this particular variants was observed in the pileup at this position.</td>
+</tr>
+<tr>
+<td>AF</td>
+<td>The frequency of this particular variants was observed in the pileup at this position.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="example">Example</h2>
+<h3 id="data">Data</h3>
+<p>The following example data may be used to run the tool:</p>
+<ul>
+<li><a href="../data/hiv.fasta">hiv.fasta</a></li>
+<li><a href="../data/variant.bam">variant.bam</a></li>
+<li><a href="../data/variant.bai">variant.bai</a></li>
+</ul>
+<h3 id="command">Command</h3>
+<pre><code class="bash">quasitools call ntvar variant.bam hiv.fasta
+</code></pre>
+
+<h3 id="output_2">Output</h3>
+<pre><code class="text">##fileformat=VCFv4.2
+##fileDate=20190206
+##source=quasitools
+##contig=&lt;ID=AF033819.3,length=9181&gt;
+##INFO=&lt;ID=DP,Number=1,Type=Integer,Description=&quot;Total Depth&quot;&gt;
+##INFO=&lt;ID=AC,Number=A,Type=Integer,Description=&quot;Allele Count&quot;&gt;
+##INFO=&lt;ID=AF,Number=A,Type=Float,Description=&quot;Allele Frequency&quot;&gt;
+##FILTER=&lt;ID=dp100,Description=&quot;Set if True; DP&lt;100&quot;&gt;
+##FILTER=&lt;ID=q30,Description=&quot;Set if True; QUAL&lt;30&quot;&gt;
+##FILTER=&lt;ID=ac5,Description=&quot;Set if True; AC&lt;5&quot;&gt;
+#CHROM  POS ID  REF ALT QUAL    FILTER  INFO
+AF033819.3  153 .   t   a   100 PASS    DP=129;AC=129;AF=1.0000
+AF033819.3  342 .   g   c   100 PASS    DP=141;AC=141;AF=1.0000
+AF033819.3  719 .   c   g   100 PASS    DP=132;AC=132;AF=1.0000
+AF033819.3  1025    .   a   t   100 PASS    DP=129;AC=129;AF=1.0000
+AF033819.3  1351    .   c   a   100 PASS    DP=135;AC=135;AF=1.0000
+AF033819.3  1657    .   a   c   100 PASS    DP=111;AC=111;AF=1.0000
+AF033819.3  1917    .   g   a   100 PASS    DP=128;AC=128;AF=1.0000
+AF033819.3  2052    .   t   g   100 PASS    DP=147;AC=147;AF=1.0000
+AF033819.3  2368    .   a   t   100 PASS    DP=140;AC=140;AF=1.0000
+AF033819.3  2422    .   g   c   100 PASS    DP=146;AC=146;AF=1.0000
+AF033819.3  2989    .   a   g   100 PASS    DP=108;AC=108;AF=1.0000
+AF033819.3  5707    .   t   a   100 PASS    DP=119;AC=119;AF=1.0000
+AF033819.3  5970    .   a   c   100 PASS    DP=117;AC=117;AF=1.0000
+AF033819.3  6139    .   c   g   100 PASS    DP=138;AC=138;AF=1.0000
+AF033819.3  6674    .   a   t   100 PASS    DP=142;AC=142;AF=1.0000
+AF033819.3  7366    .   a   c   100 PASS    DP=129;AC=129;AF=1.0000
+AF033819.3  8631    .   c   t   100 PASS    DP=144;AC=144;AF=1.0000
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../complexity/" class="btn btn-neutral float-right" title="complexity">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../codonvar/" class="btn btn-neutral" title="call codonvar"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Copyright Government of Canada 2017-2018</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../codonvar/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../complexity/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

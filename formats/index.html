@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Data Formats - quasitools</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="../stylesheets/extra.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Data Formats";
+    var mkdocs_page_input_path = "formats.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> quasitools</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../requirements/">Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../installation/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Data Formats</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#data-formats">Data Formats</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#overview">Overview</a></li>
+        
+            <li><a class="toctree-l3" href="#relationships">Relationships</a></li>
+        
+            <li><a class="toctree-l3" href="#reads">Reads</a></li>
+        
+            <li><a class="toctree-l3" href="#reference">Reference</a></li>
+        
+            <li><a class="toctree-l3" href="#bam">BAM</a></li>
+        
+            <li><a class="toctree-l3" href="#bed4">BED4</a></li>
+        
+            <li><a class="toctree-l3" href="#mutation-database">Mutation Database</a></li>
+        
+            <li><a class="toctree-l3" href="#codon-variants-csv">Codon Variants CSV</a></li>
+        
+            <li><a class="toctree-l3" href="#vcf">VCF</a></li>
+        
+            <li><a class="toctree-l3" href="#aavf">AAVF</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Tools</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../aacoverage/">aacoverage</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../aavar/">call aavr</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../codonvar/">call codonvar</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../ntvar/">call ntvar</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../complexity/">complexity</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../consensus/">consensus</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../distance/">distance</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../dnds/">dnds</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../drmutations/">drmutations</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../hydra/">hydra</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../quality/">quality</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../contact/">Contact</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../legal/">Legal</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">quasitools</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Data Formats</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="data-formats">Data Formats</h1>
+<p>This resource provides a detailed description of the various data formats used by quasitools, either as input or output, and their relationship to each other. In general, the data inputs usually must be consistent with each other. If you change one of the inputs, it is possible that some of the other inputs will need to change as well.</p>
+<h2 id="overview">Overview</h2>
+<p>The following is a summary of the formats used by quasitools:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reads</td>
+<td>A FASTQ file containing sequencing reads.</td>
+</tr>
+<tr>
+<td>Reference</td>
+<td>A FASTA reference of either a gene, chromosome, or genome.</td>
+</tr>
+<tr>
+<td>BAM</td>
+<td>Specifies sequence alignments between the FASTA reference and FASTQ reads.</td>
+</tr>
+<tr>
+<td>BAI</td>
+<td>Indexes the BAM file for faster processing.</td>
+</tr>
+<tr>
+<td>BED4</td>
+<td>Specifies the coordinates of coding sequences in the reference.</td>
+</tr>
+<tr>
+<td>Mutation Database</td>
+<td>Specifies meaningful amino acid mutations within coding sequences.</td>
+</tr>
+<tr>
+<td>Codon Variants CSV</td>
+<td>Specifies nucleotide variants within codons and resulting amino acid mutations.</td>
+</tr>
+<tr>
+<td>VCF</td>
+<td>Specifies observed nucleotide variants and related information.</td>
+</tr>
+<tr>
+<td>AAVF</td>
+<td>Specifies observed amino acid variants and related information.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="relationships">Relationships</h2>
+<p>The following is a summary of the relationships between quasitools inputs:</p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Input</th>
+<th>Relationship</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BAM</td>
+<td>Reads</td>
+<td>The BAM file describes the alignment of reads to a reference.</td>
+</tr>
+<tr>
+<td>BAM</td>
+<td>Reference</td>
+<td>The BAM file describes the alignment of reads to a reference.</td>
+</tr>
+<tr>
+<td>BAM</td>
+<td>BAI</td>
+<td>The BAM index (BAI) file must be created from the BAM file.</td>
+</tr>
+<tr>
+<td>BED4</td>
+<td>Reference</td>
+<td>The BED4 file describes coding sequences on the reference.</td>
+</tr>
+<tr>
+<td>BED</td>
+<td>Mutation Database</td>
+<td>The BED "name" column must be consistent with the MutationDB "coding sequences" column.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reads">Reads</h2>
+<p>Most tools in quasitools do not operated directly on reads and instead require BAM alignment files, which must be created manually by the user. Please see the BAM format section for more information.</p>
+<h2 id="reference">Reference</h2>
+<p>The reference file must be in <a href="https://en.wikipedia.org/wiki/FASTA_format">FASTA format</a>. When providing a BAM file, BAM index file (BAI), and a reference file together to the same program within quasitools, the BAM file must have been generated from an alignment with the reference and the BAM index file generated from the BAM file.</p>
+<h2 id="bam">BAM</h2>
+<p>A <a href="https://samtools.github.io/hts-specs/SAMv1.pdf">BAM</a> file (.bam) is the binary version of a <a href="https://samtools.github.io/hts-specs/SAMv1.pdf">SAM</a> file. A SAM (Sequence Alignment/Map) file is a tab-delimited text file that specifies sequence alignments. SAM files are often converted into BAM files to reduce storage space and allow faster processing.</p>
+<p>Within quasitools, BAM files are used to provide information about how sequencing reads aligned to a reference file. A BAM index file (.bai) is also required by quasitools and should be named the same as the BAM file, with the extension instead changed from ".bam" to ".bai". When running quasitools, it is important to ensure that the BAM file, BAM index file, and reference file are consistent with each other. The BAM file should be generated from an alignment against the reference and the BAM index file should be generated from the BAM file.</p>
+<p>BAM alignment files may be generated using read or sequence alignment software, such as <a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">Bowtie2</a>. If your sequence alignment software does not output a BAI file, you may use <a href="http://www.htslib.org/doc/">samtools</a> to index your BAM file.</p>
+<h2 id="bed4">BED4</h2>
+<p>A <a href="https://bedtools.readthedocs.io/en/latest/content/general-usage.html">BED file</a> specifies the coordinates of coding sequences, with repsect to sequences within a FASTA reference. The FASTA sequences are larger sequences, such a chromosomes or genes. The specified coding sequences are smaller sequences within the FASTA sequences. These small sequences within FASTA sequences may be genes or gene products. However, the should not contain non-coding sequences. The coordinates of the coding sequences must be specified in 0-based nucleotide coordinates and the length of each coding sequence must be divisible by three.</p>
+<p>The BED files used with quasitools must be BED4+ files and therefore must contain at least the first 4 BED file columns. It is very likely that these BED4 files will need to be manually created with knowledge of the locations of coding sequences in the reference. It is very important that the <code>names</code> of these coding sequences are the same names used in the <code>coding sequences</code> column of the mutation database, if the user is providing both files as inputs to a tool. The format of the BED files expected by quasitools is as follows:</p>
+<pre><code>[identifier] [start] [end] [name]
+</code></pre>
+
+<p>There must only be one record per line in the BED4 file. The items in each record are specified as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Description</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>identifier</td>
+<td>The sequence identifier of the FASTA sequence within the FASTA reference file.</td>
+<td>string</td>
+</tr>
+<tr>
+<td>start</td>
+<td>The starting nucleotide coordinate of the coding sequence.</td>
+<td>integer</td>
+</tr>
+<tr>
+<td>end</td>
+<td>The ending nucleotide coordinate of the coding sequence.</td>
+<td>integer</td>
+</tr>
+<tr>
+<td>name</td>
+<td>The name of the coding sequence.</td>
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-genes-witin-a-chromsome">Example: Genes Witin a Chromsome</h3>
+<p><strong>Reference File (FASTA)</strong></p>
+<pre><code class="text">&gt;chromosome1
+ACGTACGT ...
+&gt;chromesome2
+GGAATTCC ...
+</code></pre>
+
+<p><strong>BED4 File</strong></p>
+<pre><code class="text">chromosome1    300    599     gene1
+chromosome1    900    1199    gene2
+chromosome2    300    599     gene3
+</code></pre>
+
+<p>Observe that <code>chromosome1</code> and <code>chromosome2</code> are the names of contigs in a reference FASTA file. Our BED4 file specifies three genes within the reference file. <code>gene1</code> and <code>gene2</code> reside on the <code>chromosome1</code> contig and <code>gene3</code> resides on the <code>chromosome2</code> contig.</p>
+<h3 id="example-gene-products-witin-a-gene">Example: Gene Products Witin a Gene</h3>
+<p><strong>Reference File (FASTA)</strong></p>
+<pre><code class="text">&gt;gene1
+ACGTACGT ...
+</code></pre>
+
+<p><strong>BED4 File</strong></p>
+<pre><code class="text">gene1    300    599     product1
+gene1    900    1199    product2
+</code></pre>
+
+<p>Observe that our reference file specifics one contig, <code>gene1</code>, which corresponds to a gene. The coding sequences specific in the BED4 file are instead gene products: <code>product1</code> and <code>product2</code>.</p>
+<h3 id="example-gene-products-witin-a-chromosome">Example: Gene Products Witin a Chromosome</h3>
+<p><strong>Reference File (FASTA)</strong></p>
+<pre><code class="text">&gt;chromosome1
+ACGTACGT ...
+&gt;chromesome2
+GGAATTCC ...
+</code></pre>
+
+<p><strong>BED4 File</strong></p>
+<pre><code class="text">chromosome1    300    399    product1
+chromosome1    900    999    product2
+chromosome2    300    399    product3
+</code></pre>
+
+<p>Observe that <code>chromosome1</code> and <code>chromosome2</code> are the names of contigs in a reference FASTA file. Our BED4 file specifies three coding sequences which are gene products (assumed to be within genes). <code>product1</code> and <code>product2</code> reside on <code>chromosome1</code> and <code>product3</code> resides on <code>chromosome2</code>.</p>
+<h2 id="mutation-database">Mutation Database</h2>
+<p>The mutation database describes specific mutations within the named coding sequences specified previously in the BED4 file. It is used to report animo acid mutations that the user has identified. The mutation database is represented as a specifically formated TSV (tab separated values) file. The mutation database format is as follows:</p>
+<pre><code class="text">[coding sequence] [wildtype] [position] [mutation] [category] [surveillance] [comment]
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Description</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>coding sequence</td>
+<td>The name of the coding sequence (CDS or gene product).</td>
+<td>string</td>
+</tr>
+<tr>
+<td>wildtype</td>
+<td>The amino acid of wildtype.</td>
+<td>character</td>
+</tr>
+<tr>
+<td>position</td>
+<td>The position of the amino acid within the coding sequence.</td>
+<td>integer</td>
+</tr>
+<tr>
+<td>mutation</td>
+<td>The amino acid of the muation.</td>
+<td>character</td>
+</tr>
+<tr>
+<td>category</td>
+<td>A categorization of the mutation.</td>
+<td>string</td>
+</tr>
+<tr>
+<td>surveillance</td>
+<td>Whether or not the mutation is part of a surveillance program.</td>
+<td>string</td>
+</tr>
+<tr>
+<td>comment</td>
+<td>A user-provided comment about the mutation.</td>
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<p>In this format, there is one mutation entry per line in the file. Each item of every entry is separated by tabs. A line may be a comment if the very first character of the line is a <code>#</code> character. Please note that the <code>position</code> is the amino acid position within that particular coding sequence, in amino acid coordinates. It is very important that the values of the "coding sequence" column are the same names used in the "name" column of the BED4 file, if the user is providing both files as inputs to a tool. Every name that appears in the <code>coding sequence</code> column must also appear in the <code>name</code> column of the BED4 file. However, not every <code>name</code> in the BED4 file must appear under the <code>coding sequence</code> column in the mutation database.</p>
+<p>It is very likely that these mutation database files will need to be manually created with knowledge of the locations of mutations within the coding sequences specified in the BED file.</p>
+<h3 id="example-mutations-within-a-gene">Example: Mutations Within a Gene</h3>
+<p><strong>Mutation Database</strong></p>
+<pre><code class="text">#genetic region wildtype    position    mutation    category    surveillance    comment
+gene1   M   10  F   major   Yes comment1
+gene1   K   20  I   minor   No  comment2
+gene2   W   5   V   major   No  comment3
+</code></pre>
+
+<p><strong>BED4 File</strong></p>
+<pre><code class="text">chromosome1    300    599     gene1
+chromosome1    900    1199    gene2
+chromosome2    300    599     gene3
+</code></pre>
+
+<p>Observe that the all names in the first column of the mutation database (<code>gene1</code>, <code>gene2</code>) appear in the last column of the BED4 file. However, not every named coding sequence in the BED4 (<code>gene3</code>) has to appear in the mutation database <code>coding sequence</code> column.</p>
+<h2 id="codon-variants-csv">Codon Variants CSV</h2>
+<p>The codon variants CSV file is consistent with the standard CSV format. The file describes nucleotide variants within codons and their resulting amino acid variants. It also clarifies whether the nucleotide variants are synonymous or a non-synonymous mutations. The codon variants CSV file has the following comment header:</p>
+<pre><code class="text">#gene,nt position (gene),nt start position,nt end position,ref codon,mutant codon,ref AA,mutant AA,coverage,mutant frequency,mutant type,NS count,S count
+</code></pre>
+
+<p>The items on each line correspond to the following information:</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>gene</td>
+<td>The name of the coding region.</td>
+</tr>
+<tr>
+<td>1</td>
+<td>nt position (gene)</td>
+<td>The start and end nucleotide positions of the gene which contains the codon.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>nt start position</td>
+<td>The start nucleotide position of the codon.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>nt end position</td>
+<td>The end nucleotide position of the codon.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ref codon</td>
+<td>The codon in the reference.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>mutant codon</td>
+<td>The mutant codon in the data.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>ref AA</td>
+<td>The corresponding amino acid in the reference.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>mutant AA</td>
+<td>The corresponding amino acid in the mutant.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>coverage</td>
+<td>The coverage of the codon.</td>
+</tr>
+<tr>
+<td>9</td>
+<td>mutant frequency</td>
+<td>The observed frequency of the mutant codon.</td>
+</tr>
+<tr>
+<td>10</td>
+<td>mutant type</td>
+<td>Whether or not the mutation is synonymous (S) or nonsynonymous (NS).</td>
+</tr>
+<tr>
+<td>11</td>
+<td>NS count</td>
+<td>The expected number of nonsynonymous sites in the codon. A number between [0, 3].</td>
+</tr>
+<tr>
+<td>12</td>
+<td>S count</td>
+<td>The expected number of synonymous sites in the codon. A number between [0, 3].</td>
+</tr>
+</tbody>
+</table>
+<p>Please refer to <a href="https://academic.oup.com/mbe/article/3/5/418/988012">Nei and Gojobori 1986</a> for more information about how to calculate <code>NS count</code> and <code>S count</code>.</p>
+<h2 id="vcf">VCF</h2>
+<p>The VCF format used within quasitools is consistent with the standard VCF format. However, quasitools uses custom values in the <code>FILTER</code> and <code>INFO</code> columns.</p>
+<h3 id="filter">FILTER</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dp100</td>
+<td>This variant was filtered because the coverage depth was less than 100.</td>
+</tr>
+<tr>
+<td>q30</td>
+<td>This variant was filtered because the quality of the variant was less than 30.</td>
+</tr>
+<tr>
+<td>ac5</td>
+<td>This variant was filtered because the variant was observed less than 5 times.</td>
+</tr>
+</tbody>
+</table>
+<p>Of particular interest is the <code>q30</code> flag. This flag is set when the estimated quality of the variant is less than 30. quasitools calculates the probability of a variant being legitimate using the Poisson cumulative distribution function. In this framework, λ is the expected number of errors at a particular position (the coverage depth of that position multiplied by the error rate).</p>
+<p>In order for the variant to accepted as a real mutation, the probability of the observed variant being caused entirely by errors must be sufficiently low. In other words, at least some of the observed variant was probably caused by at least one real mutation. In order for the probability to be sufficiently low, it must be less than Q30 (1 in 1000 chance). When performing this probability calculation, we assume the worst case scenario: all expected substution errors at a particular position are the same nucleotide as the variant being tested, rather than being evenly distributed evenly across all possible substitions.</p>
+<h3 id="info">INFO</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DP</td>
+<td>The total coverage depth of the pileup at this position.</td>
+</tr>
+<tr>
+<td>AC</td>
+<td>The number of times this particular variants was observed in the pileup at this position.</td>
+</tr>
+<tr>
+<td>AF</td>
+<td>The frequency of this particular variants was observed in the pileup at this position.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="aavf">AAVF</h2>
+<p>AAVF is a text file format, inspired by the Variant Call Format (VCF). It contains meta-information lines, a head line, and then data lines each containing information about a position in a gene within a genome. Please refer to the <a href="https://github.com/winhiv/aavf-spec/raw/master/AAVFv1.0.pdf">AAVF documentation</a> for more information.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../aacoverage/" class="btn btn-neutral float-right" title="aacoverage">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../installation/" class="btn btn-neutral" title="Installation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Copyright Government of Canada 2017-2018</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../installation/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../aacoverage/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

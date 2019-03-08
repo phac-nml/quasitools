@@ -1,0 +1,2 @@
+#gene,nt position (gene),nt start position,nt end position,ref codon,mutant codon,ref AA,mutant AA,coverage,mutant frequency,mutant type,NS count,S count
+pol,1630-4641,3775,3777,ttt,ttC,F,F,104,100.00,S,0.0000,1.0000
