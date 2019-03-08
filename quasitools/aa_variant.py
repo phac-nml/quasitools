@@ -172,7 +172,7 @@ class AAVariantCollection(VariantCollection):
         metadata['fileformat'] = 'AAVFv1.0'
         metadata['fileDate'] = datetime.date.today().strftime("%Y%m%d")
         metadata['source'] = "quasitools:%s" % source_command
-        metadata['reference'] = reference_filename
+        metadata['reference'] = [reference_filename]
 
         # Build infos
         infos["RC"] = Info("RC", "1", "String", "Reference Codon",

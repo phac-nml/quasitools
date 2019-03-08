@@ -130,7 +130,7 @@ def aavar(bam, reference, bed4_file, variants, mutation_db,
         mutation_db = MutationDB(mutation_db, genes)
         aa_vars.apply_mutation_db(mutation_db)
 
-    aavf_obj = aa_vars.to_aavf_obj("aavar", [os.path.basename(reference)],
+    aavf_obj = aa_vars.to_aavf_obj("aavar", os.path.basename(reference),
                                    CONFIDENT)
     records = list(aavf_obj)
 
