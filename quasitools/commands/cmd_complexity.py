@@ -574,7 +574,7 @@ def get_minimum_mutation_frequency(haplotypes, pileup):
     ------
 
     [FLOAT][minimum_mutation_frequency]
-        the minimum mutation frequency.
+        The minimum mutation frequency.
 
     # ========================================================================
     """
