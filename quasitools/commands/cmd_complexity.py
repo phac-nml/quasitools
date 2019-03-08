@@ -49,16 +49,17 @@ def cli(ctx):
 # Subcommand for when a multi-alligned fasta file is provided
 # When the fasta subcommand is called we will obtain complexity
 # report of per-amplicon complexity.
+
+
 @cli.command(
     'fasta', short_help='Calculates various quasispecies complexity ' +
     'measures on a multiple aligned FASTA file.')
 @click.argument('fasta_location', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-o', '--output', type=click.Path(exists=False),
-        help="Output the " +
+              help="Output the " +
               "quasispecies complexity in CSV format to the specified file.")
-
-def fasta(fasta_location,output):
+def fasta(fasta_location, output):
     """
     # ========================================================================
 
@@ -98,8 +99,7 @@ def fasta(fasta_location,output):
     haplotypes = parse_haplotypes_from_fasta(fasta_location)
 
     measurements = measure_complexity(haplotypes)
-    
-    
+
     measurement_to_csv([measurements], output)
 
 
@@ -116,10 +116,8 @@ def fasta(fasta_location,output):
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('k')
 @click.option('-o', '--output', type=click.Path(exists=False),
-        help="Output the " +
+              help="Output the " +
               "quasispecies complexity in CSV format to the specified file.")
-
-
 def bam(reference_location, bam_location, k, output):
     """
     # ========================================================================
@@ -963,7 +961,7 @@ def measurement_to_csv(measurements_list, output):
     """
 
     measurements_col_titles = ["Position"]
-    
+
     # If click option for output file name is given use it as file name.
     if output:
         file_name = click.format_filename(output)
