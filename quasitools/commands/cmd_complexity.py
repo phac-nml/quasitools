@@ -49,14 +49,16 @@ def cli(ctx):
 # Subcommand for when a multi-alligned fasta file is provided
 # When the fasta subcommand is called we will obtain complexity
 # report of per-amplicon complexity.
-
-
 @cli.command(
     'fasta', short_help='Calculates various quasispecies complexity ' +
     'measures on a multiple aligned FASTA file.')
 @click.argument('fasta_location', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-def fasta(fasta_location):
+@click.option('-o', '--output', type=click.Path(exists=False),
+        help="Output the " +
+              "quasispecies complexity in CSV format to the specified file.")
+
+def fasta(fasta_location,output):
     """
     # ========================================================================
 
@@ -96,8 +98,9 @@ def fasta(fasta_location):
     haplotypes = parse_haplotypes_from_fasta(fasta_location)
 
     measurements = measure_complexity(haplotypes)
-
-    measurement_to_csv([measurements])
+    
+    
+    measurement_to_csv([measurements], output)
 
 
 # NGS Data from BAM and its corresponding reference file.
@@ -112,7 +115,12 @@ def fasta(fasta_location):
 @click.argument('bam_location', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('k')
-def bam(reference_location, bam_location, k):
+@click.option('-o', '--output', type=click.Path(exists=False),
+        help="Output the " +
+              "quasispecies complexity in CSV format to the specified file.")
+
+
+def bam(reference_location, bam_location, k, output):
     """
     # ========================================================================
 
@@ -123,6 +131,7 @@ def bam(reference_location, bam_location, k):
     -------
 
     Creates a report of per-reference nucleotide complexity.
+
 
     INPUT
     -----
@@ -142,17 +151,19 @@ def bam(reference_location, bam_location, k):
 
     [NONE]
 
+
     POST
     ----
 
     The complexity computation will be completed and the results will be stored
     in CSV file.
 
+
     # ========================================================================
     """
     k = int(k)
     references = parse_references_from_fasta(reference_location)
-    # A list where each position contains a list of haplotypes of length k,
+    # A list where each position contains a list of haplotypes of length k
     # starting at that position in the reference.
     haplotype_list = parse_haplotypes_from_bam(
         references, reference_location, bam_location, k)
@@ -165,11 +176,11 @@ def bam(reference_location, bam_location, k):
         measurements_list.append(measurements)
 
     # Measurements to CSV:
-    measurement_to_csv(measurements_list)
+    measurement_to_csv(measurements_list, output)
 
 
 def measure_complexity(haplotypes):
-    # Initialize measurments list to length of the measurements name
+    # Initialize measurements list to length of the measurements name
     # dictionary.
     measurements = [constant.UNDEFINED for x in range(
         len(constant.MEASUREMENTS_NAMES))]
@@ -224,16 +235,14 @@ def measure_complexity(haplotypes):
         frequencies, constant.HILL_NUMBER_LENGTH)
 
     '''
-     We iterate through the number of elements in the Hill number list
+     We iterate through the number of elements in the Hill number list,
      at each iteration we place the Hill number at element i into measurements
      at element HILL_NUMBER_0+i
-
-
     '''
     for i in range(len(hill_numbers_list)):
         measurements[constant.HILL_NUMBER_0 + i] = (hill_numbers_list[i])
 
-    # Functional,  Incidence - Entity Level #
+    # Functional Incidence - Entity Level #
 
     measurements[constant.MINIMUM_MUTATION_FREQUENCY] = \
         get_minimum_mutation_frequency(
@@ -249,7 +258,7 @@ def measure_complexity(haplotypes):
         get_sample_nucleotide_diversity_entity(
         distance_matrix, frequencies)
 
-    # Functional, Abundance - Molecular Level #
+    # Functional Abundance - Molecular Level #
 
     measurements[constant.MAXIMUM_MUTATION_FREQUENCY] = \
         get_maximum_mutation_frequency(
@@ -291,7 +300,7 @@ def get_sample_nucleotide_diversity(
         A list of Haplotype objects.
 
     [FLOAT LIST] [frequencies]
-        A list of (relative) frequencies of the Haplotypes.
+        A list of (relative) frequencies of the haplotypes.
 
     [2D ARRAY] [distance_matrix]
         A two dimensional array, representing the distance matrix of distances
@@ -333,6 +342,7 @@ def get_population_nucleotide_diversity(
     -------
     Returns the population nucleotide diversity.
 
+
     INPUT
     -----
     [2D ARRAY] [distance_matrix]
@@ -346,7 +356,7 @@ def get_population_nucleotide_diversity(
     ------
 
     [FLOAT] [pnd]
-        The population nucleotide diversity
+        The population nucleotide diversity.
 
     # ========================================================================
     """
@@ -368,7 +378,6 @@ def get_maximum_mutation_frequency(
     # ========================================================================
 
     GET MAXMIMUM MUTATION FREQUENCY
-
 
     PURPOSE
     -------
@@ -393,11 +402,12 @@ def get_maximum_mutation_frequency(
         This is expected to be calculated in a similar manner as:
             haplotype.build_distiance_matrix(haplotypes)
 
+
     RETURN
     ------
 
     [FLOAT] [maximum_mutation_frequency]
-        The maximum mutation frequency
+        The maximum mutation frequency.
 
     # ========================================================================
     """
@@ -418,7 +428,6 @@ def get_sample_nucleotide_diversity_entity(
 
     GET SAMPLE NUCLEOTIDE DIVERSITY (ENTITY LEVEL)
 
-
     PURPOSE
     -------
 
@@ -429,7 +438,7 @@ def get_sample_nucleotide_diversity_entity(
     -----
 
     [FLOAT LIST] [frequencies]
-        A list of (relative) frequencies of the Haplotypes.
+        A list of (relative) frequencies of the haplotypes.
 
     [2D ARRAY] [distance_matrix]
         A two dimensional array, representing the distance matrix of distances
@@ -443,7 +452,7 @@ def get_sample_nucleotide_diversity_entity(
     ------
 
     [FLOAT] snde
-        sample nucleotide diversity entity
+        sample nucleotide diversity entity.
 
     # ========================================================================
     """
@@ -464,7 +473,6 @@ def get_FAD(distance_matrix):
     # ========================================================================
 
     REPORT FUNCTIONAL ATTRIBUTE DIVERSITY
-
 
     PURPOSE
     -------
@@ -505,7 +513,6 @@ def get_mutation_frequency(distance_matrix):
     # ========================================================================
 
     GET MUTATION FREQUENCY
-
 
     PURPOSE
     -------
@@ -591,7 +598,7 @@ def get_number_of_haplotypes(haplotypes):
     PURPOSE
     -------
 
-    Returns the number of (unique) haplotypes.
+    Returns the number of (unique) Haplotype objects.
 
 
     INPUT
@@ -605,7 +612,7 @@ def get_number_of_haplotypes(haplotypes):
     ------
 
     [INT] [len(haplotypes)]
-        The unique number of haplotypes.
+        The unique number of Haplotype objects.
 
     # ========================================================================
     """
@@ -618,7 +625,6 @@ def get_number_of_polymorphic_sites(pileup):
     # ========================================================================
 
     GET NUMBER OF POLYMORPHIC SITES
-
 
     PURPOSE
     -------
@@ -651,7 +657,6 @@ def get_number_of_mutations(pileup):
 
     GET NUMBER OF MUTATIONS
 
-
     PURPOSE
     -------
 
@@ -682,7 +687,6 @@ def get_shannon_entropy(haplotypes, frequencies):
     # ========================================================================
 
     GET SHANNON ENTROPY
-
 
     PURPOSE
     -------
@@ -720,8 +724,7 @@ def get_shannon_entropy_normalized_to_n(haplotypes, Hs):
     """
     # ========================================================================
 
-    GET SHANNON ENTROPY LOCALIZED TO N
-
+    GET SHANNON ENTROPY NORMALIZED TO N
 
     PURPOSE
     -------
@@ -746,7 +749,6 @@ def get_shannon_entropy_normalized_to_n(haplotypes, Hs):
     [FLOAT] [hsn]
         The Shannon entropy, normalized to the number of clones.
         This is the sum of all counts of each haplotype.
-
 
     # ========================================================================
     """
@@ -812,7 +814,6 @@ def get_simpson_index(frequencies):
 
     GET SIMPSON INDEX
 
-
     PURPOSE
     -------
 
@@ -849,7 +850,6 @@ def get_gini_simpson_index(frequencies):
 
     GET GINI-SIMPSON INDEX
 
-
     PURPOSE
     -------
 
@@ -885,7 +885,6 @@ def get_hill_numbers(frequencies, end, start=0):
 
     GET HILL NUMBERS
 
-
     PURPOSE
     -------
 
@@ -904,6 +903,7 @@ def get_hill_numbers(frequencies, end, start=0):
     [INT] [end]
         An integer value to designate the end position of our
         Hill numbers list.
+
 
     RETURN
     ------
@@ -934,7 +934,7 @@ def get_hill_numbers(frequencies, end, start=0):
     return list_of_hill_numbers
 
 
-def measurement_to_csv(measurements_list):
+def measurement_to_csv(measurements_list, output):
     """
     # ========================================================================
 
@@ -963,7 +963,13 @@ def measurement_to_csv(measurements_list):
     """
 
     measurements_col_titles = ["Position"]
-    file_name = "complexity_outputs.csv"
+    
+    # If click option for output file name is given use it as file name.
+    if output:
+        file_name = click.format_filename(output)
+    # when no option for output file name is given, we will set it to standard
+    else:
+        file_name = "standard_output.csv"
 
     for i in range(len(constant.MEASUREMENTS_NAMES)):
         measurements_col_titles.append(constant.MEASUREMENTS_NAMES[i])
