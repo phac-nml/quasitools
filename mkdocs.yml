@@ -9,9 +9,12 @@ nav:
     - Home: index.md
     - Requirements: requirements.md
     - Installation: installation.md
+    - Data Formats: formats.md
     - Tools:
         - aacoverage: aacoverage.md
-        - call: call.md
+        - call aavr: aavar.md
+        - call codonvar: codonvar.md
+        - call ntvar: ntvar.md
         - complexity: complexity.md
         - consensus: consensus.md
         - distance: distance.md

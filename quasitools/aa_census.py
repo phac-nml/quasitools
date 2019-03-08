@@ -57,11 +57,15 @@ class AACensus(object):
                     for pos in mapped_read.differences:
                         difference = (mapped_read.differences[pos])[:1]
 
-                        # If we have a difference at this position, (the
-                        # difference isn't equal to ".") apply it.
-                        if difference != '.':
+                        # If we are within the region of read that contains
+                        # complete codons and we have a difference at this
+                        # position, (the difference isn't equal to ".") apply
+                        # it.
+                        if pos >= start and pos <= end and difference != '.':
+
                             # If the difference is lower case, that means it
-                            # was filtered out and as such it is unconfident.
+                            # was filtered out during variant calling
+                            # and as such it is unconfident.
                             if difference != difference.upper():
                                 confidence[((pos - start) // 3)] = UNCONFIDENT
 

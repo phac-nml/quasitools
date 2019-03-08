@@ -2,13 +2,15 @@
 
 All notable changes to Quasitools will be documented in this file.
 
-## 0.5.2 ##
+## 0.6.0 ##
 
 ### Changed ###
 
+- Integrated PyAAVF and changed output of mutation report in `hydra` command to produce AAVF file along with `call aavar` to produced AAVF file instead of HMCF file.
 - Made various changes to the documentation to improve clarity.
 - Fixed quasitools distance sometimes crashing because of uneven coverage.
 - Improved the execution time of quasitools distance.
+- Fixed the Hamming distance calculation using integers instead of floats, depending on the Python version.
 
 ## 0.5.1 ##
 
@@ -16,7 +18,7 @@ All notable changes to Quasitools will be documented in this file.
 
 - Use MkDocs for documentation
 
-### Changed ###  
+### Changed ###
 
 - Make VCF dependency optional in aavar and add optional VCF dependency in codonvar
 - Fix hydra consensus output: exclude header line if there are no sequence lines

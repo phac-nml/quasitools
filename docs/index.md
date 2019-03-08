@@ -5,7 +5,9 @@
 Quasitools is a collection of tools for analysing viral quasispecies data. The following tools are currently available in quasitools:
 
 * **[aacoverage](aacoverage.md)**: builds an amino acid consensus and returns its coverage
-* **[call](call.md)**: contains tools for identifying variants between a NGS dataset and a fasta reference sequence
+* **[call aavr](aavar.md)**: call amino acid mutations for a BAM file and a supplied reference file
+* **[call codonvar](codonvar.md)**: call codon variants for a BAM file and a supplied reference file
+* **[call ntvar](ntvar.md)**: call nucleotide variants for a BAM file and a supplied reference file
 * **[complexity](complexity.md)**: reports the complexity of a quasispecies using several measures
 * **[consensus](consensus.md)**: generate a consensus sequence from a BAM file
 * **[distance](distance.md)**: measures the distance between quasispecies using angular cosine distance
@@ -16,9 +18,9 @@ Quasitools is a collection of tools for analysing viral quasispecies data. The f
 
 # Release
 
-__quasitools 0.5.2__
+__quasitools v0.6.0__
 
-This release improves the documentation and fixes a bug in quasitools distance that sometimes caused the software to crash.
+This release improves the documentation, integrates PyAAVF, and fixes a bug in quasitools distance that sometimes caused the software to crash.
 
 # Resources
 
