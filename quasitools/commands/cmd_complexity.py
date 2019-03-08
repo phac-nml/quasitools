@@ -17,7 +17,6 @@ specific language governing permissions and limitations under the License.
 
 __version__ = '0.1.1'
 
-import os
 import click
 import math
 import csv
@@ -38,9 +37,9 @@ from quasitools.parsers.mapped_read_parser import \
 def cli(ctx):
     pass
     ''''
-    Reports the per-amplicon (fasta)  or per-reference-nucleotide
-    complexity (bam and reference) of a quasispecies using
-    several measures outlined in the following work:
+    Reports the per-amplicon (fasta)  or k-mer complexity of the pileup,
+    for each k-mer position in the reference complexity (bam and reference)
+    of a quasispecies using several measures outlined in the following work:
 
     Gregori, Josep, et al. "Viral quasispecies complexity measures."
     Virology 493 (2016): 227-237.
@@ -70,8 +69,8 @@ def fasta(fasta_location, output):
     -------
 
 
-    Creates a report of per-reference nucleotide complexity.
-
+    Creates a report of k-mer complexity of the pileup,
+    for each k-mer position in the reference
 
     INPUT
     -----
@@ -79,6 +78,8 @@ def fasta(fasta_location, output):
     [(FASTA) FILE LOCATION] [fasta_location]
         The file location of an aligned FASTA file for which to calculate the
         complexity measures.
+    [CLICK OUTPUT] [output]
+        A Click object that stores the output file name.
 
 
     RETURN
@@ -105,7 +106,7 @@ def fasta(fasta_location, output):
 
 # NGS Data from BAM and its corresponding reference file.
 # When the bam subcommand is called we will produce a report of
-# per-reference-nucleotide complexity
+# k-mer complexity of the pileup, for each k-mer position in the reference
 @cli.command(
     'bam', short_help="Calculates various quasispecies complexity " +
     "measures on next generation sequenced data from a BAM file " +
@@ -128,7 +129,8 @@ def bam(reference_location, bam_location, k, output):
     PURPOSE
     -------
 
-    Creates a report of per-reference nucleotide complexity.
+    Create a report of  k-mer complexity of the pileup,
+    for each k-mer position in the reference.
 
 
     INPUT
@@ -136,12 +138,13 @@ def bam(reference_location, bam_location, k, output):
 
     [(BAM) FILE LOCATION] [bam_location]
         The file location of a bam file.
-
     [(REFERENCE) FILE LOCATION] [reference_location]
         the file location of the reference file.
     [INT] k
         provides the sequence length for our reads from a given starting
         position.
+    [CLICK OUTPUT] [output]
+        A Click object that stores the output file name.
 
 
     RETURN
@@ -155,7 +158,6 @@ def bam(reference_location, bam_location, k, output):
 
     The complexity computation will be completed and the results will be stored
     in CSV file.
-
 
     # ========================================================================
     """
@@ -235,7 +237,7 @@ def measure_complexity(haplotypes):
     '''
      We iterate through the number of elements in the Hill number list,
      at each iteration we place the Hill number at element i into measurements
-     at element HILL_NUMBER_0+i
+     at element HILL_NUMBER_0+i.
     '''
     for i in range(len(hill_numbers_list)):
         measurements[constant.HILL_NUMBER_0 + i] = (hill_numbers_list[i])
@@ -754,7 +756,7 @@ def get_shannon_entropy_normalized_to_n(haplotypes, Hs):
     N = haplotype.calculate_total_clones(haplotypes)
 
     if float(math.log(N)) != 0:
-        Hsn = float(Hs) / float(math.log(N))  # entropy normalized to N
+        Hsn = float(Hs) / float(math.log(N))  # entropy normalized to N.
     else:
         Hsn = 0
 
@@ -799,7 +801,7 @@ def get_shannon_entropy_normalized_to_h(haplotypes, Hs):
     H = len(haplotypes)
 
     if float(math.log(H)) != 0:
-        Hsh = float(Hs) / float(math.log(H))  # entropy normalized to H
+        Hsh = float(Hs) / float(math.log(H))  # entropy normalized to H.
     else:
         Hsh = 0
 
@@ -965,7 +967,7 @@ def measurement_to_csv(measurements_list, output):
     # If click option for output file name is given use it as file name.
     if output:
         file_name = click.format_filename(output)
-    # when no option for output file name is given, we will set it to standard
+    # when no option for output file name is given, we will set it to standard.
     else:
         file_name = "standard_output.csv"
 
@@ -974,9 +976,7 @@ def measurement_to_csv(measurements_list, output):
 
     with open(file_name, 'w') as complexity_data:
         writer = csv.writer(complexity_data)
-        # if file empty add the column titles (will be first row)
-        if os.stat(file_name).st_size == 0:
-            writer.writerow(measurements_col_titles)
+        writer.writerow(measurements_col_titles)
 
         for position in range(len(measurements_list)):
 
