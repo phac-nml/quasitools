@@ -121,19 +121,19 @@ def sort_haplotypes(haplotypes, consensus):
 
     sorted_haplotypes = []
 
-    # a list of (Haplotype, Hamming distance) tuples
+    # a list of (Haplotype, Hamming distance) tuples.
     tuple_list = []
     for haplotype in haplotypes:
 
         # creates a list of tuples that contains the haplotype and its Hamming
-        # distance
+        # distance.
         tuple_list.append(
             (haplotype,
              calculate.hamming_distance(
                  haplotype.sequence,
                  consensus)))
 
-    # Sort list in ascending order based on the Hamming distance
+    # Sort list in ascending order based on the Hamming distance.
     sorted_list = \
         sorted(tuple_list, key=lambda items: items[1], reverse=False)
 
@@ -197,9 +197,9 @@ def build_pileup_from_haplotypes(haplotypes, gaps=False):
     -----
 
     [HAPLOTYPE LIST] [haplotypes]
-        A list of haplotypes
+        A list of haplotypes.
     [BOOLEAN] [gaps]
-        Indicate whether or not there are gaps in our haplotype sequences
+        Indicate whether or not there are gaps in our haplotype sequences.
 
     RETURN
     ------

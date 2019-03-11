@@ -96,7 +96,7 @@ def parse_haplotypes_from_bam(
         - The aligned BAM file from which we'll
           retrieve our haplotypes.
     [INT] [k]
-        - the length we want our starting position take
+        - The length we want our starting position take
           reads from.
 
     RETURN
@@ -141,7 +141,7 @@ def parse_haplotypes_from_bam_range(
     PURPOSE
     -------
 
-    builds and returns an unsorted list of Haplotype objects
+    Builds and returns an unsorted list of Haplotype objects
     from start to start+k.
 
 
@@ -154,13 +154,13 @@ def parse_haplotypes_from_bam_range(
         - The aligned BAM FILE from which we'll
           retrieve our haplotypes.
     [INT] [start]
-        - the starting 0-based reference postion.
+        - The starting 0-based reference postion.
     [INT] [k]
-        - the length of the haplotypes to generate.
+        - The length of the haplotypes to generate.
     RETURN
     -------
     [LIST] [haplotyess]
-        - unsorted list of Haplotype objects from start to start+k.
+        - Unsorted list of Haplotype objects from start to start+k.
 
     #========================================================================
     """
