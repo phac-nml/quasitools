@@ -232,9 +232,9 @@ class MappedReadCollection(object):
                 insertion = mapped_read.differences[pos][1:]
 
                 if substitution != "." and substitution != "-":
-                    if (substitution.lower() not in variants[rid][pos+1] or
+                    if (substitution.lower() not in variants[rid][pos + 1] or
                             substitution.lower() == "n" or
-                            variants[rid][pos+1][substitution.lower()].filter
+                            variants[rid][pos + 1][substitution.lower()].filter
                             != "PASS"):
                         substitution = substitution.lower()
 

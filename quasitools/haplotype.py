@@ -125,7 +125,7 @@ def sort_haplotypes(haplotypes, consensus):
     tuple_list = []
     for haplotype in haplotypes:
 
-        # creates a list of tuples that contains the haplotype and its hamming
+        # creates a list of tuples that contains the haplotype and its Hamming
         # distance
         tuple_list.append(
             (haplotype,
@@ -190,7 +190,7 @@ def build_pileup_from_haplotypes(haplotypes, gaps=False):
     PURPOSE
     -------
 
-    Creates a pileup from a list of haplotypes.
+    Creates a pileup from a list of Haplotype objects.
 
 
     INPUT
