@@ -67,7 +67,15 @@ class QuasiToolsCLI(click.MultiCommand):
             return
         return mod.cli
 
+# By default click will go to setup.py and scan for
+# the version number and then store it in the variable version.
 
+
+@click.version_option(
+    None,
+    "--ver",
+    "--version",
+    message=('quasitools, version %(version)s'))
 @click.command(cls=QuasiToolsCLI, context_settings=CONTEXT_SETTINGS)
 @click.option('-v', '--verbose', is_flag=True,
               help='Enables verbose mode.')
