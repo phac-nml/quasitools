@@ -19,9 +19,10 @@ from setuptools import find_packages, setup
 
 dependencies = ['biopython', 'click', 'numpy', 'pysam', 'scipy', 'PyAAVF']
 
+
 setup(
     name='quasitools',
-    version='0.6.0',
+    version = "0.6.0",
     url='https://github.com/phac-nml/quasitools.git',
     license='Apache License, Version 2.0',
     author='Eric Enns',
