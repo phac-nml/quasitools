@@ -443,14 +443,14 @@ class Pileup(object):
         # ====================================================================
         """
 
-        consensus = []
+        consensus = ""
 
         for position in self.pileup:
 
             sorted_position = sorted(position, key=position.get, reverse=True)
             base = sorted_position[0]
 
-            consensus.append(base)
+            consensus = consensus + base
 
         return consensus
 

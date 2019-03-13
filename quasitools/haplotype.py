@@ -180,7 +180,7 @@ def build_consensus_from_haplotypes(haplotypes):
     return consensus
 
 
-def build_pileup_from_haplotypes(haplotypes, gaps=False):
+def build_pileup_from_haplotypes(haplotypes):
     """
     # ========================================================================
 
