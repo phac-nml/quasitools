@@ -84,7 +84,7 @@ def parse_haplotypes_from_bam(
     -------
 
     This is the function to call to generate a list of haplotypes of length k,
-    across the reference, when input is BAM files.
+    across the reference, when the input is a BAM file.
 
     INPUT
     -------
@@ -93,17 +93,15 @@ def parse_haplotypes_from_bam(
     [REFERENCE_LOCATION][reference]
         - The location of the reference file.
     [BAM_FILE_LOCATION] [bam_location]
-        - The aligned BAM file from which we'll
-          retrieve our haplotypes.
+        - The aligned BAM file from which we'll retrieve our haplotypes.
     [INT] [k]
-        - The length we want our starting position take
-          reads from.
+        - The length we want our starting position take reads from.
 
     RETURN
     -------
     [LIST of HAPLOTYPES] [haplotypes]
-        An 2D list  containing a list of unsorted haplotypes. For Each
-        position in the reference sequenence until, reference length - k+1.
+        An 2D list containing a list of unsorted haplotypes, for each
+        position in the reference sequenence until, reference length - k + 1.
 
     #========================================================================
     """
@@ -141,8 +139,8 @@ def parse_haplotypes_from_bam_range(
     PURPOSE
     -------
 
-    Builds and returns an unsorted list of Haplotype objects
-    from start to start+k.
+    Builds and returns an unsorted list of Haplotype objects from start to
+    start + k.
 
 
     INPUT
@@ -151,8 +149,7 @@ def parse_haplotypes_from_bam_range(
         - A list of Reference objects associated with the provided BAM
           file location.
     [BAM file location] [bam_location]
-        - The aligned BAM FILE from which we'll
-          retrieve our haplotypes.
+        - The aligned BAM FILE from which we'll retrieve our haplotypes.
     [INT] [start]
         - The starting 0-based reference postion.
     [INT] [k]
@@ -160,7 +157,7 @@ def parse_haplotypes_from_bam_range(
     RETURN
     -------
     [LIST] [haplotyess]
-        - Unsorted list of Haplotype objects from start to start+k.
+        - Unsorted list of Haplotype objects from start to start + k.
 
     #========================================================================
     """
