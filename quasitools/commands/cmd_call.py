@@ -45,6 +45,8 @@ def cli(ctx):
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-e', '--error_rate', default=0.0021,
               help='estimated sequencing error rate.')
+# @click.option('-f', '--filter')
+# @click.option('-i', '--info')
 @click.option('-o', '--output', type=click.File('w'))
 def ntvar(bam, reference, error_rate, output):
     rs = parse_references_from_fasta(reference)
@@ -150,13 +152,28 @@ def aavar(bam, reference, bed4_file, variants, mutation_db,
 
 @cli.command('codonvar', short_help='Identify the number of '
              'non-synonymous and synonymous mutations.')
-@click.argument('bam', required=True, type=click.Path(exists=True,
-                file_okay=True, dir_okay=False))
-@click.argument('reference', required=True, type=click.Path(exists=True,
-                file_okay=True, dir_okay=False))
+@click.argument(
+    'bam',
+    required=True,
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False))
+@click.argument(
+    'reference',
+    required=True,
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False))
 @click.argument('offset', required=True, type=float)
-@click.argument('bed4_file', required=True, type=click.Path(exists=True,
-                file_okay=True, dir_okay=False))
+@click.argument(
+    'bed4_file',
+    required=True,
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False))
 @click.argument('variants', required=False,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.option('-e', '--error_rate', default=0.0021,
