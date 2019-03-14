@@ -31,19 +31,21 @@ from quasitools.parsers.mapped_read_parser import \
     parse_haplotypes_from_bam, \
     parse_haplotypes_from_fasta
 
-# Click not directly involved until we pass the subcommand fasta or bam
+# Here we are setting up a nesting of Click commands. This allows us to run
+# quasitools complexity only when grouped with a subcommand (BAM or FASTA)
 @click.group(invoke_without_command=False)
 @click.pass_context
 def cli(ctx):
-    pass
-    ''''
+    '''
     Reports the per-amplicon (fasta) or k-mer complexity of the pileup,
     for each k-mer position in the reference complexity (bam and reference)
     of a quasispecies using several measures outlined in the following work:
 
     Gregori, Josep, et al. "Viral quasispecies complexity measures."
     Virology 493 (2016): 227-237.
-    '''''
+    '''
+
+    pass
 
 # Subcommand for when a multi-alligned fasta file is provided
 # When the fasta subcommand is called we will obtain complexity
@@ -55,10 +57,19 @@ def cli(ctx):
     'measures on a multiple aligned FASTA file.')
 @click.argument('fasta_location', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.option('-o', '--output', type=click.Path(exists=False),
+@click.option('-o', '--output_location', type=click.Path(exists=False),
               help="Output the " +
               "quasispecies complexity in CSV format to the specified file.")
-def fasta(fasta_location, output):
+def fasta(fasta_location, output_location):
+    '''
+    Reports the per-amplicon (fasta)  or k-mer complexity of the pileup,
+    for each k-mer position in the reference complexity (bam and reference)
+    of a quasispecies using several measures outlined in the following work:
+
+    Gregori, Josep, et al. "Viral quasispecies complexity measures."
+    Virology 493 (2016): 227-237.
+    '''
+
     """
     # ========================================================================
 
@@ -67,7 +78,6 @@ def fasta(fasta_location, output):
 
     PURPOSE
     -------
-
 
     Creates a report of k-mer complexity of the pileup, for each k-mer position
     in the reference.
@@ -78,9 +88,8 @@ def fasta(fasta_location, output):
     [(FASTA) FILE LOCATION] [fasta_location]
         The file location of an aligned FASTA file for which to calculate the
         complexity measures.
-    [CLICK OUTPUT] [output]
-        A Click object that stores the output file name.
-
+    [(OUTPUT) FILE LOCATION] [output_location]
+        The location of the output file.
 
     RETURN
     ------
@@ -101,7 +110,11 @@ def fasta(fasta_location, output):
 
     measurements = measure_complexity(haplotypes)
 
-    measurement_to_csv([measurements], output)
+    # if the output_location is specificed open it as complexit_file, if not
+    # specified, complexity_file is set as sys.stdout.
+    with open(output_location, 'w') if output_location else sys.stdout as \
+            complexity_file:
+        measurement_to_csv([measurements], complexity_file)
 
 
 # NGS Data from BAM and its corresponding reference file.
@@ -116,10 +129,19 @@ def fasta(fasta_location, output):
 @click.argument('bam_location', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('k')
-@click.option('-o', '--output', type=click.Path(exists=False),
+@click.option('-o', '--output_location', type=click.Path(exists=False),
               help="Output the " +
               "quasispecies complexity in CSV format to the specified file.")
-def bam(reference_location, bam_location, k, output):
+def bam(reference_location, bam_location, k, output_location):
+    '''
+    Reports the per-amplicon (fasta)  or k-mer complexity of the pileup,
+    for each k-mer position in the reference complexity (bam and reference)
+    of a quasispecies using several measures outlined in the following work:
+
+    Gregori, Josep, et al. "Viral quasispecies complexity measures."
+    Virology 493 (2016): 227-237.
+    '''
+
     """
     # ========================================================================
 
@@ -142,10 +164,9 @@ def bam(reference_location, bam_location, k, output):
         The file location of the reference file.
     [INT] k
         Provides the sequence length for our reads from a given starting
-        position.
-    [CLICK OUTPUT] [output]
-        A Click object that stores the output file name.
-
+        position.:
+    [(OUTPUT) FILE LOCATION] [output_location]
+        The location of the output file.
 
     RETURN
     ------
@@ -157,7 +178,7 @@ def bam(reference_location, bam_location, k, output):
     ----
 
     The complexity computation will be completed and the results will be stored
-    in CSV file.
+    in CSV file or std.out.
 
     # ========================================================================
     """
@@ -175,8 +196,14 @@ def bam(reference_location, bam_location, k, output):
         measurements = measure_complexity(haplotypes)
         measurements_list.append(measurements)
 
-    # Measurements to CSV:
-    measurement_to_csv(measurements_list, output)
+    # if the output_location is specificed open it as complexit_file, if not
+    # specified, complexity_file is set as sys.stdout.
+    complexity_file = open(output_location,
+                           'w') if output_location else sys.stdout
+    measurement_to_csv(measurements_list, complexity_file)
+
+    if complexity_file is not sys.stdout:
+        complexity_file.close()
 
 
 def measure_complexity(haplotypes):
@@ -188,8 +215,7 @@ def measure_complexity(haplotypes):
     PURPOSE
     -------
 
-    Calculate a number of complexity measurements for haplotypes generated by
-    the bam and fasta subcommands.
+    Calculate a number of complexity measurements for Haplotype objects.
 
 
     INPUT
@@ -203,7 +229,8 @@ def measure_complexity(haplotypes):
     -------
 
     [LIST] [measurements]
-        - A list of complexity measurements.
+        - A list of complexity measurements. List position is specified by
+          constant values defined in constants/complexity_constanty.py
 
     #========================================================================
     """
@@ -336,7 +363,6 @@ def get_sample_nucleotide_diversity(
 
         This is expected to be calculated in a similar manner as:
             haplotype.build_distiance_matrix(haplotypes)
-
 
     RETURN
     ------
@@ -972,7 +998,7 @@ def get_hill_numbers(frequencies, end, start=0):
     return list_of_hill_numbers
 
 
-def measurement_to_csv(measurements_list, output):
+def measurement_to_csv(measurements_list, complexity_file):
     """
     # ========================================================================
 
@@ -991,12 +1017,15 @@ def measurement_to_csv(measurements_list, output):
     [[List]] [measurements_list]
         A two dimensional list that contains a number of complexity
         measurements each position contains haplotypes of length position + k.
-
+    [(OUTPUT) FILE] [complexity_file]
+        The output file.
 
     POST
     ------
         A CSV file that reports a number of complexity measurements for a
-        starting postion to k (BAM) or per amplicon (FASTA).
+        starting postion to k (BAM) or per amplicon (FASTA). Data is written
+        into complexity_file which is either a user defined file or sys.stdout
+        when the file is not specified.
 
     # ========================================================================
     """
@@ -1006,28 +1035,9 @@ def measurement_to_csv(measurements_list, output):
     for i in range(len(constant.MEASUREMENTS_NAMES)):
         measurements_col_titles.append(constant.MEASUREMENTS_NAMES[i])
 
-    # If click option for output file name is given use it as file name.
-    if output:
-        file_name = click.format_filename(output)
+    writer = csv.writer(complexity_file)
+    writer.writerow(measurements_col_titles)
 
-        with open(file_name, 'w') as complexity_data:
-            writer = csv.writer(complexity_data)
-            writer.writerow(measurements_col_titles)
-
-            for position in range(len(measurements_list)):
-
-                measurements = measurements_list[position]
-                writer.writerow([position] + measurements)
-
-        complexity_data.close()
-    # Otherwise write file to stdout
-    else:
-        writer = csv.writer(sys.stdout)
-        writer.writerow(measurements_col_titles)
-
-        for position in range(len(measurements_list)):
-
-            measurements = measurements_list[position]
-            writer.writerow([position] + measurements)
-
-        sys.stdout.close()
+    for position in range(len(measurements_list)):
+        measurements = measurements_list[position]
+        writer.writerow([position] + measurements)
