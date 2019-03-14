@@ -37,7 +37,7 @@ from quasitools.parsers.mapped_read_parser import \
 def cli(ctx):
     pass
     ''''
-    Reports the per-amplicon (fasta)  or k-mer complexity of the pileup,
+    Reports the per-amplicon (fasta) or k-mer complexity of the pileup,
     for each k-mer position in the reference complexity (bam and reference)
     of a quasispecies using several measures outlined in the following work:
 
@@ -69,8 +69,8 @@ def fasta(fasta_location, output):
     -------
 
 
-    Creates a report of k-mer complexity of the pileup,
-    for each k-mer position in the reference.
+    Creates a report of k-mer complexity of the pileup, for each k-mer position
+    in the reference.
 
     INPUT
     -----
@@ -129,8 +129,8 @@ def bam(reference_location, bam_location, k, output):
     PURPOSE
     -------
 
-    Create a report of  k-mer complexity of the pileup,
-    for each k-mer position in the reference.
+    Create a report of  k-mer complexity of the pileup, for each k-mer position
+    in the reference.
 
 
     INPUT
@@ -418,8 +418,8 @@ def get_maximum_mutation_frequency(
     -----
 
     [INT LIST] [counts]
-        A haplotype counts, from the counts of the most
-        abundant to the counts of the least abundant haplotype.
+        A haplotype counts, from the counts of the most abundant to the counts
+        of the least abundant haplotype.
 
     [FLOAT LIST] [frequencies]
         A list of (relative) frequencies of the Haplotypes.
@@ -456,6 +456,7 @@ def get_sample_nucleotide_diversity_entity(
     # ========================================================================
 
     GET SAMPLE NUCLEOTIDE DIVERSITY (ENTITY LEVEL)
+
 
     PURPOSE
     -------
@@ -503,6 +504,7 @@ def get_FAD(distance_matrix):
 
     REPORT FUNCTIONAL ATTRIBUTE DIVERSITY
 
+
     PURPOSE
     -------
 
@@ -542,6 +544,7 @@ def get_mutation_frequency(distance_matrix):
     # ========================================================================
 
     GET MUTATION FREQUENCY
+
 
     PURPOSE
     -------
@@ -655,6 +658,7 @@ def get_number_of_polymorphic_sites(pileup):
 
     GET NUMBER OF POLYMORPHIC SITES
 
+
     PURPOSE
     -------
 
@@ -686,6 +690,7 @@ def get_number_of_mutations(pileup):
 
     GET NUMBER OF MUTATIONS
 
+
     PURPOSE
     -------
 
@@ -716,6 +721,7 @@ def get_shannon_entropy(haplotypes, frequencies):
     # ========================================================================
 
     GET SHANNON ENTROPY
+
 
     PURPOSE
     -------
@@ -754,6 +760,7 @@ def get_shannon_entropy_normalized_to_n(haplotypes, Hs):
     # ========================================================================
 
     GET SHANNON ENTROPY NORMALIZED TO N
+
 
     PURPOSE
     -------
@@ -842,6 +849,7 @@ def get_simpson_index(frequencies):
 
     GET SIMPSON INDEX
 
+
     PURPOSE
     -------
 
@@ -878,6 +886,7 @@ def get_gini_simpson_index(frequencies):
 
     GET GINI-SIMPSON INDEX
 
+
     PURPOSE
     -------
 
@@ -912,6 +921,7 @@ def get_hill_numbers(frequencies, end, start=0):
     # ========================================================================
 
     GET HILL NUMBERS
+
 
     PURPOSE
     -------
@@ -968,6 +978,7 @@ def measurement_to_csv(measurements_list, output):
 
     MEASUREMENTS TO CSV
 
+
     PURPOSE
     -------
 
@@ -979,7 +990,7 @@ def measurement_to_csv(measurements_list, output):
 
     [[List]] [measurements_list]
         A two dimensional list that contains a number of complexity
-        measurements each position contains haplotypes of length position+k.
+        measurements each position contains haplotypes of length position + k.
 
 
     POST
