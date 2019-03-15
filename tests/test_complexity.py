@@ -1,46 +1,46 @@
-import pytest
+"""
+# =============================================================================
+
+Copyright Government of Canada 2019
+
+Written by: Ahmed Kidwai, Public Health Agency of Canada,
+    National Microbiology Laboratory
+
+Funded by the National Micriobiology Laboratory and the Genome Canada / Alberta
+    Innovates Bio Solutions project "Listeria Detection and Surveillance
+    using Next Generation Genomics"
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+
+# =============================================================================
+"""
 import os
-import quasitools.haplotype as haplotype
+import pytest
+import quasitools.commands.cmd_complexity as Complexity
+from click.testing import CliRunner
 
-same_sequence_list = ["AAAAAAA", "AAAAAAA", "AAAAAAA"]
-empty_list = [""]
-uneven_list = ["", "TAG", ""]
 
-    
+class Test_BAM_Complexity:
+    @classmethod
+    def setup(self):
+        self.bam_location = 'tests/data/complexity.bam'
+        self.reference_location =  'tests/data/complexity_reference.fasta'
+   
+    def test_complexity_bam(self):
 
-@pytest.fixture()
-def haplotypes_same_sequence():
+        runner = CliRunner()
+        result = runner.invoke(Complexity.bam, [self.reference_location, self.bam_location, "50", "what_in_the_fuck.csv"])
+        assert result.exit_code == 2
+        #assert result.output == "test"
         
-    haplotypes = []
-    for sequence in same_sequence_list:           
-        haplotypes.append(haplotype.Haplotype(sequence))
 
-    return haplotypes
-
-@pytest.fixture()
-def haplotypes_empty_list():
-
-    haplotypes = []
-    for sequence in empty_list:
-        haplotypes.append(haplotype.Haplotype(sequence))
-    
-    return haplotypes
-
-def test_consensus_same_haplotypes(haplotypes_same_sequence):
-
-    result = haplotype.build_consensus_from_haplotypes(haplotypes_same_sequence)        
-    assert result == "AAAAAAA"
-
-def test_consensus_from_empty_list(haplotypes_empty_list):
-
-    
-    result = haplotype.build_consensus_from_haplotypes(haplotypes_empty_list)
-    assert result == ""
-
-
-
-
-#TODO Get this function running.
-#def end_to_end(bam_location, reference_file):
-    
-    # call the entire program.
+            
