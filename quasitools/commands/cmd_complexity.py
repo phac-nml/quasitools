@@ -124,7 +124,7 @@ def fasta(fasta_location, output_location):
     'bam', short_help="Calculates various quasispecies complexity " +
     "measures on next generation sequenced data from a BAM file " +
     "and it's corresponding reference file.")
-@click.argument('reference_location', nargs=1, required=True,
+@click.argument('reference_location', required=True,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('bam_location', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
@@ -198,12 +198,9 @@ def bam(reference_location, bam_location, k, output_location):
 
     # if the output_location is specificed open it as complexit_file, if not
     # specified, complexity_file is set as sys.stdout.
-    complexity_file = open(output_location,
-                           'w') if output_location else sys.stdout
-    measurement_to_csv(measurements_list, complexity_file)
-
-    if complexity_file is not sys.stdout:
-        complexity_file.close()
+    with open(output_location, 'w') if output_location else sys.stdout as \
+            complexity_file:
+        measurement_to_csv(measurements_list, complexity_file)
 
 
 def measure_complexity(haplotypes):
