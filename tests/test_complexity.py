@@ -22,7 +22,7 @@ specific language governing permissions and limitations under the License.
 
 # =============================================================================
 """
-'''
+
 import os
 import pytest
 import quasitools.commands.cmd_complexity as complexity
@@ -87,14 +87,15 @@ class Test_CONSENSUS:
              if front[i] not in haplotype_list:
                  haplotype_list.append(haplotype.Haplotype(front[i])) 
 
-        expected_consensus = "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC"
+        expected_consensus = "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATAT"+\
+                    "CGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC"
+        
         result = haplotype.build_consensus_from_haplotypes( \
                  haplotype_list)
         assert expected_consensus == result
 
 
     def test_consensus_end(self):
-        
         haplotype_list = []
  
         for i in range(len(back)):
@@ -102,19 +103,20 @@ class Test_CONSENSUS:
              if front[i] not in haplotype_list:
                  haplotype_list.append(haplotype.Haplotype(back[i]))
 
-        expected_consensus =  "AAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCAAGCACTACGGGGTACTACAAGTATACCACGAGCCTACTTACCTCCAAA"
+        expected_consensus =  "AAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCG"+\
+                    "AAGTCCAAGCACTACGGGGTACTACAAGTATACCACGAGCCTACTTACCTCCAAA"
         result = haplotype.build_consensus_from_haplotypes( \
                  haplotype_list)
         assert expected_consensus == result
 
       
-# Test  to see if bam subcommand runs.
+# Test to see if bam subcommand runs.
 # NOTE : will not produce an output file.
 class Test_BAM_Complexity:
     @classmethod
     def setup(self):
         self.bam_location = TEST_PATH + '/data/complexity.bam'
-        self.reference_location =  TEST_PATH + '/data/reference.fasta'
+        self.reference_location =  TEST_PATH + '/data/complexity_reference.fasta'
         self.output_location =  TEST_PATH + '/data/output.csv'
 
     def test_complexity_bam(self):
@@ -130,7 +132,7 @@ class Test_BAM_Complexity:
         # the bam method in complexity has no print message.
         assert result.output == ""
 
-# Test  to see if fasta subcommand runs.
+# Test to see if fasta subcommand runs.
 # NOTE : will not produce an output file.
 class Test_FASTA_Complexity:
     @classmethod
@@ -150,8 +152,18 @@ class Test_FASTA_Complexity:
         # the bam method in complexity has no print message.
         assert result.output == ""
 
-'''
-
-def test_complexity():
+# Test each measurment
+class TEST_MEASUREMENTS():
     
-    assert True
+    @classmethod
+    def setup(self):
+        self.consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATAT"+\
+                    "CGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC"
+        # Distance matrix tested in test_distance so we can assume it works
+        #self.distance_matrix = 
+        self.haplotypes.extend([haplotype.Haplotype(sequence) for sequence in front])
+
+    def test_ready(self):
+
+        assert True
+
