@@ -77,7 +77,7 @@ TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 # Test Consensus made by two expected haplotype lists.
-class Test_CONSENSUS:
+class Test_consensus:
     
     def test_consensus_start(self):
         
@@ -154,7 +154,7 @@ class Test_FASTA_Complexity:
         assert result.output == ""
 
 # Test each measurment
-class Test_MEASUREMENTS():
+class Test_Measurements():
     
     @classmethod
     def setup(self):
@@ -162,7 +162,6 @@ class Test_MEASUREMENTS():
                     "CGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC"
         self.haplotypes = []
         self.haplotypes.extend([haplotype.Haplotype(sequence) for sequence in front])
-
 
         self.sorted_hap = haplotype.sort_haplotypes(self.haplotypes, self.consensus)
         
