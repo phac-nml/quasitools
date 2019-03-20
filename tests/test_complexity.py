@@ -77,7 +77,7 @@ TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 # Test Consensus made by two expected haplotype lists.
-class Test_consensus:
+class Test_Consensus:
     
     def test_consensus_start(self):
         
