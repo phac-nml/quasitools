@@ -24,6 +24,6 @@ tests:3.6:
     - tox -r -e py36
 flake8:
   before_script:
-    - pip install tox --exists-action w
+    - pip install tox
   script:
     - tox -e flake8
