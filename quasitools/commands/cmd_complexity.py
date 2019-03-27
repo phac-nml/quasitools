@@ -21,7 +21,7 @@ import click
 import math
 import csv
 import sys
-
+ 
 
 import quasitools.calculate as calculate
 import quasitools.haplotype as haplotype
@@ -30,6 +30,11 @@ from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import \
     parse_haplotypes_from_bam, \
     parse_haplotypes_from_fasta
+
+from multiprocessing import Pool, Array, Process
+
+
+
 
 # Here we are setting up a nesting of Click commands. This allows us to run
 # quasitools complexity only when grouped with a subcommand (BAM or FASTA)
@@ -186,22 +191,27 @@ def bam(reference_location, bam_location, k, output_location):
     references = parse_references_from_fasta(reference_location)
     # A list where each position contains a list of haplotypes of length k
     # starting at that position in the reference.
+
+
     haplotype_list = parse_haplotypes_from_bam(
-        references, reference_location, bam_location, k)
+        references, reference_location, bam_location, k) 
 
     measurements_list = []
 
-    for i in range((len(haplotype_list) - k + 1)):
-        haplotypes = haplotype_list[i]
+    for i in range((len(haplotype_list)) - k + 1):
+
+        haplotypes = haplotype_list[i]      
+        for hap in haplotypes:
+            print(hap.sequence)
         measurements = measure_complexity(haplotypes)
         measurements_list.append(measurements)
-
+        print("")
+   
     # if the output_location is specificed open it as complexit_file, if not
     # specified, complexity_file is set as sys.stdout.
     with open(output_location, 'w') if output_location else sys.stdout as \
             complexity_file:
         measurement_to_csv(measurements_list, complexity_file)
-
 
 def measure_complexity(haplotypes):
     """"
@@ -231,7 +241,7 @@ def measure_complexity(haplotypes):
 
     #========================================================================
     """
-
+    
     # Initialize measurements list to length of the measurements name
     # dictionary.
     measurements = [constant.UNDEFINED for x in range(

@@ -112,7 +112,7 @@ def parse_haplotypes_from_bam(
     for reference in references:
 
         length = len(reference.seq)
-        for i in range(0, length - k + 1):
+        for i in range(0, 25):     
 
             haplotype_list = (
                 parse_haplotypes_from_bam_range(
@@ -120,9 +120,9 @@ def parse_haplotypes_from_bam(
                     reference,
                     bam_location,
                     i, k))
-
+            
             haplotypes.append(haplotype_list)
-
+            
     return haplotypes
 
 
@@ -168,7 +168,7 @@ def parse_haplotypes_from_bam_range(
 
     for read in reads:
 
-        read_sequence = read.get_forward_sequence()
+        read_sequence = read.query_alignment_sequence
         haplotype_start = start - read.reference_start
         haplotype_end = haplotype_start + k
 
@@ -176,13 +176,13 @@ def parse_haplotypes_from_bam_range(
         if read.get_overlap(start, start + k) == k:
 
             sequence = str(read_sequence[haplotype_start: haplotype_end])
-
-            if sequence in haplotypes:
-                haplotype = haplotypes.get(sequence)
-                haplotype.count += 1
-            else:
-
-                haplotypes[sequence] = Haplotype(sequence)
+            if len(sequence) == k:
+                if sequence in haplotypes:
+                    haplotype = haplotypes.get(sequence)
+                    haplotype.count += 1
+                
+                else:
+                    haplotypes[sequence] = Haplotype(sequence)
 
     haplotypes_list = list(haplotypes.values())
 
