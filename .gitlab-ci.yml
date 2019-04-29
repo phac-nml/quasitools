@@ -6,20 +6,17 @@ before_script:
   - export PATH="~/miniconda3/bin:$PATH"
   - hash -r
   - conda config --add channels bioconda
+  - conda config --add channels conda-forge
   - conda config --set always_yes yes --set changeps1 no
 
 tests:2.7:
   script:
-    - conda create -q -n test-environment python=2.7 samtools=1.3 bowtie2 virtualenv openssl=1.0.2p=h14c3975_0
-    - conda install -c conda-forge tox
-    - chmod +x /root/miniconda3/bin/tox
+    - conda create -q -n test-environment python=2.7 samtools=1.3 bowtie2 virtualenv openssl=1.0.2p=h14c3975_0 tox
     - source activate test-environment
     - tox -r -e py27
 tests:3.6:
   script:
-    - conda create -q -n test-environment python=3.6 samtools=1.3 bowtie2 virtualenv openssl=1.0.2p=h14c3975_0
-    - conda install -c conda-forge tox
-    - chmod +x /root/miniconda3/bin/tox
+    - conda create -q -n test-environment python=3.6 samtools=1.3 bowtie2 virtualenv openssl=1.0.2p=h14c3975_0 tox
     - source activate test-environment
     - tox -r -e py36
 flake8:
