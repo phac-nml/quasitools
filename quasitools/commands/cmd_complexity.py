@@ -191,7 +191,8 @@ def bam(reference_location, bam_location, k, output_location):
 
     measurements_list = []
 
-    for i in range((len(haplotype_list) - k + 1)):
+    for i in range(len(haplotype_list)):
+
         haplotypes = haplotype_list[i]
         measurements = measure_complexity(haplotypes)
         measurements_list.append(measurements)
@@ -234,6 +235,7 @@ def measure_complexity(haplotypes):
 
     # Initialize measurements list to length of the measurements name
     # dictionary.
+
     measurements = [constant.UNDEFINED for x in range(
         len(constant.MEASUREMENTS_NAMES))]
 
@@ -256,6 +258,9 @@ def measure_complexity(haplotypes):
 
     measurements[constant.NUMBER_OF_HAPLOTYPES] = \
         get_number_of_haplotypes(sorted_haplotypes)
+
+    measurements[constant.HAPLOTYPE_POPULATION] = \
+        get_haplotype_population(counts)
 
     measurements[constant.NUMBER_OF_POLYMORPHIC_SITES] = \
         get_number_of_polymorphic_sites(pileup)
@@ -327,6 +332,40 @@ def measure_complexity(haplotypes):
         distance_matrix, frequencies, sorted_haplotypes)
 
     return measurements
+
+
+def get_haplotype_population(counts):
+    """
+    # ========================================================================
+
+    GET HAPLOTYPE POPULATION
+
+
+    PURPOSE
+    -------
+
+    Returns the population of haplotypes.
+
+
+    INPUT
+    -----
+
+    [INT LIST] [counts]
+        A haplotype counts, from the counts of the most abundant to the counts
+        of the least abundant haplotype.
+
+
+    RETURN
+    ------
+
+    [INT]
+        The haplotype population which is defined as the number of
+        unique haplotypes.
+
+    # ========================================================================
+    """
+
+    return sum(counts)
 
 
 def get_sample_nucleotide_diversity(
