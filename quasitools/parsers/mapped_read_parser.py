@@ -75,7 +75,7 @@ def parse_haplotypes_from_bam(
         bam_location,
         k):
     """""
-    # ========================================================================
+    #========================================================================
 
     PARSE HAPLOTYPES FROM BAM
 
@@ -102,7 +102,7 @@ def parse_haplotypes_from_bam(
         An 2D list containing a list of unsorted haplotypes, for each
         position in the reference sequenence until, reference length - k + 1.
 
-    # ========================================================================
+    #========================================================================
     """
 
     haplotypes = []
@@ -131,7 +131,7 @@ def parse_haplotypes_from_bam_range(
         start,
         k):
     """""
-    # ========================================================================
+    #========================================================================
     PARSE HAPLOTYPES FROM BAM
 
     PURPOSE
@@ -157,7 +157,7 @@ def parse_haplotypes_from_bam_range(
     [LIST] [haplotyess]
         - Unsorted list of Haplotype objects from start to start + k.
 
-    # ========================================================================
+    #========================================================================
     """
 
     haplotypes = {}
@@ -173,8 +173,7 @@ def parse_haplotypes_from_bam_range(
         read_sequence = read.query_alignment_sequence
 
         haplotype_start = get_index_in_list(positional_array, start)
-        haplotype_end = get_index_in_list(
-                positional_array, start + k - 1) + 1
+        haplotype_end = get_index_in_list(positional_array, start + k - 1) + 1
 
         # check if read maps to the reference.
         if haplotype_start < 0 or haplotype_end < 0:
@@ -188,7 +187,7 @@ def parse_haplotypes_from_bam_range(
 
         # checks for inserts
         if not is_consecutive_list(
-                    positional_array[haplotype_start:haplotype_end]):
+                positional_array[haplotype_start:haplotype_end]):
             continue
 
         # Checking the read covers the entire region:

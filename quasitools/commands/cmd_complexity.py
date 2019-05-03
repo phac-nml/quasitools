@@ -186,7 +186,6 @@ def bam(reference_location, bam_location, k, output_location):
     references = parse_references_from_fasta(reference_location)
     # A list where each position contains a list of haplotypes of length k
     # starting at that position in the reference.
-
     haplotype_list = parse_haplotypes_from_bam(
         references, reference_location, bam_location, k)
 
@@ -197,7 +196,6 @@ def bam(reference_location, bam_location, k, output_location):
         haplotypes = haplotype_list[i]
         measurements = measure_complexity(haplotypes)
         measurements_list.append(measurements)
-        print("")
 
     # if the output_location is specificed open it as complexit_file, if not
     # specified, complexity_file is set as sys.stdout.
