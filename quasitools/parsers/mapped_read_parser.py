@@ -26,8 +26,7 @@ from quasitools.utilities import sam_alignment_to_padded_alignment, \
     pairwise_alignment_to_differences
 from quasitools.mapped_read import MappedRead, MappedReadCollection
 from quasitools.pileup import Pileup, Pileup_List
-# TODO Ensure I can remove the import of sort_haplotypes.
-from quasitools.haplotype import Haplotype  # sort_haplotypes
+from quasitools.haplotype import Haplotype
 
 
 REVERSE_COMPLEMENTED = 16
@@ -76,7 +75,7 @@ def parse_haplotypes_from_bam(
         bam_location,
         k):
     """""
-    #========================================================================
+    # ========================================================================
 
     PARSE HAPLOTYPES FROM BAM
 
@@ -103,7 +102,7 @@ def parse_haplotypes_from_bam(
         An 2D list containing a list of unsorted haplotypes, for each
         position in the reference sequenence until, reference length - k + 1.
 
-    #========================================================================
+    # ========================================================================
     """
 
     haplotypes = []
@@ -112,17 +111,16 @@ def parse_haplotypes_from_bam(
     for reference in references:
 
         length = len(reference.seq)
-        for i in range(0, 25):     
-
+        for i in range(0, length - k + 1):
             haplotype_list = (
                 parse_haplotypes_from_bam_range(
                     samfile,
                     reference,
                     bam_location,
                     i, k))
-            
+
             haplotypes.append(haplotype_list)
-            
+
     return haplotypes
 
 
@@ -133,7 +131,7 @@ def parse_haplotypes_from_bam_range(
         start,
         k):
     """""
-    #========================================================================
+    # ========================================================================
     PARSE HAPLOTYPES FROM BAM
 
     PURPOSE
@@ -159,7 +157,7 @@ def parse_haplotypes_from_bam_range(
     [LIST] [haplotyess]
         - Unsorted list of Haplotype objects from start to start + k.
 
-    #========================================================================
+    # ========================================================================
     """
 
     haplotypes = {}
@@ -168,25 +166,221 @@ def parse_haplotypes_from_bam_range(
 
     for read in reads:
 
+        positional_array = create_positional_array(read.cigartuples)
+
+        # Shift the positional array to align with the reference:
+        positional_array = [x + read.reference_start for x in positional_array]
         read_sequence = read.query_alignment_sequence
-        haplotype_start = start - read.reference_start
-        haplotype_end = haplotype_start + k
+
+        haplotype_start = get_index_in_list(positional_array, start)
+        haplotype_end = get_index_in_list(
+                positional_array, start + k - 1) + 1
+
+        # check if read maps to the reference.
+        if haplotype_start < 0 or haplotype_end < 0:
+
+            continue
+
+        # Checks for deletions.
+        if haplotype_end - haplotype_start != k:
+
+            continue
+
+        # checks for inserts
+        if not is_consecutive_list(
+                    positional_array[haplotype_start:haplotype_end]):
+            continue
 
         # Checking the read covers the entire region:
         if read.get_overlap(start, start + k) == k:
 
             sequence = str(read_sequence[haplotype_start: haplotype_end])
-            if len(sequence) == k:
-                if sequence in haplotypes:
-                    haplotype = haplotypes.get(sequence)
-                    haplotype.count += 1
-                
-                else:
-                    haplotypes[sequence] = Haplotype(sequence)
+            if sequence in haplotypes:
+                haplotype = haplotypes.get(sequence)
+                haplotype.count += 1
+            else:
+                haplotypes[sequence] = Haplotype(sequence)
 
     haplotypes_list = list(haplotypes.values())
 
     return haplotypes_list
+
+
+def is_consecutive_list(list_of_integers):
+    """
+    # ========================================================================
+
+    IS CONSECUTIVE LIST
+
+
+    PURPOSE
+    -------
+
+    Reports if elments in a list increase in a consecutive order.
+
+
+    INPUT
+    -----
+
+    [[List]] [list_of_integers]
+        - A list of integers.
+
+    Return
+    ------
+    [BOOLEAN]
+        - Returns true is a list is consecutive or false if the same
+          number appears consecutively.
+
+    # ========================================================================
+    """
+
+    for i in range(1, len(list_of_integers)):
+        if list_of_integers[i] - list_of_integers[i - 1] != 1:
+            return False
+
+    return True
+
+
+def get_index_in_list(list_of_integers, value):
+    """
+    # ========================================================================
+
+    GET INDEX IN LIST
+
+
+    PURPOSE
+    -------
+
+    Checks if a list contains a specific value.
+
+    INPUT
+    -----
+
+    [[List]] [list_of_integers]
+       - A list of integers.
+    [(INT) VALUE] [value]
+       - The value we we are searching for in the list of integers.
+
+    POST
+    ------
+    [[INDEX] [INT]]:
+        - If the value is found in list of integers we return the index,
+          otherwise return -1.
+
+
+    # ========================================================================
+    """
+
+    try:
+        return list_of_integers.index(value)
+
+    except ValueError:
+        return -1
+
+
+def create_positional_array(cigar_tuples):
+    """
+    # ========================================================================
+
+    CREATE POSITIONAL ARRAY
+
+
+    PURPOSE
+    -------
+
+    Create a positional array that maps positions in a
+    CIGAR tuple to a list.
+
+    Ex. CIGAR tuple is: [(0, 4), (2, 1) (1, 2)]
+
+        Positional Array is Initialized to Empty.
+        position (an int) starts at 0.
+
+        We look at each item in the CIGAR tuple where
+        the first item is the operation (ex. match, delete, insert)
+        and the second item is number of bases involved in the operation.
+
+        The returned array maps positions the read (as a list indicies)
+        to relative positions in the reference. This returned list of
+        relative positions starts at 0.
+
+
+        If we have a match we append the current reletive position
+        of the reference to the positional array (which represents
+        positions in the read) and then we will increase the relative
+        position in the reference. This process is repeated for the
+        length of the match.
+
+        If the operation is a insertion we appending the positional array
+        with the left anchored relative position of the insert in
+        the reference. This proccess is repeated for the length of the insert.
+        This means the same relative position is appended multiple times.
+
+        If the operation is a deletion we will increase the relative position
+        in the reference by the length of the operation.
+        This means no value gets appended to the positional array.
+
+        So for the CIGAR tuple list above we would get a positional
+        array that looks as follows:
+
+        1. Looking at first tuple in the list:
+            The tuple's operation is 0 (i.e a match).
+            positional_array = [0, 1, 2, 3]
+            position: 4
+
+        2. Looking at second tuple in the list:
+            The tuple's operation is 2 (i.e a delete)
+            positional_array: [0, 1, 2, 3] (didn't change)
+            position: 5
+
+        3. Looking at the third tuple in the list:
+            The tuple's operation is 1 (i.e an insert)
+            positional_array = [0, 1, 2, 3, 4,4]
+            position: 5
+
+    INPUT
+    -----
+
+    [[CIGAR] TUPLE] [cigar_tuples]
+       - A list containing the CIGAR tuples. (operation, length).
+
+    Return
+    ------
+    [[LIST] [INT]]
+        - A positional array that maps CIGAR tuples to the read.
+
+    # ========================================================================
+    """
+
+    positional_array = []
+    OPERATION = 0
+    LENGTH = 1
+    position = 0  # 0-based
+
+    MATCH = 0
+    INSERT = 1
+    DELETE = 2
+
+    for tup in cigar_tuples:
+
+        if tup[OPERATION] == MATCH:
+
+            for i in range(tup[LENGTH]):
+
+                positional_array.append(position)  # consume read
+                position = position + 1  # consume reference
+
+        if tup[OPERATION] == INSERT:
+
+            for i in range(tup[LENGTH]):
+
+                positional_array.append(position - 1)  # consume read
+
+        if tup[OPERATION] == DELETE:
+
+            position += tup[LENGTH]  # consume reference
+
+    return positional_array
 
 
 def parse_pileup_from_bam(references, bam_location):

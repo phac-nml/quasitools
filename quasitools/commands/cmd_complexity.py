@@ -21,7 +21,7 @@ import click
 import math
 import csv
 import sys
- 
+
 
 import quasitools.calculate as calculate
 import quasitools.haplotype as haplotype
@@ -30,11 +30,6 @@ from quasitools.parsers.reference_parser import parse_references_from_fasta
 from quasitools.parsers.mapped_read_parser import \
     parse_haplotypes_from_bam, \
     parse_haplotypes_from_fasta
-
-from multiprocessing import Pool, Array, Process
-
-
-
 
 # Here we are setting up a nesting of Click commands. This allows us to run
 # quasitools complexity only when grouped with a subcommand (BAM or FASTA)
@@ -192,26 +187,24 @@ def bam(reference_location, bam_location, k, output_location):
     # A list where each position contains a list of haplotypes of length k
     # starting at that position in the reference.
 
-
     haplotype_list = parse_haplotypes_from_bam(
-        references, reference_location, bam_location, k) 
+        references, reference_location, bam_location, k)
 
     measurements_list = []
 
-    for i in range((len(haplotype_list)) - k + 1):
+    for i in range(len(haplotype_list)):
 
-        haplotypes = haplotype_list[i]      
-        for hap in haplotypes:
-            print(hap.sequence)
+        haplotypes = haplotype_list[i]
         measurements = measure_complexity(haplotypes)
         measurements_list.append(measurements)
         print("")
-   
+
     # if the output_location is specificed open it as complexit_file, if not
     # specified, complexity_file is set as sys.stdout.
     with open(output_location, 'w') if output_location else sys.stdout as \
             complexity_file:
         measurement_to_csv(measurements_list, complexity_file)
+
 
 def measure_complexity(haplotypes):
     """"
@@ -241,9 +234,10 @@ def measure_complexity(haplotypes):
 
     #========================================================================
     """
-    
+
     # Initialize measurements list to length of the measurements name
     # dictionary.
+
     measurements = [constant.UNDEFINED for x in range(
         len(constant.MEASUREMENTS_NAMES))]
 
@@ -266,6 +260,9 @@ def measure_complexity(haplotypes):
 
     measurements[constant.NUMBER_OF_HAPLOTYPES] = \
         get_number_of_haplotypes(sorted_haplotypes)
+
+    measurements[constant.HAPLOTYPE_POPULATION] = \
+        get_haplotype_population(counts)
 
     measurements[constant.NUMBER_OF_POLYMORPHIC_SITES] = \
         get_number_of_polymorphic_sites(pileup)
@@ -337,6 +334,40 @@ def measure_complexity(haplotypes):
         distance_matrix, frequencies, sorted_haplotypes)
 
     return measurements
+
+
+def get_haplotype_population(counts):
+    """
+    # ========================================================================
+
+    GET HAPLOTYPE POPULATION
+
+
+    PURPOSE
+    -------
+
+    Returns the population of haplotypes.
+
+
+    INPUT
+    -----
+
+    [INT LIST] [counts]
+        A haplotype counts, from the counts of the most abundant to the counts
+        of the least abundant haplotype.
+
+
+    RETURN
+    ------
+
+    [INT]
+        The haplotype population which is defined as the number of
+        unique haplotypes.
+
+    # ========================================================================
+    """
+
+    return sum(counts)
 
 
 def get_sample_nucleotide_diversity(

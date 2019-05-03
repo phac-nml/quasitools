@@ -21,36 +21,36 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 
 # =============================================================================
-"""
+""" 
 
 import os
 import pytest
 import quasitools.commands.cmd_complexity as complexity
 import quasitools.haplotype as haplotype
+import quasitools.calculate as calculate
 import quasitools.pileup as pileup
 from click.testing import CliRunner
 import click
+import csv
 
-front = ["AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
-          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCC", 
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCGGCATCGCTTCGATA"+
-          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCA",
-         "TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATA"+
-          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCA",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
-          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
-          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCG",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
-          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
-          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
-          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
-          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATA"+
-          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCA"]
+front = ["AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
+         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCGGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA",
+         "TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA",
+         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
+         "TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCG",
+         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
+         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
+         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
+         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
+         "CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA"]
+
+haplotypes_list_front = [
+        haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC", 6),
+        haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCGGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA", 1),
+        haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA", 1),
+        haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCG", 1),
+        haplotype.Haplotype("CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA", 1)
+        ]
 
 back = ["AAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCTAGCACTACGGGGTAC"+
          "TACAAGTATACCACGAGCCTACTTACCTCCAAA",
@@ -88,11 +88,12 @@ class Test_Consensus:
              if front[i] not in haplotype_list:
                  haplotype_list.append(haplotype.Haplotype(front[i])) 
 
-        expected_consensus = "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATAT"+\
-                    "CGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC"
+        expected_consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATAT"+\
+                    "CGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA"
+
         
         result = haplotype.build_consensus_from_haplotypes( \
-                 haplotype_list)
+                 haplotypes_list_front)
         assert expected_consensus == result
 
 
@@ -158,17 +159,128 @@ class Test_Measurements():
     
     @classmethod
     def setup(self):
+        
         self.consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATAT"+\
-                    "CGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC"
-        self.haplotypes = []
-        self.haplotypes.extend([haplotype.Haplotype(sequence) for sequence in front])
+                    "CGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA"
 
-        self.sorted_hap = haplotype.sort_haplotypes(self.haplotypes, self.consensus)
+        self.sorted_hap = haplotype.sort_haplotypes(haplotypes_list_front, self.consensus)
         
         self.pileup = haplotype.build_pileup_from_haplotypes(self.sorted_hap)
+
+        self.frequencies =  haplotype.build_frequencies(self.sorted_hap)
+
+        self.distance_matrix = haplotype.build_distiance_matrix(self.sorted_hap)
+        
+        self.counts = haplotype.build_counts(self.sorted_hap)
 
     def test_number_of_mutations(self):
 
        unique_mutations = self.pileup.count_unique_mutations()
 
        assert unique_mutations == 6
+
+    
+    def test_number_of_polymorphic_sites(self):
+
+        number_of_polymorphic_sites = self.pileup.count_polymorphic_sites()
+
+        assert number_of_polymorphic_sites == 3
+
+    def test_shannon_entropy(self):
+        
+#front = ["AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
+#          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCC", 
+#         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCGGCATCGCTTCGATA"+
+#          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCA",
+#         "TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATA"+
+#          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCA",
+#         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
+#          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
+#         "TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
+#          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCG",
+#         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATA"+
+#          "TTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
+#         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTC
+        shannon_entropy = calculate.shannon_entropy(self.frequencies)
+
+        assert float("{0:.2f}".format(shannon_entropy))== 1.23
+
+    def test_shannon_entropy_normalized_to_n(self):
+
+        Hs = 1.23
+
+        Hsn = complexity.get_shannon_entropy_normalized_to_n(self.sorted_hap, Hs)
+
+        assert float("{0:.2f}".format(Hsn)) == 0.53
+
+    def test_shannon_entropy_normalized_to_h(self):
+
+        Hs = 1.23
+
+        
+        Hsn = complexity.get_shannon_entropy_normalized_to_h(self.sorted_hap, Hs)
+
+        assert float("{0:.2f}".format(Hsn)) == 0.76 
+
+    
+    def test_minimum_muttion_frequency(self):
+
+        minimum_mutation_frequency = complexity.get_minimum_mutation_frequency(self.sorted_hap,self.pileup)
+        
+        assert minimum_mutation_frequency == 0.006
+
+    def test_mutation_frequency(self):
+
+        mutation_frequency = complexity.get_mutation_frequency(self.distance_matrix)
+
+        assert mutation_frequency == 0.02
+
+
+    def test_functional_attribute_diversity(self):
+
+        FAD = complexity.get_FAD(self.distance_matrix)
+        assert float("{0:.2f}".format(FAD)) == 0.46
+
+    def test_sample_nucleotide_diversity_entity(self):
+
+        SND = complexity.get_sample_nucleotide_diversity(self.distance_matrix, self.frequencies, self.sorted_hap)
+
+        assert float("{0:.2f}".format(SND)) == 0.02
+
+    def test_maximum_mutation(self):
+
+        maximum_mutation_frequency =  complexity.get_maximum_mutation_frequency(self.counts, self.distance_matrix, self.frequencies)
+ 
+        assert float("{0:.2f}".format(maximum_mutation_frequency)) == 0.01
+
+    def test_population_nucleotide_diversity(self):
+        
+        PND = complexity.get_population_nucleotide_diversity(self.distance_matrix, self.frequencies)
+
+        assert float("{0:.2f}".format(PND)) == 0.01
+
+    def test_sample_nucleotide_diversity_entity(self):
+
+        snde = complexity.get_sample_nucleotide_diversity_entity(self.distance_matrix, self.frequencies)
+
+        assert float("{0:.2f}".format(snde)) == 0.02
+       
+
+
+class Test_CSV_Building:
+
+
+    @classmethod
+    def setup(self):
+        self.measurements = []
+        self.measurements.append(['0'])
+            
+    def test_measurements_to_csv(self):
+
+            with open('output_location.csv', 'w')  as \
+            complexity_file:
+
+                # Assert nothing because we should return a none type if method runs correctly
+                assert None ==  complexity.measurement_to_csv(self.measurements, complexity_file)
+
+
