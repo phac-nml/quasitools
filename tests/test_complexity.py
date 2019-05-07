@@ -253,9 +253,7 @@ class Test_Measurements():
         assert float("{0:.2f}".format(snde)) == 0.02
        
 
-
 class Test_CSV_Building:
-
 
     @classmethod
     def setup(self):
@@ -266,8 +264,5 @@ class Test_CSV_Building:
 
             with open('output_location.csv', 'w')  as \
             complexity_file:
-
                 # Assert nothing because we should return a none type if method runs correctly
                 assert None ==  complexity.measurement_to_csv(self.measurements, complexity_file)
-
-
