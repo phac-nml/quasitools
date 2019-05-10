@@ -1,3 +1,4 @@
+
 """
 # =============================================================================
 Copyright Government of Canada 2019
@@ -33,45 +34,6 @@ from click.testing import CliRunner
 import click
 import csv
 
-front = ["AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCGGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA",
-         "TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCG",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC",
-         "CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA"]
-
-haplotypes_list_front = [
-        haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCC", 6),
-        haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCGGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA", 1),
-        haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA", 1),
-        haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCG", 1),
-        haplotype.Haplotype("CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATATCGCGCTGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA", 1)
-        ]
-
-back = ["AAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCTAGCACTACGGGGTAC"+
-         "TACAAGTATACCACGAGCCTACTTACCTCCAAA",
-        "AAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCAAGCACTACGGGGTAC"+
-         "TACAAGTATACCACGAGCCTACTTACCTCCAAA",
-        "AAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCAAGCACTACGGGGTAC"+
-         "TACAAGTATACCACGAGCCTACTTACCTCCAAA",
-        "GAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCAAGCACTACGGGGTAC"+
-         "TACAAGTATACCACGAGCCTACTTACCTCCAAA"
-        "AAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCGAGCACTACGGGGTAC"+
-         "TACAAGTATACCACGAGCCTACTTACCTCCAAT",
-        "CAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCGAGCACTACGGGGTAC"+
-         "TACAAGTATACCACGAGCCTACTTACCTCCAAT",
-        "AAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCAAGCACTACGGGGTAC"+
-         "TACAAGTATACCACGAGCCTACTTACCTCCAAA",
-        "CAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCAAGCACTACGGGGTAC"+
-         "TACAAGTATACCACGAGCCTACTTACCTCCAAT",
-        "CAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCAAGCACTACGGGGTAC"+
-         "TACAAGTATACCACGAGCCTACTTACCTCCAAC",
-        "GAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCGAAGTCCTAGCACTACGGGGTAC"+
-         "TACAAGTATACCACGAGCCTACTTACCTCCAAT"]
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -79,36 +41,63 @@ TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 # Test Consensus made by two expected haplotype lists.
 class Test_Consensus:
     
-    def test_consensus_start(self):
+    def test_consensus_simple(self):
         
-        haplotype_list = []
- 
-        for i in range(len(front)):
- 
-             if front[i] not in haplotype_list:
-                 haplotype_list.append(haplotype.Haplotype(front[i])) 
+        haplotypes_list = [
+                haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 6),
+                haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+                haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+                haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+                haplotype.Haplotype("CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1)
+                ]
 
-        expected_consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATAT"+\
-                    "CGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA"
-
-        
+        expected_consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA"
         result = haplotype.build_consensus_from_haplotypes( \
-                 haplotypes_list_front)
+                 haplotypes_list)
+
         assert expected_consensus == result
 
+    def test_consensus_degenerate(self):
+        
+        haplotypes_list = [
+                haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+                haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+                haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+                haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+                haplotype.Haplotype("CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1)
+                ]
 
-    def test_consensus_end(self):
-        haplotype_list = []
- 
-        for i in range(len(back)):
- 
-             if front[i] not in haplotype_list:
-                 haplotype_list.append(haplotype.Haplotype(back[i]))
-
-        expected_consensus =  "AAATGATGGTCGCTCCACTTTCTCTCTAGAACGATCGTTATGTCG"+\
-                    "AAGTCCAAGCACTACGGGGTACTACAAGTATACCACGAGCCTACTTACCTCCAAA"
+        
+        expected_consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA"
         result = haplotype.build_consensus_from_haplotypes( \
-                 haplotype_list)
+                 haplotypes_list)
+
+        assert expected_consensus == result
+
+    def test_consensus_tie(self):
+        
+        haplotypes_list = [
+                haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 6),
+                haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+                haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+                haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+                haplotype.Haplotype("CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 6)
+                ]
+        expected_consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA"        
+        result = haplotype.build_consensus_from_haplotypes( \
+                 haplotypes_list)
+
+        assert expected_consensus == result
+
+    def test_consensus_missing(self):
+        
+        haplotypes_list = []
+
+        result = haplotype.build_consensus_from_haplotypes( \
+                 haplotypes_list)
+
+        expected_consensus = "" 
+
         assert expected_consensus == result
 
       
@@ -119,20 +108,23 @@ class Test_BAM_Complexity:
     def setup(self):
         self.bam_location = TEST_PATH + '/data/complexity.bam'
         self.reference_location =  TEST_PATH + '/data/complexity_reference.fasta'
-        self.output_location =  TEST_PATH + '/data/output.csv'
+        self.output_location_bam =  TEST_PATH + '/data/output_bam.csv'
 
     def test_complexity_bam(self):
         
         runner = CliRunner()
         result = runner.invoke(complexity.bam, [self.reference_location,\
                 self.bam_location, "1",'--output_location', \
-                self.output_location])
+                self.output_location_bam])
         
         # If method ran successfully the exit code is 0.
         assert result.exit_code == 0
         # output checks for print messages at the end of method.
         # the bam method in complexity has no print message.
         assert result.output == ""
+
+        # Check if output file is created
+        assert os.path.exists(TEST_PATH + '/data/output_bam.csv') == True
 
 # Test to see if fasta subcommand runs.
 # NOTE : will not produce an output file.
@@ -140,13 +132,13 @@ class Test_FASTA_Complexity:
     @classmethod
     def setup(self):
         self.fasta_location = TEST_PATH + '/data/complexity.fasta'
-        self.output_location =  TEST_PATH + '/data/output.csv'
+        self.output_location_fasta =  TEST_PATH + '/data/output_fasta.csv'
 
 
     def test_complexity_fasta(self):
         
         runner = CliRunner()
-        result = runner.invoke(complexity.fasta, [self.fasta_location, "--output_location", self.output_location], catch_exceptions=False)
+        result = runner.invoke(complexity.fasta, [self.fasta_location, "--output_location", self.output_location_fasta], catch_exceptions=False)
         
         # If method ran successfully the exit code is 0.
         assert result.exit_code == 0
@@ -154,16 +146,27 @@ class Test_FASTA_Complexity:
         # the bam method in complexity has no print message.
         assert result.output == ""
 
+        # Check if output file is created
+        assert os.path.exists(TEST_PATH + '/data/output_fasta.csv') == True
+
 # Test each measurment
 class Test_Measurements():
     
     @classmethod
     def setup(self):
         
-        self.consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTATAT"+\
-                    "CGCGCAGCATCGCTTCGATATTTTGCTCCTACGCATCCACACGTTGAAAGGGCA"
+        self.consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA"
 
-        self.sorted_hap = haplotype.sort_haplotypes(haplotypes_list_front, self.consensus)
+
+        self.haplotypes_list = [
+            haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 6),
+            haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+            haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+            haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
+            haplotype.Haplotype("CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1)
+            ]
+
+        self.sorted_hap = haplotype.sort_haplotypes(self.haplotypes_list, self.consensus)
         
         self.pileup = haplotype.build_pileup_from_haplotypes(self.sorted_hap)
 
@@ -177,14 +180,14 @@ class Test_Measurements():
 
        unique_mutations = self.pileup.count_unique_mutations()
 
-       assert unique_mutations == 6
+       assert unique_mutations == 2
 
     
     def test_number_of_polymorphic_sites(self):
 
         number_of_polymorphic_sites = self.pileup.count_polymorphic_sites()
 
-        assert number_of_polymorphic_sites == 3
+        assert number_of_polymorphic_sites == 1
 
     def test_shannon_entropy(self):
         
@@ -203,7 +206,6 @@ class Test_Measurements():
     def test_shannon_entropy_normalized_to_h(self):
 
         Hs = 1.23
-
         
         Hsn = complexity.get_shannon_entropy_normalized_to_h(self.sorted_hap, Hs)
 
@@ -214,19 +216,17 @@ class Test_Measurements():
 
         minimum_mutation_frequency = complexity.get_minimum_mutation_frequency(self.sorted_hap,self.pileup)
         
-        assert minimum_mutation_frequency == 0.006
+        assert float("{0:.3f}".format(minimum_mutation_frequency)) == 0.005
 
     def test_mutation_frequency(self):
 
         mutation_frequency = complexity.get_mutation_frequency(self.distance_matrix)
-
-        assert mutation_frequency == 0.02
-
+        assert float("{0:.2f}".format(mutation_frequency)) == 0.01
 
     def test_functional_attribute_diversity(self):
 
         FAD = complexity.get_FAD(self.distance_matrix)
-        assert float("{0:.2f}".format(FAD)) == 0.46
+        assert float("{0:.2f}".format(FAD)) == 0.37
 
     def test_sample_nucleotide_diversity_entity(self):
 
@@ -262,7 +262,10 @@ class Test_CSV_Building:
             
     def test_measurements_to_csv(self):
 
-            with open('output_location.csv', 'w')  as \
+            file_directory = TEST_PATH + '/data/output_built_csv.csv'
+
+            with open(file_directory, 'w')  as \
             complexity_file:
-                # Assert nothing because we should return a none type if method runs correctly
-                assert None ==  complexity.measurement_to_csv(self.measurements, complexity_file)
+                complexity.measurement_to_csv(self.measurements, complexity_file)
+
+            assert os.path.exists(file_directory) == True
