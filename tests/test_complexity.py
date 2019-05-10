@@ -133,11 +133,11 @@ class Test_BAM_Complexity:
             csv_row = line.split(',')
         
         # Check if last row has these values for each column
-        assert csv_row[0].strip('\r\n')  == '199'
-        assert csv_row[1].strip('\r\n')  == '3'
-        assert csv_row[2].strip('\r\n')  == '10'
-        assert csv_row[3].strip('\r\n')  == '1'
-        assert csv_row[4].strip('\r\n')  == '2'
+        assert csv_row[0].strip()  == '199'
+        assert csv_row[1].strip()  == '3'
+        assert csv_row[2].strip()  == '10'
+        assert csv_row[3].strip()  == '1'
+        assert csv_row[4].strip()  == '2'
 
 # Test to see if fasta subcommand runs.
 class Test_FASTA_Complexity:
@@ -167,11 +167,11 @@ class Test_FASTA_Complexity:
             csv_row = line.split(',')
 
         # Check if last row has these values for each column
-        assert csv_row[0].strip('\r\n')  == '0'
-        assert csv_row[1].strip('\r\n')  == '2'
-        assert csv_row[2].strip('\r\n')  == '2'
-        assert csv_row[3].strip('\r\n')  == '7'
-        assert csv_row[4].strip('\r\n')  == '7'
+        assert csv_row[0].strip()  == '0'
+        assert csv_row[1].strip()  == '2'
+        assert csv_row[2].strip()  == '2'
+        assert csv_row[3].strip()  == '7'
+        assert csv_row[4].strip()  == '7'
 
 
 # Test each measurment
@@ -300,12 +300,12 @@ class Test_CSV_Building:
                 csv_row = line.split(',')
 
             # Check if last row has these values for each column
-            assert csv_row[0].strip('\r\n') == '0'
-            assert csv_row[1].strip('\r\n') == '1'
-            assert csv_row[2].strip('\r\n') == '2'
-            assert csv_row[3].strip('\r\n') == '3'
-            assert csv_row[4].strip('\r\n') == '4'
-            assert csv_row[5].strip('\r\n') == '5'
+            assert csv_row[0].strip() == '0'
+            assert csv_row[1].strip() == '1'
+            assert csv_row[2].strip() == '2'
+            assert csv_row[3].strip() == '3'
+            assert csv_row[4].strip() == '4'
+            assert csv_row[5].strip() == '5'
 
 
 
