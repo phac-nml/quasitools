@@ -66,7 +66,6 @@ class Test_Consensus:
                 haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
                 haplotype.Haplotype("CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1)
                 ]
-
         
         expected_consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA"
         result = haplotype.build_consensus_from_haplotypes( \
@@ -83,6 +82,7 @@ class Test_Consensus:
                 haplotype.Haplotype("TAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 1),
                 haplotype.Haplotype("CAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 6)
                 ]
+
         expected_consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA"        
         result = haplotype.build_consensus_from_haplotypes( \
                  haplotypes_list)
@@ -133,11 +133,11 @@ class Test_BAM_Complexity:
             csv_row = line.split(',')
         
         # Check if last row has these values for each column
-        assert csv_row[0] == '199'
-        assert csv_row[1] == '3'
-        assert csv_row[2] == '10'
-        assert csv_row[3] == '1'
-        assert csv_row[4] == '2'
+        assert csv_row[0].strip('\r\n')  == '199'
+        assert csv_row[1].strip('\r\n')  == '3'
+        assert csv_row[2].strip('\r\n')  == '10'
+        assert csv_row[3].strip('\r\n')  == '1'
+        assert csv_row[4].strip('\r\n')  == '2'
 
 # Test to see if fasta subcommand runs.
 class Test_FASTA_Complexity:
@@ -167,11 +167,11 @@ class Test_FASTA_Complexity:
             csv_row = line.split(',')
 
         # Check if last row has these values for each column
-        assert csv_row[0] == '0'
-        assert csv_row[1] == '2'
-        assert csv_row[2] == '2'
-        assert csv_row[3] == '7'
-        assert csv_row[4] == '7'
+        assert csv_row[0].strip('\r\n')  == '0'
+        assert csv_row[1].strip('\r\n')  == '2'
+        assert csv_row[2].strip('\r\n')  == '2'
+        assert csv_row[3].strip('\r\n')  == '7'
+        assert csv_row[4].strip('\r\n')  == '7'
 
 
 # Test each measurment
@@ -181,7 +181,6 @@ class Test_Measurements():
     def setup(self):
         
         self.consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA"
-
 
         self.haplotypes_list = [
             haplotype.Haplotype("AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA", 6),
@@ -283,8 +282,7 @@ class Test_CSV_Building:
     @classmethod
     def setup(self):
 
-        self.measurements = [[1,2,3,4,5]]
-    
+        self.measurements = [[1,2,3,4,5]] 
 
     def test_measurements_to_csv(self):
 
@@ -302,12 +300,12 @@ class Test_CSV_Building:
                 csv_row = line.split(',')
 
             # Check if last row has these values for each column
-            assert csv_row[0] == '0'
-            assert csv_row[1] == '1'
-            assert csv_row[2] == '2'
-            assert csv_row[3] == '3'
-            assert csv_row[4] == '4'
-            assert csv_row[5] == '5\r\n'
+            assert csv_row[0].strip('\r\n') == '0'
+            assert csv_row[1].strip('\r\n') == '1'
+            assert csv_row[2].strip('\r\n') == '2'
+            assert csv_row[3].strip('\r\n') == '3'
+            assert csv_row[4].strip('\r\n') == '4'
+            assert csv_row[5].strip('\r\n') == '5'
 
 
 
