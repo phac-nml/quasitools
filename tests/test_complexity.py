@@ -102,7 +102,7 @@ class Test_Consensus:
 
       
 # Test to see if bam subcommand runs.
-# NOTE : will not produce an output file.
+
 class Test_BAM_Complexity:
     @classmethod
     def setup(self):
@@ -125,9 +125,21 @@ class Test_BAM_Complexity:
 
         # Check if output file is created
         assert os.path.exists(TEST_PATH + '/data/output_bam.csv') == True
+        
+        # Check to see if expected values are found in csv
+        # file that we created. We will look at the last row.
+        for line in open(TEST_PATH + '/data/output_bam.csv'):
+            # split each row into a list
+            csv_row = line.split(',')
+        
+        # Check if last row has these values for each column
+        assert csv_row[0] == '199'
+        assert csv_row[1] == '3'
+        assert csv_row[2] == '10'
+        assert csv_row[3] == '1'
+        assert csv_row[4] == '2'
 
 # Test to see if fasta subcommand runs.
-# NOTE : will not produce an output file.
 class Test_FASTA_Complexity:
     @classmethod
     def setup(self):
@@ -148,6 +160,19 @@ class Test_FASTA_Complexity:
 
         # Check if output file is created
         assert os.path.exists(TEST_PATH + '/data/output_fasta.csv') == True
+        
+        # Check to see if expected values are found in csv
+        # file that we created. We will look at the last row.
+        for line in open(TEST_PATH + '/data/output_fasta.csv'):
+            csv_row = line.split(',')
+
+        # Check if last row has these values for each column
+        assert csv_row[0] == '0'
+        assert csv_row[1] == '2'
+        assert csv_row[2] == '2'
+        assert csv_row[3] == '7'
+        assert csv_row[4] == '7'
+
 
 # Test each measurment
 class Test_Measurements():
@@ -257,9 +282,10 @@ class Test_CSV_Building:
 
     @classmethod
     def setup(self):
-        self.measurements = []
-        self.measurements.append(['0'])
-            
+
+        self.measurements = [[1,2,3,4,5]]
+    
+
     def test_measurements_to_csv(self):
 
             file_directory = TEST_PATH + '/data/output_built_csv.csv'
@@ -269,3 +295,19 @@ class Test_CSV_Building:
                 complexity.measurement_to_csv(self.measurements, complexity_file)
 
             assert os.path.exists(file_directory) == True
+
+            # Check to see if expected values are found in csv
+            # file that we created. We will look at the last row.
+            for line in open(TEST_PATH + '/data/output_built_csv.csv'):
+                csv_row = line.split(',')
+
+            # Check if last row has these values for each column
+            assert csv_row[0] == '0'
+            assert csv_row[1] == '1'
+            assert csv_row[2] == '2'
+            assert csv_row[3] == '3'
+            assert csv_row[4] == '4'
+            assert csv_row[5] == '5\r\n'
+
+
+
