@@ -226,9 +226,9 @@ def build_pileup_from_haplotypes(haplotypes):
                 base = haplotype.sequence[i]
 
                 if pileup_list[i].get(base):
-                    pileup_list[i][base] += 1
+                    pileup_list[i][base] += haplotype.count
                 else:
-                    pileup_list[i][base] = 1
+                    pileup_list[i][base] = haplotype.count
 
     pileup = Pileup(pileup_list)
 

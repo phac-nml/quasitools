@@ -447,10 +447,20 @@ class Pileup(object):
 
         for position in self.pileup:
 
-            sorted_position = sorted(position, key=position.get, reverse=True)
-            base = sorted_position[0]
-
-            consensus = consensus + base
+            """
+             We want to sort by values largest to smallest and then keys
+             keys smallest to largest if we have a tie in value
+             position.items(), use (-x[1], x[0]) as a proxy value to be
+             sorted. x is in the form of (key, value), therefore
+             (-x[1], x[0]) yields (value, key). The negative '-' sign in front
+             of the value tuple element designates sorting values
+             from descending order (i.e largest to smallest). keys are sorted
+             in ascending order.
+            """
+            sorted_position = \
+                sorted(position.items(), key=lambda x: (-x[1], x[0]))
+            base = sorted_position[0][0]
+            consensus = consensus + str(base)
 
         return consensus
 
