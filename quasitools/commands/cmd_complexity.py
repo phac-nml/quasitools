@@ -22,7 +22,6 @@ import math
 import csv
 import sys
 
-
 import quasitools.calculate as calculate
 import quasitools.haplotype as haplotype
 import quasitools.constants.complexity_constants as constant
