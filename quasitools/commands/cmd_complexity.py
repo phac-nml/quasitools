@@ -134,7 +134,7 @@ def fasta(fasta_location, output_location):
     type=float,
     default=0,
     help=" User defined " +
-    "filter between 0 and 100, haplotypes under" +
+    "filter between 0 and 100, haplotypes" +
     "under the filter size  will be removed from each positional" +
     "list. Default is set to 0 (i.e no filtering)")
 @click.option('-o', '--output_location', type=click.Path(exists=False),
