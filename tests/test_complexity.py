@@ -103,20 +103,14 @@ class Test_BAM_Complexity:
         self.bam_location = TEST_PATH + '/data/complexity.bam'
         self.reference_location =  TEST_PATH + '/data/complexity_reference.fasta'
         self.output_location_bam =  TEST_PATH + '/data/output_bam.csv'
-
+        self.output_location_bam_filter =  TEST_PATH + '/data/output_bam2.csv'
     def test_complexity_bam(self):
         
         runner = CliRunner()
         result = runner.invoke(complexity.bam, [self.reference_location,\
-                self.bam_location, "1","1", '--output_location', \
+                self.bam_location, "1", '--output_location', \
                 self.output_location_bam])
         
-        # If method ran successfully the exit code is 0.
-        #assert result.exit_code == 0
-        # output checks for print messages at the end of method.
-        # the bam method in complexity has no print message.
-        assert result.output == ""
-
         # Check if output file is created
         assert os.path.exists(TEST_PATH + '/data/output_bam.csv') == True
         
@@ -132,6 +126,31 @@ class Test_BAM_Complexity:
         assert csv_row[2].strip()  == '10'
         assert csv_row[3].strip()  == '1'
         assert csv_row[4].strip()  == '2'
+    
+    # Test bam complexity when filter is applied
+    def test_complexity_filter(self):
+
+        runner = CliRunner()
+        result = runner.invoke(complexity.bam, [self.reference_location,\
+                self.bam_location, "1","--haplotype_filter", \
+                25, '--output_location', \
+                self.output_location_bam_filter])
+        
+        # Check if output file is created
+        assert os.path.exists(TEST_PATH + '/data/output_bam2.csv') == True
+        
+        # Check to see if expected values are found in csv
+        # file that we created. We will look at the last row.
+        for line in open(TEST_PATH + '/data/output_bam2.csv'):
+            # split each row into a list
+            csv_row = line.split(',')
+
+        assert csv_row[0].strip()  == '199'
+        assert csv_row[1].strip()  == '2'
+        assert csv_row[2].strip()  == '9'
+        assert csv_row[3].strip()  == '1'
+        assert csv_row[4].strip()  == '1'
+
 
 # Test to see if fasta subcommand runs.
 class Test_FASTA_Complexity:

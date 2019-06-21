@@ -128,12 +128,20 @@ def fasta(fasta_location, output_location):
 @click.argument('bam_location', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('k')
-@click.argument('haplotype_threshold')
+@click.option(
+    '-f',
+    '--haplotype_filter',
+    type=float,
+    default=0,
+    help=" User defined " +
+    "filter between 0 and 100, haplotypes under" +
+    "under the filter size  will be removed from each positional" +
+    "list. Default is set to 0 (i.e no filtering)")
 @click.option('-o', '--output_location', type=click.Path(exists=False),
               help="Output the " +
               "quasispecies complexity in CSV format to the specified file.")
 def bam(reference_location, bam_location, k,
-        haplotype_threshold, output_location):
+        haplotype_filter, output_location):
     '''
     Reports the per-amplicon (fasta)  or k-mer complexity of the pileup,
     for each k-mer position in the reference complexity (bam and reference)
@@ -165,10 +173,11 @@ def bam(reference_location, bam_location, k,
         The file location of the reference file.
     [INT] k
         Provides the sequence length for our reads from a given starting
-        position.:
-    [FLOAT] haplotype_threshold:
-        The threshold percentage that a haplotype must appear for
-              it to be included in each positional haplotype list.
+        position.
+    [FLOAT] haplotype_filter:
+        User defined filter between 0 and 100, haplotypes under the filter
+        size  will be removed from each positional list. Default is set to
+        0 (i.e it will not filter).
 
     [(OUTPUT) FILE LOCATION] [output_location]
         The location of the output file.
@@ -188,9 +197,6 @@ def bam(reference_location, bam_location, k,
     # ========================================================================
     """
     k = int(k)
-    percent = 100
-
-    haplotype_threshold = float(haplotype_threshold) / float(percent)
 
     references = parse_references_from_fasta(reference_location)
     # A list where each position contains a list of haplotypes of length k
@@ -207,11 +213,16 @@ def bam(reference_location, bam_location, k,
 
         # Get total number of haplotypes for each position.
         total_haplotypes = haplotype.calculate_total_clones(haplotypes)
-        # Add haplotypes within threshold to new haplotypes list
-        haplotypes_in_threshold = [hap for hap in haplotypes if (
-            float(hap.count) / float(total_haplotypes)) > haplotype_threshold]
 
-        measurements = measure_complexity(haplotypes_in_threshold)
+        # Add haplotypes within threshold to new haplotypes list
+        haplotypes_within_filter = [
+            hap for hap in haplotypes if (
+                float(
+                    hap.count) /
+                float(total_haplotypes) *
+                100) > haplotype_filter]
+
+        measurements = measure_complexity(haplotypes_within_filter)
         measurements_list.append(measurements)
 
     # if the output_location is specificed open it as complexit_file, if not
