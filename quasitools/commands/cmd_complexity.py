@@ -128,10 +128,12 @@ def fasta(fasta_location, output_location):
 @click.argument('bam_location', nargs=1,
                 type=click.Path(exists=True, file_okay=True, dir_okay=False))
 @click.argument('k')
+@click.argument('haplotype_threshold')
 @click.option('-o', '--output_location', type=click.Path(exists=False),
               help="Output the " +
               "quasispecies complexity in CSV format to the specified file.")
-def bam(reference_location, bam_location, k, output_location):
+def bam(reference_location, bam_location, k,
+        haplotype_threshold, output_location):
     '''
     Reports the per-amplicon (fasta)  or k-mer complexity of the pileup,
     for each k-mer position in the reference complexity (bam and reference)
@@ -164,6 +166,10 @@ def bam(reference_location, bam_location, k, output_location):
     [INT] k
         Provides the sequence length for our reads from a given starting
         position.:
+    [FLOAT] haplotype_threshold:
+        The threshold percentage that a haplotype must appear for
+              it to be included in each positional haplotype list.
+
     [(OUTPUT) FILE LOCATION] [output_location]
         The location of the output file.
 
@@ -182,6 +188,10 @@ def bam(reference_location, bam_location, k, output_location):
     # ========================================================================
     """
     k = int(k)
+    percent = 100
+
+    haplotype_threshold = float(haplotype_threshold) / float(percent)
+
     references = parse_references_from_fasta(reference_location)
     # A list where each position contains a list of haplotypes of length k
     # starting at that position in the reference.
@@ -193,7 +203,27 @@ def bam(reference_location, bam_location, k, output_location):
     for i in range(len(haplotype_list)):
 
         haplotypes = haplotype_list[i]
-        measurements = measure_complexity(haplotypes)
+        print("Haplotypes at Position: " + str(i) + " Before filter")
+        for hap_not_filtered in haplotypes:
+            print("Haplotype: " + str(hap_not_filtered.sequence) +
+                  " Count: " + str(hap_not_filtered.count))
+        # Remove haplotypes below threshold.
+
+        # Get total number of haplotypes for each position.
+        total_haplotypes = haplotype.calculate_total_clones(haplotypes)
+        # Add haplotypes within threshold to new haplotypes list
+        haplotypes_in_threshold = [hap for hap in haplotypes if (
+            float(hap.count) / float(total_haplotypes)) > haplotype_threshold]
+
+        print("Haplotypes at Position: " + str(i) + " After filter")
+        for haplotypes_filtered in haplotypes_in_threshold:
+            print("Haplotype: " + str(haplotypes_filtered.sequence) +
+                  " Count: " + str(haplotypes_filtered.count))
+        print("\n")
+        print("\n")
+        print("\n")
+
+        measurements = measure_complexity(haplotypes_in_threshold)
         measurements_list.append(measurements)
 
     # if the output_location is specificed open it as complexit_file, if not
