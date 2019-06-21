@@ -203,10 +203,6 @@ def bam(reference_location, bam_location, k,
     for i in range(len(haplotype_list)):
 
         haplotypes = haplotype_list[i]
-        print("Haplotypes at Position: " + str(i) + " Before filter")
-        for hap_not_filtered in haplotypes:
-            print("Haplotype: " + str(hap_not_filtered.sequence) +
-                  " Count: " + str(hap_not_filtered.count))
         # Remove haplotypes below threshold.
 
         # Get total number of haplotypes for each position.
@@ -214,14 +210,6 @@ def bam(reference_location, bam_location, k,
         # Add haplotypes within threshold to new haplotypes list
         haplotypes_in_threshold = [hap for hap in haplotypes if (
             float(hap.count) / float(total_haplotypes)) > haplotype_threshold]
-
-        print("Haplotypes at Position: " + str(i) + " After filter")
-        for haplotypes_filtered in haplotypes_in_threshold:
-            print("Haplotype: " + str(haplotypes_filtered.sequence) +
-                  " Count: " + str(haplotypes_filtered.count))
-        print("\n")
-        print("\n")
-        print("\n")
 
         measurements = measure_complexity(haplotypes_in_threshold)
         measurements_list.append(measurements)
