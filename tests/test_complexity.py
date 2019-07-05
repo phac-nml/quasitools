@@ -188,7 +188,7 @@ class Test_BAM_Complexity:
         result = runner.invoke(complexity.bam, [self.reference_location,\
                 self.bam_location, "1","--haplotype_filter", \
                 100, '--output_location', \
-                self.output_location_bam_filter2])
+                self.output_location_bam_filter3])
         
         # Check if output file is created
         assert os.path.exists(TEST_PATH + '/data/output_bam4.csv')
