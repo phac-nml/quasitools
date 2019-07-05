@@ -210,12 +210,12 @@ class Test_BAM_Complexity:
     def test_compexity_filer_100_2(self):
         runner = CliRunner()
         result = runner.invoke(complexity.bam, [self.reference_location,\
-                self.bam_location2, "1","--haplotype_filter", \
+                self.bam_location2, "50","--haplotype_filter", \
                 100, '--output_location', \
                 self.output_location_bam_filter4])
         
         # Check if output file is created:
-        assert os.path.exists(TEST_PATH + '/data/output_bam5.csv')
+        assert os.path.exists(TEST_PATH +'/data/output_bam5.csv')
                      
         # Check to see if the expected values are found in the CSV 
         # file that we created. We will only look at the last row of this file.
@@ -224,7 +224,7 @@ class Test_BAM_Complexity:
             csv_row = line.split(',')
         
         # This is just the row number, nothing was processed.
-        assert csv_row[0].strip()  == '199'
+        assert csv_row[0].strip()  == '150'
         
         # Row numbers
         assert csv_row[1].strip()  == '1'
