@@ -132,7 +132,7 @@ class Test_BAM_Complexity:
         assert csv_row[3].strip()  == '1'
         assert csv_row[4].strip()  == '2'
     
-    # Test BAM  complexity when filter of 25  is applied
+    # Test BAM complexity when filter of 25  is applied
     def test_complexity_filter_25(self):
 
         runner = CliRunner()
@@ -180,7 +180,8 @@ class Test_BAM_Complexity:
         assert csv_row[3].strip()  == '1'
         assert csv_row[4].strip()  == '2'
 
-   # Test Complexity filter with a filter of 100 (Data has a number of haplotypes, nothing should pass)
+   # Test the complexity filter with a value of 100.
+   # Since the BAM file has multiple haplotypes at every position, nothing should pass the filter.
     def test_compexity_filter_100(self):
 
         runner = CliRunner()
@@ -204,9 +205,8 @@ class Test_BAM_Complexity:
         assert csv_row[3].strip()  == ''
         assert csv_row[4].strip()  == ''
 
-
-    
-    # Test Complexity filter with a filter of 100 (Data has only one haplotype with an abundance of 1, everything should pass filter)
+    # Test the complexity filter with a value of 100.
+    # Since the BAM file has only one haplotype at every position, everything should pass filter.
     def test_compexity_filer_100_2(self):
         runner = CliRunner()
         result = runner.invoke(complexity.bam, [self.reference_location,\
@@ -214,17 +214,18 @@ class Test_BAM_Complexity:
                 100, '--output_location', \
                 self.output_location_bam_filter4])
         
-        # Check if output file is created
+        # Check if output file is created:
         assert os.path.exists(TEST_PATH + '/data/output_bam5.csv')
         
-        # Check to see if expected values are found in csv
-        # file that we created. We will look at the last row.
+        # Check to see if the expected values are found in the CSV 
+        # file that we created. We will only look at the last row of this file.
         for line in open(TEST_PATH + '/data/output_bam5.csv'):
             # split each row into a list
             csv_row = line.split(',')
         
         # This is just the row number, nothing was processed.
         assert csv_row[0].strip()  == '199'
+        
         # Row numbers
         assert csv_row[1].strip()  == '1'
         assert csv_row[2].strip()  == '1'
@@ -233,7 +234,7 @@ class Test_BAM_Complexity:
 
 
 
-# Test to see if fasta subcommand runs.
+# Test to see if the fasta subcommand runs.
 class Test_FASTA_Complexity:
     @classmethod
     def setup(self):
@@ -248,7 +249,7 @@ class Test_FASTA_Complexity:
         
         # If method ran successfully the exit code is 0.
         assert result.exit_code == 0
-               # Check if output file is created
+        # Check if output file is created
         assert os.path.exists(TEST_PATH + '/data/output_fasta.csv')
         
         # Check to see if expected values are found in csv
