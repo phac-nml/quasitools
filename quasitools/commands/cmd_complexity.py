@@ -134,9 +134,9 @@ def fasta(fasta_location, output_location):
     type=float,
     default=0,
     help=" User defined " +
-    "An inclusive filter between 0 and 100, abundances" +
-    "under the filter size  will be removed from each positional" +
-    "list. Default is set to 0 (i.e no filtering)")
+    "A filter between 0 and 100, inclusive. Abundances" +
+    "below the filter size will be removed from each positional" +
+    "list. The default is 0 (i.e. no filtering).")
 @click.option('-o', '--output_location', type=click.Path(exists=False),
               help="Output the " +
               "quasispecies complexity in CSV format to the specified file.")
