@@ -216,7 +216,7 @@ class Test_BAM_Complexity:
         
         # Check if output file is created:
         assert os.path.exists(TEST_PATH + '/data/output_bam5.csv')
-        
+                     
         # Check to see if the expected values are found in the CSV 
         # file that we created. We will only look at the last row of this file.
         for line in open(TEST_PATH + '/data/output_bam5.csv'):
