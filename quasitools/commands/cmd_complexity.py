@@ -134,7 +134,7 @@ def fasta(fasta_location, output_location):
     type=float,
     default=0,
     help=" User defined " +
-    "filter between 0 and 100, haplotypes" +
+    "An inclusive filter between 0 and 100, abundances" +
     "under the filter size  will be removed from each positional" +
     "list. Default is set to 0 (i.e no filtering)")
 @click.option('-o', '--output_location', type=click.Path(exists=False),
@@ -220,7 +220,7 @@ def bam(reference_location, bam_location, k,
                 float(
                     hap.count) /
                 float(total_haplotypes) *
-                100) > haplotype_filter]
+                100) >= haplotype_filter]
 
         measurements = measure_complexity(haplotypes_within_filter)
         measurements_list.append(measurements)
