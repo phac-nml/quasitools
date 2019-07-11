@@ -102,23 +102,22 @@ class Test_BAM_Complexity:
     def setup(self):
         self.bam_location = TEST_PATH + '/data/complexity.bam'
         self.reference_location =  TEST_PATH + '/data/complexity_reference.fasta'
+        self.bam_location2 = TEST_PATH + '/data/complexity_data.bam'
         self.output_location_bam =  TEST_PATH + '/data/output_bam.csv'
+        self.output_location_bam_filter =  TEST_PATH + '/data/output_bam2.csv'
+        self.output_location_bam_filter2 =  TEST_PATH + '/data/output_bam3.csv'
+        self.output_location_bam_filter3 =  TEST_PATH + '/data/output_bam4.csv'
+        self.output_location_bam_filter4 =  TEST_PATH + '/data/output_bam5.csv'
 
     def test_complexity_bam(self):
         
         runner = CliRunner()
         result = runner.invoke(complexity.bam, [self.reference_location,\
-                self.bam_location, "1",'--output_location', \
+                self.bam_location, "1", '--output_location', \
                 self.output_location_bam])
         
-        # If method ran successfully the exit code is 0.
-        assert result.exit_code == 0
-        # output checks for print messages at the end of method.
-        # the bam method in complexity has no print message.
-        assert result.output == ""
-
         # Check if output file is created
-        assert os.path.exists(TEST_PATH + '/data/output_bam.csv') == True
+        assert os.path.exists(TEST_PATH + '/data/output_bam.csv')
         
         # Check to see if expected values are found in csv
         # file that we created. We will look at the last row.
@@ -132,8 +131,110 @@ class Test_BAM_Complexity:
         assert csv_row[2].strip()  == '10'
         assert csv_row[3].strip()  == '1'
         assert csv_row[4].strip()  == '2'
+    
+    # Test BAM complexity when filter of 25  is applied
+    def test_complexity_filter_25(self):
 
-# Test to see if fasta subcommand runs.
+        runner = CliRunner()
+        result = runner.invoke(complexity.bam, [self.reference_location,\
+                self.bam_location, "1","--haplotype_filter", \
+                25, '--output_location', \
+                self.output_location_bam_filter])
+        
+        # Check if output file is created
+        assert os.path.exists(TEST_PATH + '/data/output_bam2.csv')
+        
+        # Check to see if expected values are found in csv
+        # file that we created. We will look at the last row.
+        for line in open(TEST_PATH + '/data/output_bam2.csv'):
+            # split each row into a list
+            csv_row = line.split(',')
+
+        assert csv_row[0].strip()  == '199'
+        assert csv_row[1].strip()  == '2'
+        assert csv_row[2].strip()  == '9'
+        assert csv_row[3].strip()  == '1'
+        assert csv_row[4].strip()  == '1'
+    
+    # Test Complexity filter with a filter of 0 (i.e no filtering, everything should pass)
+    def test_compexity_filter_0(self):
+
+        runner = CliRunner()
+        result = runner.invoke(complexity.bam, [self.reference_location,\
+                self.bam_location, "1","--haplotype_filter", \
+                0, '--output_location', \
+                self.output_location_bam_filter2])
+        
+        # Check if output file is created
+        assert os.path.exists(TEST_PATH + '/data/output_bam3.csv')
+        
+        # Check to see if expected values are found in csv
+        # file that we created. We will look at the last row.
+        for line in open(TEST_PATH + '/data/output_bam3.csv'):
+            # split each row into a list
+            csv_row = line.split(',')
+
+        assert csv_row[0].strip()  == '199'
+        assert csv_row[1].strip()  == '3'
+        assert csv_row[2].strip()  == '10'
+        assert csv_row[3].strip()  == '1'
+        assert csv_row[4].strip()  == '2'
+
+   # Test the complexity filter with a value of 100.
+   # Since the BAM file has multiple haplotypes at every position, nothing should pass the filter.
+    def test_compexity_filter_100(self):
+
+        runner = CliRunner()
+        result = runner.invoke(complexity.bam, [self.reference_location,\
+                self.bam_location, "1","--haplotype_filter", \
+                100, '--output_location', \
+                self.output_location_bam_filter3])
+        
+        # Check if output file is created
+        assert os.path.exists(TEST_PATH + '/data/output_bam4.csv')
+        
+        # Check to see if expected values are found in csv
+        # file that we created. We will look at the last row.
+        for line in open(TEST_PATH + '/data/output_bam4.csv'):
+            # split each row into a list
+            csv_row = line.split(',')
+
+        assert csv_row[0].strip()  == '199'
+        assert csv_row[1].strip()  == ''
+        assert csv_row[2].strip()  == ''
+        assert csv_row[3].strip()  == ''
+        assert csv_row[4].strip()  == ''
+
+    # Test the complexity filter with a value of 100.
+    # Since the BAM file has only one haplotype at every position, everything should pass filter.
+    def test_compexity_filer_100_2(self):
+        runner = CliRunner()
+        result = runner.invoke(complexity.bam, [self.reference_location,\
+                self.bam_location2, "50","--haplotype_filter", \
+                100, '--output_location', \
+                self.output_location_bam_filter4])
+        
+        # Check if output file is created:
+        assert os.path.exists(TEST_PATH +'/data/output_bam5.csv')
+                     
+        # Check to see if the expected values are found in the CSV 
+        # file that we created. We will only look at the last row of this file.
+        for line in open(TEST_PATH + '/data/output_bam5.csv'):
+            # split each row into a list
+            csv_row = line.split(',')
+        
+        # This is just the row number, nothing was processed.
+        assert csv_row[0].strip()  == '150'
+        
+        # Row numbers
+        assert csv_row[1].strip()  == '1'
+        assert csv_row[2].strip()  == '1'
+        assert csv_row[3].strip()  == '0'
+        assert csv_row[4].strip()  == '0'
+
+
+
+# Test to see if the fasta subcommand runs.
 class Test_FASTA_Complexity:
     @classmethod
     def setup(self):
@@ -148,12 +249,8 @@ class Test_FASTA_Complexity:
         
         # If method ran successfully the exit code is 0.
         assert result.exit_code == 0
-        # output checks for print messages at the end of method.
-        # the bam method in complexity has no print message.
-        assert result.output == ""
-
         # Check if output file is created
-        assert os.path.exists(TEST_PATH + '/data/output_fasta.csv') == True
+        assert os.path.exists(TEST_PATH + '/data/output_fasta.csv')
         
         # Check to see if expected values are found in csv
         # file that we created. We will look at the last row.
@@ -286,7 +383,7 @@ class Test_CSV_Building:
             complexity_file:
                 complexity.measurement_to_csv(self.measurements, complexity_file)
 
-            assert os.path.exists(file_directory) == True
+            assert os.path.exists(file_directory)
 
             # Check to see if expected values are found in csv
             # file that we created. We will look at the last row.
