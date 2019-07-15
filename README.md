@@ -24,9 +24,9 @@ Quasitools is a collection of tools for analysing viral quasispecies data. The f
 
 # Release
 
-__quasitools 0.6.0__
+__quasitools 0.7.0__
 
-This release improves the documentation, integrates PyAAVF, and fixes a bug in quasitools distance that sometimes caused the software to crash.
+This provides greater functionality for quasitools complexity, including the ability to run on aligned read data and filter out low frequency haplotypes.
 
 # Installation
 
@@ -41,7 +41,7 @@ It is strongly recommended you refer to the documentation for full installation 
 
 # Legal
 
-Copyright Government of Canada 2017-2018
+Copyright Government of Canada 2017-2019
 
 Written by: National Microbiology Laboratory, Public Health Agency of Canada
 
