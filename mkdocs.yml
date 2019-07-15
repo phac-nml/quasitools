@@ -1,7 +1,7 @@
 site_name: quasitools
 
 theme: 'readthedocs'
-copyright: "Copyright Government of Canada 2017-2018"
+copyright: "Copyright Government of Canada 2017-2019"
 
 site_dir: 'public'
 
