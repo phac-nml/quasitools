@@ -26,7 +26,7 @@ Quasitools is a collection of tools for analysing viral quasispecies data. The f
 
 __quasitools 0.7.0__
 
-This provides greater functionality for quasitools complexity, including the ability to run on aligned read data and filter out low frequency haplotypes.
+This release provides greater functionality for the complexity tool, including the ability to run on aligned read data and filter out low frequency haplotypes.
 
 # Installation
 
