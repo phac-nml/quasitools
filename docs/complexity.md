@@ -52,7 +52,7 @@ The K-Mer size provides the sequence length for reads from a given starting posi
 
 This option is only available when running the tool in BAM mode.
 
-Using this option allows user defined filter size between 0 and 100, haplotypes under the filter size  will be removed from the positional list produced by running the command.
+Using this option allows for a user defined filter size between 0 and 100, haplotypes under the filter size will be removed from the positional list produced by running the command.
 
 ### OUTPUT FILE
 
@@ -63,8 +63,7 @@ Using this option allows user defined filter size between 0 and 100, haplotypes 
 
 This option is availble when running the tool in both BAM and FASTA mode.
 
-Using this option allows users to define an output file in *CSV format* for the final output to be written.
-
+Using this option allows users to define an output file in *CSV format* where the program output will be written.
 
 ## Output
 
