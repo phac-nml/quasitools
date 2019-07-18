@@ -45,7 +45,7 @@ The K-Mer size provides the sequence length for reads from a given starting posi
 
 ### FILTER
 
-###### FLAG
+Flag Input
 ```
 -f [INTEGER]
 ```
@@ -56,7 +56,7 @@ Using this option allows for a user defined filter size between 0 and 100, haplo
 
 ### OUTPUT FILE
 
-###### FLAG
+Flag Input
 ```
 -o [USER-DEFINED-FILE-NAME.CSV]
 ```
