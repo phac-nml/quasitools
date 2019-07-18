@@ -34,7 +34,7 @@ This input file is only necessary when running the tool in BAM mode.
 
 A BAM file describing the alignments of reads to the same reference provided as input. These reads should be derived from a quasispecies mutant spectrum. This BAM file would likely be created using a read aligner which aligns FASTQ reads to a FASTA reference.
 
-### K-Mer Size
+### K-Mer SIZE
 
 This input is only necessary when running the tool in BAM mode.
 
