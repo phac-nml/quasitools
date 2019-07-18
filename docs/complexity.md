@@ -13,7 +13,7 @@ quasitools complexity fasta [OPTIONS] <FASTA READS FILE>
 BAM Input:
 
 ```bash
-quasitools complexity bam [OPTIONS] <FASTA REFERENCE FILE> <BAM FILE>
+quasitools complexity bam <FASTA REFERENCE FILE> <BAM FILE> <K-MER SIZE> [OPTIONS] 
 ```
 
 ## Arguments
@@ -33,6 +33,38 @@ This input file is only necessary when running the tool in BAM mode.
 This input file is only necessary when running the tool in BAM mode.
 
 A BAM file describing the alignments of reads to the same reference provided as input. These reads should be derived from a quasispecies mutant spectrum. This BAM file would likely be created using a read aligner which aligns FASTQ reads to a FASTA reference.
+
+### K-Mer Size
+
+This input is only necessary when running the tool in BAM mode.
+
+The K-Mer size provides the sequence length for reads from a given starting position.
+
+
+## OPTIONS
+
+### FILTER
+
+# FLAG
+```
+-f [INTEGER]
+```
+
+This option is only available when running the tool in BAM mode.
+
+Using this option allows user defined filter size between 0 and 100, haplotypes under the filter size  will be removed from the positional list produced by running the command.
+
+### OUTPUT FILE
+
+# FLAG
+```
+-o [USER-DEFINED-FILE-NAME.CSV]
+```
+
+This option is availble when running the tool in both BAM and FASTA mode.
+
+Using this option allows users to define an output file in *CSV format* for the final output to be written.
+
 
 ## Output
 
