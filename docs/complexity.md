@@ -41,11 +41,11 @@ This input is only necessary when running the tool in BAM mode.
 The K-Mer size provides the sequence length for reads from a given starting position.
 
 
-## OPTIONS
+## Options
 
 ### FILTER
 
-##### FLAG
+###### FLAG
 ```
 -f [INTEGER]
 ```
@@ -56,7 +56,7 @@ Using this option allows user defined filter size between 0 and 100, haplotypes 
 
 ### OUTPUT FILE
 
-##### FLAG
+###### FLAG
 ```
 -o [USER-DEFINED-FILE-NAME.CSV]
 ```
