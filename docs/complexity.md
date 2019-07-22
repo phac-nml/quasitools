@@ -22,11 +22,13 @@ quasitools complexity bam <FASTA REFERENCE FILE> <BAM FILE> <K-MER SIZE> [OPTION
 
 This input file is only necessary when running the tool in FASTA mode.
 
-An aligned FASTA file containing multiple aligned sequences, representing haplotypes of a genomic region from the mutant spectrum of interest. This would FASTA file would likely be created a multiple sequence alignment from aligning amplicon sequencing data.
+An aligned FASTA file containing multiple aligned sequences, representing haplotypes of a genomic region from the mutant spectrum of interest. This FASTA file would likely be created using a multiple sequence alignment tool from aligning amplicon sequencing data.
 
 ### FASTA Reference File
 
 This input file is only necessary when running the tool in BAM mode.
+
+A reference file of the sequence of interest. The BAM file must be generated using this reference file.
 
 ### BAM File
 
@@ -34,36 +36,33 @@ This input file is only necessary when running the tool in BAM mode.
 
 A BAM file describing the alignments of reads to the same reference provided as input. These reads should be derived from a quasispecies mutant spectrum. This BAM file would likely be created using a read aligner which aligns FASTQ reads to a FASTA reference.
 
-### K-Mer SIZE
+### k-mer Size
 
 This input is only necessary when running the tool in BAM mode.
 
-The K-Mer size provides the sequence length for reads from a given starting position.
-
+The *k*-mer size defines the length of the *k*-mer sequence fragments. A sliding window of this *k*-mer size is used to scan across the reference genome. The sequences at each sliding window are used to calculate the quasispecies complexity.
 
 ## Options
 
 ### FILTER
 
-Flag Input
 ```
 -f [INTEGER]
 ```
 
 This option is only available when running the tool in BAM mode.
 
-Using this option allows for a user defined filter size between 0 and 100, haplotypes under the filter size will be removed from the positional list produced by running the command.
+This option allows for a user-defined filter size between 0 and 100. Haplotypes under the filter size will not be used when calculating the quasispecies complexity at a particular position in the genome.
 
 ### OUTPUT FILE
 
-Flag Input
 ```
 -o [USER-DEFINED-FILE-NAME.CSV]
 ```
 
 This option is availble when running the tool in both BAM and FASTA mode.
 
-Using this option allows users to define an output file in *CSV format* where the program output will be written.
+This option allows users to define an output file location, where the program output will be written in CSV format.
 
 ## Output
 
