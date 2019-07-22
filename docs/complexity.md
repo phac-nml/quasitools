@@ -119,3 +119,28 @@ quasitools complexity fasta aligned.fasta
 Position,Number of Haplotypes,Haplotype Population,Number of Polymorphic Sites,Number of Mutations,Shannon Entropy,Shannon Entropy Normalized to N,Shannon Entropy Normalized to H,Simpson Index,Gini-Simpson Index,Hill Number #0,HIll Number #1,Hill Number #2,Hill Number #3,Minimum Mutation Frequency,Mutation Frequency,Functional Attribute Diversity,Sample Nucleotide Diversity (Entity),Maximum Mutation Frequency,Population Nucleotide Diversity,Sample Nucleotide Diversity
 0,9,30,38,40,1.8774672554524843,0.5520018525167073,0.8544721713101401,0.19111111111111112,0.8088888888888889,9.0,6.536927510444632,5.232558139534883,4.543368996115371,0.013333333333333334,0.05555555555555555,7.379999999999999,0.10249999999999998,0.03866666666666667,0.06682222222222223,0.06912643678160921
 ```
+
+
+## Example: BAM Command
+
+### Data
+
+The following example data may be used to run the tool:
+
+* [generated.fasta](data/generated.fasta)
+* [generated.bam](data/generated.bam)
+
+
+### Command
+
+```bash
+quasitools complexity bam generated.fasta generated.bam 200
+```
+
+### Output
+
+```text
+Position,Number of Haplotypes,Haplotype Population,Number of Polymorphic Sites,Number of Mutations,Shannon Entropy,Shannon Entropy Normalized to N,Shannon Entropy Normalized to H,Simpson Index,Gini-Simpson Index,Hill Number #0,HIll Number #1,Hill Number #2,Hill Number #3,Minimum Mutation Frequency,Mutation Frequency,Functional Attribute Diversity,Sample Nucleotide Diversity (Entity),Maximum Mutation Frequency,Population Nucleotide Diversity,Sample Nucleotide Diversity
+0,6,6,6,15,1.7917594692280547,0.9999999999999999,0.9999999999999999,0.16666666666666669,0.8333333333333333,6.0,5.999999999999998,5.999999999999999,6.000000000000001,0.0125,0.01916666666666667,0.7300000000000004,0.02433333333333335,0.019166666666666665,0.020277777777777773,0.02433333333333333
+
+```
