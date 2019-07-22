@@ -129,6 +129,7 @@ The following example data may be used to run the tool:
 
 * [generated.fasta](data/generated.fasta)
 * [generated.bam](data/generated.bam)
+* [generated.bai](data/generated.bai)
 
 
 ### Command
