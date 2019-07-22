@@ -142,5 +142,4 @@ quasitools complexity bam generated.fasta generated.bam 200
 ```text
 Position,Number of Haplotypes,Haplotype Population,Number of Polymorphic Sites,Number of Mutations,Shannon Entropy,Shannon Entropy Normalized to N,Shannon Entropy Normalized to H,Simpson Index,Gini-Simpson Index,Hill Number #0,HIll Number #1,Hill Number #2,Hill Number #3,Minimum Mutation Frequency,Mutation Frequency,Functional Attribute Diversity,Sample Nucleotide Diversity (Entity),Maximum Mutation Frequency,Population Nucleotide Diversity,Sample Nucleotide Diversity
 0,6,6,6,15,1.7917594692280547,0.9999999999999999,0.9999999999999999,0.16666666666666669,0.8333333333333333,6.0,5.999999999999998,5.999999999999999,6.000000000000001,0.0125,0.01916666666666667,0.7300000000000004,0.02433333333333335,0.019166666666666665,0.020277777777777773,0.02433333333333333
-
 ```
