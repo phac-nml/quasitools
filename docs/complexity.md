@@ -121,7 +121,7 @@ Position,Number of Haplotypes,Haplotype Population,Number of Polymorphic Sites,N
 ```
 
 
-## Example: BAM Command
+## Example: BAM File With a Refence FASTA
 
 ### Data
 
