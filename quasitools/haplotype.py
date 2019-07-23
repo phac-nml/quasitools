@@ -1,7 +1,7 @@
 """
 # =============================================================================
 
-Copyright Government of Canada 2018
+Copyright Government of Canada 2019
 
 Written by: Eric Marinier, Public Health Agency of Canada,
     National Microbiology Laboratory
@@ -24,11 +24,12 @@ specific language governing permissions and limitations under the License.
 # =============================================================================
 """
 
-from operator import attrgetter
 
 import numpy
 
 import quasitools.calculate as calculate
+from quasitools.pileup import Pileup
+GAP = '-'
 
 
 class Haplotype:
@@ -40,7 +41,7 @@ class Haplotype:
     # ========================================================================
     """
 
-    def __init__(self, sequence, consensus, count=1):
+    def __init__(self, sequence, count=1):
         """
         # ====================================================================
 
@@ -51,7 +52,6 @@ class Haplotype:
 
         self.sequence = sequence
         self.count = count
-        self.mutations = calculate.hamming_distance(sequence, consensus)
 
     def __eq__(self, other):
         """
@@ -85,7 +85,7 @@ class Haplotype:
         return False
 
 
-def sort_haplotypes(haplotypes):
+def sort_haplotypes(haplotypes, consensus):
     """
     # ========================================================================
 
@@ -95,7 +95,7 @@ def sort_haplotypes(haplotypes):
     PURPOSE
     -------
 
-    Sorts a list of haplotypes according their number of mutations from the
+    Sorts a list of haplotypes according their Hamming distance from the
     consensus sequence.
 
 
@@ -104,6 +104,9 @@ def sort_haplotypes(haplotypes):
 
     [HAPLOTYPE LIST] [haplotypes]
         The list of haplotypes to sort.
+
+    [String] consensus
+        The consensus sequence for the list of haplotypes.
 
 
     RETURN
@@ -116,10 +119,120 @@ def sort_haplotypes(haplotypes):
     # ========================================================================
     """
 
-    sorted_haplotypes = \
-        sorted(haplotypes, key=attrgetter('mutations'), reverse=False)
+    sorted_haplotypes = []
+
+    # a list of (Haplotype, Hamming distance) tuples.
+    tuple_list = []
+    for haplotype in haplotypes:
+
+        # creates a list of tuples that contains the haplotype and its Hamming
+        # distance.
+        tuple_list.append(
+            (haplotype,
+             calculate.hamming_distance(
+                 haplotype.sequence,
+                 consensus)))
+
+    # Sort list in ascending order based on the Hamming distance.
+    sorted_list = \
+        sorted(tuple_list, key=lambda items: items[1], reverse=False)
+
+    # Iterates through sorted list placing the haplotype in
+    # sorted haplotypes.
+    sorted_haplotypes = [x[0] for x in sorted_list]
 
     return sorted_haplotypes
+
+
+def build_consensus_from_haplotypes(haplotypes):
+    """
+    # ========================================================================
+
+    BUILD CONSENSUS FROM HAPLOTYPES
+
+
+    PURPOSE
+    -------
+
+    Builds a consensus from a list of Haplotype objects.
+
+
+    INPUT
+    -----
+
+    [HAPLOTYPE LIST] [haplotypes]
+        The list of haplotypes.
+
+
+    RETURN
+    ------
+
+    [String] consensus
+       The consensus sequence.
+
+    # ========================================================================
+    """
+
+    pileup = build_pileup_from_haplotypes(haplotypes)
+
+    consensus = pileup.build_consensus()
+
+    return consensus
+
+
+def build_pileup_from_haplotypes(haplotypes):
+    """
+    # ========================================================================
+
+    BUILD PILEUP FROM HAPLOTYPES
+
+
+    PURPOSE
+    -------
+
+    Creates a pileup from a list of Haplotype objects.
+
+
+    INPUT
+    -----
+
+    [HAPLOTYPE LIST] [haplotypes]
+        A list of haplotypes.
+    [BOOLEAN] [gaps]
+        Indicate whether or not there are gaps in our haplotype sequences.
+
+    RETURN
+    ------
+
+    [PILEUP] [pileup]
+        A pilup object.
+
+    # ========================================================================
+    """
+
+    pileup_list = []
+
+    if haplotypes:
+
+        length = len(haplotypes[0].sequence)
+
+        # Initialize empty dictionaries
+        for i in range(0, length):
+            pileup_list.append({})
+
+        for haplotype in haplotypes:
+            for i in range(0, length):
+
+                base = haplotype.sequence[i]
+
+                if pileup_list[i].get(base):
+                    pileup_list[i][base] += haplotype.count
+                else:
+                    pileup_list[i][base] = haplotype.count
+
+    pileup = Pileup(pileup_list)
+
+    return pileup
 
 
 def build_distiance_matrix(haplotypes):
@@ -151,7 +264,6 @@ def build_distiance_matrix(haplotypes):
     # ========================================================================
     """
 
-    haplotypes = sort_haplotypes(haplotypes)
     x = len(haplotypes)
 
     matrix = numpy.zeros(shape=(x, x))
@@ -290,7 +402,6 @@ def build_counts(haplotypes):
     # ========================================================================
     """
 
-    haplotypes = sort_haplotypes(haplotypes)
     counts = []
 
     for haplotype in haplotypes:

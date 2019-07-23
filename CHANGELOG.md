@@ -2,6 +2,24 @@
 
 All notable changes to Quasitools will be documented in this file.
 
+## 0.7.0 ##
+
+### Added ###
+
+Commands:
+
+- complexity bam: measures the complexity of a quasispecies across a reference genome using aligned reads in BAM format
+
+Options:
+
+- complexity: now has the option to filter out low frequency haplotypes
+
+### Changed ###
+
+- `complexity` has been replaced with `complexity fasta` and `complexity bam`
+- Fixed a complexity bug with haplotype counting and consensus sequence generation.
+- Fixed a complexity bug when parsing haplotypes with indels.
+
 ## 0.6.0 ##
 
 ### Changed ###
