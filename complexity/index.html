@@ -102,11 +102,15 @@
         
             <li><a class="toctree-l4" href="#arguments">Arguments</a></li>
         
+            <li><a class="toctree-l4" href="#options">Options</a></li>
+        
             <li><a class="toctree-l4" href="#output">Output</a></li>
         
             <li><a class="toctree-l4" href="#applications">Applications</a></li>
         
-            <li><a class="toctree-l4" href="#example">Example</a></li>
+            <li><a class="toctree-l4" href="#example-fasta-reads-file">Example: FASTA Reads File</a></li>
+        
+            <li><a class="toctree-l4" href="#example-bam-file-with-a-reference-fasta">Example: BAM File With a Reference FASTA</a></li>
         
         </ul>
     
@@ -189,12 +193,40 @@
                 <h1 id="complexity">complexity</h1>
 <p>Reports various measures of viral quasispecies complexity.</p>
 <h2 id="basic-usage">Basic Usage</h2>
-<pre><code class="bash">quasitools complexity [options] &lt;FASTA input&gt;
+<p>FASTA Input:</p>
+<pre><code class="bash">quasitools complexity fasta [OPTIONS] &lt;FASTA READS FILE&gt;
+</code></pre>
+
+<p>BAM Input:</p>
+<pre><code class="bash">quasitools complexity bam &lt;FASTA REFERENCE FILE&gt; &lt;BAM FILE&gt; &lt;K-MER SIZE&gt; [OPTIONS] 
 </code></pre>
 
 <h2 id="arguments">Arguments</h2>
-<h3 id="fasta">FASTA</h3>
-<p>An aligned FASTA file containing multiple aligned sequences, representing haplotypes of a genomic region from the mutant spectrum of interest. This would FASTA file would likely be created a multiple sequence alignment from aligning amplicon sequencing data.</p>
+<h3 id="fasta-reads-file">FASTA Reads File</h3>
+<p>This input file is only necessary when running the tool in FASTA mode.</p>
+<p>An aligned FASTA file containing multiple aligned sequences, representing haplotypes of a genomic region from the mutant spectrum of interest. This FASTA file would likely be created using a multiple sequence alignment tool from aligning amplicon sequencing data.</p>
+<h3 id="fasta-reference-file">FASTA Reference File</h3>
+<p>This input file is only necessary when running the tool in BAM mode.</p>
+<p>A reference file of the sequence of interest. The BAM file must be generated using this reference file.</p>
+<h3 id="bam-file">BAM File</h3>
+<p>This input file is only necessary when running the tool in BAM mode.</p>
+<p>A BAM file describing the alignments of reads to the same reference provided as input. These reads should be derived from a quasispecies mutant spectrum. This BAM file would likely be created using a read aligner which aligns FASTQ reads to a FASTA reference.</p>
+<h3 id="k-mer-size">k-mer Size</h3>
+<p>This input is only necessary when running the tool in BAM mode.</p>
+<p>The <em>k</em>-mer size defines the length of the <em>k</em>-mer sequence fragments. A sliding window of this <em>k</em>-mer size is used to scan across the reference genome. The sequences at each sliding window are used to calculate the quasispecies complexity.</p>
+<h2 id="options">Options</h2>
+<h3 id="filter">FILTER</h3>
+<pre><code>-f [INTEGER]
+</code></pre>
+
+<p>This option is only available when running the tool in BAM mode.</p>
+<p>This option allows for a user-defined filter size between 0 and 100. Haplotypes under the filter size will not be used when calculating the quasispecies complexity at a particular position in the genome.</p>
+<h3 id="output-file">OUTPUT FILE</h3>
+<pre><code>-o [USER-DEFINED-FILE-NAME.CSV]
+</code></pre>
+
+<p>This option is availble when running the tool in both BAM and FASTA mode.</p>
+<p>This option allows users to define an output file location, where the program output will be written in CSV format.</p>
 <h2 id="output">Output</h2>
 <p>The quasispecies complexity measures are taken from <em>Gregori, Josep, et al. 2016</em>. These include the following various indices:</p>
 <p>Incidence (Entity Level):</p>
@@ -227,63 +259,36 @@
 <li>Assessing the quasispecies complexity of a genomic region.</li>
 <li>Comparing the quasispecies complexity of multiple genomic regions from the same mutant spectrum.</li>
 </ul>
-<h2 id="example">Example</h2>
+<h2 id="example-fasta-reads-file">Example: FASTA Reads File</h2>
 <h3 id="data">Data</h3>
 <p>The following example data may be used to run the tool:</p>
 <ul>
 <li><a href="../data/aligned.fasta">aligned.fasta</a></li>
 </ul>
 <h3 id="command">Command</h3>
-<pre><code class="bash">quasitools complexity aligned.fasta
+<pre><code class="bash">quasitools complexity fasta aligned.fasta
 </code></pre>
 
 <h3 id="output_1">Output</h3>
-<pre><code class="text">Starting...
+<pre><code class="text">Position,Number of Haplotypes,Haplotype Population,Number of Polymorphic Sites,Number of Mutations,Shannon Entropy,Shannon Entropy Normalized to N,Shannon Entropy Normalized to H,Simpson Index,Gini-Simpson Index,Hill Number #0,HIll Number #1,Hill Number #2,Hill Number #3,Minimum Mutation Frequency,Mutation Frequency,Functional Attribute Diversity,Sample Nucleotide Diversity (Entity),Maximum Mutation Frequency,Population Nucleotide Diversity,Sample Nucleotide Diversity
+0,9,30,38,40,1.8774672554524843,0.5520018525167073,0.8544721713101401,0.19111111111111112,0.8088888888888889,9.0,6.536927510444632,5.232558139534883,4.543368996115371,0.013333333333333334,0.05555555555555555,7.379999999999999,0.10249999999999998,0.03866666666666667,0.06682222222222223,0.06912643678160921
+</code></pre>
 
-Calculating the complexity from file: aligned.fasta
+<h2 id="example-bam-file-with-a-reference-fasta">Example: BAM File With a Reference FASTA</h2>
+<h3 id="data_1">Data</h3>
+<p>The following example data may be used to run the tool:</p>
+<ul>
+<li><a href="../data/generated.fasta">generated.fasta</a></li>
+<li><a href="../data/generated.bam">generated.bam</a></li>
+<li><a href="../data/generated.bai">generated.bai</a></li>
+</ul>
+<h3 id="command_1">Command</h3>
+<pre><code class="bash">quasitools complexity bam generated.fasta generated.bam 200
+</code></pre>
 
-
-Incidence - Entity Level
--------------------------
-Number of haplotypes (H) : 9
-Number of polymorphic sites (P) : 38
-Number of unique mutations (M) : 40
-
-
-Abundance - Molecular Level
----------------------------
-Shannon Entropy (Hs) : 1.87746725545
-Shannon Entropy, normalized to log(N) (Hsn) : 0.552001852517
-Shannon Entropy, normalized to log(H) (Hsh) : 0.85447217131
-Simpson Index (Hsi) : 0.191111111111
-Gini-Simpson Index (Hgs) : 0.808888888889
-Hill numbers
-  q = 0 : 9.0
-  q = 1 : 6.53692751044
-  q = 2 : 5.23255813953
-  q = 3 : 4.54336899612
-
-
-Functional, Indidence - Entity Level
--------------------------------------
-Minimum Mutation Frequency (Mf min) : 0.0133333333333
-Mutation Frequency (Mfe) : 0.0555555555556
-Functional Attribute Diversity (FAD) : 7.379999999999999
-Sample Nucleotide Diversity, Entity Level (^PIe) : 0.1025
-
-
-Functional, Abundance - Molecular Level
-----------------------------------------
-Maximum Mutation Frequency (Mf max) : 0.03866666666666667
-Population Nucleotide Diversity (PI) : 0.06682222222222223
-
-
-Other
-------
-Sample Nucleotide Diversity (^PI) : 0.06912643678160921
-
-Complete!
-
+<h3 id="output_2">Output</h3>
+<pre><code class="text">Position,Number of Haplotypes,Haplotype Population,Number of Polymorphic Sites,Number of Mutations,Shannon Entropy,Shannon Entropy Normalized to N,Shannon Entropy Normalized to H,Simpson Index,Gini-Simpson Index,Hill Number #0,HIll Number #1,Hill Number #2,Hill Number #3,Minimum Mutation Frequency,Mutation Frequency,Functional Attribute Diversity,Sample Nucleotide Diversity (Entity),Maximum Mutation Frequency,Population Nucleotide Diversity,Sample Nucleotide Diversity
+0,6,6,6,15,1.7917594692280547,0.9999999999999999,0.9999999999999999,0.16666666666666669,0.8333333333333333,6.0,5.999999999999998,5.999999999999999,6.000000000000001,0.0125,0.01916666666666667,0.7300000000000004,0.02433333333333335,0.019166666666666665,0.020277777777777773,0.02433333333333333
 </code></pre>
               
             </div>
@@ -305,7 +310,7 @@ Complete!
   <div role="contentinfo">
     <!-- Copyright etc -->
     
-      <p>Copyright Government of Canada 2017-2018</p>
+      <p>Copyright Government of Canada 2017-2019</p>
     
   </div>
 
