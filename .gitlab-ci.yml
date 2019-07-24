@@ -11,7 +11,7 @@ before_script:
 
 tests:2.7:
   script:
-    - conda create -q -n test-environment python=2.7 samtools=1.3 bowtie2 virtualenv openssl=1.0.2p=h14c3975_0 tox
+    - conda create -q -n test-environment python=2.7 samtools=1.3 bowtie2 virtualenv=16.0.0 openssl=1.0.2p=h14c3975_0 tox
     - source activate test-environment
     - tox -r -e py27
 tests:3.6:
