@@ -99,7 +99,7 @@ class Test_Consensus:
 
 class Test_BAM_Complexity:
     @classmethod
-    def setup(self):
+    def setup_method(self):
         self.bam_location = TEST_PATH + '/data/complexity.bam'
         self.reference_location =  TEST_PATH + '/data/complexity_reference.fasta'
         self.bam_location2 = TEST_PATH + '/data/complexity_data.bam'
@@ -108,6 +108,16 @@ class Test_BAM_Complexity:
         self.output_location_bam_filter2 =  TEST_PATH + '/data/output_bam3.csv'
         self.output_location_bam_filter3 =  TEST_PATH + '/data/output_bam4.csv'
         self.output_location_bam_filter4 =  TEST_PATH + '/data/output_bam5.csv'
+
+    def teardown_method(self):
+        for output_file in (
+                self.output_location_bam,
+                self.output_location_bam_filter,
+                self.output_location_bam_filter2,
+                self.output_location_bam_filter3,
+                self.output_location_bam_filter4):
+            if os.path.exists(output_file):
+                os.remove(output_file)
 
     def test_complexity_bam(self):
         
@@ -237,9 +247,13 @@ class Test_BAM_Complexity:
 # Test to see if the fasta subcommand runs.
 class Test_FASTA_Complexity:
     @classmethod
-    def setup(self):
+    def setup_method(self):
         self.fasta_location = TEST_PATH + '/data/complexity.fasta'
         self.output_location_fasta =  TEST_PATH + '/data/output_fasta.csv'
+
+    def teardown_method(self):
+        if os.path.exists(self.output_location_fasta):
+            os.remove(self.output_location_fasta)
 
 
     def test_complexity_fasta(self):
@@ -269,7 +283,7 @@ class Test_FASTA_Complexity:
 class Test_Measurements():
     
     @classmethod
-    def setup(self):
+    def setup_method(self):
         
         self.consensus =  "AAGAGTTGTGAGGAGTACTCACCTCAGTAGACAAGGAGAGCTA"
 
@@ -371,13 +385,18 @@ class Test_Measurements():
 class Test_CSV_Building:
 
     @classmethod
-    def setup(self):
+    def setup_method(self):
 
-        self.measurements = [[1,2,3,4,5]] 
+        self.measurements = [[1,2,3,4,5]]
+        self.file_directory = TEST_PATH + '/data/output_built_csv.csv'
+
+    def teardown_method(self):
+        if os.path.exists(self.file_directory):
+            os.remove(self.file_directory)
 
     def test_measurements_to_csv(self):
 
-            file_directory = TEST_PATH + '/data/output_built_csv.csv'
+            file_directory = self.file_directory
 
             with open(file_directory, 'w')  as \
             complexity_file:
@@ -387,7 +406,7 @@ class Test_CSV_Building:
 
             # Check to see if expected values are found in csv
             # file that we created. We will look at the last row.
-            for line in open(TEST_PATH + '/data/output_built_csv.csv'):
+            for line in open(file_directory):
                 csv_row = line.split(',')
 
             # Check if last row has these values for each column

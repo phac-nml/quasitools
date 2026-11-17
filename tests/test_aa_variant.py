@@ -39,7 +39,7 @@ VALID_DR_MUTATIONS_CSV = TEST_PATH + "/data/output/dr_report.csv"
 class TestAAVariant:
 
     @classmethod
-    def setup(self):
+    def setup_method(self):
         self.reference = TEST_PATH + "/data/hxb2_pol.fas"
         bam = TEST_PATH + "/data/align.bam"
         BED4_file = TEST_PATH + "/data/hxb2_pol.bed"
@@ -79,6 +79,11 @@ class TestAAVariant:
 
         # Build the mutation database
         self.mutation_db = MutationDB(mutation_db, genes)
+
+    def teardown_method(self):
+        aavf_path = TEST_PATH + "/data/output/temp.aavf"
+        if os.path.exists(aavf_path):
+            os.remove(aavf_path)
 
     def test_dr_mutations(self):
         reporting_threshold = 1

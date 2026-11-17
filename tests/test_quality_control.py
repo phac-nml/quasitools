@@ -30,6 +30,10 @@ TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 READS = TEST_PATH + "/data/reads_w_K103N.fastq"
 OUTPUT_DIR = TEST_PATH + "/test_quality_control_output"
 FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
+FILTER_FASTQ = TEST_PATH + "/data/sample_filter.fastq"
+MASK_FASTQ = TEST_PATH + "/data/sample_mask.fastq"
+MEAN_FASTQ = TEST_PATH + "/data/sample_mean.fastq"
+MEDIAN_FASTQ = TEST_PATH + "/data/sample2.fastq"
 
 # globals
 
@@ -59,6 +63,13 @@ class TestQualityControl:
         self.quality_control = QualityControl()
         if not os.path.isdir(OUTPUT_DIR):
             os.mkdir(OUTPUT_DIR)
+
+    @classmethod
+    def teardown_class(self):
+        shutil.rmtree(OUTPUT_DIR, ignore_errors=True)
+        for fastq_file in (FILTER_FASTQ, MASK_FASTQ, MEAN_FASTQ, MEDIAN_FASTQ):
+            if os.path.exists(fastq_file):
+                os.remove(fastq_file)
 
     @pytest.fixture
     def filters(self):
@@ -146,7 +157,7 @@ class TestQualityControl:
         filters[MASKING] == False
         filters[TRIMMING] = True
 
-        INPUT_DIR = TEST_PATH + "/data/sample_filter.fastq"
+        INPUT_DIR = FILTER_FASTQ
 
         Bio.SeqIO.write(seq_record, INPUT_DIR, "fastq")
 
@@ -211,7 +222,7 @@ class TestQualityControl:
         # to 0
         filters[MEAN_CUTOFF] = 0
 
-        INPUT_DIR = TEST_PATH + "/data/sample_mask.fastq"
+        INPUT_DIR = MASK_FASTQ
 
         Bio.SeqIO.write(seq_record, INPUT_DIR, "fastq")
 
@@ -340,7 +351,7 @@ class TestQualityControl:
         seq_record.letter_annotations["phred_quality"] = [29, 29, 31, 31]
         seq_record_list.append(seq_record)
 
-        INPUT_DIR = TEST_PATH+"/data/sample_mean.fastq"
+        INPUT_DIR = MEAN_FASTQ
 
         Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
 
@@ -384,7 +395,7 @@ class TestQualityControl:
         filters[MEDIAN_CUTOFF] = 30
         del filters[MEAN_CUTOFF]
 
-        INPUT_DIR = TEST_PATH+"/data/sample2.fastq"
+        INPUT_DIR = MEDIAN_FASTQ
 
         # more sample Biopython reads for testing
         seq_record_list = []

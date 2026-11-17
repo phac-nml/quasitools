@@ -40,15 +40,17 @@ class TestGenesFileParser:
                 f.write("%s\t%s\t%s\t%s\n" % (ref_name, genes[gene]["start"],
                                             genes[gene]["end"], gene))
 
-        parsed_genes = parse_BED4_file(valid_BED4_file, ref_name)
+        try:
+            parsed_genes = parse_BED4_file(valid_BED4_file, ref_name)
 
-        for gene in parsed_genes:
-            assert gene in genes
-            assert parsed_genes[gene]["start"] == genes[gene]["start"]
-            assert parsed_genes[gene]["end"] == genes[gene]["end"]
-            assert parsed_genes[gene]["frame"] == genes[gene]["start"] % 3
-
-        os.remove(valid_BED4_file)
+            for gene in parsed_genes:
+                assert gene in genes
+                assert parsed_genes[gene]["start"] == genes[gene]["start"]
+                assert parsed_genes[gene]["end"] == genes[gene]["end"]
+                assert parsed_genes[gene]["frame"] == genes[gene]["start"] % 3
+        finally:
+            if os.path.exists(valid_BED4_file):
+                os.remove(valid_BED4_file)
 
     def test_invalid_BED4_file(self):
         """Tests to make sure that an exception is raised when attempting to
@@ -67,7 +69,9 @@ class TestGenesFileParser:
             # This should raise a ValueError
             f.write("different_reference\t101\t200\t2")
 
-        with pytest.raises(ValueError):
-            parse_BED4_file(invalid_BED4_file, ref_name)
-
-        os.remove(invalid_BED4_file)
+        try:
+            with pytest.raises(ValueError):
+                parse_BED4_file(invalid_BED4_file, ref_name)
+        finally:
+            if os.path.exists(invalid_BED4_file):
+                os.remove(invalid_BED4_file)

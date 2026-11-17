@@ -61,50 +61,52 @@ class TestNtVariantParser:
         #Create a valid vcf file
         valid_vcf_file = TEST_PATH + "/data/valid_vcf_file.vcf"
 
-        with open(valid_vcf_file, "w+") as f:
-            f.write("##fileformat=VCFv4.2\n"
-                    "##fileDate=20171005\n"
-                    "##source=quasitools\n"
-                    "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">\n"
-                    "##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Allele Count\">\n"
-                    "##INFO=<ID=AF,Number=A,Type=Float,Description=\"Allele Frequency\">\n"
-                    "##FILTER=<ID=q30,Description=\"Quality below 30\">\n"
-                    "##FILTER=<ID=dp100,Description=\"Read depth below 100\">\n"
-                    "##FILTER=<ID=ac5,Description=\"Allele count below 5\">\n"
-                    "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO"
-                    )
+        try:
+            with open(valid_vcf_file, "w+") as f:
+                f.write("##fileformat=VCFv4.2\n"
+                        "##fileDate=20171005\n"
+                        "##source=quasitools\n"
+                        "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">\n"
+                        "##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Allele Count\">\n"
+                        "##INFO=<ID=AF,Number=A,Type=Float,Description=\"Allele Frequency\">\n"
+                        "##FILTER=<ID=q30,Description=\"Quality below 30\">\n"
+                        "##FILTER=<ID=dp100,Description=\"Read depth below 100\">\n"
+                        "##FILTER=<ID=ac5,Description=\"Allele count below 5\">\n"
+                        "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO"
+                        )
 
-            for rid in variants_obj.variants:
-                for pos in variants_obj.variants[rid]:
-                    for alt in variants_obj.variants[rid][pos]:
+                for rid in variants_obj.variants:
+                    for pos in variants_obj.variants[rid]:
+                        for alt in variants_obj.variants[rid][pos]:
+                            variant = variants_obj.variants[rid][pos][alt]
+                            f.write("\n%s\t%i\t%s\t%s\t%s\t%s\t%s" % (
+                                variant.chrom, int(variant.pos),
+                                variant.id, variant.ref,
+                                variant.alt, variant.qual,
+                                variant.filter) )
+                            f.write("\tDP=%i;AC=%i;AF=%0.4f" % (int(variant.info["DP"]),
+                                                                int(variant.info["AC"]),
+                                                                float(variant.info["AF"])))
+
+            parsed_nt_var = parse_nt_variants_from_vcf(valid_vcf_file, rs)
+
+            # Check equality of parsed NTVariantCollection vs. the valid NTVariantCollection
+            for rid in parsed_nt_var.variants:
+                for pos in parsed_nt_var.variants[rid]:
+                    for alt in parsed_nt_var.variants[rid][pos]:
+                        parsed_variant = parsed_nt_var.variants[rid][pos][alt]
                         variant = variants_obj.variants[rid][pos][alt]
-                        f.write("\n%s\t%i\t%s\t%s\t%s\t%s\t%s" % (
-                            variant.chrom, int(variant.pos),
-                            variant.id, variant.ref,
-                            variant.alt, variant.qual,
-                            variant.filter) )
-                        f.write("\tDP=%i;AC=%i;AF=%0.4f" % (int(variant.info["DP"]),
-                                                            int(variant.info["AC"]),
-                                                            float(variant.info["AF"])))
 
-        parsed_nt_var = parse_nt_variants_from_vcf(valid_vcf_file, rs)
-
-        # Check equality of parsed NTVariantCollection vs. the valid NTVariantCollection
-        for rid in parsed_nt_var.variants:
-            for pos in parsed_nt_var.variants[rid]:
-                for alt in parsed_nt_var.variants[rid][pos]:
-                    parsed_variant = parsed_nt_var.variants[rid][pos][alt]
-                    variant = variants_obj.variants[rid][pos][alt]
-
-                    assert parsed_variant.chrom == variant.chrom
-                    assert parsed_variant.pos == variant.pos
-                    assert parsed_variant.id == variant.id
-                    assert parsed_variant.ref == variant.ref
-                    assert parsed_variant.alt == variant.alt
-                    assert parsed_variant.qual == variant.qual
-                    assert parsed_variant.filter == variant.filter
-                    assert parsed_variant.info["DP"] == variant.info["DP"]
-                    assert parsed_variant.info["AC"] == variant.info["AC"]
-                    assert parsed_variant.info["AF"] == variant.info["AF"]
-
-        os.remove(valid_vcf_file)
+                        assert parsed_variant.chrom == variant.chrom
+                        assert parsed_variant.pos == variant.pos
+                        assert parsed_variant.id == variant.id
+                        assert parsed_variant.ref == variant.ref
+                        assert parsed_variant.alt == variant.alt
+                        assert parsed_variant.qual == variant.qual
+                        assert parsed_variant.filter == variant.filter
+                        assert parsed_variant.info["DP"] == variant.info["DP"]
+                        assert parsed_variant.info["AC"] == variant.info["AC"]
+                        assert parsed_variant.info["AF"] == variant.info["AF"]
+        finally:
+            if os.path.exists(valid_vcf_file):
+                os.remove(valid_vcf_file)
