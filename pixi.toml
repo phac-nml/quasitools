@@ -1,0 +1,13 @@
+[workspace]
+authors = ["Eric Enns <492127+ericenns@users.noreply.github.com>"]
+channels = ["bioconda", "conda-forge"]
+name = "quasitools"
+platforms = ["linux-64"]
+version = "0.1.0"
+channel-priority = "disabled"
+
+[tasks]
+
+[dependencies]
+samtools = "1.24.*"
+bowtie2 = ">=2.5.5,<3"
