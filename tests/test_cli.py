@@ -29,13 +29,16 @@ FORWARD = TEST_PATH + '/data/forward.fastq'
 REVERSE = TEST_PATH + '/data/reverse.fastq'
 
 @pytest.fixture
-def runner():
+def runner(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
     return CliRunner()
 
 def test_cli(runner):
     result = runner.invoke(cli.cli)
-    assert result.exit_code == 0
-    assert not result.exception
+    # Click 8.1+ raises a UsageError (exit code 2) instead of exiting 0
+    # when no_args_is_help is triggered.
+    assert result.exit_code == 2
+    assert result.exception
     assert result.output.split('\n', 1)[0].strip() == 'Usage: cli [OPTIONS] COMMAND [ARGS]...'
 
 def test_cli_distance(runner):
