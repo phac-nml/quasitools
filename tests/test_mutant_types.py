@@ -34,7 +34,7 @@ VALID_MUTANT_TYPES_CSV = TEST_PATH + "/data/output/mutant_types.csv"
 class TestMutantTypes:
 
     @classmethod
-    def setup(self):
+    def setup_method(self):
         bam = TEST_PATH + "/data/align.bam"
         reference = TEST_PATH + "/data/hxb2_pol.fas"
         BED4_file = TEST_PATH + "/data/hxb2_pol.bed"
