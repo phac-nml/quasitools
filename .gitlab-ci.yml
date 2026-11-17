@@ -1,12 +1,14 @@
 image: "python:3.12"
 variables:
   PIXI_CACHE_DIR: "$CI_PROJECT_DIR/.pixi_cache"
-before_script:
-  - curl -fsSL https://pixi.sh/install.sh | bash
-  - export PATH="$HOME/.pixi/bin:$PATH"
-  - pixi install --locked
 
 tests:3.12:
+  before_script:
+    - curl -fsSL https://pixi.sh/install.sh | bash
+    - export PATH="$HOME/.pixi/bin:$PATH"
+    - pixi install --locked
+    - eval "$(pixi shell-hook)"
+    - pip install tox
   script:
     - tox -r -e py312
 flake8:
