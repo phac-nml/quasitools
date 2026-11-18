@@ -2,7 +2,8 @@ image: "python:3.12"
 variables:
   PIXI_CACHE_DIR: "$CI_PROJECT_DIR/.pixi_cache"
 
-tests:3.12:
+tests:
+  image: "python:${PYTHON_VERSION}"
   before_script:
     - curl -fsSL https://pixi.sh/install.sh | bash
     - export PATH="$HOME/.pixi/bin:$PATH"
@@ -10,7 +11,17 @@ tests:3.12:
     - eval "$(pixi shell-hook)"
     - pip install tox
   script:
-    - tox -r -e py312
+    - tox -r -e "$TOX_ENV"
+  parallel:
+    matrix:
+      - PYTHON_VERSION: "3.12"
+        TOX_ENV: "py312"
+      - PYTHON_VERSION: "3.13"
+        TOX_ENV: "py313"
+      - PYTHON_VERSION: "3.14"
+        TOX_ENV: "py314"
+      - PYTHON_VERSION: "3.15"
+        TOX_ENV: "py315"
 flake8:
   before_script:
     - pip install tox
