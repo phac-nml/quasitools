@@ -58,3 +58,24 @@ class TestMutationDB:
         assert positions[30] == 142
 
         assert positions[-1] == 921
+def test_mutation_constructor():
+    from quasitools.mutations import Mutation
+
+    mutation = Mutation('gag', 'A', 1, 0.5, 'PASS')
+
+    assert mutation.gene == 'gag'
+    assert mutation.filter == 'PASS'
+
+
+def test_mutation_db_rejects_invalid_surveillance(tmp_path):
+    from quasitools.mutations import MutationDB
+
+    database = tmp_path / 'mutations.tsv'
+    database.write_text('gag\tA\t1\tK\tNRTI\tMaybe\tcomment\n')
+
+    try:
+        MutationDB(str(database), {'gag': {'start': 0}})
+    except ValueError as error:
+        assert 'incorrectlyformatted' in str(error)
+    else:
+        raise AssertionError('Expected invalid surveillance to fail')

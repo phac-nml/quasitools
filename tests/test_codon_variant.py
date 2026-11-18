@@ -182,4 +182,17 @@ class TestCodonVariantCollection:
             if valid_dnds_values[pos][0:1] != "#":
                 assert valid_dnds_values[pos] == \
                     test_values[pos]
+
+    def test_report_dnds_values_reports_undefined_ratio(self):
+        csv = TEST_PATH + "/data/output/mutant_types.csv"
+        variants = parse_codon_variants(csv, self.references)
+        for gene in variants.variants:
+            for pos in variants.variants[gene]:
+                for codon in variants.variants[gene][pos]:
+                    variants.variants[gene][pos][codon].mutant_freq = 10000
+
+        report = variants.report_dnds_values(
+            self.references[0].seq, self.offset)
+
+        assert "N/A" in report
     
