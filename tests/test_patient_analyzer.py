@@ -17,6 +17,7 @@ specific language governing permissions and limitations under the License.
 """
 
 import os
+import subprocess
 import shutil
 import tempfile
 from collections import defaultdict
@@ -149,3 +150,54 @@ class TestPatientAnalyzer:
 
         assert not os.path.isfile("%s/tmp.bam" % self.output_dir)
         assert not os.path.isfile("%s/tmp.sam" % self.output_dir)
+
+    def test_analyze_reads_reraises_bam_error(self, monkeypatch):
+        def fail(_):
+            raise RuntimeError("bam failed")
+
+        monkeypatch.setattr(self.patient_analyzer, "generate_bam", fail)
+        with pytest.raises(RuntimeError, match="bam failed"):
+            self.patient_analyzer.analyze_reads(
+                "sample", defaultdict(dict), 1, False)
+
+    def test_generate_bam_reraises_tool_errors_and_closes_files(
+            self, monkeypatch):
+        class Process:
+            returncode = 0
+
+        monkeypatch.setattr(
+            subprocess,
+            "Popen",
+            lambda *args, **kwargs: Process(),
+        )
+        analyzer = PatientAnalyzer.__new__(PatientAnalyzer)
+        analyzer.output_dir = self.output_dir
+        analyzer.reference = REFERENCE
+        analyzer.filtered_reads_dir = self.filtered_dir
+        for failing_tool in ("bowtie2", "samtools view", "samtools sort",
+                             "samtools index"):
+            def process_output(proc, log_fn, name, failing_tool=failing_tool):
+                if name == failing_tool:
+                    raise RuntimeError(name)
+
+            monkeypatch.setattr(
+                analyzer, "process_tool_output", process_output)
+            with pytest.raises(RuntimeError, match=failing_tool):
+                analyzer.generate_bam("sample")
+
+        monkeypatch.setattr(analyzer, "process_tool_output", lambda *args: None)
+        monkeypatch.setattr(os, "unlink", lambda path: None)
+        assert analyzer.generate_bam("sample").endswith("align.bam")
+
+    def test_process_tool_output_records_errors(self, tmp_path):
+        class Process:
+            returncode = 1
+
+            def communicate(self):
+                return b'', b'failure'
+
+        log = tmp_path / 'tool.log'
+        with pytest.raises(Exception, match='tool returned'):
+            self.patient_analyzer.process_tool_output(
+                Process(), str(log), 'tool')
+        assert 'failure' in log.read_text()

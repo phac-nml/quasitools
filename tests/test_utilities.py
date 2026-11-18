@@ -33,6 +33,17 @@ def test_sam_alignment_to_padded_alignment():
     assert pad_match == '|||||||||| |||||||||||||||||||||||||'
     assert pad_query == 'AGCTTAGCTA-GCTACCTATATCTTGGTCTTGGCCG'
 
+def test_sam_alignment_to_padded_alignment_ignores_clips_and_handles_ref_skip():
+    alignment = AlignedSegment()
+    alignment.reference_start = 0
+    alignment.query_sequence = 'AC'
+    alignment.cigartuples = ((5, 1), (0, 2), (4, 1))
+    ref = Reference('test', 'AG')
+
+    padded = sam_alignment_to_padded_alignment(alignment, ref)
+
+    assert padded == ('AG', '||', 'A')
+
 def test_pairwise_alignment_to_differences():
     ref = Reference('test', 'AGCTTAGCTAAGCTACCTATATCTTGGTCTTGGCCG')
     pad_ref = 'AGCTTAGCTAAGCTACCTATATCTTGGTCTTGGCCG'

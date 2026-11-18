@@ -193,6 +193,13 @@ class TestPileups:
     pileup10_num_start_truncated = 0
     pileup10_num_end_truncated = 4
 
+    def test_normalize_pileups_preserves_zero_coverage_as_zero(self):
+        pileups = Pileup_List([Pileup([{'A': 0, 'C': 0, '-': 2}])])
+
+        pileups.normalize_pileups()
+
+        assert pileups.pileups[0].pileup == [{'A': 0, 'C': 0}]
+
     """
     TESTS
     """

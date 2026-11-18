@@ -209,3 +209,22 @@ class TestAAVariant:
 
                 for token in aa_variants_tokens:
                     assert token in valid_variants_tokens
+
+    def test_filter_uses_info_and_appends_existing_filter(self):
+        variant = next(
+            variant
+            for chrom in self.aa_collection.variants.values()
+            for positions in chrom.values()
+            for confidence in positions.values()
+            for variant in confidence.values()
+        )
+        for chrom in self.aa_collection.variants.values():
+            for positions in chrom.values():
+                for confidence in positions.values():
+                    for current_variant in confidence.values():
+                        current_variant.info['CAT'] = 1
+
+        self.aa_collection.filter('cat', 'CAT==1', True)
+        self.aa_collection.filter('cat2', 'CAT==1', True)
+
+        assert variant.filter == 'cat;cat2'

@@ -20,6 +20,7 @@ import os
 from quasitools.distance import DistanceMatrix
 from quasitools.pileup import Pileup_List
 from quasitools.pileup import Pileup
+from quasitools.calculate import hamming_distance
 
 class TestDistance:
 
@@ -71,6 +72,10 @@ test5.bam,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000"""
 
     pileup0_startpos = 0
     pileup0_endpos = 0
+
+    def test_hamming_distance_rejects_unequal_sequences(self):
+        with pytest.raises(ValueError, match="unequal length"):
+            hamming_distance("AC", "A")
 
     #files for testing pileup matrix
     pileup1 = [[{'A': 1, 'T': 1, 'C': 1, 'G': 1}, {'A': 1, 'T': 1, 'C': 1}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}, {'T': 12}, {'C': 12}, {'G': 12}, {'A': 12}], #test1
