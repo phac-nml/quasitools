@@ -54,6 +54,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.23-hbd8a1cb_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/python_abi-3.15-9_cp315.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tzdata-2026e-h5d301ff_0.conda
+      - pypi: ./
       - pypi: https://files.pythonhosted.org/packages/31/7d/164b7ffc8624fe9efb4221bf9af485d5c1e41b9ae118045d2b6dc5457d8b/click-8.5.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/4e/2b/cff50cfebfc5df04e4926b0ead36eb95f851cc19db321b34a043a8a5c67d/biopython-1.88-cp315-cp315-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/91/d4/bf3e735dc0b9d5a8ff45079d2540e17d3aff7a2f0048dd8f552ffd031d2b/scipy-1.18.1-cp315-cp315-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
@@ -633,6 +634,16 @@ packages:
   run_exports: {}
   size: 119208
   timestamp: 1792758382821
+- pypi: ./
+  name: quasitools
+  requires_dist:
+  - biopython
+  - click
+  - numpy
+  - pysam
+  - scipy
+  - pyaavf
+  requires_python: '>=3.12'
 - pypi: https://files.pythonhosted.org/packages/31/7d/164b7ffc8624fe9efb4221bf9af485d5c1e41b9ae118045d2b6dc5457d8b/click-8.5.1-py3-none-any.whl
   name: click
   version: 8.5.1

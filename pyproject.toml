@@ -55,6 +55,9 @@ channel-priority = "disabled"
 samtools = "1.24.*"
 bowtie2 = ">=2.5.5,<3"
 
+[tool.pixi.pypi-dependencies]
+quasitools = { path = ".", editable = true }
+
 [tool.tox]
 env_list = ["py312", "py313", "py314", "py315"]
 
