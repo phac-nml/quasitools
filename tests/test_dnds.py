@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2015
+Copyright Government of Canada 2015-2026
 
 Written by: Camy Tran, National Microbiology Laboratory,
             Public Health Agency of Canada
@@ -28,7 +28,7 @@ VALID_DNDS_REPORT = TEST_PATH + "/data/output/dnds_report.csv"
 
 class TestDnds:
     @classmethod
-    def setup(self):
+    def setup_method(self):
         csv = TEST_PATH + "/data/output/mutant_types.csv"
         reference = TEST_PATH + "/data/hxb2_pol.fas"
         self.offset = 1269

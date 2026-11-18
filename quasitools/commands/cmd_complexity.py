@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2019
+Copyright Government of Canada 2019-2026
 
 Written by: Eric Marinier and Ahmed Kidwai, Public Health Agency of Canada
 
@@ -32,6 +32,8 @@ from quasitools.parsers.mapped_read_parser import \
 
 # Here we are setting up a nesting of Click commands. This allows us to run
 # quasitools complexity only when grouped with a subcommand (BAM or FASTA)
+
+
 @click.group(invoke_without_command=False)
 @click.pass_context
 def cli(ctx):

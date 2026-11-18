@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2017
+Copyright Government of Canada 2017-2026
 
 Written by: Camy Tran, National Microbiology Laboratory,
             Public Health Agency of Canada
@@ -26,7 +26,7 @@ from quasitools.codon_variant import CodonVariant, CodonVariantCollection
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class TestCodonVariantParser:
-    def test_valid_csv_file(self):
+    def test_valid_csv_file(self, tmp_path):
         """Tests to make sure that a valid codon variant csv file is properly
         parsed into a CodonVariantCollection object.
         """
@@ -58,13 +58,13 @@ class TestCodonVariantParser:
             pos = int(variant.nt_start)-int(variant.nt_start_gene)
             var_obj.variants["gag"][pos]["aAa"] = variant
 
-        valid_csv = TEST_PATH + "/data/valid_csv.csv"
+        valid_csv = str(tmp_path / "valid_csv.csv")
 
         with open(valid_csv, "w+") as f:
             f.write("#gene,nt position (gene),nt start position,"
                 "nt end position,ref codon,mutant codon,ref AA,mutant AA,"
                 "coverage,mutant frequency,mutant type,NS count,S count")
-            
+
             for gene in var_obj.variants:
                 for pos in var_obj.variants[gene]:
                     for codon in var_obj.variants[gene][pos]:
@@ -76,7 +76,6 @@ class TestCodonVariantParser:
                             variant.mutant_codon, variant.ref_aa, variant.mutant_aa,
                             variant.coverage, variant.mutant_freq, variant.mutant_type,
                             variant.ns_count, variant.s_count))
-
 
         parsed_codon_variants = parse_codon_variants(valid_csv, rs)
 
@@ -100,6 +99,4 @@ class TestCodonVariantParser:
                     assert parsed_variant.mutant_type == variant.mutant_type
                     assert parsed_variant.ns_count == variant.ns_count
                     assert parsed_variant.s_count == variant.s_count
-
-        os.remove(valid_csv)
 

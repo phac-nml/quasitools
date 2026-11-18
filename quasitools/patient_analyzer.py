@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2017 - 2018
+Copyright Government of Canada 2017 - 2026
 
 Written by: Camy Tran and Matthew Fogel, National Microbiology Laboratory,
             Public Health Agency of Canada
@@ -93,7 +93,7 @@ class PatientAnalyzer():
         try:
             bam = self.generate_bam(fasta_id)
         except Exception as error:
-            raise(error)
+            raise error
 
         if not self.quiet:
             print("# Loading read mappings...")
@@ -233,7 +233,7 @@ class PatientAnalyzer():
         try:
             self.process_tool_output(proc, log_fn, "bowtie2")
         except Exception as error:
-            raise(error)
+            raise error
 
         # Convert sam output to bam output
         sam_to_bam_cmd = ["samtools", "view", "-bt",
@@ -246,7 +246,7 @@ class PatientAnalyzer():
         try:
             self.process_tool_output(proc, log_fn, "samtools view")
         except Exception as error:
-            raise(error)
+            raise error
 
         # Sort bam output
         sort_bam_cmd = ["samtools", "sort", bam_fn, "-T", bowtietwo_bam_output,
@@ -259,7 +259,7 @@ class PatientAnalyzer():
         try:
             self.process_tool_output(proc, log_fn, "samtools sort")
         except Exception as error:
-            raise(error)
+            raise error
 
         # Index bam output
         index_bam_cmd = ["samtools", "index", sorted_bam_fn]
@@ -271,7 +271,7 @@ class PatientAnalyzer():
         try:
             self.process_tool_output(proc, log_fn, "samtools index")
         except Exception as error:
-            raise(error)
+            raise error
 
         bam_fh.close()
         sam_fh.close()

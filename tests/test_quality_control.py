@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2018
+Copyright Government of Canada 2018-2026
 
 Written by: Matthew Fogel, National Microbiology Laboratory,
             Public Health Agency of Canada
@@ -18,6 +18,7 @@ specific language governing permissions and limitations under the License.
 
 import os
 import shutil
+import tempfile
 from collections import defaultdict
 import pytest
 from quasitools.patient_analyzer import PatientAnalyzer
@@ -28,8 +29,6 @@ from Bio.SeqRecord import SeqRecord
 
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 READS = TEST_PATH + "/data/reads_w_K103N.fastq"
-OUTPUT_DIR = TEST_PATH + "/test_quality_control_output"
-FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
 
 # globals
 
@@ -57,8 +56,19 @@ class TestQualityControl:
     def setup_class(self):
         # Test defaults
         self.quality_control = QualityControl()
-        if not os.path.isdir(OUTPUT_DIR):
-            os.mkdir(OUTPUT_DIR)
+        self.tmp_dir = tempfile.mkdtemp()
+        self.output_dir = os.path.join(self.tmp_dir, "test_quality_control_output")
+        self.filtered_dir = os.path.join(self.output_dir, "filtered.fastq")
+        self.filter_fastq = os.path.join(self.tmp_dir, "sample_filter.fastq")
+        self.mask_fastq = os.path.join(self.tmp_dir, "sample_mask.fastq")
+        self.mean_fastq = os.path.join(self.tmp_dir, "sample_mean.fastq")
+        self.median_fastq = os.path.join(self.tmp_dir, "sample2.fastq")
+        if not os.path.isdir(self.output_dir):
+            os.mkdir(self.output_dir)
+
+    @classmethod
+    def teardown_class(self):
+        shutil.rmtree(self.tmp_dir, ignore_errors=True)
 
     @pytest.fixture
     def filters(self):
@@ -146,14 +156,14 @@ class TestQualityControl:
         filters[MASKING] == False
         filters[TRIMMING] = True
 
-        INPUT_DIR = TEST_PATH + "/data/sample_filter.fastq"
+        INPUT_DIR = self.filter_fastq
 
         Bio.SeqIO.write(seq_record, INPUT_DIR, "fastq")
 
-        self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
+        self.quality_control.filter_reads(INPUT_DIR, self.filtered_dir, filters)
 
         # there should be only one object in the seq_rec_obj iterable
-        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+        seq_rec_obj = Bio.SeqIO.parse(self.filtered_dir, "fastq")
         recs = list(seq_rec_obj)
         assert len(recs) == 1
         assert len(recs[0].seq) == 2
@@ -211,13 +221,13 @@ class TestQualityControl:
         # to 0
         filters[MEAN_CUTOFF] = 0
 
-        INPUT_DIR = TEST_PATH + "/data/sample_mask.fastq"
+        INPUT_DIR = self.mask_fastq
 
         Bio.SeqIO.write(seq_record, INPUT_DIR, "fastq")
 
-        self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
+        self.quality_control.filter_reads(INPUT_DIR, self.filtered_dir, filters)
 
-        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+        seq_rec_obj = Bio.SeqIO.parse(self.filtered_dir, "fastq")
         recs = list(seq_rec_obj)
         assert len(recs) == 1
         # there should be only one object in the seq_rec_obj iterable
@@ -340,18 +350,18 @@ class TestQualityControl:
         seq_record.letter_annotations["phred_quality"] = [29, 29, 31, 31]
         seq_record_list.append(seq_record)
 
-        INPUT_DIR = TEST_PATH+"/data/sample_mean.fastq"
+        INPUT_DIR = self.mean_fastq
 
         Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
 
-        self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
+        self.quality_control.filter_reads(INPUT_DIR, self.filtered_dir, filters)
 
-        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+        seq_rec_obj = Bio.SeqIO.parse(self.filtered_dir, "fastq")
         assert(sum(1 for seq in seq_rec_obj) == 4)
 
-        self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
+        self.quality_control.filter_reads(INPUT_DIR, self.filtered_dir, filters)
 
-        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+        seq_rec_obj = Bio.SeqIO.parse(self.filtered_dir, "fastq")
 
         for read in seq_rec_obj:
             mean = (float(sum(read.letter_annotations['phred_quality'])) /
@@ -384,7 +394,7 @@ class TestQualityControl:
         filters[MEDIAN_CUTOFF] = 30
         del filters[MEAN_CUTOFF]
 
-        INPUT_DIR = TEST_PATH+"/data/sample2.fastq"
+        INPUT_DIR = self.median_fastq
 
         # more sample Biopython reads for testing
         seq_record_list = []
@@ -408,8 +418,8 @@ class TestQualityControl:
 
 
         Bio.SeqIO.write(seq_record_list, INPUT_DIR, "fastq")
-        self.quality_control.filter_reads(INPUT_DIR, FILTERED_DIR, filters)
-        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+        self.quality_control.filter_reads(INPUT_DIR, self.filtered_dir, filters)
+        seq_rec_obj = Bio.SeqIO.parse(self.filtered_dir, "fastq")
 
         for read in seq_rec_obj:
             length = len(read.seq)

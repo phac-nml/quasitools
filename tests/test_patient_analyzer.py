@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2017 - 2018
+Copyright Government of Canada 2017 - 2026
 
 Written by: Camy Tran and Matthew Fogel, National Microbiology Laboratory,
             Public Health Agency of Canada
@@ -18,6 +18,7 @@ specific language governing permissions and limitations under the License.
 
 import os
 import shutil
+import tempfile
 from collections import defaultdict
 import pytest
 from quasitools.patient_analyzer import PatientAnalyzer
@@ -31,8 +32,6 @@ REVERSE = TEST_PATH + "/data/reverse.fastq"
 REFERENCE = TEST_PATH + "/data/hxb2_pol.fas"
 BED4_FILE = TEST_PATH + "/data/hxb2_pol.bed"
 MUTATION_DB = TEST_PATH + "/data/mutation_db.tsv"
-OUTPUT_DIR = TEST_PATH + "/test_patient_analyzer_output"
-FILTERED_DIR = OUTPUT_DIR + "/filtered.fastq"
 
 from quasitools.quality_control import TRIMMING
 
@@ -58,21 +57,27 @@ class TestPatientAnalyzer:
     @classmethod
     def setup_class(self):
         # Test defaults
+        self.tmp_dir = tempfile.mkdtemp()
+        self.output_dir = os.path.join(self.tmp_dir, "test_patient_analyzer_output")
+        self.filtered_dir = os.path.join(self.output_dir, "filtered.fastq")
         self.patient_analyzer = PatientAnalyzer(id="test",reads=READS,
                                  reference=REFERENCE,
-                                 output_dir=OUTPUT_DIR,
+                                 output_dir=self.output_dir,
                                  BED4_file=BED4_FILE,
                                  mutation_db=MUTATION_DB,
                                  quiet=False, consensus_pct=20)
 
+    @classmethod
+    def teardown_class(self):
+        shutil.rmtree(self.tmp_dir, ignore_errors=True)
 
     def test_combine_reads(self):
         # Combine the fwd and reverse into one file
-        reads = "%s/combined_reads.fastq" % OUTPUT_DIR
+        reads = "%s/combined_reads.fastq" % self.output_dir
         cat_cmd = "cat %s %s > %s" % (FORWARD, REVERSE, reads)
         os.system(cat_cmd)
 
-        assert os.path.isfile("%s/combined_reads.fastq" % OUTPUT_DIR)
+        assert os.path.isfile("%s/combined_reads.fastq" % self.output_dir)
 
     def test_filter_reads(self):
 
@@ -90,7 +95,7 @@ class TestPatientAnalyzer:
 
         assert status # assert that status is true (filtering has occured)
 
-        seq_rec_obj = Bio.SeqIO.parse(FILTERED_DIR, "fastq")
+        seq_rec_obj = Bio.SeqIO.parse(self.filtered_dir, "fastq")
 
         for seq in seq_rec_obj:
             avg_score = quality_filters[MEAN_CUTOFF] + 1
@@ -105,14 +110,14 @@ class TestPatientAnalyzer:
         # more tests for filtering reads can be found in test_quality_control
 
     def test_generate_bam(self):
-        assert not os.path.isfile("%s/align.bam" % OUTPUT_DIR)
+        assert not os.path.isfile("%s/align.bam" % self.output_dir)
         fasta_id = os.path.basename(self.patient_analyzer.reads).split('.')[0]
         self.patient_analyzer.generate_bam(fasta_id)
 
-        assert os.path.isfile("%s/align.bam" % OUTPUT_DIR)
+        assert os.path.isfile("%s/align.bam" % self.output_dir)
 
-        if os.path.isfile("%s/align.bam" % OUTPUT_DIR):
-            os.remove("%s/align.bam" % OUTPUT_DIR)
+        if os.path.isfile("%s/align.bam" % self.output_dir):
+            os.remove("%s/align.bam" % self.output_dir)
 
     def test_analyze_reads(self):
         quality_filters = defaultdict(dict)
@@ -135,16 +140,12 @@ class TestPatientAnalyzer:
                                             reporting_threshold,
                                             generate_consensus)
 
-        assert os.path.isfile("%s/consensus.fasta" % OUTPUT_DIR)
-        assert os.path.isfile("%s/coverage_file.csv" % OUTPUT_DIR)
-        assert os.path.isfile("%s/dr_report.csv" % OUTPUT_DIR)
-        assert os.path.isfile("%s/hydra.vcf" % OUTPUT_DIR)
-        assert os.path.isfile("%s/mutation_report.aavf" % OUTPUT_DIR)
-        assert os.path.isfile("%s/stats.txt" % OUTPUT_DIR)
+        assert os.path.isfile("%s/consensus.fasta" % self.output_dir)
+        assert os.path.isfile("%s/coverage_file.csv" % self.output_dir)
+        assert os.path.isfile("%s/dr_report.csv" % self.output_dir)
+        assert os.path.isfile("%s/hydra.vcf" % self.output_dir)
+        assert os.path.isfile("%s/mutation_report.aavf" % self.output_dir)
+        assert os.path.isfile("%s/stats.txt" % self.output_dir)
 
-        assert not os.path.isfile("%s/tmp.bam" % OUTPUT_DIR)
-        assert not os.path.isfile("%s/tmp.sam" % OUTPUT_DIR)
-
-        # Remove the output directory so that multiple tests (python 2.x, 3.x, etc.)
-        # can run without erroring out with "File/directory exists"
-        shutil.rmtree("%s" % OUTPUT_DIR)
+        assert not os.path.isfile("%s/tmp.bam" % self.output_dir)
+        assert not os.path.isfile("%s/tmp.sam" % self.output_dir)

@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2015
+Copyright Government of Canada 2015-2026
 
 Written by: Camy Tran, National Microbiology Laboratory,
             Public Health Agency of Canada

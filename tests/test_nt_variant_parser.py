@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2017
+Copyright Government of Canada 2017-2026
 
 Written by: Camy Tran, National Microbiology Laboratory,
             Public Health Agency of Canada
@@ -27,7 +27,7 @@ from quasitools.nt_variant import NTVariant, NTVariantCollection
 TEST_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class TestNtVariantParser:
-    def test_valid_vcf_file(self):
+    def test_valid_vcf_file(self, tmp_path):
         """Tests to ensure that valid vcf files are parsed properly."""
 
         reference = TEST_PATH + \
@@ -59,7 +59,7 @@ class TestNtVariantParser:
             variants_obj.variants["hxb2_pol"][i]['t'] = variant
 
         #Create a valid vcf file
-        valid_vcf_file = TEST_PATH + "/data/valid_vcf_file.vcf"
+        valid_vcf_file = str(tmp_path / "valid_vcf_file.vcf")
 
         with open(valid_vcf_file, "w+") as f:
             f.write("##fileformat=VCFv4.2\n"
@@ -106,5 +106,3 @@ class TestNtVariantParser:
                     assert parsed_variant.info["DP"] == variant.info["DP"]
                     assert parsed_variant.info["AC"] == variant.info["AC"]
                     assert parsed_variant.info["AF"] == variant.info["AF"]
-
-        os.remove(valid_vcf_file)

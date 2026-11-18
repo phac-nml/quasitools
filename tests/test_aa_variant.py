@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2017
+Copyright Government of Canada 2017-2026
 
 Written by: Cole Peters, Eric Chubaty, National Microbiology Laboratory, Public Health Agency of Canada
 
@@ -18,7 +18,9 @@ specific language governing permissions and limitations under the License.
 import pytest
 import os
 import re
+import shutil
 import string
+import tempfile
 import PyAAVF.parser as parser
 from quasitools.aa_census import AACensus, CONFIDENT
 from quasitools.aa_variant import AAVariantCollection
@@ -39,7 +41,8 @@ VALID_DR_MUTATIONS_CSV = TEST_PATH + "/data/output/dr_report.csv"
 class TestAAVariant:
 
     @classmethod
-    def setup(self):
+    def setup_method(self):
+        self.tmp_dir = tempfile.mkdtemp()
         self.reference = TEST_PATH + "/data/hxb2_pol.fas"
         bam = TEST_PATH + "/data/align.bam"
         BED4_file = TEST_PATH + "/data/hxb2_pol.bed"
@@ -80,6 +83,9 @@ class TestAAVariant:
         # Build the mutation database
         self.mutation_db = MutationDB(mutation_db, genes)
 
+    def teardown_method(self):
+        shutil.rmtree(self.tmp_dir, ignore_errors=True)
+
     def test_dr_mutations(self):
         reporting_threshold = 1
 
@@ -98,7 +104,7 @@ class TestAAVariant:
             assert dr_mutations == collection
 
     def test_aa_variants(self):
-        aavf_path = TEST_PATH + "/data/output/temp.aavf"
+        aavf_path = os.path.join(self.tmp_dir, "temp.aavf")
         aavf_out = open(aavf_path, "w")
 
         # Read from file and make sure there are no empty lines
@@ -150,7 +156,7 @@ class TestAAVariant:
 
     def test_aa_variants_nodb(self):
         # Same as previous test but for no mutation db
-        aavf_path = TEST_PATH + "/data/output/temp.aavf"
+        aavf_path = os.path.join(self.tmp_dir, "temp.aavf")
         aavf_out = open(aavf_path, "w")
 
         # Read from file and make sure there are no empty lines

@@ -1,7 +1,7 @@
 """
 # =============================================================================
 
-Copyright Government of Canada 2018
+Copyright Government of Canada 2018-2026
 
 Written by: Eric Marinier, Public Health Agency of Canada,
     National Microbiology Laboratory

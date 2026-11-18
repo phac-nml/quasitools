@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2017
+Copyright Government of Canada 2017-2026
 
 Written by: Cole Peters, National Microbiology Laboratory, Public Health Agency of Canada
 
@@ -20,14 +20,13 @@ import os
 from quasitools.parsers.genes_file_parser import parse_BED4_file
 
 class TestGenesFileParser:
-    def test_valid_BED4_file(self):
+    def test_valid_BED4_file(self, tmp_path):
         """Tests to make sure that valid BED4+ files (bed files with at least 4
         columns) are parsed properly.
         """
 
         # Create a valid BED4 file
-        valid_BED4_file = os.path.join(os.path.dirname(
-            os.path.abspath(__file__)), "data", "valid_BED4_file.bed")
+        valid_BED4_file = str(tmp_path / "valid_BED4_file.bed")
 
         ref_name = "ref1"
 
@@ -48,16 +47,13 @@ class TestGenesFileParser:
             assert parsed_genes[gene]["end"] == genes[gene]["end"]
             assert parsed_genes[gene]["frame"] == genes[gene]["start"] % 3
 
-        os.remove(valid_BED4_file)
-
-    def test_invalid_BED4_file(self):
+    def test_invalid_BED4_file(self, tmp_path):
         """Tests to make sure that an exception is raised when attempting to
         parse an invalid BED4 file.
         """
 
         # Create an invalid genes file
-        invalid_BED4_file = os.path.join(os.path.dirname(
-            os.path.abspath(__file__)), "data", "invalid_BED4_file.bed")
+        invalid_BED4_file = str(tmp_path / "invalid_BED4_file.bed")
 
         ref_name = "ref1"
 
@@ -69,5 +65,3 @@ class TestGenesFileParser:
 
         with pytest.raises(ValueError):
             parse_BED4_file(invalid_BED4_file, ref_name)
-
-        os.remove(invalid_BED4_file)
