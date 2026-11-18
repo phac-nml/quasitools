@@ -20,14 +20,13 @@ import os
 from quasitools.parsers.genes_file_parser import parse_BED4_file
 
 class TestGenesFileParser:
-    def test_valid_BED4_file(self):
+    def test_valid_BED4_file(self, tmp_path):
         """Tests to make sure that valid BED4+ files (bed files with at least 4
         columns) are parsed properly.
         """
 
         # Create a valid BED4 file
-        valid_BED4_file = os.path.join(os.path.dirname(
-            os.path.abspath(__file__)), "data", "valid_BED4_file.bed")
+        valid_BED4_file = str(tmp_path / "valid_BED4_file.bed")
 
         ref_name = "ref1"
 
@@ -40,26 +39,21 @@ class TestGenesFileParser:
                 f.write("%s\t%s\t%s\t%s\n" % (ref_name, genes[gene]["start"],
                                             genes[gene]["end"], gene))
 
-        try:
-            parsed_genes = parse_BED4_file(valid_BED4_file, ref_name)
+        parsed_genes = parse_BED4_file(valid_BED4_file, ref_name)
 
-            for gene in parsed_genes:
-                assert gene in genes
-                assert parsed_genes[gene]["start"] == genes[gene]["start"]
-                assert parsed_genes[gene]["end"] == genes[gene]["end"]
-                assert parsed_genes[gene]["frame"] == genes[gene]["start"] % 3
-        finally:
-            if os.path.exists(valid_BED4_file):
-                os.remove(valid_BED4_file)
+        for gene in parsed_genes:
+            assert gene in genes
+            assert parsed_genes[gene]["start"] == genes[gene]["start"]
+            assert parsed_genes[gene]["end"] == genes[gene]["end"]
+            assert parsed_genes[gene]["frame"] == genes[gene]["start"] % 3
 
-    def test_invalid_BED4_file(self):
+    def test_invalid_BED4_file(self, tmp_path):
         """Tests to make sure that an exception is raised when attempting to
         parse an invalid BED4 file.
         """
 
         # Create an invalid genes file
-        invalid_BED4_file = os.path.join(os.path.dirname(
-            os.path.abspath(__file__)), "data", "invalid_BED4_file.bed")
+        invalid_BED4_file = str(tmp_path / "invalid_BED4_file.bed")
 
         ref_name = "ref1"
 
@@ -69,9 +63,5 @@ class TestGenesFileParser:
             # This should raise a ValueError
             f.write("different_reference\t101\t200\t2")
 
-        try:
-            with pytest.raises(ValueError):
-                parse_BED4_file(invalid_BED4_file, ref_name)
-        finally:
-            if os.path.exists(invalid_BED4_file):
-                os.remove(invalid_BED4_file)
+        with pytest.raises(ValueError):
+            parse_BED4_file(invalid_BED4_file, ref_name)

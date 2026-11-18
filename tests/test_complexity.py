@@ -25,6 +25,8 @@ specific language governing permissions and limitations under the License.
 
 import os
 import pytest
+import shutil
+import tempfile
 import quasitools.commands.cmd_complexity as complexity
 import quasitools.haplotype as haplotype
 import quasitools.calculate as calculate
@@ -100,24 +102,18 @@ class Test_Consensus:
 class Test_BAM_Complexity:
     @classmethod
     def setup_method(self):
+        self.tmp_dir = tempfile.mkdtemp()
         self.bam_location = TEST_PATH + '/data/complexity.bam'
         self.reference_location =  TEST_PATH + '/data/complexity_reference.fasta'
         self.bam_location2 = TEST_PATH + '/data/complexity_data.bam'
-        self.output_location_bam =  TEST_PATH + '/data/output_bam.csv'
-        self.output_location_bam_filter =  TEST_PATH + '/data/output_bam2.csv'
-        self.output_location_bam_filter2 =  TEST_PATH + '/data/output_bam3.csv'
-        self.output_location_bam_filter3 =  TEST_PATH + '/data/output_bam4.csv'
-        self.output_location_bam_filter4 =  TEST_PATH + '/data/output_bam5.csv'
+        self.output_location_bam = os.path.join(self.tmp_dir, 'output_bam.csv')
+        self.output_location_bam_filter = os.path.join(self.tmp_dir, 'output_bam2.csv')
+        self.output_location_bam_filter2 = os.path.join(self.tmp_dir, 'output_bam3.csv')
+        self.output_location_bam_filter3 = os.path.join(self.tmp_dir, 'output_bam4.csv')
+        self.output_location_bam_filter4 = os.path.join(self.tmp_dir, 'output_bam5.csv')
 
     def teardown_method(self):
-        for output_file in (
-                self.output_location_bam,
-                self.output_location_bam_filter,
-                self.output_location_bam_filter2,
-                self.output_location_bam_filter3,
-                self.output_location_bam_filter4):
-            if os.path.exists(output_file):
-                os.remove(output_file)
+        shutil.rmtree(self.tmp_dir, ignore_errors=True)
 
     def test_complexity_bam(self):
         
@@ -127,11 +123,11 @@ class Test_BAM_Complexity:
                 self.output_location_bam])
         
         # Check if output file is created
-        assert os.path.exists(TEST_PATH + '/data/output_bam.csv')
+        assert os.path.exists(self.output_location_bam)
         
         # Check to see if expected values are found in csv
         # file that we created. We will look at the last row.
-        for line in open(TEST_PATH + '/data/output_bam.csv'):
+        for line in open(self.output_location_bam):
             # split each row into a list
             csv_row = line.split(',')
         
@@ -152,11 +148,11 @@ class Test_BAM_Complexity:
                 self.output_location_bam_filter])
         
         # Check if output file is created
-        assert os.path.exists(TEST_PATH + '/data/output_bam2.csv')
+        assert os.path.exists(self.output_location_bam_filter)
         
         # Check to see if expected values are found in csv
         # file that we created. We will look at the last row.
-        for line in open(TEST_PATH + '/data/output_bam2.csv'):
+        for line in open(self.output_location_bam_filter):
             # split each row into a list
             csv_row = line.split(',')
 
@@ -176,11 +172,11 @@ class Test_BAM_Complexity:
                 self.output_location_bam_filter2])
         
         # Check if output file is created
-        assert os.path.exists(TEST_PATH + '/data/output_bam3.csv')
+        assert os.path.exists(self.output_location_bam_filter2)
         
         # Check to see if expected values are found in csv
         # file that we created. We will look at the last row.
-        for line in open(TEST_PATH + '/data/output_bam3.csv'):
+        for line in open(self.output_location_bam_filter2):
             # split each row into a list
             csv_row = line.split(',')
 
@@ -201,11 +197,11 @@ class Test_BAM_Complexity:
                 self.output_location_bam_filter3])
         
         # Check if output file is created
-        assert os.path.exists(TEST_PATH + '/data/output_bam4.csv')
+        assert os.path.exists(self.output_location_bam_filter3)
         
         # Check to see if expected values are found in csv
         # file that we created. We will look at the last row.
-        for line in open(TEST_PATH + '/data/output_bam4.csv'):
+        for line in open(self.output_location_bam_filter3):
             # split each row into a list
             csv_row = line.split(',')
 
@@ -225,11 +221,11 @@ class Test_BAM_Complexity:
                 self.output_location_bam_filter4])
         
         # Check if output file is created:
-        assert os.path.exists(TEST_PATH +'/data/output_bam5.csv')
+        assert os.path.exists(self.output_location_bam_filter4)
                      
         # Check to see if the expected values are found in the CSV 
         # file that we created. We will only look at the last row of this file.
-        for line in open(TEST_PATH + '/data/output_bam5.csv'):
+        for line in open(self.output_location_bam_filter4):
             # split each row into a list
             csv_row = line.split(',')
         
@@ -248,12 +244,12 @@ class Test_BAM_Complexity:
 class Test_FASTA_Complexity:
     @classmethod
     def setup_method(self):
+        self.tmp_dir = tempfile.mkdtemp()
         self.fasta_location = TEST_PATH + '/data/complexity.fasta'
-        self.output_location_fasta =  TEST_PATH + '/data/output_fasta.csv'
+        self.output_location_fasta = os.path.join(self.tmp_dir, 'output_fasta.csv')
 
     def teardown_method(self):
-        if os.path.exists(self.output_location_fasta):
-            os.remove(self.output_location_fasta)
+        shutil.rmtree(self.tmp_dir, ignore_errors=True)
 
 
     def test_complexity_fasta(self):
@@ -264,11 +260,11 @@ class Test_FASTA_Complexity:
         # If method ran successfully the exit code is 0.
         assert result.exit_code == 0
         # Check if output file is created
-        assert os.path.exists(TEST_PATH + '/data/output_fasta.csv')
+        assert os.path.exists(self.output_location_fasta)
         
         # Check to see if expected values are found in csv
         # file that we created. We will look at the last row.
-        for line in open(TEST_PATH + '/data/output_fasta.csv'):
+        for line in open(self.output_location_fasta):
             csv_row = line.split(',')
 
         # Check if last row has these values for each column
@@ -387,12 +383,12 @@ class Test_CSV_Building:
     @classmethod
     def setup_method(self):
 
+        self.tmp_dir = tempfile.mkdtemp()
         self.measurements = [[1,2,3,4,5]]
-        self.file_directory = TEST_PATH + '/data/output_built_csv.csv'
+        self.file_directory = os.path.join(self.tmp_dir, 'output_built_csv.csv')
 
     def teardown_method(self):
-        if os.path.exists(self.file_directory):
-            os.remove(self.file_directory)
+        shutil.rmtree(self.tmp_dir, ignore_errors=True)
 
     def test_measurements_to_csv(self):
 
