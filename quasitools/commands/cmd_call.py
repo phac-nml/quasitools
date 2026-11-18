@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2017 - 2018
+Copyright Government of Canada 2017 - 2026
 
 Written by: Eric Enns, Cole Peters, Eric Chubaty, Camy Tran, and Matthew Fogel
             National Microbiology Laboratory, Public Health Agency of Canada

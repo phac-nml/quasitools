@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2015-2017
+Copyright Government of Canada 2015-2026
 
 Written by: Camy Tran, Eric Enns, National Microbiology Laboratory,
             Public Health Agency of Canada

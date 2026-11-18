@@ -1,6 +1,6 @@
 """
 # =============================================================================
-Copyright Government of Canada 2019
+Copyright Government of Canada 2019-2026
 
 Written by: Ahmed Kidwai, Public Health Agency of Canada,
     National Microbiology Laboratory

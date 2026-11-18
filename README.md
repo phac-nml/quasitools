@@ -85,7 +85,7 @@ devenv shell -- tox -e flake8
 
 # Legal
 
-Copyright Government of Canada 2017-2019
+Copyright Government of Canada 2017-2026
 
 Written by: National Microbiology Laboratory, Public Health Agency of Canada
 

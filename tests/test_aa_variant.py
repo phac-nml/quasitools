@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2017
+Copyright Government of Canada 2017-2026
 
 Written by: Cole Peters, Eric Chubaty, National Microbiology Laboratory, Public Health Agency of Canada
 

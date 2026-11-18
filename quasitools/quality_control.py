@@ -1,5 +1,5 @@
 """
-Copyright Government of Canada 2018
+Copyright Government of Canada 2018-2026
 
 Written by: Eric Marinier and Matthew Fogel, National Microbiology Laboratory,
             Public Health Agency of Canada
