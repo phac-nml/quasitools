@@ -3,19 +3,27 @@
 lib.mkMerge [
   {
     # https://devenv.sh/basics/
+    env.LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+      pkgs.stdenv.cc.cc.lib
+      pkgs.zlib
+    ];
     env.PIXI_HOME = "${config.devenv.state}/pixi";
 
     # https://devenv.sh/packages/
     packages = with pkgs; [
       pixi
       python312
+      python313
+      python314
+      python315
       python3Packages.tox
     ];
 
     # https://devenv.sh/languages/
     languages.python = {
       enable = true;
-      version = "3.12";
+      venv.enable = true;
+      manylinux.enable = true;
     };
 
     # https://devenv.sh/basics/
