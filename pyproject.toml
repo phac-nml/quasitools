@@ -62,7 +62,7 @@ quasitools = { path = ".", editable = true }
 env_list = ["py312", "py313", "py314", "py315"]
 
 [tool.tox.env_run_base]
-pass_env = ["LD_LIBRARY_PATH"]
+pass_env = ["LD_LIBRARY_PATH", "PYTEST_XDIST_AUTO_NUM_WORKERS", "PYTEST_ADDOPTS"]
 deps = ["pytest", "pytest-cov", "pytest-xdist"]
 commands = [
     ["py.test", "-n", "auto", "--dist", "loadscope", "--cov-report", "term-missing", "--cov=quasitools", "{posargs:tests/}"],
