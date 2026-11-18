@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "quasitools"
 version = "0.7.0"
-description = "Quasitools is a collection of tools for analysing Viral Quasispecies"
+description = "Quasitools is a collection of tools for analysing viral quasispecies"
 readme = "README.md"
 license = { file = "LICENSE.txt" }
 authors = [

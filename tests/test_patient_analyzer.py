@@ -58,11 +58,11 @@ class TestPatientAnalyzer:
     def setup_class(self):
         # Test defaults
         self.tmp_dir = tempfile.mkdtemp()
-        self.OUTPUT_DIR = os.path.join(self.tmp_dir, "test_patient_analyzer_output")
-        self.FILTERED_DIR = os.path.join(self.OUTPUT_DIR, "filtered.fastq")
+        self.output_dir = os.path.join(self.tmp_dir, "test_patient_analyzer_output")
+        self.filtered_dir = os.path.join(self.output_dir, "filtered.fastq")
         self.patient_analyzer = PatientAnalyzer(id="test",reads=READS,
                                  reference=REFERENCE,
-                                 output_dir=self.OUTPUT_DIR,
+                                 output_dir=self.output_dir,
                                  BED4_file=BED4_FILE,
                                  mutation_db=MUTATION_DB,
                                  quiet=False, consensus_pct=20)
@@ -73,11 +73,11 @@ class TestPatientAnalyzer:
 
     def test_combine_reads(self):
         # Combine the fwd and reverse into one file
-        reads = "%s/combined_reads.fastq" % self.OUTPUT_DIR
+        reads = "%s/combined_reads.fastq" % self.output_dir
         cat_cmd = "cat %s %s > %s" % (FORWARD, REVERSE, reads)
         os.system(cat_cmd)
 
-        assert os.path.isfile("%s/combined_reads.fastq" % self.OUTPUT_DIR)
+        assert os.path.isfile("%s/combined_reads.fastq" % self.output_dir)
 
     def test_filter_reads(self):
 
@@ -95,7 +95,7 @@ class TestPatientAnalyzer:
 
         assert status # assert that status is true (filtering has occured)
 
-        seq_rec_obj = Bio.SeqIO.parse(self.FILTERED_DIR, "fastq")
+        seq_rec_obj = Bio.SeqIO.parse(self.filtered_dir, "fastq")
 
         for seq in seq_rec_obj:
             avg_score = quality_filters[MEAN_CUTOFF] + 1
@@ -110,14 +110,14 @@ class TestPatientAnalyzer:
         # more tests for filtering reads can be found in test_quality_control
 
     def test_generate_bam(self):
-        assert not os.path.isfile("%s/align.bam" % self.OUTPUT_DIR)
+        assert not os.path.isfile("%s/align.bam" % self.output_dir)
         fasta_id = os.path.basename(self.patient_analyzer.reads).split('.')[0]
         self.patient_analyzer.generate_bam(fasta_id)
 
-        assert os.path.isfile("%s/align.bam" % self.OUTPUT_DIR)
+        assert os.path.isfile("%s/align.bam" % self.output_dir)
 
-        if os.path.isfile("%s/align.bam" % self.OUTPUT_DIR):
-            os.remove("%s/align.bam" % self.OUTPUT_DIR)
+        if os.path.isfile("%s/align.bam" % self.output_dir):
+            os.remove("%s/align.bam" % self.output_dir)
 
     def test_analyze_reads(self):
         quality_filters = defaultdict(dict)
@@ -140,12 +140,12 @@ class TestPatientAnalyzer:
                                             reporting_threshold,
                                             generate_consensus)
 
-        assert os.path.isfile("%s/consensus.fasta" % self.OUTPUT_DIR)
-        assert os.path.isfile("%s/coverage_file.csv" % self.OUTPUT_DIR)
-        assert os.path.isfile("%s/dr_report.csv" % self.OUTPUT_DIR)
-        assert os.path.isfile("%s/hydra.vcf" % self.OUTPUT_DIR)
-        assert os.path.isfile("%s/mutation_report.aavf" % self.OUTPUT_DIR)
-        assert os.path.isfile("%s/stats.txt" % self.OUTPUT_DIR)
+        assert os.path.isfile("%s/consensus.fasta" % self.output_dir)
+        assert os.path.isfile("%s/coverage_file.csv" % self.output_dir)
+        assert os.path.isfile("%s/dr_report.csv" % self.output_dir)
+        assert os.path.isfile("%s/hydra.vcf" % self.output_dir)
+        assert os.path.isfile("%s/mutation_report.aavf" % self.output_dir)
+        assert os.path.isfile("%s/stats.txt" % self.output_dir)
 
-        assert not os.path.isfile("%s/tmp.bam" % self.OUTPUT_DIR)
-        assert not os.path.isfile("%s/tmp.sam" % self.OUTPUT_DIR)
+        assert not os.path.isfile("%s/tmp.bam" % self.output_dir)
+        assert not os.path.isfile("%s/tmp.sam" % self.output_dir)
