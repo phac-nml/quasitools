@@ -36,7 +36,8 @@ GAP = '-'
 
 
 def parse_mapped_reads_from_bam(reference, bam):
-    """Parse MappedRead mrcects from a bam file and produce a MappedReadCollection.
+    """Parse MappedRead mrcects from a bam file and produce a
+    MappedReadCollection.
     """
     mrc = MappedReadCollection(reference)
     sam = pysam.AlignmentFile(bam, "rb")
