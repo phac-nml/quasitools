@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quasitools"
+version = "0.7.0"
+description = "Quasitools is a collection of tools for analysing Viral Quasispecies"
+readme = "README.md"
+license = { file = "LICENSE.txt" }
+authors = [
+    { name = "Eric Enns", email = "eric.enns@phac-aspc.gc.ca" },
+    { name = "Camy Tran" },
+    { name = "Matthew Fogel" },
+    { name = "Cole Peters" },
+    { name = "Eric Marinier" },
+    { name = "Eric Chubaty" },
+    { name = "Ahmed Kidwai" },
+]
+requires-python = ">=3.12"
+dependencies = [
+    "biopython",
+    "click",
+    "numpy",
+    "pysam",
+    "scipy",
+    "PyAAVF",
+]
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Environment :: Console",
+    "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+Homepage = "https://github.com/phac-nml/quasitools.git"
+
+[project.scripts]
+quasitools = "quasitools.cli:cli"
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.packages.find]
+exclude = ["tests*"]
+
+[tool.pixi.workspace]
+authors = ["Eric Enns <eric.enns@phac-aspc.gc.ca>"]
+channels = ["bioconda", "conda-forge"]
+platforms = ["linux-64"]
+channel-priority = "disabled"
+
+[tool.pixi.dependencies]
+samtools = "1.24.*"
+bowtie2 = ">=2.5.5,<3"
+
+[tool.tox]
+env_list = ["py312", "py313", "py314", "py315"]
+
+[tool.tox.env_run_base]
+pass_env = ["LD_LIBRARY_PATH"]
+deps = ["pytest", "pytest-cov", "pytest-xdist"]
+commands = [
+    ["py.test", "-n", "auto", "--dist", "loadscope", "--cov-report", "term-missing", "--cov=quasitools", "{posargs:tests/}"],
+]
+
+[tool.tox.env.flake8]
+deps = ["flake8"]
+commands = [["flake8"]]
