@@ -35,9 +35,53 @@ It is strongly recommended you refer to the documentation for full installation 
 1. Install [Bioconda](https://bioconda.github.io/)
 2. Install the "quasitools" Bioconda package (conda install quasitools)
 
+# Development
+
+Project configuration (dependencies, pixi, and tox) lives in
+[`pyproject.toml`](pyproject.toml). A [devenv](https://devenv.sh/) shell is
+provided to set up a consistent development environment, including
+[pixi](https://pixi.sh/) (for managing samtools/bowtie2 and Python
+dependencies) and [tox](https://tox.wiki/) (for running tests across
+multiple Python versions).
+
+1. Install [devenv](https://devenv.sh/getting-started/#installation).
+2. Run `devenv shell` to enter the development environment. This installs
+   pixi's managed environment, including an editable install of quasitools
+   itself, so source changes are picked up immediately.
+
+All commands below should be prefixed with `devenv shell --` if you aren't
+already inside a `devenv shell` session.
+
+## Running tests
+
+Run the test suite against a specific Python version with tox:
+
+```
+devenv shell -- tox -e py312
+```
+
+Supported environments are `py312`, `py313`, `py314`, and `py315`. To run
+all of them in parallel:
+
+```
+devenv shell -- tox -p auto
+```
+
+To run a specific test file or test case, pass it after `--`:
+
+```
+devenv shell -- tox -e py312 -- tests/test_cli.py
+```
+
+## Linting
+
+```
+devenv shell -- tox -e flake8
+```
+
 # Contact
 
-**Eric Enns**: eric.enns@canada.ca
+**Eric Enns**: eric.enns@phac-aspc.gc.ca
 
 # Legal
 
