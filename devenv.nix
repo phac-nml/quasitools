@@ -11,6 +11,7 @@ lib.mkMerge [
 
     # https://devenv.sh/packages/
     packages = with pkgs; [
+      gh
       pixi
       python312
       python313
